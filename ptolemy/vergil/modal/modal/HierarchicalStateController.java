@@ -222,7 +222,7 @@ public class HierarchicalStateController extends StateController {
 
             /*
             String currentRefinements = state.refinementName.getExpression();
-            
+
             if ((currentRefinements == null) || currentRefinements.equals("")) {
                 currentRefinements = newName;
             } else {

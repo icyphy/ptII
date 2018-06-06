@@ -194,16 +194,16 @@ public class MacOSXAdapter implements InvocationHandler {
                                         + applicationClassName + "\" ("
                                         + applicationClass + "): " + ex
                                         + "(applets and -sandbox always causes this)");
-				_printedSecurityExceptionMessage = true;
+                                _printedSecurityExceptionMessage = true;
                             }
                         }
                         return;
                     } catch ( java.lang.IllegalAccessException ex2) {
-			if (!_printedIllegalAccessExceptionMessage) {
-			    System.out.println("Warning: Failed to access the Application class "
-					       + applicationClassName + "\" ("
-					       + applicationClass + "): " + ex2);
-			    _printedIllegalAccessExceptionMessage = true;
+                        if (!_printedIllegalAccessExceptionMessage) {
+                            System.out.println("Warning: Failed to access the Application class "
+                                               + applicationClassName + "\" ("
+                                               + applicationClass + "): " + ex2);
+                            _printedIllegalAccessExceptionMessage = true;
                         }
                         return;
                     }

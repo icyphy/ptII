@@ -149,7 +149,7 @@ public class IntMatrixToken extends MatrixToken {
      *  {@link ptolemy.data.MatrixToken#DO_NOT_COPY}, then the value matrix
      *  is NOT copied and should not be modified after construction of this
      *  object.
-    
+
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */

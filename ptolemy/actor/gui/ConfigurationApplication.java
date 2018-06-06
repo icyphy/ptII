@@ -1409,7 +1409,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                         try {
                             /*NamedObj toplevel = _parser.parse(base, inURL);
-                            
+
                             if (toplevel instanceof Configuration) {
                                 _configuration = (Configuration) toplevel;
                             }*/

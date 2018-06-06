@@ -276,7 +276,7 @@ public class Configure extends Event {
 
     /**
      Listener for key input and property change.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -347,7 +347,7 @@ public class Configure extends Event {
 
     /**
      The query to receive user input.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

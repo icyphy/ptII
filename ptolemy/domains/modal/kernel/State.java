@@ -859,7 +859,7 @@ public class State extends ComponentEntity
      a design pattern whose top-level is an FSMActor. In that case, a modal
      model is automatically created to contain the FSMActor, and this attribute
      is associated with the created (invisible) modal model.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -893,7 +893,7 @@ public class State extends ComponentEntity
     /**
      A change request the updates the refinements of a state if it contains a
      configure element.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

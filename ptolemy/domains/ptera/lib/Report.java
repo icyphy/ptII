@@ -305,7 +305,7 @@ public class Report extends Event {
 
     /**
      The display modes.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

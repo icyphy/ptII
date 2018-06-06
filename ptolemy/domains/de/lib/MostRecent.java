@@ -293,7 +293,7 @@ public class MostRecent extends Transformer {
      */
     /*    public Set<Inequality> typeConstraints() {
             Set<Inequality> typeConstraints = super.typeConstraints();
-    
+
             try {
                 if (initialValue.getToken() != null) {
                     // Set type of initialValue to be equal to input type
@@ -302,7 +302,7 @@ public class MostRecent extends Transformer {
                     typeConstraints.add(ineq);
                     ineq = new Inequality(input.getTypeTerm(),
                             initialValue.getTypeTerm());
-    
+
                     typeConstraints.add(ineq);
                 }
             } catch (IllegalActionException ex) {
@@ -311,7 +311,7 @@ public class MostRecent extends Transformer {
                 // class.
                 throw new InternalErrorException("Bad initialValue value!");
             }
-    
+
             return typeConstraints;
         }
      */

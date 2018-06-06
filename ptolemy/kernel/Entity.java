@@ -275,7 +275,7 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      *  is to do nothing, but derived classes may want to react to new
      *  connections.
      *  @param port The port to which connections have changed.
-    
+
      */
     public void connectionsChanged(Port port) {
     }

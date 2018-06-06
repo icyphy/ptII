@@ -348,7 +348,7 @@ public class PrioritizedTimedQueue extends AbstractReceiver {
          DDEThread ddeThread = (DDEThread)thread;
          invokerName = ((Nameable)ddeThread.getActor()).getName();
          }
-        
+
          if ( containerName.endsWith("2") || invokerName.endsWith("2") ) {
          if ( token instanceof NullToken ) {
          System.out.println(invokerName + " put NullToken into the receiver of "

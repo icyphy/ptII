@@ -2053,7 +2053,7 @@ public class FSMActor extends CompositeEntity
     @Override
     protected void _addEntity(ComponentEntity entity)
             throws IllegalActionException, NameDuplicationException {
-        if (!(entity instanceof State)){
+        if (!(entity instanceof State)) {
             throw new IllegalActionException(this, entity,
                     "FSMActor can only contain entities that "
                             + "are instances of State or Mode.");
@@ -3839,14 +3839,14 @@ public class FSMActor extends CompositeEntity
      * useful in the future.
     private boolean _referencedInputPortValuesByGuardPresent(
             Transition transition) throws IllegalActionException {
-    
-    
+
+
         // If the port identifier does
         // not end with "_isPresent", then return false if port
         // identifier with "_isPresent" appended is false. There is no data on
         // the port "in" then the identifier "in" will be undefined, or worse,
         //  will resolve to the port object itself.
-    
+
         String string = transition.getGuardExpression();
         if (string.trim().equals("")) {
             return true;
@@ -3858,7 +3858,7 @@ public class FSMActor extends CompositeEntity
         // Get a set of free variable names.
         Set<String> nameSet = variableCollector.collectFreeVariables(parseTree,
                 scope);
-    
+
         for (String name : nameSet) {
             Port port = _getPortForIdentifier(name);
             if (port instanceof IOPort) {

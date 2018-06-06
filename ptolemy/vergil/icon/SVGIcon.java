@@ -287,12 +287,12 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                  cy = _getDouble(attributes, "cy", 0);
                  rx = _getDouble(attributes, "rx");
                  ry = _getDouble(attributes, "ry");
-                
+
                  PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
                  cx - rx, cy - ry, 2 * rx, 2 * ry));
                  processPaintedShapeAttributes(ps, attributes);
                  return ps;
-                
+
                  } else if (type.equals("line")) {
                  double x1, y1, x2, y2;
                  x1 = _getDouble(attributes, "x1", 0);
@@ -323,11 +323,11 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                  poly.lineTo(coords[i], coords[i+1]);
                  }
                  poly.closePath();
-                
+
                  PaintedShape ps = new PaintedShape(poly);
                  processPaintedShapeAttributes(ps, attributes);
                  return ps;
-                
+
                  } else if (type.equals("text")) {
                  double x, y;
                  x = _getDouble(attributes, "x", 0);
@@ -360,7 +360,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                  }
                  url = _refClass.getClassLoader().getResource(link);
                  }
-                
+
                  // Try as a regular URL.
                  if (url == null) {
                  url = new URL(link);

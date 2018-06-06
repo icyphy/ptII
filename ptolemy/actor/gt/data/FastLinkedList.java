@@ -421,7 +421,7 @@ public class FastLinkedList<E> implements Collection<E> {
 
     /**
      An entry in this linked list that contains an element.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

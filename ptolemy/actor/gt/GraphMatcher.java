@@ -1705,7 +1705,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /**
      A list of lookback entries.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -1720,7 +1720,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /**
      A comparator to sort objects in a container by their types and names.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -1747,7 +1747,7 @@ public class GraphMatcher extends GraphAnalyzer {
 
     /**
      A list of Java objects.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -1764,7 +1764,7 @@ public class GraphMatcher extends GraphAnalyzer {
      A class of objects used to iterate over all possible values of the value
      iterators (object in class {@link ValueIterator}) in a given composite
      entity.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

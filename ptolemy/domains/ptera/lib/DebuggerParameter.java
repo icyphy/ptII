@@ -243,7 +243,7 @@ public class DebuggerParameter extends TableauParameter
 
     /**
      The modes.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

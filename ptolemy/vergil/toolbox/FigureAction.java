@@ -159,10 +159,10 @@ public class FigureAction extends AbstractAction {
              } else if (source instanceof JMenuItem) {
              // Action activated using a context menu.
              JMenuItem item = (JMenuItem) source;
-            
+
              if (item.getParent() instanceof JContextMenu) {
              _sourceType = CONTEXTMENU_TYPE;
-            
+
              JContextMenu menu = (JContextMenu) item.getParent();
              parent = menu.getInvoker();
              _target = (NamedObj) menu.getTarget();

@@ -348,7 +348,7 @@ public class RecursiveFileFilter implements FilenameFilter {
 
     /**
        A comparator to sort file names.
-    
+
        @author Thomas Huining Feng
        @version $Id$
        @since Ptolemy II 10.0

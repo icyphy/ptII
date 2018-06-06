@@ -456,7 +456,7 @@ public class RendezvousReceiver extends AbstractReceiver
      * @exception TerminateProcessException If the actor to which this
      * receiver belongs has been terminated while still running i.e it
      * was not allowed to run to completion.
-    
+
      */
     @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,

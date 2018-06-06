@@ -154,35 +154,35 @@ public class GridLayer extends CanvasLayer implements VisibleComponent {
      if (!isVisible()) {
      return;
      }
-    
+
      double originX = _origin.getX();
      double originY = _origin.getY();
      double sizeX = _size.getX();
      double sizeY = _size.getY();
      double paneX = paneSize.getX();
      double paneY = paneSize.getY();
-    
+
      if (_gridPaint != null) {
      g.setPaint(_gridPaint);
      g.setStroke(_gridStroke);
-    
+
      Line2D.Double vline = new Line2D.Double();
      Line2D.Double hline = new Line2D.Double();
-    
+
      double x = originX;
      double y;
-    
+
      vline.y1 = originY;
      vline.y2 = paneY;
-    
+
      hline.x1 = originY;
      hline.x2 = paneX;
-    
+
      while (x < paneX) {
      vline.x1 = x;
      vline.x2 = x;
      g.draw(vline);
-    
+
      y = originY;
      while (y < paneY) {
      hline.y1 = y;

@@ -1173,10 +1173,10 @@ public class IORelation extends ComponentRelation {
                 /* This is now allowed.
                  if (width != 1) {
                  Iterator ports = linkedPortList().iterator();
-                
+
                  while (ports.hasNext()) {
                  IOPort p = (IOPort) ports.next();
-                
+
                  // Check for non-multiports.
                  if (!p.isMultiport()) {
                  throw new IllegalActionException(this, p,

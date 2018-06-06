@@ -299,7 +299,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
                                     .get("receiver")).getValue();
                             Token token = recordToken.get("token");
                             receiver.put(token);
-                            
+
                             // If the receiver is in an output port, then have to transfer
                             // the token to the outside.
                             IOPort port = receiver.getContainer();

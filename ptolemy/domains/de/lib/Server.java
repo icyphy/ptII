@@ -374,7 +374,7 @@ public class Server extends DETransformer {
         }
         return super.postfire();
     }
-    
+
     /** Clear the queue so that the capacity can be changed.
      *  @exception IllegalActionException If the superclass throws it.
      */

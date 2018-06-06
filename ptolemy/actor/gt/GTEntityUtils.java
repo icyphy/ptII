@@ -326,7 +326,7 @@ public class GTEntityUtils {
     /**
      A change request to copy the icon of a newly created entity within a
      container to a given GTEntity.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -412,7 +412,7 @@ public class GTEntityUtils {
 
     /**
      A change request to restore the default icon of an entity.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

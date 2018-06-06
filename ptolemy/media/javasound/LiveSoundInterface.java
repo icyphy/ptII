@@ -452,7 +452,7 @@ public interface LiveSoundInterface {
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-    
+
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.

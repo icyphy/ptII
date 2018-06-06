@@ -174,7 +174,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      *  removed from the queue or history. If the offset argument is
      *  zero, return the oldest object in the queue. If the offset is
      *  1, return the second oldest object, etc. If there is no such
-    
+
      *  object in the queue (the offset is greater than or equal to
      *  the current queue size), throw an exception. If the argument
      *  is -1, return the most recent object that was put in the

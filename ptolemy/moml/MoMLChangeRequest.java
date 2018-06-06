@@ -185,7 +185,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @return An object that deeply contains this one, or null.
      *  @deprecated No longer needed; just use the specified object as
      *  a context.
-    
+
      */
     @Deprecated
     public static NamedObj getDeferredToParent(NamedObj object) {

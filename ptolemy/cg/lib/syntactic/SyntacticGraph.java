@@ -192,7 +192,7 @@ public class SyntacticGraph extends CompositeEntity {
                     Integer rwidth = SyntacticPort.portWidth(rport);
                     System.out.print("      -> " + rport.getName() + "(" + rtype + ": " + rwidth + ")\n");
                 }
-            
+
             }
              */
         }

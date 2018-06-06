@@ -70,7 +70,7 @@ public class ThreadDirector extends TaskPtDirector {
     ////                         public methods                    ////
 
     /** Fire the actors in sequence.
-    
+
      *  @exception IllegalActionException Thrown if any actor executed by this
      *  actor return false in prefire().
      */

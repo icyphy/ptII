@@ -116,7 +116,7 @@ public class FmvAutomaton extends FSMActor {
      *
      * @param formula The temporal formula used to be attached in the
      * .smv file.
-    
+
      * @param choice The type of the formula. It may be either a CTL or LTL
      *               formula.
      * @param span A constant used to expand the size of the rough domain.

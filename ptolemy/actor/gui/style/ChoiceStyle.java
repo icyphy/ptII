@@ -75,7 +75,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  Increment the version number of the workspace.
      *  @param workspace The workspace that will contain the attribute
      *  that is being constructed.
-    
+
      */
     public ChoiceStyle(Workspace workspace) {
         // This constructor is needed for Shallow codegen to work.

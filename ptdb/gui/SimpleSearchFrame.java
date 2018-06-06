@@ -935,14 +935,14 @@ public class SimpleSearchFrame extends JFrame implements PTDBBasicFrame {
         //Duplicates are now allowed.  This allows OR searches.
         /*
         if (_attributesListPanel.containsDuplicates()) {
-        
+
             JOptionPane.showMessageDialog(this,
                     "The search criteria cannot contain more"
                             + " than one instance " + "of the same attribute.",
                     "Search Error", JOptionPane.INFORMATION_MESSAGE, null);
-        
+
             return false;
-        
+
         }
          */
 

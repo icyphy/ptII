@@ -390,7 +390,7 @@ public class ReceiveInput extends Event implements TimeAdvanceEvent {
 
     /**
      The input listener to listen to the key and mouse input.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

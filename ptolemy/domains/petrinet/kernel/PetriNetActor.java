@@ -107,7 +107,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *  @return A new PetriNetActor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
-    
+
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {

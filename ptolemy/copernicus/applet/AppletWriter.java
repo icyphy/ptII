@@ -2101,7 +2101,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     /** Create a jar file.
      *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
-    
+
      */
     private void _createJarFile(File jarFile, File optionalJarFile,
             String[] jarFileNames, File[] filesToBeJared) throws Exception {

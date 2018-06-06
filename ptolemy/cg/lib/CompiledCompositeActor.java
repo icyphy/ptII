@@ -639,7 +639,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
 
             /*} else if (type == PointerToken.POINTER) {
-            
+
                 int[][] tokens = (int[][]) outputTokens;
                 for (int i = 0; i < port.getWidthInside(); i++) {
                     for (int k = 0; k < rate; k++) {
@@ -1025,7 +1025,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                             ((double[][]) tokenHolder)[i] = doubleTokens;
 
                             /*} else if (type == PointerToken.POINTER) {
-                            
+
                             int[] intTokens = new int[rate];
                             for (int k = 0; k < rate; k++) {
                             intTokens[k] = ((PointerToken) tokens[k])

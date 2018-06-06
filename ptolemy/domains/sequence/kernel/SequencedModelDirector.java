@@ -474,7 +474,7 @@ public abstract class SequencedModelDirector extends Director {
                 isTransparentCompositeActor = true;
                 checkAttributeType(actorEntity, sequenceAttributes, processAttributes,isTransparentCompositeActor);
             }
-        
+
         }
          */
 
@@ -538,12 +538,12 @@ public abstract class SequencedModelDirector extends Director {
                     else {
                         if ( sequenceAttributes.isEmpty() && processAttributes.isEmpty() ) {
                             if ( ( compositeActor.getDirector().getClass() == SequenceDirector.class ) ) {
-                    
+
                                 throw new IllegalActionException(this,"Composite Actor " + actor.getName() +" should have Sequence Attribute");
                             }
-                    
+
                             if ( ( compositeActor.getDirector().getClass() == ProcessDirector.class ) ) {
-                    
+
                                 throw new IllegalActionException(this,"Composite Actor " + actor.getName() +" should have Process Attribute");
                             }
                         }
@@ -583,23 +583,23 @@ public abstract class SequencedModelDirector extends Director {
          *  with sequence numbers.  If there are, these sequence numbers are ignored.
         // FIXME:  Need to check for these though, since the upstream actor calculations
         // will not process something with a sequence attribute
-        
-        
+
+
         if ( isTransparentCompositeActor ) {
-        
+
             if ( !sequenceAttributes.isEmpty() ) {
                 if ( sequenceAttributes.get(0).getClass() == ProcessAttribute.class ) {
-        
+
                     System.out.println("Warning: " + actorEntity.getName() +"'s Process Attribute will be ignored");
                 } else if ( sequenceAttributes.get(0).getClass() == SequenceAttribute.class ) {
-        
+
                     System.out.println("Warning: " + actorEntity.getName() +"'s Sequence Attribute will be ignored");
                 }
-        
+
             }
-        
+
         }
-        
+
          */
         // Note that a ProcessAttribute is also a SequenceAttribute
 

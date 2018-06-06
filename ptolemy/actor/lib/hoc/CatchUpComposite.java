@@ -678,27 +678,27 @@ public class CatchUpComposite extends MirrorComposite {
         /** Indicator that the inside model returned false in postfire. */
         private boolean _postfireReturns = true;
     }
-    
-    //////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     //// Contents
-    
+
     /** Contents composite that overrides the base class to have a parameter
      *  indicating whether to fire only when triggered.
      */
     public class Contents extends MirrorComposite.MirrorCompositeContents {
 
         // The Contents class should be public so that cloning works.
-        // To test: (cd $PTII/ptolemy/configs/test/; $PTII/bin/ptjacl allConfigs.tcl) 
+        // To test: (cd $PTII/ptolemy/configs/test/; $PTII/bin/ptjacl allConfigs.tcl)
 
         public Contents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            
+
             fireOnlyWhenTriggered = new Parameter(this, "fireOnlyWhenTriggered");
             fireOnlyWhenTriggered.setTypeEquals(BaseType.BOOLEAN);
             fireOnlyWhenTriggered.setExpression("false");
         }
-        
+
         /** If false (the default), then whenever any contained actor
          *  makes a fireAt() request, that request is passed up to the container,
          *  and hence this composite will be fired at the requested time.

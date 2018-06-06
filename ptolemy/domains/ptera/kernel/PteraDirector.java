@@ -819,7 +819,7 @@ public class PteraDirector extends Director implements ValueListener {
     /**
      The class to encapsulate information to be stored in an entry in the event
      queue.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

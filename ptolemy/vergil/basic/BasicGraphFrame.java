@@ -3113,7 +3113,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false
      *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.</p>
-    
+
      *  @return A file dialog for save as.
      */
     @Override

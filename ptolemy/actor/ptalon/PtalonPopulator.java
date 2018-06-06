@@ -1456,7 +1456,7 @@ public class PtalonPopulator extends antlr.TreeParser
     }
 
     /**
-     * This is for a top level actor declaration, which 
+     * This is for a top level actor declaration, which
      * requires separate treatment from a nested actor
      * declaration.
      */

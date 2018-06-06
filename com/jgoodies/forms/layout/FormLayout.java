@@ -1825,7 +1825,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
             System.out.print(width + ", ");
         }
         System.out.println(" Total=" + totalWidth);
-    
+
         int totalHeight = 0;
         System.out.print("Row heights:   ");
         for (int i=0; i < getRowCount(); i++) {
@@ -1836,7 +1836,7 @@ public final class FormLayout implements LayoutManager2, Serializable {
         System.out.println(" Total=" + totalHeight);
         System.out.println();
     }
-    
+
      */
 
 }

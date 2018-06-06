@@ -238,9 +238,9 @@ public class TypeAttribute extends Parameter {
                         this,
                         "TypeAttribute can only be contained by instances "
                                 + "of TypedIOPort or org.kepler.moml.PortAttribute.");
-    
+
             }
-    
+
         }
     }
     */

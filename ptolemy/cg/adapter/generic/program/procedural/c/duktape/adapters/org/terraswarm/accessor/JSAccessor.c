@@ -55,7 +55,7 @@ static void print_pop_error(duk_context *ctx, FILE *f) {
          * Note that getting the stack trace may throw an error
          * so this also needs to be safe call wrapped.
          */
-	(void) duk_safe_call(ctx, get_stack_raw, NULL /*udata*/, 1 /*nargs*/, 1 /*nrets*/);
+        (void) duk_safe_call(ctx, get_stack_raw, NULL /*udata*/, 1 /*nargs*/, 1 /*nrets*/);
         fprintf(f, "%s\n", duk_safe_to_string(ctx, -1));
         fflush(f);
         duk_pop(ctx);

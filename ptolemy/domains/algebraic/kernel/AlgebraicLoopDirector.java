@@ -596,7 +596,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
     /**
      A class for solving algebraic loops.
-    
+
      This class solves an algebraic loop of the form x=g(x)
      <pre>
          -----------
@@ -631,7 +631,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      Eugene L. Allgower and Kurt Georg,
      Introduction to Numerical Continuation Methods,
      Classics in Applied Mathematics, Vol. 45, SIAM, 2003.
-    
+
      @author Michael Wetter
      */
     abstract class AlgebraicLoopSolver {

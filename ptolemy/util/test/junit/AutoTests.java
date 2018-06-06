@@ -81,9 +81,9 @@ public class AutoTests extends ModelTests {
                 .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
             if (clazz != null) {
                 Method method = clazz.getMethod("closeVertx");
-		System.out.println("AutoTests.java: About to close Vertx.");
+                System.out.println("AutoTests.java: About to close Vertx.");
                 method.invoke(null);
-		System.out.println("AutoTests.java: Vertx closed.");
+                System.out.println("AutoTests.java: Vertx closed.");
             }
         } catch (NoClassDefFoundError ex) {
             // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.
@@ -207,7 +207,7 @@ public class AutoTests extends ModelTests {
 
             } else {
                 // JSAccessor is present, reload and rerun.
-                
+
                 System.out.println("----------------- Invoking toplevel() on " + instance);
                 _applicationToplevelMethod = _applicationClass
                     .getMethod("toplevel", new Class[] {});

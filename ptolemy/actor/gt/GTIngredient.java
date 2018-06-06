@@ -372,7 +372,7 @@ public abstract class GTIngredient {
     /**
      An iterator to read the fields one by one in a string that describes the
      values of all the elements.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

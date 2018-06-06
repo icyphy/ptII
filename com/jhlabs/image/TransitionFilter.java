@@ -124,7 +124,7 @@ public class TransitionFilter extends AbstractBufferedImageOp {
             public void setFilter( BufferedImageOp filter ) {
                     this.filter = filter;
             }
-    
+
             public int getFilter() {
                     return filter;
             }

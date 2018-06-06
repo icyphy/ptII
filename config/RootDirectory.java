@@ -95,15 +95,15 @@ public class RootDirectory {
         File file = new File(fileInBinDirectory);
         String CanonicalPath = file.getCanonicalPath();
 
-	try {
-	    String binDirectory = _checkForBin(CanonicalPath);
-	    return CanonicalPath.substring(0,
-					   CanonicalPath.lastIndexOf(binDirectory));
-	} catch (Exception ex) {
-	    // No /bin/
-	    return CanonicalPath.substring(0,
-					   CanonicalPath.lastIndexOf(File.separator));
-	}
+        try {
+            String binDirectory = _checkForBin(CanonicalPath);
+            return CanonicalPath.substring(0,
+                                           CanonicalPath.lastIndexOf(binDirectory));
+        } catch (Exception ex) {
+            // No /bin/
+            return CanonicalPath.substring(0,
+                                           CanonicalPath.lastIndexOf(File.separator));
+        }
     }
 
     // Throw an exception if the path does not contain /bin/

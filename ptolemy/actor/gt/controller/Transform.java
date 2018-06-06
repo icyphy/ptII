@@ -319,7 +319,7 @@ public class Transform extends GTEvent
 
     /**
      The configurer to be embedded in the transform event.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

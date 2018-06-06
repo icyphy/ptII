@@ -1307,9 +1307,9 @@ public class DocManager extends HandlerBase {
     }
 
     /** Initialize fields.  We assume _target was set by the caller
-    
+
      private void _init() {
-    
+
      _isInstanceDoc = false;
      }
     */

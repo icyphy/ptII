@@ -319,7 +319,7 @@ public class DesignPatternImporter extends Attribute
 
     /**
      A moml filter that sets each created object to be non-persistent.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

@@ -152,15 +152,15 @@ public class ApplicationTutorial extends AbstractApplication {
      // only handle text documents.
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
-    
+
      if (_displayedDocument != null) {
      // Pull the text out of the editor and stuff it back into the
      // document.
      _displayedDocument.setText(_editorPane.getText());
      }
-    
+
      _displayedDocument = document;
-    
+
      if (document != null) {
      // Pull the text out of the new document and stuff it
      // into the editor.

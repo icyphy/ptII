@@ -397,7 +397,7 @@ public class Title extends StringParameter implements WebExportable {
     /*
     protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-    
+
         // Create a WebElement for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
         WebElement webElement = WebElement.

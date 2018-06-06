@@ -1237,10 +1237,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // we check if there's any external input.
             Iterator<?> inputPorts = container.inputPortList().iterator();
             boolean hasInput = false;
-        
+
             while (inputPorts.hasNext() && !hasInput) {
                 IOPort port = (IOPort) inputPorts.next();
-        
+
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
                         hasInput = true;
@@ -1248,7 +1248,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                 }
             }
-        
+
             if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.

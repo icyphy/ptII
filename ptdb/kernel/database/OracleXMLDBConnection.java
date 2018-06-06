@@ -2954,7 +2954,7 @@ public class OracleXMLDBConnection implements DBConnection {
          }
          return false;
         }
-        
+
          *//**
             * Return the hash code of the modelName as two models are equal if
             * their model names are equal. So their has codes are also derived from

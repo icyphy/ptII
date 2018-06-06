@@ -53,12 +53,12 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  *  This class implements a HLA Reporter which collects and writes several
  *  statistics to analyze the correct usage of HLA services.
- * 
+ *
  *  Note:
  *  - this class is a simple reformatting of the functions used to write
  *    the HLA analysis reports from the {@link HlaManager};
  *  - the usage of StringBuffer[] must be removed.
- *  
+ *
  *  @author Gilles Lasnier, Tarciana Cabral de Brito Guerra
  *  @version $Id: HlaReporter.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 10.0
@@ -145,7 +145,7 @@ public class HlaReporter {
 
     /** Initialize variables specific to HLA attribute value publication.
      *  @param hlaAttributesToPublish the HashMap of HlaPublisher names and instances.
-     *  @throws IllegalActionException If failed to retrieve the HLA actor attribute value name.
+     *  @exception IllegalActionException If failed to retrieve the HLA actor attribute value name.
      */
     public void initializeAttributesToPublishVariables(
             HashMap<String, Object[]> hlaAttributesToPublish)
@@ -163,7 +163,7 @@ public class HlaReporter {
         Object attributesToPublish[] = hlaAttributesToPublish.keySet()
                 .toArray();
         for (int i = 0; i < _numberOfAttributesToPublish; i++) {
-            // hlaAttributesToPublish is a HashMap where the key is the HlaPublisher fullName, 
+            // hlaAttributesToPublish is a HashMap where the key is the HlaPublisher fullName,
             // so toString() prints the HlaPublisher fullName.
 
             // Get array object which contains all information for a registered HlaPublisher.
@@ -183,7 +183,7 @@ public class HlaReporter {
 
     /** Initialize variables specific to HLA attribute value subscription.
      *  @param hlaAttributesSubscribedTo the HashMap of HlaSubcribers names and instances.
-     *  @throws IllegalActionException If failed to retrieve HLA actor attribute value name.
+     *  @exception IllegalActionException If failed to retrieve HLA actor attribute value name.
      */
     public void initializeAttributesSubscribedToVariables(
             HashMap<String, Object[]> hlaAttributesSubscribedTo)
@@ -281,7 +281,7 @@ public class HlaReporter {
      *  @param te HLA timed event associated to the RAV in Ptolemy's DE domain.
      *  @param hlaAttributesToSubscribeTo List of HlaSubscribers.
      *  @param value The HLA update attribute value received.
-     *  @throws IllegalActionException If the HlaSubscriber attribute name is not retrieved.
+     *  @exception IllegalActionException If the HlaSubscriber attribute name is not retrieved.
      *  NOTE: this method is responsible of the setup of all variable for the RAVs reporting part.
      */
     public void updateRAVsInformation(HlaSubscriber hs, HlaTimedEvent te,
@@ -330,7 +330,7 @@ public class HlaReporter {
      *  @param ptTime PTII time as Ptolemy's time.
      *  @param microstep The current DE director's microstep.
      *  @param uavTimeStamp The timestamp of the UAV.
-     *  @throws IllegalActionException If the HlaPublisher attribute name is not retrieved.
+     *  @exception IllegalActionException If the HlaPublisher attribute name is not retrieved.
      */
     public void updateUAVsInformation(HlaPublisher hp, Token in, Time hlaTime,
             Time ptTime, int microstep, CertiLogicalTime uavTimeStamp)
@@ -546,7 +546,7 @@ public class HlaReporter {
     }
 
     /** Write the number of HLA calls of each federate, along with information about the
-     *  time step and the runtime, in a file. The name and location of this file are 
+     *  time step and the runtime, in a file. The name and location of this file are
      *  specified in the initialization of the variable file.
      */
     public void writeNumberOfHLACalls() {
@@ -829,7 +829,7 @@ public class HlaReporter {
      */
     private int _numberOfNERs;
 
-    /** Represents the number of time advance requests(TAR) this federate 
+    /** Represents the number of time advance requests(TAR) this federate
      *  has made.
      *
      *  Time-stepped federates advance with a fixed step in time. In order

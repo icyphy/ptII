@@ -278,7 +278,7 @@ public class CombinedCollection<E> implements Collection<E> {
 
     /**
      The iterator for iterating elements in this collection.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

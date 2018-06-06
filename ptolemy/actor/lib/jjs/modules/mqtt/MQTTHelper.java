@@ -193,7 +193,7 @@ public class MQTTHelper extends HelperBase {
                     _currentObj.callMember("emit", "close");
                 }
             });
-            
+
             _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
 
                 @Override

@@ -419,7 +419,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     /** For all inputs in the input queue of the container of this
      *  actor, put the input token into the inside of the corresponding
      *  output port and then transfer outputs from that port.
-    
+
      *  @exception IllegalActionException If transfer fails.
      */
     @Override

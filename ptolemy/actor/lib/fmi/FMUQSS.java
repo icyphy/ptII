@@ -1825,7 +1825,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *
      * @param eventIndicator The event indicator.
      * @param number The number of event indicators.
-    
+
      * @exception IllegalActionException If the fmiGetEventIndicators
      * function is missing, or if calling it does not return fmiOK.
      */
@@ -2299,7 +2299,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * <p>FMU can produce outputs that don't correspond to states.</p>
      *
      * @param currentTime The current simulation time.
-    
+
      */
     private final void _produceOutputs(final Time currentTime)
             throws IllegalActionException {

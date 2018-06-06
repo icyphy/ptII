@@ -363,7 +363,7 @@ public class JCanvasPanner extends JPanel {
      }
      scale = Math.pow(1.3, scale);
      JCanvas canvas = (JCanvas)_target.getView();
-    
+
      AffineTransform current =
      canvas.getCanvasPane().getTransformContext().getTransform();
      current.setTransform(transformOrigin);
@@ -372,7 +372,7 @@ public class JCanvasPanner extends JPanel {
      current.translate(-scaled.getX(), -scaled.getY());
      canvas.getCanvasPane().setTransform(current);
      }
-    
+
      public void mousePressed(MouseEvent evt) {
      if (_target != null &&
      (evt.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
@@ -385,23 +385,23 @@ public class JCanvasPanner extends JPanel {
      // avoid a lot of repeated scaling of the same transform.
      transformOrigin =
      (AffineTransform)context.getTransform().clone();
-    
+
      // Take the event and first transform it from the panner
      // coordinates into the view coordinates.
      Dimension viewSize =_target.getView().getSize();
      Rectangle viewRect =
      new Rectangle(0, 0, viewSize.width, viewSize.height);
      Rectangle myRect = _getInsetBounds();
-    
+
      AffineTransform forward =
      CanvasUtilities.computeFitTransform(viewRect, myRect);
-    
+
      double xScaled =
      (origin.getX() - myRect.getX()) / forward.getScaleX();
      double yScaled =
      (origin.getY() - myRect.getY()) / forward.getScaleY();
      scaled = new Point2D.Double(xScaled, yScaled);
-    
+
      // Now transform from the view coordinates into the
      // pane coordinates.
      try {

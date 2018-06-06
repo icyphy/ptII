@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
  * is a record with width, height, and grid fields. The width and height
  * are positive integers, and the grid is an array of integer values for
  * each position in the map.
- * 
+ *
  * This actor decorates any entity in the model that implements the
  * MapConstrained interface.
  *

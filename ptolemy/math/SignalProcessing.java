@@ -1515,7 +1515,7 @@ public class SignalProcessing {
      *  h(t) = (1/(sqrt(2 * PI) * stdDev) *
      *         exp(-(t - mean)<sup>2</sup> / (2 * stdDev<sup>2</sup>))
      *  </pre>
-    
+
      */
     public static class GaussianSampleGenerator
             implements DoubleUnaryOperation {

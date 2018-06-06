@@ -408,7 +408,7 @@ public class StringUtilities {
      *  attempts to determine them and then set them.  See the javadoc
      *  page for java.util.System.getProperties() for a list of system
      *  properties.
-    
+
      *  <p>The following properties are handled specially
      *  <dl>
      *  <dt> "ptolemy.ptII.dir"

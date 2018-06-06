@@ -307,7 +307,7 @@
 	<pre>
 	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
 	  alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-	  gif | grep -v .svn | grep -v jhlabs | grep -v jimblackler | grep -v openmodelica/lib/omc/corba \
+	  gif | grep -v .svn | grep -v jhlabs | grep -v jimblackler | grep -v openmodelica/lib/omc/corba | \
 	  grep -v metroIIcomm.java | grep -v swig | grep -v shallow/test/*2java | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 	  grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
 	</pre>

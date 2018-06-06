@@ -203,7 +203,7 @@ public class TclTests {
 
     /**
      * Run a tclFile.
-    
+
      * <p>Timeout after 480000 ms.  The
      * ptolemy/cg/kernel/generic/program/procedural/java/test/AutoAdapter.tcl
      * test requires more than 240 seconds.</p>

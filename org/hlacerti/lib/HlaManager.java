@@ -727,8 +727,8 @@ public class HlaManager extends AbstractInitializableAttribute
         _doInitialSynchronization();
     }
 
-    /** Return always true. 
-     * 
+    /** Return always true.
+     *
      *  This function is no more used in this implementation of TimeRegulator
      *  interface. It must return true otherwise the proposeTime() will
      *  enter in an infinite loop.
@@ -996,7 +996,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // Let us recall the lookahead rule: a federate promises that no events will be sent
         // before hlaCurrentTime + lookahead.
         // To avoid CERTI exception when calling UAV service
-        // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.  
+        // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
 
         // Table 2: UAV timestamp sent by a HlaPublisher
         CertiLogicalTime uavTimeStamp = null;
@@ -1005,7 +1005,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_eventBased) {
             // In the NER case, we have the equality currentTime = hlaCurrentTime.
             // So, we chose tau <- currentTime + lookahead and we respect the condition
-            // above.            
+            // above.
             uavTimeStamp = new CertiLogicalTime(
                     currentTime.getDoubleValue() + _hlaLookAHead);
         } else {
@@ -1309,7 +1309,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  from [citeFestscrhiftLeeRapportInterneDisc-2017].
      *  @param proposedTime time stamp of the next Ptolemy event.
      *  @return the granted time from the HLA simulation.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     private Time _eventsBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException, InvalidFederationTime,
@@ -1441,7 +1441,7 @@ public class HlaManager extends AbstractInitializableAttribute
     /** The method {@link #_getHlaSubscribers()} get all HLA subscriber
      *  actors across the model.
      *  @param ce the composite entity which may contain HlaSubscribers
-     *  @return the list of HlaSubscribers 
+     *  @return the list of HlaSubscribers
      */
     private List<HlaSubscriber> _getHlaSubscribers(CompositeEntity ce) {
         // The list of HLA subscribers to return.
@@ -1640,7 +1640,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _hlaAttributesToPublish.clear();
         List<HlaPublisher> _hlaPublishers = ce.entityList(HlaPublisher.class);
         for (HlaPublisher hp : _hlaPublishers) {
-            // Note: The HLA attribute name is no more associated to the 
+            // Note: The HLA attribute name is no more associated to the
             // HlaPublisher actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
             // more required.
@@ -1713,7 +1713,7 @@ public class HlaManager extends AbstractInitializableAttribute
         List<HlaSubscriber> _hlaSubscribers = _getHlaSubscribers(ce);
 
         for (HlaSubscriber hs : _hlaSubscribers) {
-            // Note: The HLA attribute name is no more associated to the 
+            // Note: The HLA attribute name is no more associated to the
             // HlaSubscriber actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
             // more required.
@@ -1960,7 +1960,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /**
      * Map <Sender actor + HlaPublishers> and ROI ID for an object instance. See HlaPublishers.
-     * 
+     *
      * HashMap for HlaPublishers to remember which actor's ID has
      * been registered (as an object instance) to the Federation.
      */
@@ -1984,7 +1984,7 @@ public class HlaManager extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                    private  methods                       ////
 
-    /** This method does the initial synchronization loop among the 
+    /** This method does the initial synchronization loop among the
      *  federate and register the synchronization point if the federate
      *  is the synchronization point creator.
      *  @exception IllegalActionException If the RTI throws it.
@@ -2437,9 +2437,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
                     /*
                     System.out.println("INNER callback: reflectAttributeValues():"
-                            + " theObject=" + theObject 
-                            + " theAttributes" + theAttributes 
-                            + " userSuppliedTag=" + userSuppliedTag 
+                            + " theObject=" + theObject
+                            + " theAttributes" + theAttributes
+                            + " userSuppliedTag=" + userSuppliedTag
                             + " theTime=" + theTime
                             + " classHandle=" + classHandle
                             + " classInstanceOrJokerName=" + classInstanceOrJokerName
@@ -2498,18 +2498,18 @@ public class HlaManager extends AbstractInitializableAttribute
                         //System.out.println(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds");
                         //e.printStackTrace();
-                        
+
                         throw new FederateInternalError(
-                                "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds: " 
+                                "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds: "
                                 + e.getMessage());
                     } catch (IllegalActionException e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
                         //System.out.println(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException");
                         //e.printStackTrace();
-                        
+
                         throw new FederateInternalError(
-                                "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException: " 
+                                "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException: "
                                 + e.getMessage());
                     }
                 }
@@ -2580,7 +2580,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     throw new FederateInternalError(
                             "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
                             + "found an instance class already registered: " + someName);
-                           
+
                 } else {
                     _discoverObjectInstanceMap.put(objectInstanceId, someName);
                     matchingName = someName;
@@ -2770,12 +2770,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
         /** Configure the deployed HLA publishers.
          *  @param rtia
-         *  @throws ObjectClassNotDefined
-         *  @throws FederateNotExecutionMember
-         *  @throws RTIinternalError
-         *  @throws SaveInProgress
-         *  @throws RestoreInProgress
-         *  @throws ConcurrentAccessAttempted
+         *  @exception ObjectClassNotDefined
+         *  @exception FederateNotExecutionMember
+         *  @exception RTIinternalError
+         *  @exception SaveInProgress
+         *  @exception RestoreInProgress
+         *  @exception ConcurrentAccessAttempted
          *  All those exceptions above are from the HLA/CERTI implementation.
          *  @exception IllegalActionException
          *  All those exceptions above are from Ptolemy.
@@ -3029,12 +3029,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
         /** Configure the deployed HLA subscribers.
          *  @param rtia
-         *  @throws ObjectClassNotDefined
-         *  @throws FederateNotExecutionMember
-         *  @throws RTIinternalError
-         *  @throws SaveInProgress
-         *  @throws RestoreInProgress
-         *  @throws ConcurrentAccessAttempted
+         *  @exception ObjectClassNotDefined
+         *  @exception FederateNotExecutionMember
+         *  @exception RTIinternalError
+         *  @exception SaveInProgress
+         *  @exception RestoreInProgress
+         *  @exception ConcurrentAccessAttempted
          *  All those exceptions above are from the HLA/CERTI implementation.
          *  @exception IllegalActionException
          *  All those exceptions above are from Ptolemy.         */

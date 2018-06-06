@@ -89,7 +89,7 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  */
 public class ExportModel {
     /** Export an image of a model to a file or directory.
-    
+
      *  <p>The image is written to a file or directory with the same name
      *  as the model.  If formatName starts with "HTM" or "htm", then
      *  a directory with the same name as the basename of the model is

@@ -47,7 +47,7 @@ import java.util.HashMap;
 public class Injector {
 
     ///////////////////////////////////////////////////////////////////
-    ////                   public methods                          ////
+    ////                         public methods                    ////
 
     /**
      * Get implementation for the provided interface based on the
@@ -125,7 +125,7 @@ public class Injector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                       ////
+    ////                         private variables                 ////
     /**
      * The resolved interface to the implementation class mappings.
      */

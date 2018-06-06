@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * <p>This class implements the functionalities to encode/decode
  * HLA values received from HLA/CERTI.</p>
- * 
+ *
  *  @author David Come, Contributors: Gilles Lasnier
  *  @version $Id: MessageProcessing.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0

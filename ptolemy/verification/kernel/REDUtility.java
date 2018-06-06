@@ -171,7 +171,7 @@ public class REDUtility {
      * @param bufferSizeDelayActor The buffer size of the TimedDelay actor.
      * @return A Communicating Timed Automata system description of the original
      *         system
-    
+
      * @exception CloneNotSupportedException If thrown while
      * generating an equivalent system without hierarchy.
      * @exception IllegalActionException If there is a problem generating the RED description.

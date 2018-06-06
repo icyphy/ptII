@@ -834,10 +834,10 @@ public class ComponentPort extends Port {
          * EAL 4/21/09.
         if (relation != null) {
             Entity container = (Entity) getContainer();
-        
+
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-        
+
             if ((container != relationContainer)
                     && (container.getContainer() != relationContainer)) {
                 throw new IllegalActionException(this, relation,

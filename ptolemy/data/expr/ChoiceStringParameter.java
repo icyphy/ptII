@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ChoiceStringParameter
 
 /**
@@ -73,13 +73,13 @@ public class ChoiceStringParameter extends StringParameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** A comma-separated list of choices. */
     public StringParameter choices;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This overrides
      *  the base class to check whether the attribute is choices, and if

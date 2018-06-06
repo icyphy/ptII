@@ -126,7 +126,7 @@ public class Exec extends LimitedFiringSource {
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
         command.setExpression("echo \"Hello world.\"");
-        
+
         new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
 
         directory = new FileParameter(this, "directory");
