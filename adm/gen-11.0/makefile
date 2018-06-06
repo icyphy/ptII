@@ -3787,6 +3787,8 @@ $(WINJRE32_TAR): $(INSTALLER_SRCS)
 	fi
 
 jre32: $(WINJRE32_TAR)
+	ls -l $<
+	file $<
 	tar -zxf $<
 
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
@@ -3797,6 +3799,8 @@ $(WINJRE64_TAR): $(INSTALLER_SRCS)
 	fi
 
 jre64: $(WINJRE64_TAR)
+	ls -l $<
+	file $<
 	tar -zxf $<
 
 # This is the main target for creating installers.
