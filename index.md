@@ -45,6 +45,7 @@ $PTII/bin/ant
   * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
   * [JUnit test output](https://icyphy.github.io/ptII-test/reports/junit/html/index.html)
   * [Complete test reports](https://icyphy.github.io/ptII-test/reports/index.html)
+  * [Historical JUnit test summaries](https://github.com/icyphy/ptII-test/issues/1)  
 
 ## See also
 
