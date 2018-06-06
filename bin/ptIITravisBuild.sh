@@ -606,6 +606,7 @@ if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results
     export JUNIT_RESULTS_NOT_DRY_RUN=false
+    export JUNIT_URL_INDEX=https://icyphy.github.io/ptII-test/reports/junit/html/index.html
     export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII-test
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 
