@@ -1858,7 +1858,7 @@ PtolemyII_DigitalV1_02.pdf: $(INSTALLER_SRCS)/PtolemyII_DigitalV1_02.pdf
 
 # Download a copy of the book to INSTALLER_SRCS
 BOOK_PDF=PtolemyII_DigitalV1_02.pdf
-BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+BOOK_URL= https://ptolemy.berkeley.edu/books/Systems/$(BOOK_PDF)
 BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
 $(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
@@ -3781,9 +3781,9 @@ jre:
 
 WINJRE32_TAR=$(INSTALLER_SRCS)/WinJre32.tar.gz
 $(WINJRE32_TAR): $(INSTALLER_SRCS)
-	if [ ! -f $@ ]; then \
+	if [ ! -s $@ ]; then \
 		echo "Downloading WinJre32 $@: `date`"; \
-		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
+		wget -O $@ https://ptolemy.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
 	fi
 
 jre32: $(WINJRE32_TAR)
@@ -3793,9 +3793,9 @@ jre32: $(WINJRE32_TAR)
 
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
 $(WINJRE64_TAR): $(INSTALLER_SRCS)
-	if [ ! -f $@ ]; then \
+	if [ ! -s $@ ]; then \
 		echo "Downloading WinJre64 $@: `date`"; \
-		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
+		wget --quiet -O $@ https://ptolemy.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
 	fi
 
 jre64: $(WINJRE64_TAR)
@@ -4153,7 +4153,7 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	fi
 	mkdir dmg
 	mv $(PTSETUP_MAC).app dmg
-	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	echo "See https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
                 hdiutil create -volname $(PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
@@ -4172,7 +4172,7 @@ $(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
 	fi
 	mkdir dmg
 	mv $(CAPECODE_SETUP_MAC).app dmg
-	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	echo "See https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
                 hdiutil create -volname $(CAPECODE_SETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
@@ -4501,7 +4501,7 @@ $(PTBUILDRELEASE):
 	@echo "#"
 	@echo "$@ `date`"
 	if [ ! -d tmp/build ]; then mkdir -p tmp/build; fi
-	#(cd tmp/build; wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
+	#(cd tmp/build; wget https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
 	(cd tmp/build; tar -xf ../../ptII$(VERSION).src.tar);
 
 
