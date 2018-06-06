@@ -572,10 +572,10 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
     }
 
     /** Coordinate system conventions:
-    
+
     Here's a tag, as you might view the png's...
-    
-    
+
+
         ^
         |  Y axis
         |
@@ -585,13 +585,13 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
         |     |
         |     |
          -----   ---> X axis
-    
+
        Bottom left corner is (-1,-1) in tag coordinates
-    
+
        Bits will be read off in row-major order from top left to lower
        right, with the top left bit being the MSB and the bottom right bit
        being the LSB.
-    
+
        Note that these conventions are usually "natural", but can be a bit
        confusing with regard to *image* coordinates (of the individual
        tags or camera images), where the top left corner is (0,0).
@@ -929,12 +929,12 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
         /*
         if (debug && debugSegments != null) {
-        
+
             for (Segment seg : segments) {
                 double cx = (seg.x0 + seg.x1)/2, cy = (seg.y0 + seg.y1)/2;
-        
+
                 double notch = Math.max(2, 0.1*seg.length);
-        
+
                 debugSegments.addBack(new VisChain(LinAlg.translate(0, height, 0),
                                                    LinAlg.scale(1, -1, 1),
                                                    new VzLines(new VisVertexData(new double[] { seg.x0, seg.y0},
@@ -949,7 +949,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
                                                    new VzPoints(new VisVertexData(new double[] { seg.x0, seg.y0 }),
                                                                 new VzPoints.Style(Color.red, 4))
                                           ));
-        
+
             }
         }
          */
@@ -1053,7 +1053,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
             VisVertexData vdblack = null;
             VisVertexData vdwhite = null;
             VisVertexData vdsamp = null;
-            
+
             if (debug && debugSamples != null) {
                 vdblack = new VisVertexData();
                 vdwhite = new VisVertexData();
@@ -1445,7 +1445,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
     /** Fits a grayscale model over an area of the form:
     Ax + By + Cxy + D = value
-    
+
     We use this model to compute spatially-varying thresholds for
     reading bits.
      **/

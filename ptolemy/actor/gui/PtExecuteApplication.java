@@ -184,7 +184,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  If there is an _applicationInitializer parameter, then
      *  construct it.  The _applicationInitializer parameter contains
      *  a string that names a class to be initialized.
-    
+
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */

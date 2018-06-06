@@ -258,7 +258,7 @@ public class SetTableau extends Event {
 
     /**
      The iconified, maximized or normal state of the tableau.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

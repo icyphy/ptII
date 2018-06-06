@@ -593,14 +593,14 @@ public abstract class BaseType implements Type {
      private NumericalType() {
      super(Numerical.class, "numerical");
      }
-    
+
      public Token convert(Token t) throws IllegalActionException {
      throw new IllegalActionException(
      "Cannot convert token "
      + t
      + " to type numerical, because numerical is not a concrete type.");
      }
-    
+
      public int getTypeHash() {
      return 7;
      }

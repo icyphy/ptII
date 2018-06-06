@@ -130,7 +130,7 @@ public class ClipPlayerHelper extends HelperBase {
           public void run() {
           System.out.println("ClipPlayer is ready");
           }
-        
+
           });
         */
     }

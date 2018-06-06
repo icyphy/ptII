@@ -219,11 +219,11 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
         functionCode += " $actorSymbol(function) (";
         List argumentNames = node.getArgumentNameList();
         Type[] argumentTypes = node.getArgumentTypes();
-        
+
         if (argumentNames.size() > 0) {
             functionCode += argumentTypes[0] + " ";
             functionCode += argumentNames.get(0);
-        
+
             for (int i = 1; i < argumentNames.size(); i++) {
                 functionCode += ", " + argumentTypes[i] + " ";
                 functionCode += argumentNames.get(i);
@@ -274,7 +274,7 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
 
         /*
          ptolemy.data.Token test = _evaluatedChildToken;
-        
+
          if (!(test instanceof BooleanToken)) {
          throw new IllegalActionException(
          "Functional-if must branch on a boolean, but instead test "
@@ -282,16 +282,16 @@ public class CParseTreeCodeGenerator extends ProceduralParseTreeCodeGenerator {
          + test.toString() + "an instance of "
          + test.getClass().getName()));
          }
-        
+
          boolean value = ((BooleanToken) test).booleanValue();
-        
+
          // Choose the correct sub-expression to evaluate,
          // and type check the other.
          if (_typeInference == null) {
          _typeInference = new ParseTreeTypeInference();
          }
-        
-        
+
+
          if (value) {
          */
         //_fireCode.append(" ? ");

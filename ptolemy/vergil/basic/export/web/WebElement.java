@@ -185,7 +185,7 @@ public class WebElement extends StringAttribute {
     public static final String HEAD = "head";
 
     /** Special constants for backwards compatibility to Export to Web.
-    
+
      * Parameter specifying the position into which to export HTML text.
      * The parameter offers the following possibilities:
      *  <ul>

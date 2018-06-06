@@ -1747,7 +1747,7 @@ public class GraphTransformer extends ChangeRequest {
     /**
      The change request to create objects in the host model and record those
      objects in the tables.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -1827,7 +1827,7 @@ public class GraphTransformer extends ChangeRequest {
     /**
      A temporary attribute to record the corresponding object in the replacement
      for any object in the pattern.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

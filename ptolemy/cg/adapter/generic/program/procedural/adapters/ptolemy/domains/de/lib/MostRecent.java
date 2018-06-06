@@ -67,7 +67,7 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
                 .getWidth());
         ArrayList<String> templateArgs = new ArrayList<String>();
         String initialValueBlock;
-        
+
         //Generate preinit block; this block differs depending
         // on whether or not an initial value has been set.
         if (actor.initialValue.getToken() != null) {
@@ -80,14 +80,14 @@ public class MostRecent extends NamedProgramCodeGeneratorAdapter {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock(initialValueBlock, templateArgs);
         }
-        
+
         //Generate trigger block; if a trigger is received, output
         // the stored value for every channel
         for (int channel = 0; channel < commonWidth; channel++) {
             templateArgs.set(0, Integer.valueOf(channel).toString());
             codeStream.appendCodeBlock("triggerBlock", templateArgs);
         }
-        
+
         //Generate update (input) block; if a new value is received,
         // store the value and trigger the old value (if not already
         // for this firing)

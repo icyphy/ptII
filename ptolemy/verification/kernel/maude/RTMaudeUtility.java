@@ -77,7 +77,7 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-    
+
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException
@@ -108,7 +108,7 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-    
+
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException

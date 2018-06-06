@@ -98,7 +98,7 @@ public class HTMLAbout {
      *  <p>If the configuration contains an _applicationDemos Parameter
      *  then that parameter is assumed to be an array of strings name
      *  naming HTML files that should be searched for demos and expanded.
-    
+
      *  @param configuration The configuration to look for the
      *  _applicationName attribute in
      *  @return A string containing HTML that describes the about: features.

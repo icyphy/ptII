@@ -317,7 +317,7 @@ public class FixPoint implements Cloneable {
          int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
          .getNumberOfBits());
          int bits = (new_bits > max_bits ? new_bits : max_bits);
-        
+
          Precision newPrecision = new Precision(sign, bits, minExponent);
          */
         Precision newPrecision = addPrecision(_precision, arg._precision);
@@ -570,10 +570,10 @@ public class FixPoint implements Cloneable {
          Precision worstCasePrecision = new Precision(new_sign, new_sign
          + newValue.bitLength(), new_exponent);
          FixPoint newVal = new FixPoint(newValue, worstCasePrecision);
-        
+
          // 2. Requantize the value with the minimum quantization necessary
          newVal = newVal.minimumQuantization();
-        
+
          // 3. Determine "Growth" precision for result. This will be the
          //    "maximium" of the precision of the arguments and the result.
          Precision newPrecision =
@@ -671,12 +671,12 @@ public class FixPoint implements Cloneable {
          // were unsigned, make the result signed.
          if (sign == 0 && newValue.signum() == -1)
          sign = 1;
-        
+
          int new_bits = newValue.bitLength() + sign;
          int max_bits = Math.max(_precision.getNumberOfBits(), arg._precision
          .getNumberOfBits());
          int bits = (new_bits > max_bits ? new_bits : max_bits);
-        
+
          Precision newPrecision = new Precision(sign, bits, minExponent);
          */
         Precision newPrecision = subtractPrecision(_precision, arg._precision);

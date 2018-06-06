@@ -250,7 +250,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      *  is called with argument 0, then no delay is introduced.
      *  @param time Time to sleep, in milliseconds.
      *  @see #getAnimationDelay()
-    
+
      */
     public void setAnimationDelay(long time) {
         _animationDelay = time;

@@ -169,7 +169,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         reset();
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
-        
+
         toplevelAdapter.reinitialize();
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {

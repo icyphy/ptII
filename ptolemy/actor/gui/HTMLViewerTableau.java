@@ -270,7 +270,7 @@ public class HTMLViewerTableau extends Tableau {
      *  file:/C:/ptII/doc/codeDoc/ptolemy/util/package-summary.html#package_description]
      *  will return:
      *  jar:file:/C:/cxh/ptII/doc/codeDoc.jar!/doc/codeDoc/ptolemy/kernel/package-summary.html#package_description
-    
+
      *
      *  @param urlName The absolute URL to be converted.
      *  @return The jar url that refers to a file if the file can be found

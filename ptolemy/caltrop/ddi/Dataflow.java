@@ -143,7 +143,7 @@ public class Dataflow extends AbstractDDI {
      *
      * @exception IllegalActionException If an error occurs during the
      * interpretation of the action.
-    
+
      */
     @Override
     public void fire() throws IllegalActionException {

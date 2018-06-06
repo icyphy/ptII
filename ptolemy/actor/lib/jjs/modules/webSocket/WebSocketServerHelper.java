@@ -263,7 +263,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     }
                 });
             });
-            
+
             router.exceptionHandler(throwable -> {
                 // What to do here?
                 _actor.log("*** Router error in WebSocket server: " + throwable);

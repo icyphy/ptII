@@ -134,7 +134,7 @@ public class NodeDragInteractor extends DragInteractor {
      *
      * FIXME: currently inefficient.
      * Rewrite this to use the X and Y coordinates.
-    
+
      private void routeAttachedEdges(Object node, double x, double y) {
      // We have to check for null figures, since if an edge is
      // connected at only one end in one view, other views will

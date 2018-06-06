@@ -442,13 +442,13 @@ public class PlotFormatter extends JPanel {
         // the one of the individual points (both will be and'ed).
         /*
         boolean[][] result = new boolean[points.size()][];
-        
+
         for (int dataset = 0; dataset < points.size(); dataset++) {
             ArrayList<PlotPoint> pts = points.get(dataset);
             result[dataset] = new boolean[pts.size()];
-        
+
             boolean first = true;
-        
+
             for (int i = 0; i < pts.size(); i++) {
                 PlotPoint pt = pts.get(i);
                 pt.connected = value && !first;

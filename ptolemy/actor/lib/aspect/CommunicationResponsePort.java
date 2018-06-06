@@ -68,7 +68,7 @@ public class CommunicationResponsePort extends TypedAtomicActor {
         _tokens = new LinkedList<Token>();
     }
 
-   
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -81,7 +81,7 @@ public class CommunicationResponsePort extends TypedAtomicActor {
         newObject._tokens = new LinkedList<Token>();
         return newObject;
     }
-    
+
     /** The input port. */
     public TypedIOPort input;
 

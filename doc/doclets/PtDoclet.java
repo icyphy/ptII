@@ -478,7 +478,7 @@ public class PtDoclet {
 
     /** Index of keywords in the documentation. */
     private static PtIndexer _ptIndexer;
-    
+
     /** Set to true for verbose messages. */
     private static boolean _verbose = false;
 }

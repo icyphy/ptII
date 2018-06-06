@@ -246,7 +246,7 @@ public class IterativeParameter extends Parameter
     /**
      The exception to denote that the constraint is violated and no more values
      are available.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -269,7 +269,7 @@ public class IterativeParameter extends Parameter
 
     /**
      The modes of this parameter.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

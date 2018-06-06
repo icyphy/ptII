@@ -368,32 +368,32 @@ public class PtolemyFormEditor extends JPanel {
 
         /* FIXME
          *
-        
+
         NewComponentDialog dlg = NewComponentDialog.editDialog(
                 (JFrame) _layoutFrame, componentDef);
         if (!dlg.succeeded())
             return false;
-        
+
         componentDef.name = uniqueName(dlg.getComponentName(), component);
         String newname = componentDef.name;
-        
+
         Component newcomponent = dlg.getInstance();
         containerLayout.removeLayoutComponent(component);
         containerLayout.addComponent(newname, componentDef, cellConstraints);
-        
+
         container.remove(component);
         container.add(newcomponent, newname);
-        
+
         newComponents.remove(component);
         newComponents.add(newcomponent);
-        
+
         if (componentDef.isContainer) {
             // @todo losing components INSIDE the container!!
             //layoutFrame.replaceContainer(name, newName, (Container) newcomponent);
             layoutFrame.removeContainer(name);
             layoutFrame.addContainer(newname, (Container) newcomponent);
         }
-        
+
         updateLayout(newcomponent);
         _updateList();
          */

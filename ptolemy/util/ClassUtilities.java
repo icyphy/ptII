@@ -102,7 +102,7 @@ public class ClassUtilities {
     }
 
     /** Lookup a jar URL and return the resource.
-    
+
      *  A resource is a file such as a class file or image file that
      *  is found in the classpath.  A jar URL is a URL that refers to
      *  a resource in a jar file.  For example,

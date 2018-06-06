@@ -553,7 +553,7 @@ public class PetriNetDirector extends Director {
 
     /**
      * Fire an enabled Transition.
-    
+
      * <p>The transition argument to this method must be an enabled
      * Transition. If the given Transition is Opaque, then it fires
      * the Transition first, otherwise no action is taken for the
@@ -683,7 +683,7 @@ public class PetriNetDirector extends Director {
 
     /**
      * Test whether a given Transition is enabled or not.
-    
+
      * <p>A Transition is enabled if for each of the input Places, the
      * marking of the Place is bigger than the sum of weights of edges
      * connecting the Place to the Transition. The Transition itself

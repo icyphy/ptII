@@ -189,7 +189,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
          c.getTailEnd().setOrigin(tailPt.getX(), tailPt.getY());
          c.getTailEnd().getConnection(tailPt);
          }
-        
+
          */
     }
 

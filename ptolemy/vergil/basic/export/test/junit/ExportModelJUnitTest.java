@@ -280,7 +280,7 @@ public class ExportModelJUnitTest {
                 "Gravitation.xml", "GravitationWithCollisionDetection.xml",
                 // PtinyOS is probably not installed and if it is not installed,
                 // the loading the demos will report missing classes.
-                "ptolemy/actor/ptalon/demo/ptinyos", 
+                "ptolemy/actor/ptalon/demo/ptinyos",
                 "ptolemy/domains/ptinyos/demo",
         };
         for (String element : skip) {

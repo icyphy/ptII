@@ -132,7 +132,7 @@ public class RecordToken extends AbstractNotConvertibleToken {
                     + " created from the expression '" + init
                     + "' because '{}' could be either an empty record"
                     + " or an empty array.  To create an empty record, "
-                    + "use 'emptyRecord()'.");                                                 
+                    + "use 'emptyRecord()'.");
 
             }
             throw new IllegalActionException("A record token cannot be"

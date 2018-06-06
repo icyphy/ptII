@@ -79,7 +79,7 @@ public class ParserAttribute extends SingletonAttribute {
 
     /** Clone the attribute into the specified workspace.  The
      *  resulting object a null value for the value of the parser.
-    
+
      *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains

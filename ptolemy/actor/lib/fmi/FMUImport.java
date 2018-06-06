@@ -2785,7 +2785,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 _fmiFreeModelInstanceFunction
                         .invoke(new Object[] { _fmiComponent });
             } else {
-                // Check for null because 
+                // Check for null because
                 // make MODEL=AMS_AMSSim MODELPATH=/home/cxh/src/ptII11.0.devel/ptolemy/demo/AirManagementSystem/AMS_AMSSim.xml TARGETPATH=ptolemy/demo/AirManagementSystem jnlpUpdateDemo
                 // was failing.
                 if (_fmiFreeSlaveInstanceFunction != null) {

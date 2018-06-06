@@ -160,7 +160,7 @@ public class CSPSieve extends CSPActor {
      throw new InvalidStateException("Cannot create " +
      "new sieve.");
      }
-    
+
      queueEntityAddedEvent(container, newSieve);
      queueRelationAddedEvent(container, newRel);
      queuePortLinkedEvent(newRel, output);

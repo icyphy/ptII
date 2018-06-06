@@ -904,13 +904,13 @@ public class PtolemyQuery extends Query
                          // Here, we need to handle instances of Variable
                          // specially.  This is too bad...
                          if (attribute instanceof Variable) {
-                        
+
                          // Will this ever happen?  A
                          // Variable that is not a NamedObj???
                          // Retrieve the token to force
                          // evaluation, so as to check the
                          // validity of the new value.
-                        
+
                          ((Variable)attribute).getToken();
                          }
                          */

@@ -218,7 +218,7 @@ public class PtFileChooser extends Container {
      *  DIRECTORIES_ONLY, then this class must have been instantiated
      *  with a mode of FileBrowser.LOAD or JFileChooser.OPEN_DIALOG in
      *  the constructor.</p>
-    
+
      *  @param mode One of JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY or
      *  JFileChooser.FILES_AND_DIRECTORIES.
      */

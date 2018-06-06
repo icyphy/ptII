@@ -89,7 +89,7 @@ public class BasicGraphDemo {
          }
          });
          context.getContentPane().add("South", but);
-        
+
          ActionListener deletionListener = new DeletionListener();
          jg.registerKeyboardAction(deletionListener, "Delete",
          KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0),

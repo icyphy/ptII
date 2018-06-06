@@ -282,7 +282,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
             _inputTokens.put(i, new LinkedList<TimedEvent>());
             _outputTokens.put(i, new LinkedList<TimedEvent>());
         }
-        
+
         // Read the switching table from the parameters.
         for (int i = 0; i < attributeList().size(); i++) {
             Attribute attribute = (Attribute) attributeList().get(i);

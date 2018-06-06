@@ -673,11 +673,11 @@ public abstract class AbstractGraphController implements GraphController {
                 rerender();
 
                 /* Object root = e.getTarget();
-                
+
                  //FIXME - this could be optimized--
                  //        we may not need to rerender every
                  //        node.
-                
+
                  for (Iterator i = _model.nodes(root); i.hasNext(); ) {
                  rerenderNode(i.next());
                  }

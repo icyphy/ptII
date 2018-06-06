@@ -94,10 +94,10 @@ public class StringToken extends AbstractConvertibleToken {
                 // 1. Substitute a special word for every instance of \"
                 String backslashed = _value.replaceAll("\\\\\"",
                         "MaGiCBakSlash");
-        
+
                 // 2. Substitute \" for every remaining "
                 String backslashed2 = backslashed.replaceAll("\"", "\\\\\"");
-        
+
                 // 3. Add the leading and trailing " and substitute
                 //    \" for every instance of the special word
                 _toString = "\""

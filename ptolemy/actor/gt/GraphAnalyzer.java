@@ -376,7 +376,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A pair of a list and an index number.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -431,7 +431,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A list of IndexedLists.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -446,7 +446,7 @@ public abstract class GraphAnalyzer {
 
     /**
      A path between two ports.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

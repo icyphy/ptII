@@ -168,7 +168,7 @@ public class HttpServerHelper extends VertxHelperBase {
             _actor.clearTimeout(requestID);
 
             HttpServerResponse response = request.response();
-            
+
             if (response.closed()) {
                 // Response has been closed already. Nothing to do.
                 return;

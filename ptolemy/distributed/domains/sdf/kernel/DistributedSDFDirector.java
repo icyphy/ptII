@@ -256,7 +256,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  domain-specific operations.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
-    
+
      */
     @Override
     public void fire() throws IllegalActionException {

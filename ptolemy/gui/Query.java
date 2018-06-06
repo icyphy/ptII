@@ -2484,7 +2484,7 @@ public class Query extends JPanel {
          *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
          *  then {@link #actionPerformed(ActionEvent)} uses this method.  Otherwise,
          *  {@link #_actionPerformedFileDialog(ActionEvent)} is used.
-        
+
          *  <p>Under Bash, to test this method, use:</p>
          *  <pre>
          *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=false

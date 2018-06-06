@@ -110,7 +110,7 @@ public class Diff {
      *  <pre>
      *  java -classpath $PTII ptolemy.util.test.Diff File1.txt File2.txt
      *  </pre>
-    
+
      *  @param args An array of two elements, where
      *  the first element is the filename of the first
      *  file and the second element is the filename of

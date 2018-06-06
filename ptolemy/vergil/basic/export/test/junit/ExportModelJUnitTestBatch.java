@@ -98,12 +98,12 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
     }
 
     /**
-     * Return a two dimensional array of arrays of strings that name the 
+     * Return a two dimensional array of arrays of strings that name the
      * first 51 models to be exported.
      *
      * Derived classes should override this method with the
      * range of demos to be exported.
-     * 
+     *
      * @return a two dimension array of arrays of strings that name the
      * models to be exported.
      * @exception IOException If there is a problem accessing the directory.
@@ -112,7 +112,7 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
         return demos(0, 50);
     }
 
-    /** Return a two dimensional array of strings that name the models to 
+    /** Return a two dimensional array of strings that name the models to
      *  to be exported.
      *  @param start The 0-based index of the first model in
      *  $PTII/ptolemy/configs/doc/models.txt

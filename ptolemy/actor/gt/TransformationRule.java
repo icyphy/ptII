@@ -553,7 +553,7 @@ public class TransformationRule extends MultiCompositeActor
 
     /**
      A director to be associated with this actor, which does nothing.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

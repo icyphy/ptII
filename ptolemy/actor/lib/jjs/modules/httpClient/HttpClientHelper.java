@@ -618,7 +618,7 @@ public class HttpClientHelper extends VertxHelperBase {
         public void run() {
             Map<String, Object> urlSpec = (Map<String, Object>) _options
                     .get("url");
-            
+
             HttpClient client = null;
             boolean useProxy = false;
 
@@ -800,7 +800,7 @@ public class HttpClientHelper extends VertxHelperBase {
             // Allow overlapped requests. Sequence numbers take care of ensuring outputs
             // come out in order.
             // _setBusy(true);
-            
+
             // FIXME: The following doesn't allow further writes to the request.
             request.end();
         }

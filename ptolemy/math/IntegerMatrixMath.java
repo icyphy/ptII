@@ -252,7 +252,7 @@ public class IntegerMatrixMath {
 
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
-    
+
      */
     public static final int[][] bitwiseOr(final int[][] matrix, final int z) {
         int rows = _rows(matrix);

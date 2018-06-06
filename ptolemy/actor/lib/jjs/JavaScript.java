@@ -748,7 +748,7 @@ public class JavaScript extends AbstractPlaceableActor
 
         return engine;
     }
-    
+
     /** Return the current time as a number (in seconds).
      *  @return The current time.
      */
@@ -1907,7 +1907,7 @@ public class JavaScript extends AbstractPlaceableActor
             if (value != null && !parameter.isOverridden()
                     && (derivedLevel == Integer.MAX_VALUE
                        || derivedLevel == 1)) {
-                
+
                 // There is a specified value, and the parameter value
                 // has not been overridden.
 
@@ -2897,7 +2897,7 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
-    
+
     /** True if a warning has been issued about synchronizeToRealTime. */
     // private static boolean _timeWarningIssued;
 

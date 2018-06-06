@@ -1322,10 +1322,10 @@ public class PortConfigurerDialog extends PtolemyDialog
      A validating JTextField table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-    
+
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-    
+
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1
@@ -1524,10 +1524,10 @@ public class PortConfigurerDialog extends PtolemyDialog
      A validating ComboBox table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-    
+
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-    
+
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1

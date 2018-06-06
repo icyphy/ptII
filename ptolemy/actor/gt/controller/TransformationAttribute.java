@@ -427,7 +427,7 @@ public class TransformationAttribute extends Attribute
      An execution listener that sets the model parameter to contain the
      container of the transformation attribute at the beginning of the
      transformation.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

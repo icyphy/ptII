@@ -116,7 +116,7 @@ public final class LayoutUtilities {
          if (target.getLayoutNode(n) == null) {
          return false;
          }
-        
+
          for (Iterator j = n.outEdges(); j.hasNext(); ) {
          Edge e = (Edge)j.next();
          if ((target.getLayoutEdge(e) == null) ||

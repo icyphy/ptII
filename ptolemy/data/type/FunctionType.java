@@ -126,29 +126,29 @@ public class FunctionType extends StructuredType implements Cloneable {
          // The converted token has the same set of labels as the argument.
          // That is, fields not in this type are not cut off.
          Object[] labelArray = functionToken.labelSet().toArray();
-        
+
          // Arrays that will be used to create the new token.
          String[] labelStringArray = new String[labelArray.length];
          Token[] values = new Token[labelArray.length];
-        
+
          for (int i = 0; i < labelArray.length; i++) {
          String label = (String)labelArray[i];
-        
+
          // Convert each field of the function.
          Token fieldToken = functionToken.get(label);
          Type newFieldTypeTerm = get(label);
-        
+
          // If the type of the field is specified, then convert it.
          if (newFieldTypeTerm != null) {
          values[i] = newFieldTypeTerm.convert(fieldToken);
          } else {
          values[i] = fieldToken;
          }
-        
+
          // Store the label for each field.
          labelStringArray[i] = label;
          }
-        
+
          return new FunctionToken(labelStringArray, values);
          }*/
     }

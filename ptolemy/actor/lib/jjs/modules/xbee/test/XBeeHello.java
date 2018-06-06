@@ -62,7 +62,7 @@ public class XBeeHello {
      * <pre>
      * java -classpath ${PTII}:${PTII}/lib/nrjavaserial-3.11.0.devel.jar:${PTII}/lib/xbjlib-1.1.0.nrjavaserial.jar:${PTII}/lib/slf4j-api-1.7.13.jar:${PTII}/lib/slf4j-simple-1.7.13.jar ptolemy.actor.lib.jjs.modules.xbee.test.XBeeHello /dev/xxyy
      * </pre>
-    
+
      * <p>To send data on a port and get debugging:</p>
      * <ul>
      * <li> Set <code>-Dorg.slf4j.simpleLogger.defaultLogLevel=trace</code>.

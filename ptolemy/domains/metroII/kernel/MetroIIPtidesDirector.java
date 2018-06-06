@@ -1613,33 +1613,33 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     private PtidesEvent _handleTimingError(MetroIIPtidesPort port,
             PtidesEvent event, String message) throws IllegalActionException {
         /* The following code is not supported by Ptides any more.
-        
+
         for (int i = 0; i < list.size(); i++) {
             Object entity = list.get(i);
             if (entity instanceof CompositeActor
                     && ((CompositeActor) entity).getName().equals(
                             "ErrorHandler")) {
                 CompositeActor errorHandler = (CompositeActor) entity;
-        
+
                 List errorHandlerEntities = errorHandler.entityList();
                 for (int j = 0; j < errorHandlerEntities.size(); j++) {
                     Object errorHandlerEntity = errorHandlerEntities.get(j);
                     if (errorHandlerEntity instanceof Const
                             && ((Const) errorHandlerEntity).getName().equals(
                                     "missed" + port.getName())) {
-        
+
                         int index = 1;
                         errorHandler.getDirector().setModelTime(getModelTime());
                         ((MetroIIDEDirector) errorHandler.getDirector())
                                 .setIndex(index);
                         ((Const) errorHandlerEntity).fire();
-        
+
                         errorHandler.getDirector().getModelNextIterationTime();
-        
+
                         errorHandler.prefire();
                         errorHandler.fire();
                         errorHandler.postfire();
-        
+
                         List attributes = errorHandler.attributeList();
                         for (int k = 0; k < attributes.size(); k++) {
                             Attribute attribute = (Attribute) attributes.get(k);
@@ -1708,7 +1708,7 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
                                             }
                                             idx++;
                                         }
-        
+
                                         idx = 0;
                                         while (i < _pureEvents.size()) {
                                             PtidesEvent eventInQueue = ((MetroIIPtidesListEventQueue) _pureEvents)

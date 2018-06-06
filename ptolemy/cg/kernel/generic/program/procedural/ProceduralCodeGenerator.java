@@ -320,7 +320,7 @@ public class ProceduralCodeGenerator extends ProgramCodeGenerator {
      *  sanitized version of the model name, and a ".mk" extension.
      *  Thus, for a model named "Foo", we might generate a makefile in
      *  "$HOME/codegen/Foo.mk".
-    
+
      *  <p>Under Java under Windows, your <code>$HOME</code> variable
      *  is set to the value of the <code>user.home</code>System property,
      *  which is usually something like

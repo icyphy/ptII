@@ -98,7 +98,7 @@ public class GTParameter extends Parameter {
      model is returned, regardless of whether the same name exists in the
      pattern or not (even if this evaluator is used to evaluate a parameter
      specified in the pattern).
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -205,7 +205,7 @@ public class GTParameter extends Parameter {
     /**
      A scope to be used in {@link Evaluator} to resolve names with a pattern and
      a match result.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -359,7 +359,7 @@ public class GTParameter extends Parameter {
     /**
      The type inference used to infer types of names in the host model and in
      the pattern, which is used in {@link Evaluator}.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

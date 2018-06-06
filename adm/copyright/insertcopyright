@@ -296,14 +296,14 @@ while [ $1x != x ] ; do
 	echo "$F: No pre-existing copyright.  Inserting at top..."
 	echo "The newdate will be: $newdate"
 	if [ $shcomments = yes ]; then
-	    cat $SHNOTICE | sed "s/(c) 1995-2016/(c) $newdate/" > $TMPF > $TMPF
+	    cat $SHNOTICE | sed "s/(c) 1995-2018/(c) $newdate/" > $TMPF > $TMPF
 	    cat $FP		>> $TMPF
 	else
             if [ $jscomments = yes ]; then
-	        cat $JSNOTICE | sed "s/(c) 1995-2016/(c) $newdate/" > $TMPF > $TMPF
+	        cat $JSNOTICE | sed "s/(c) 1995-2018/(c) $newdate/" > $TMPF > $TMPF
 	        cat $FP		>> $TMPF
             else 
-	        cat $CNOTICE | sed "s/(c) 1995-2016/(c) $newdate/" > $TMPF > $TMPF
+	        cat $CNOTICE | sed "s/(c) 1995-2018/(c) $newdate/" > $TMPF > $TMPF
 	        cat $FP		>> $TMPF
             fi
 	fi
@@ -434,13 +434,13 @@ while [ $1x != x ] ; do
 	# Replace the existing copyright notice with the official one.
 	#	echo from $startline to $endline
 	if [ $shcomments = yes ]; then
-	    sed -e "$startline r $SHNOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2016/(c) $newdate/" > $TMPF
+	    sed -e "$startline r $SHNOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2018/(c) $newdate/" > $TMPF
 	elif [ $jscomments = yes ]; then
-	    sed -e "$startline r $JSNOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 1995-2016/(c) $firstcheckin-2016/" > $TMPF
+	    sed -e "$startline r $JSNOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 1995-2018/(c) $firstcheckin-2018/" > $TMPF
         else 
 	    # Major dangerous hack here.  Dont stick in comments here,
 	    # assume we already have them.
-	    sed -e "$startline r $NOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2016/(c) $newdate/" > $TMPF
+	    sed -e "$startline r $NOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2018/(c) $newdate/" > $TMPF
 	fi
     fi
 
