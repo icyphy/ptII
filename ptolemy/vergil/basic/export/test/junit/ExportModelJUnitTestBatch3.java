@@ -70,8 +70,7 @@ import ptolemy.vergil.basic.export.ExportModel;
  * $PTII/bin/ptinvoke org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3
  * </pre>
  * <p>
- * This test uses JUnitParams from <a
- * href="http://code.google.com/p/junitparams/#in_browser"http://code.google.com/p/junitparams/</a>,
+ * This test uses JUnitParams from <a href="http://code.google.com/p/junitparams/#in_browser">http://code.google.com/p/junitparams/</a>,
  *  which is released under <a href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License 2.0</a>.
  * </p>
  *
