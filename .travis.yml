@@ -261,15 +261,15 @@ deploy:
     api_key: $GITHUB_TOKEN
     file_glob: true
     file:
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.linux.tar.gz
-      - $PTII/adm/gen-11.0/capecode0.2.devel.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/capecode0_2_devel_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.linux.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.devel.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.exe
-      - $PTII/adm/gen-11.0/ptII11.0.devel.src.tar
-      - $PTII/adm/gen-11.0/ptII11.0.devel.src.zip
+      - $PTII/adm/gen-11.0/capecode0.2.beta.setup.linux.tar.gz
+      - $PTII/adm/gen-11.0/capecode0.2.beta.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.0/capecode0_2_beta_setup_windows_64.exe
+      - $PTII/adm/gen-11.0/ptII11.0.beta.setup.linux.tar.gz
+      - $PTII/adm/gen-11.0/ptII11.0.beta.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.0/ptII11_0_beta_setup_windows_64.exe
+      - $PTII/adm/gen-11.0/ptII11_0_beta_setup_windows.exe
+      - $PTII/adm/gen-11.0/ptII11.0.beta.src.tar
+      - $PTII/adm/gen-11.0/ptII11.0.beta.src.zip
     on:
       tags: true
       condition: $PT_TRAVIS_TEST_INSTALLERS = true
