@@ -21,7 +21,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
 
  <tr>
   <td> Git sources <b>(Preferred)</b> </td>
-  <td colspan="2"> <a href="https://icyphy.github.io/ptII/index.html">Git Instructions</a> </td>
+  <td align="center" colspan="2"> <a href="https://icyphy.github.io/ptII/index.html">Git Instructions</a> </td>
  </tr>
 
  <tr>
