@@ -40,11 +40,11 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   <td> NA </td>
   <td>
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.devel.setup.linux.tar.gz">ptII11.0.devel.setup.linux.tar.gz</a>
-        (Untar, then invoke `java -jar ptII11.0.devel.setup.jar` </td>
+        (Untar, then invoke <code>java -jar ptII11.0.devel.setup.jar</code> </td>
  </tr>
 
  <tr>
-  <td> 32-bit Windows (**Really?**) </td>
+  <td> 32-bit Windows </td>
   <td> 
        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe">ptII10_0_1_setup_windows.exe</a>
   </td>
