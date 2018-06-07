@@ -327,7 +327,7 @@ public class VersionAttribute extends StringAttribute implements Comparable {
 
     static {
         try {
-            CURRENT_VERSION = new VersionAttribute("11.0.devel");
+            CURRENT_VERSION = new VersionAttribute("11.0.beta");
         } catch (Exception ex) {
             throw new ExceptionInInitializerError(
                     "Failed to create CURRENT_VERSION: "
