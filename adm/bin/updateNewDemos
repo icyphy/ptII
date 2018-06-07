@@ -2,8 +2,8 @@
 # $Id$
 # Update the new demos section in ptolemy/configs/doc/whatsNew10.0.htm
 
-oldVersion=8.0.1
-newVersion=10.0.devel
+oldVersion=10.0.1
+newVersion=11.0.beta
 
 oldPTII=$PTII/adm/dists/ptII$oldVersion
 newPTII=$PTII/adm/dists/ptII$newVersion
