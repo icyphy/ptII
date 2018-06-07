@@ -435,7 +435,7 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
             <file src="../dists/ptII11.0.beta/jar_dist/ptolemy/actor/lib/io/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/demo"/>
-            <file src="../dists/ptII11.0.beta/jar_dist/lib/nrjavaserial-3.11.0.beta.jar"
+            <file src="../dists/ptII11.0.beta/jar_dist/lib/nrjavaserial-3.11.0.devel.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.beta/jar_dist/lib/xbjlib-1.1.0.nrjavaserial.jar"
                   targetdir="$INSTALL_PATH/lib"/>
