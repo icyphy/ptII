@@ -51,7 +51,8 @@ JSRCS =
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JSIMPLE_TESTS) to EXTRA_SRCS
 JSIMPLE_TESTS = \
-	Installers.tcl
+	Installers.tcl \
+	NightlyUpdate.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds

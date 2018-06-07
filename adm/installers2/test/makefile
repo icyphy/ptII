@@ -53,9 +53,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	Nightly.tcl \
 	NightlyInstall.tcl \
-	NightlyTest.tcl \
-	NightlyUpdate.tcl
-
+	NightlyTest.tcl
 
 # Graphical Java tests.
 # If there are no tests, we use a dummy file so that the script that builds
