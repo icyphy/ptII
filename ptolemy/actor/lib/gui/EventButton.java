@@ -60,7 +60,7 @@ import ptolemy.util.MessageHandler;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */

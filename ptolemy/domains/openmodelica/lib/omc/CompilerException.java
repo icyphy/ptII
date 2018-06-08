@@ -48,7 +48,7 @@ package ptolemy.domains.openmodelica.lib.omc;
 
   @author Andreas Remar
   @version $Id$
-  @since Ptolemy II 10.0
+  @since Ptolemy II 11.0
   @Pt.ProposedRating Red (cxh)
   @Pt.AcceptedRating Red (cxh)
  */

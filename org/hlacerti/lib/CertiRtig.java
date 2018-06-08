@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  * @author Gilles Lasnier, Christopher Brooks
  * @version $Id: CertiRtig.java 214 2018-04-01 13:32:02Z j.cardoso $
  *
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Yellow (glasnier)
  * @Pt.AcceptedRating Red (glasnier)
  */

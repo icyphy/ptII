@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.1
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (neuendor)
  @Pt.AcceptedRating Red (neuendor)
  */

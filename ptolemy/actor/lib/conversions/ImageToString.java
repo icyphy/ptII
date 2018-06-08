@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Marten Lohstroh
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */

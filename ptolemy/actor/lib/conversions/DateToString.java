@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Patricia Derler
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)
  */

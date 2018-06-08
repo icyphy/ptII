@@ -57,7 +57,7 @@ import ptolemy.vergil.toolbox.TextEditorForStringAttributes;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
  */

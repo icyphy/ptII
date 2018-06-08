@@ -46,6 +46,8 @@ import ptolemy.kernel.util.Workspace;
 /** A predictor
  *
  *  @author Ilge Akkya
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public class Predictor extends AbstractPredictor implements StateSpaceActor {

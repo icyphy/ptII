@@ -104,7 +104,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
    @author Thierry S. Nouidui, Michael Wetter, Edward A. Lee
    @version $Id$
-   @since Ptolemy II 10
+   @since Ptolemy II 11.0
    @Pt.ProposedRating Red (mw)
    @Pt.AcceptedRating Red (mw)
 */

@@ -35,7 +35,7 @@ import org.omg.CORBA.Object;
  *
  *   @author Christopher Brooks.
  *   @version $Id$
- *   @since Ptolemy II 2.1
+ *   @since Ptolemy II 11.0
  *   @Pt.ProposedRating Green (cxh)
  *    @Pt.AcceptedRating Red
  */

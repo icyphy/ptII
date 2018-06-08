@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ptolemy.moml.filter.DiscardDoublesArray
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */

@@ -121,7 +121,7 @@ import ptolemy.util.StringUtilities;
  * {@link Location}.</p>
  *
  * @author Hauke Fuhrmann, (kieler@informatik.uni-kiel.de), Ulf Rueegg
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (haf)
  * @Pt.AcceptedRating Red (haf)
  */

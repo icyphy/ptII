@@ -53,7 +53,7 @@ import ptdb.kernel.database.OracleXMLDBConnection;
  *
  * @author Yousef Alsaeed
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
  *

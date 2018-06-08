@@ -32,6 +32,8 @@ package ptolemy.domains.wireless.lib.bluetooth;
  * Status associated with the BluetoothStatusToken class.
  *
  * @author Phillip Azar
+@version $Id$
+@since Ptolemy II 11.0
  * @see BluetoothStatusToken
  */
 public enum BluetoothStatus {

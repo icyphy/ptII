@@ -42,6 +42,8 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
  *  See https://projects.ecoinformatics.org/ecoinfo/issues/7190
  *
  *  @author Christpher Brooks, based on leak.java by Daniel Crawl
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public class ManagerLeak {

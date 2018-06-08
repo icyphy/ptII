@@ -38,7 +38,7 @@ import javafx.scene.media.Media;
 
     @author Christopher Brooks.
     @version $Id: JAITest.java 61458 2011-07-11 19:54:07Z cxh $
-    @since Ptolemy II 2.1
+    @since Ptolemy II 11.0
     @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */

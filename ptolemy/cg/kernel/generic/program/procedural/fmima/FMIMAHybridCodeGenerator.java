@@ -46,7 +46,7 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
 * </pre>
 *  @author Christopher Brooks, Marten Lohstroh, Fabio Cremona
 *  @version $Id$
-*  @since Ptolemy II 10.0
+*  @since Ptolemy II 11.0
 *  @Pt.ProposedRating red (cxh)
 *  @Pt.AcceptedRating red (cxh)
 */

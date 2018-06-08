@@ -45,7 +45,7 @@ import ptolemy.actor.util.Time;
  *
  * @author Thierry S. Nouidui based on QSSFd
  * @version $Id$
- * @since Ptolemy II 10.2  // FIXME: Check version number.
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */

@@ -104,7 +104,7 @@ and/or with unknown gradient.
 
 @author Shuhei Emoto, Ilge Akkaya, Edward A. Lee
 @version $Id$
-@since Ptolemy II 10.0
+@since Ptolemy II 11.0
 @Pt.ProposedRating Red (shuhei)
 @Pt.AcceptedRating
  */

@@ -62,7 +62,7 @@ import com.sun.jna.Structure;
  *
  * @author Christopher Brooks
 @version $Id$
-@since Ptolemy II 10.0
+@since Ptolemy II 11.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

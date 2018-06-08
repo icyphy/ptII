@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (rodiers)
  * @Pt.AcceptedRating Red (rodiers)
  */

@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  * calculations.
  * @author Thierry S. Nouidui and Edward A. Lee
  * @version $Id$
- * @since Ptolemy 11.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
