@@ -1,6 +1,6 @@
 /* Generate a web page that contains links for the appropriate copyrights
 
-   Copyright (c) 2003-2017 The Regents of the University of California.
+   Copyright (c) 2003-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
