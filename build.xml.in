@@ -44,7 +44,7 @@
            [javadoc] javadoc: error - An internal exception has occurred. 
            [javadoc] 	(com.sun.tools.javac.code.ClassFinder$BadClassFile: bad class file: /Users/cxh/src/ptII11.0.devel/ptolemy/actor/lib/jjs/modules/udpSocket/UDPSocketHelper$UDPSocket$1$2.class       
   -->
-  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output,ptolemy.actor.lib.jjs.modules.udpSocket.*" />
+  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.apps.*,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output,ptolemy.actor.lib.jjs.modules.udpSocket.*" />
 
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
