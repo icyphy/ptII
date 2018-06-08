@@ -79,14 +79,14 @@ public class ProxyModelBuilder {
      *
      */
     public enum ProxyModelType {
-        /**
-         * Client proxy model type.
-         */
-        CLIENT,
-        /**
-         * Server proxy model type.
-         */
-        SERVER;
+    /**
+     * Client proxy model type.
+     */
+    CLIENT,
+    /**
+     * Server proxy model type.
+     */
+    SERVER;
     }
 
     /**

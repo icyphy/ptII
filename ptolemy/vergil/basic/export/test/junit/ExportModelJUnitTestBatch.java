@@ -28,27 +28,13 @@
 
 package ptolemy.vergil.basic.export.test.junit;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import ptolemy.actor.Manager;
-import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportModelJUnitTestBatch
@@ -91,6 +77,7 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
      *  the directory contained by the model.
      *  @exception Throwable If there is a problem reading or exporting the model.
      */
+    @Override
     @Test
     @Parameters(method = "demos")
     public void RunExportModel(String modelPath) throws Throwable {
@@ -108,6 +95,7 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
      * models to be exported.
      * @exception IOException If there is a problem accessing the directory.
      */
+    @Override
     public Object[] demos() throws IOException {
         return demos(0, 50);
     }
@@ -123,33 +111,34 @@ public class ExportModelJUnitTestBatch extends ExportModelJUnitTest {
      */
     public Object[] demos(int start, int end) throws IOException {
         if (start < 0 || end < 0) {
-            throw new IllegalArgumentException("The start indice (" + start + ") or the end indice (" + end + ") is less than zero.");
+            throw new IllegalArgumentException("The start indice (" + start
+                    + ") or the end indice (" + end + ") is less than zero.");
         }
         if (start >= end) {
-            throw new IllegalArgumentException("The start indice (" + start + ") must be greater than the end indice (" + end + ")");
+            throw new IllegalArgumentException("The start indice (" + start
+                    + ") must be greater than the end indice (" + end + ")");
         }
-        Object [] allDemos = super.demos();
-        System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
-                           + " demos. Exporting demos: " + start + " to " + end + ".");
+        Object[] allDemos = super.demos();
+        System.out.println("ExportModeJUnitTestBatch: There are "
+                + allDemos.length + " demos. Exporting demos: " + start + " to "
+                + end + ".");
 
         if (allDemos.length < start) {
-            System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
-                               + " demos, which is less than the start index " + start
-                               + ". Returning an empty array of demos.");
+            System.out.println(
+                    "ExportModeJUnitTestBatch: There are " + allDemos.length
+                            + " demos, which is less than the start index "
+                            + start + ". Returning an empty array of demos.");
             return new Object[0][1];
         }
         if (allDemos.length < end) {
             end = allDemos.length - 1;
-            System.out.println("ExportModeJUnitTestBatch: There are " + allDemos.length
-                               + " demos, which is less than the end index " + start
-                               + ". Setting the end index to " + end);
+            System.out.println(
+                    "ExportModeJUnitTestBatch: There are " + allDemos.length
+                            + " demos, which is less than the end index "
+                            + start + ". Setting the end index to " + end);
         }
         Object[][] subDemos = new Object[end - start + 1][1];
-        System.arraycopy(allDemos,
-                         start,
-                         subDemos,
-                         0,
-                         end - start + 1);
+        System.arraycopy(allDemos, start, subDemos, 0, end - start + 1);
         return subDemos;
     }
 }

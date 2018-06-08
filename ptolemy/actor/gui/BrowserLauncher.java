@@ -195,7 +195,8 @@ public class BrowserLauncher {
             URI uri = null;
             try {
                 uri = new URI(url);
-            } catch (Throwable throwable) {;
+            } catch (Throwable throwable) {
+                ;
                 IOException exception = new IOException(
                         "Failed to convert url \"" + url + "\" to a uri.");
                 exception.initCause(throwable);
@@ -208,12 +209,15 @@ public class BrowserLauncher {
             } catch (IOException ex) {
                 // System.out.println("BrowserLauncher: Failed to open " + uri + ": " + ex);
                 // ex.printStackTrace();
-                File temporaryFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(uri.getPath());
+                File temporaryFile = JNLPUtilities
+                        .getResourceSaveJarURLAsTempFile(uri.getPath());
                 try {
                     desktop.browse(temporaryFile.toURI());
                     return;
                 } catch (IOException ex2) {
-                    System.out.println("BrowserLauncher: Failed to open " + temporaryFile + ": " + ex2 + "\nAlso tried " + uri);
+                    System.out.println(
+                            "BrowserLauncher: Failed to open " + temporaryFile
+                                    + ": " + ex2 + "\nAlso tried " + uri);
                 }
 
                 invokeByHand = true;
@@ -266,7 +270,8 @@ public class BrowserLauncher {
 
                     } else {
                         browser = "firefox";
-                        File macFirefox = new File("/Applications/Firefox.app/Contents/MacOS/firefox");
+                        File macFirefox = new File(
+                                "/Applications/Firefox.app/Contents/MacOS/firefox");
                         if (macFirefox.exists()) {
                             browser = macFirefox.getCanonicalPath();
                         }

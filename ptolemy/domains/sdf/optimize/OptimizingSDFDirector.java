@@ -79,14 +79,14 @@ public class OptimizingSDFDirector extends SDFDirector {
      * Enumeration type to define the supported optimization criteria.
      */
     public enum OptimizationCriteria {
-        /**
-         * Optimize for minimum number of frame buffers.
-         */
-        BUFFERS,
-        /**
-         * Optimize execution time (estimate).
-         */
-        EXECUTIONTIME
+    /**
+     * Optimize for minimum number of frame buffers.
+     */
+    BUFFERS,
+    /**
+     * Optimize execution time (estimate).
+     */
+    EXECUTIONTIME
     }
 
     /**

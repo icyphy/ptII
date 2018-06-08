@@ -410,7 +410,8 @@ public class NashornAccessorHostApplication {
          *  @return handle A handle that can be used to cancel the timeout.
          */
         @Override
-        public synchronized Timer setInterval(Runnable function, long periodMS) {
+        public synchronized Timer setInterval(Runnable function,
+                long periodMS) {
             // System.out.println(_name + ": requesting interval: " + periodMS + "ms for " + function + " in thread " + Thread.currentThread());
             TimerTask task = new TimerTask() {
                 @Override

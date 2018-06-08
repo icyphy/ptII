@@ -269,7 +269,7 @@ public class MQTTHelper extends HelperBase {
             }
             try {
                 _mqttClient.close();
-            } catch(Throwable ex) {
+            } catch (Throwable ex) {
                 System.err.println("Closing MQTT connection failed: " + ex);
             }
         }

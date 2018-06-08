@@ -122,16 +122,14 @@ public class StringUtilities {
             Field usrPathsField = ClassLoader.class
                     .getDeclaredField("usr_paths");
             String[] libraryPathsArray = (String[]) unsafe.getObjectVolatile(
-                    ClassLoader.class,
-                    unsafe.staticFieldOffset(usrPathsField));
+                    ClassLoader.class, unsafe.staticFieldOffset(usrPathsField));
             ArrayList<String> libraryPaths = new ArrayList<String>(
                     Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
             }
             libraryPaths.add(directoryName);
-            unsafe.putObjectVolatile(
-                    ClassLoader.class,
+            unsafe.putObjectVolatile(ClassLoader.class,
                     unsafe.staticFieldOffset(usrPathsField),
                     libraryPaths.toArray(new String[libraryPaths.size()]));
             System.setProperty("java.library.path",
@@ -473,8 +471,7 @@ public class StringUtilities {
         // If the property starts with $JAVAROOT, and the
         // propertyName is ptolemy.ptII.dir, then don't return
         // the property yet, instead, refine it.
-        if (property != null
-            && (! propertyName.equals("ptolemy.ptII.dir")
+        if (property != null && (!propertyName.equals("ptolemy.ptII.dir")
                 && !property.startsWith("$JAVAROOT"))) {
             if (propertyName.equals("ptolemy.ptII.dir")
                     && property.startsWith("/cygdrive")

@@ -172,8 +172,8 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
                         + ": next time job will be released "
                         + (_lastTimeReleasedJob.getDoubleValue() + _period));
             }
-            return new Time(_scheduler, _lastTimeReleasedJob.getDoubleValue()
-                    + _period);
+            return new Time(_scheduler,
+                    _lastTimeReleasedJob.getDoubleValue() + _period);
         }
     }
 
@@ -181,8 +181,8 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *  @exception IllegalActionException If creating a new job throws it.
      */
     public void releaseJob() throws IllegalActionException {
-        _scheduler.releaseJob(new Job(_scheduler, _deadline, _executionTime,
-                this));
+        _scheduler.releaseJob(
+                new Job(_scheduler, _deadline, _executionTime, this));
         _lastTimeReleasedJob = _scheduler.getModelTime();
     }
 
@@ -202,16 +202,16 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
             textFormat = "<text x=\"%d\" y=\"%d\" style=\"font-size:13; font-family:SansSerif; fill:white\">%s</text>";
         }
         String iconText = "<svg><circle cx=\"50\" cy=\"50\" r=\"40\"  style=\"fill:blue\"/>";
-        iconText += String.format(textFormat, 30, yPosition, "C: "
-                + _executionTime);
+        iconText += String.format(textFormat, 30, yPosition,
+                "C: " + _executionTime);
         yPosition += yJump;
         iconText += String.format(textFormat, 30, yPosition, "D: " + _deadline);
         yPosition += yJump;
         iconText += String.format(textFormat, 30, yPosition, "P: " + _period);
         yPosition += yJump;
         if (_startOffset != 0) {
-            iconText += String.format(textFormat, 30, yPosition, "S: "
-                    + _startOffset);
+            iconText += String.format(textFormat, 30, yPosition,
+                    "S: " + _startOffset);
         }
         iconText += "</svg>";
 

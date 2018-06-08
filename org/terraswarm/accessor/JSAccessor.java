@@ -502,7 +502,8 @@ public class JSAccessor extends JavaScript {
                                         + _commands + "\n" + "The output was: "
                                         + exec.buffer);
                     } else {
-                        MessageHandler.status("Could not update the accessors repository");
+                        MessageHandler.status(
+                                "Could not update the accessors repository");
                     }
                 }
             } catch (Throwable throwable) {
@@ -512,12 +513,13 @@ public class JSAccessor extends JavaScript {
                             "Failed to check out the accessors repository.");
                     IOException ioException = new IOException(
                             "Failed to check out the accessors repository with:\n"
-                                    + _commands + "\n"
-                                    + "The output was: " + exec.buffer);
+                                    + _commands + "\n" + "The output was: "
+                                    + exec.buffer);
                     ioException.initCause(throwable);
                     throw ioException;
                 } else {
-                    MessageHandler.status("Could not update the accessors repository");
+                    MessageHandler.status(
+                            "Could not update the accessors repository");
                 }
             }
         }
@@ -603,10 +605,12 @@ public class JSAccessor extends JavaScript {
             } catch (IOException ex) {
                 System.out.println(
                         "JSAccessor: Could not look up the local accessor directory.  "
-                        + "The String URL of the accessor or *PtDoc.xml file: \"" + urlSpec + "\".  "
-                        + "The proposed URL of the accessor or *PtDoc.xml file: \"" + accessorOrPtDocURL
-                        + "\" (which is being returned).  "
-                        + "Exception was: " + ex);
+                                + "The String URL of the accessor or *PtDoc.xml file: \""
+                                + urlSpec + "\".  "
+                                + "The proposed URL of the accessor or *PtDoc.xml file: \""
+                                + accessorOrPtDocURL
+                                + "\" (which is being returned).  "
+                                + "Exception was: " + ex);
                 ex.printStackTrace();
             }
         }

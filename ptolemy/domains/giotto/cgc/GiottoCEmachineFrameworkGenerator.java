@@ -423,7 +423,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             if (type.endsWith("array")) {
                 codeString
                         .append("typedef " + type.substring(0, type.length() - 5
-                /* Length of "array" */) + " *" + type + ";" + _endLine
+                        /* Length of "array" */) + " *" + type + ";" + _endLine
                                 + _endLine);
             }
         }

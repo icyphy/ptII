@@ -190,7 +190,8 @@ public class QSSDirector extends DEDirector {
 
     /** Gets the list of all available QSS solver names. */
     public static String[] getQSSSolverNames() {
-        return new String[] { "QSS1", "QSS2Fd", "QSS2FdJac", "QSS2Pts", "QSS2Qts", "QSS3Fd", "QSS3Pts", "LIQSS1", "LIQSS2Fd" };
+        return new String[] { "QSS1", "QSS2Fd", "QSS2FdJac", "QSS2Pts",
+                "QSS2Qts", "QSS3Fd", "QSS3Pts", "LIQSS1", "LIQSS2Fd" };
     }
 
     /** Set the default solver method and list solver alternatives for the specified solver.

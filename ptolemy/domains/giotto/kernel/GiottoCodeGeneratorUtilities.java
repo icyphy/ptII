@@ -428,9 +428,7 @@ public class GiottoCodeGeneratorUtilities {
                 + " */\n\n"
                 + "//////////////////////////////////////////////////////\n"
                 + "//// " + model.getName() + "\n" + "/**\n" + model.getName()
-                + "\n" + "@author\n"
-                + "@version $Id$\n"
-                + "*/\n";
+                + "\n" + "@author\n" + "@version $Id$\n" + "*/\n";
     }
 
     /** Initialize the code generation process by checking whether the

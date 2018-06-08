@@ -328,14 +328,14 @@ public class PlotFrame extends JFrame
 
     /** Display a menu that describes the Plotter. */
     protected void _about() {
-        JOptionPane.showMessageDialog(this, "PlotFrame class\n"
-                + "By: Edward A. Lee " + "and Christopher Brooks\n" + "Version "
-                + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2014, "
-                + "The Regents of the University of California.",
+        JOptionPane.showMessageDialog(this,
+                "PlotFrame class\n" + "By: Edward A. Lee "
+                        + "and Christopher Brooks\n" + "Version "
+                        + PlotBox.PTPLOT_RELEASE + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                 "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
