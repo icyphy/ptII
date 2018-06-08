@@ -9,8 +9,9 @@
 # 0. Check that ~/.subversion/configs has
 #    use-commit-times = yes
 #
-# 1. Check out a fresh tree in a separate directory 
-#    PtII:  cd ~/tmp; svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
+# 1. Check out a fresh tree in a separate directory with all the history so that we can adjust the mod times.
+#
+#    PtII:  cd ~/tmp; git git clone --branch=master --single-branch https://github.com/icyphy/ptII
 #    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
 #
 # 2. Remove ptII/vendors
@@ -27,10 +28,22 @@
 #    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f
 #
 # 4. Find files modified since the start of the year
-#    NOTE: this requires that ~/.subversion/config has
-#    use-commit-times = yes
 #
-#    find . -name .svn -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | grep -v "\.svn" | egrep -v "\.xml$" | egrep -v copyright | egrep -v license | sort > /tmp/new
+#    By default, git does not preserve modtimes?  See https://stackoverflow.com/questions/1964470/whats-the-equivalent-of-use-commit-times-for-git
+#
+#    See https://github.com/MestreLion/git-tools/blob/master/git-restore-mtime-core
+#    Download it and run it to update the mod times.
+#
+#    cd $PTII
+#    wget https://raw.githubusercontent.com/MestreLion/git-tools/master/git-restore-mtime-core
+#    chmod a+x git-restore-mtime-core
+#    ./git-restore-mtime-core
+#
+#    cd $PTII/org/terraswarm/accessor/accessors/
+#    $PTII/git-restore-mtime-core
+#
+#    cd $PTII
+#    find . -name .git -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | egrep -v "\.xml$" | egrep -v copyright | egrep -v license | sort > /tmp/new
 #    
 #    Note that if you wanted files since the start of last year, use run
 #    "date +%j" and add that number to the number of days in the last year.
@@ -58,7 +71,7 @@
 #    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
 #
 # 9. Do a clean checkout somewhere and rebuild and test
-#    PtII: mkdir ~/tmp2; cd ~/tmp_2; svn co https://repo.eecs.berkeley.edu/svn/projects/eal/ptII/trunk ptII
+#    PtII: mkdir ~/tmp2; cd ~/tmp_2; git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; ant
 #
 # 10. Go back and check the changes in
@@ -112,29 +125,29 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2016\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2018\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2016/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2018/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2016/' \
+    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2018/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -142,14 +155,14 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 199[0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2016 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2018 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -157,24 +170,24 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2016 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2018 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2016 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2018 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -182,22 +195,22 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH="Copyright \(c\) 200[0-9] "
-LOGMESSAGE="Changed copyright to 2016"
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(201[012345]\) /Copyright (c) \1-2016 /' \
+    sed 's/Copyright (c) \(201[01234567]\) /Copyright (c) \1-2018 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[012345] "
-LOGMESSAGE="Changed copyright to 2016"
+EGREPMATCH="Copyright \(c\) 201[01234567] "
+LOGMESSAGE="Changed copyright to 2018"
 
 search $@
 
