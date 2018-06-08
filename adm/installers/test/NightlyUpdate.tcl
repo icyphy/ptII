@@ -43,7 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up the test definitions.
 if {[string compare test [info procs nightlyMake]] == 1} then {
-    source nightlyMake.tcl
+    source ../../installers2/test/nightlyMake.tcl 
 } {}
 
 # This is a bit of a hack.
