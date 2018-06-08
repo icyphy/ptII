@@ -41,7 +41,7 @@
         </property>
         <property name="population" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <entity name="Throttle" class="Throttle">
+        <entity name="Throttle" class="ptolemy.demo.Quarry.Throttle">
             <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
                 <port name="full" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -64,7 +64,7 @@
         </property>
         <property name="population" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <entity name="Throttle" class="Throttle">
+        <entity name="Throttle" class="ptolemy.demo.Quarry.Throttle">
             <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
                 <port name="full" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
