@@ -32,7 +32,7 @@ function demoLinkNoBR(indent, relativeModelPath, description) {
      // The path to the JNLP and Export-to-Web files.  This will change between releases.
      ptII = "https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11.0.beta/";
 
-     document.write(indent + "<a href=\"" + ptII + relativeModelPath + "\" target =\"_top\">" + description + "</a>");
+     document.write(indent + "<a href=\"" + ptII + relativeModelPath + ".xml\" target =\"_top\">" + description + "</a>");
 }
 
 /** Create links to the MoML and HTML versions.
