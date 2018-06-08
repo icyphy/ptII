@@ -1,0 +1,118 @@
+<!-- $Id$ -->
+<html>
+  <head>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+    <title>Windows: Eclipse is unaware of the version control aspects of the Ptolemy II project</title>
+    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <h1><a name="NoVC">Eclipse is unaware of the version control aspects of the Ptolemy II project.</a></h1>
+
+    <p>If you are downloading the source from a major Ptolemy release, and
+      don't want to update regularly, or you do not have network
+      access, then use this choice.</p>
+
+
+
+    <p>For other ways to set up Eclipse and Ptolemy II, see
+      the <a href="project.htm" target="main">Setting up Eclipse to manage
+	your Ptolemy II development Environment</a> page.</p>
+
+    <!--eclipseSimple-->
+
+    <ol>
+
+      <li> Download a ptII source tree:
+        <ul>
+	  <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest#in_browser" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest</code></a> (Stable release)
+	    <br/> The Windows installer include the source, or you may
+	    install a separate source-only download.</li>
+          <li><a href="https://icyphy.github.io/ptII/downloads/index.html#in_browser" target="_top"><code>https://icyphy.github.io/ptII/downloads/index.html</code></a> (Development Releases)</li>
+        </ul>
+      </li>
+
+      <li> <a href="setupClasspath.htm#in_browser" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
+
+      <li> If Eclipse is not running, start up Eclipse
+      </li>
+
+      <li> In the File menu, select New | Project ..</li>
+      <li> In the New Project window, select Java | Java project, Click Next.
+        <center>
+	  <p><img src="../../img/eclipseNewProject.png" alt="Eclipse New Project" width="528" height="502"></p>
+        </center>
+      </li>
+      <li>In the Create a Java Project window:
+        <br/> In Project name, enter any project name,  <code>ptII</code>
+        is a common choice.
+        <br/> Uncheck Use default location and browse to the location of the
+        ptII repo
+
+        <br/> Hit Finish
+        <br/>Below is the Create a Java Project window:
+        <center>
+	  <p><img src="../../img/eclipseCreateAJavaProjectNoVC.png" alt="Eclipse Create A Java Project" width="587" height="721"></p>
+        </center>
+      </li>
+
+      <li> Click Next.</li>
+
+
+
+      <li> In the Java Settings window:
+        <br/>Click on Allow output folders for source folders
+        <br/>Change the Default output folder to <code>ptII/eclipse</code>
+
+        <p>In Ptolemy II, the <code>$PTII/bin</code> directory contains
+          Ptolemy-specific scripts.  Unfortunately, Eclipse wants to write
+          .class files to that directory.  In versions of Eclipse before
+          Oxygen, it was possible to import a project have the output
+          directory be the same as the project.  Unfortunately, this is no
+          longer possible, so we have Eclipse output files
+          into <code>$PTII/eclipse</code></p>
+        
+        <p>Ideally, we would have a <code>$PTII/.project</code> file that
+          would define the Ptolemy II Eclipse project, which could then be
+          imported.  Unfortunately, the format of the <code>.project</code>
+          file does not support having the output files the same as the
+          project.</p>
+        <p>Here's the Java Settings window:</p>
+        <center>
+	  <p><img src="../../img/eclipseJavaSettingsNoVC.png" alt="Eclipse Java Settings" width="585" height="724"></p>
+        </center>
+
+        <blockquote>
+          <table border="1">
+            <tr>
+	      <td>
+                Be sure to change the Default output folder from ptII/bin to a directory that does not exist,
+                such as ptII/eclipse.  If the output folder is <code>ptII/bin</code>, then Eclipse will <b>remove
+                  the contents of <code>$PTII/bin</code> including <code>$PTII/bin/vergil</code>, which is how
+                  Ptolemy II is started from the command line.</b>
+	      </td>
+            </tr>
+          </table>
+        </blockquote>
+
+      </li>
+      <li> Click Finish.</li>
+
+      <li> The Setting Build Paths window may appear and ask if you want to remove all the generated resources from the old location 'ptII/bin'.  <b>Click No</b>.
+        <center>
+	  <p><img src="../../img/eclipseSettingBuildPaths.png" alt="Eclipse Java Settings" width="512" height="129"></p>
+        </center>
+      </li>
+
+      <li> The Open Associated Perspective? window will appear.  Click Open Perspective.</li>
+      
+      <li> There will likely be many errors.  These are solved in the next step.
+        </br>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
+      </li>      
+      <!--eclipseSimple-->
+
+    </ol>
+
+    <!--/eclipseSimple-->
+
+  </body>
+</html>
