@@ -918,7 +918,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/coroutine \
 		ptolemy/domains/fmi \
 		ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java \
-		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
