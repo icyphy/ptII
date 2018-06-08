@@ -27,7 +27,9 @@
     <ul>
       <li><a href="#highlights">Highlights</a>
 	<ul>
-	  <li><a href="#FirstHighlight"><i>First Highlight</i></a></li>
+	  <li><a href="#scripting"><i>Scripting, Accessors, and CapeCode</i></a></li>
+	  <li><a href="#learning"><i>Learning, Estimation, and Optimization</i></a></li>
+	  <li><a href="#aspects"><i>Aspects</i></a></li>
 	</ul>
       </li>
       <li><a href="#demos">New demonstrations</a>
@@ -45,21 +47,64 @@
     </ul>
 
     <h2><a name="highlights" id="highlights">Highlights</a></h2>
-
-    <p>Below are the highlights of this release.</p>
-
-    <h3><a name="highlight1" id="Ontologies">Highlight 1</a></h3>
+<!------------------------------------------------>
+    <h3><a name="scripting" id="scripting">Scripting, Accessors, and CapeCode</a></h3>
+    
+Ptolemy II now includes a major new way to define actors using the JavaScript actor.
+This can be used to put specialized functionality into a model easily, without having to create custom Java actors.
+A library of such scripted actors is provided that supports inclusion into models of significant networking
+capabilities, including web servers, web clients, sockets, and MQTT, for example, and interfaces to various devices
+including cameras, audio, and IoT devices.
+Models built exclusively with such actors, which are also called accessors, and using the DE director,
+can be code generated and executed independently of Ptolemy II in host based on Node.js.
+A subset of Ptolemy II known as CapeCode provides a convenient environment for developing such applications.
 
     <h4>References</h4>
     <ul>
-      <li><i>Reference</i></li>
+      <li>Christopher Brooks, Chadlia Jerad, Hokeun Kim, Edward A. Lee, Marten Lohstroh, Victor Nouvellet, Beth Osyk, Matt Weber. "<a href="http://www.icyphy.org/pubs/75.html#in_browser">A Component Architecture for the Internet of Things</a>," To Appear in Proceedings of the IEEE, 2018.</li>
+      <li>Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, and Matthew Weber, "<a href="http://dx.doi.org/10.1109/MIC.2015.17#in_browser">A Vision of Swarmlets</a>," IEEE Internet Computing, 19(2), pp. 20-28, March-April 2015.</li>
     </ul>
 
-
-    <h4><a name="Hightlight1Demonstrations">Highlight1 Demonstrations</a></h4>
+    <h4><a name="Hightlight1Demonstrations">Scripting, Accessors, and CapeCode Demonstrations</a></h4>
     <ul><!-- Please keep the demos alphabetical -->
       <li><i>Demo 1 xml file</i></li>
     </ul>
+<!------------------------------------------------>
+    <h3><a name="learning" id="learning">Learning, Estimation, and Optimization</a></h3>
+    
+Ptolemy II now includes a library of machine learning, estimation, and optimization actors developed by Ilge Akkaya.
+This includes support for particle filtering, model-predictive control, hidden Markov models,
+and various statistical analysis tools.
+
+    <h4>References</h4>
+    <ul>
+      <li>Ilge Akkaya, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-159.html#in_browser">Data-Driven Cyber-Physical Systems via Real-Time Stream Analytics and Machine Learning</a>," PhD Thesis, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2016-159, October 25, 2016.</li>
+      <li>Ilge Akkaya, Shuhei Emoto, Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1078.html">PILOT: An Actor-oriented Learning and Optimization Toolkit</a>," in Proceedings of Second International Workshop on Robotic Sensor Networks (RSN'15), part of Cyber-Physical Systems Week, Seattle, WA, USA, April 13, 2015.</li>
+    </ul>
+
+    <h4>Estimation and Learning Demonstrations</a></h4>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Demo 1 xml file</i></li>
+    </ul>
+<!------------------------------------------------>
+    <h3><a name="aspects" id="learning">Aspects</a></h3>
+
+Using aspect-oriented modeling, Ptolemy II models can be decorated with other Ptolemy II models that alter the behavior of the original model in
+well-defined ways. This can be used, for example, to using a model of a network (the aspect model) to model communication delays in some application model.
+Aspect models can also model computation times, security attacks, and failures.
+
+    <h4>References</h4>
+    <ul>
+      <li>Ilge Akkaya, Patricia Derler, Shuhei Emoto, and Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1161.html#in_browser">Systems engineering for Industrial Cyber-Physical Systems using Aspects</a>," IEEE Proceedings, Vol. 104, Issue 5, pp 997-1012, April 20, 2016.</li>
+      <li>Ilge Akkaya, Yan Liu, and Edward A. Lee. "<a href="https://dx.doi.org/10.1007/978-3-662-45928-7_1#in_browser">Modeling and Simulation of Network Aspects for Distributed Cyber-Physical Energy Systems</a>," In Cyber Physical Systems Approach to Smart Electric Power Grid, pp. 1-23. Springer Berlin Heidelberg, 2015.</li>
+    </ul>
+
+    <h4>Estimation and Learning Demonstrations</a></h4>
+    <ul><!-- Please keep the demos alphabetical -->
+      <li><i>Demo 1 xml file</i></li>
+    </ul>
+<!------------------------------------------------>
+
 
     <h3><a name="demos" id="demos">New demonstrations</a></h3>
     <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
