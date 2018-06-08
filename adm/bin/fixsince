@@ -11,9 +11,9 @@
 # The first thing to do is to generate a list of new files
 # by running diff between the old release and the new release
 
-oldVersion=8.0.1
-newVersion=10.0.devel
-sinceVersion=10.0
+oldVersion=10.0.1
+newVersion=11.0.beta
+sinceVersion=11.0
 
 #diffOutput=/tmp/fixsince.diffOutput.$$
 diffOutput=/tmp/pt.diffs
@@ -84,7 +84,12 @@ do
        retval=$?
        if [ $retval = 1 ]; then
 	   echo "$file still! does not have an @since tag.  Adding a class comment"
-	   awk -v author=`$PTII/adm/bin/svnAuthor $file| awk '{print $1}'` -v class=`basename $file .java` -v sinceVersion=$sinceVersion \
+           commit=`git log --diff-filter=A -- $file | grep commit | awk '{print $NF}'`
+           author=`git show --format='%aN' -s $commit`
+           echo "$file: commit: $commit, author: $author"
+	   awk -v author=$author \
+               -v class=`basename $file .java` \
+               -v sinceVersion=$sinceVersion \
           '{  if ($0 ~ /^public/ && sawJavaDocStart == 0 && createdClassComment == 0) {
                createdClassComment = 1
                print "/**"
