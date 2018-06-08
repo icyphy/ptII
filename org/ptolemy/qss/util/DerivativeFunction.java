@@ -63,7 +63,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
  * @version $id$
- * @since Ptolemy II 10.2  // FIXME: Check version number.
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */

@@ -52,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  when an actual token is sent.
 
  @author Thierry S. Nouidui, Christopher Brooks
+@version $Id$
+@since Ptolemy II 11.0
  @version $Id$
  @Pt.ProposedRating Green (thn)
  @Pt.AcceptedRating Red (thn)

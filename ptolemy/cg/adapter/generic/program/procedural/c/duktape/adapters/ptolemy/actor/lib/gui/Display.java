@@ -35,7 +35,7 @@ package ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy
 
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */

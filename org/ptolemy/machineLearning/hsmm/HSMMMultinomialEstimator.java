@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
 Hidden Markov Model (EDHMM) with multinomial emissions.
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */

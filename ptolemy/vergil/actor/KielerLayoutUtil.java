@@ -49,6 +49,8 @@ import ptolemy.kernel.util.NamedObj;
  * routing mechanisms.
  *
  * @author Ulf Rueegg
+@version $Id$
+@since Ptolemy II 11.0
  *
  */
 public final class KielerLayoutUtil {

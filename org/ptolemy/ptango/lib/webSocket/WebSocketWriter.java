@@ -52,7 +52,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author Elizabeth Latronico
  *  @version $Id$
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
  */

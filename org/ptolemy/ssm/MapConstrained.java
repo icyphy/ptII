@@ -33,6 +33,8 @@ import ptolemy.actor.Actor;
  *
  *  @see Map
  *  @author Ilge Akkya
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public interface MapConstrained extends Actor {

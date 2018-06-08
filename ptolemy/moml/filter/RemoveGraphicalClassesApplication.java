@@ -39,7 +39,7 @@ import ptolemy.util.StringUtilities;
 
  @author  Edward A. Lee, Christopher Hylands
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

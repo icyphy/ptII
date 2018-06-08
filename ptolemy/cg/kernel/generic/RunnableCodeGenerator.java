@@ -52,7 +52,7 @@ import ptolemy.util.StringUtilities;
  *
  *  @author Christopher Brooks.  Based on ProgramCodeGenerator by Bert Rodiers
  *  @version $Id$
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
  */

@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Settable;
  * @see ptolemy.vergil.basic.layout.kieler.KielerLayoutAction
  * @author Miro Spoenemann, Christoph Daniel Schulze, Ulf Rueegg
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (msp)
  * @Pt.AcceptedRating Red (msp)
  */
