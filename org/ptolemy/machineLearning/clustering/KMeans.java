@@ -61,7 +61,7 @@ exploratory data analysis.
 
 @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */

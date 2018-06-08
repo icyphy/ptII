@@ -1,6 +1,6 @@
 /* Run the Ptolemy model tests in the auto/knownFailedTests/ directory using Functional Mock-up Interface Master Algorithm (FMIMA) code generation under JUnit.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ import junitparams.Parameters;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

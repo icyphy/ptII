@@ -350,10 +350,10 @@
 	Then check for files that don't have this year's copyright
 	<pre>
 	  cd $PTII/adm/dists
-	  diff -r ptII10.0.1 ptII11.0.devel > /tmp/pt.diffs
+	  diff -r ptII10.0.1 ptII11.0.beta > /tmp/pt.diffs
 	  cd $PTII
 	  grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
-	  grep .java | sed 's@ptII11.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
+	  grep .java | sed 's@ptII11.0.beta/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
 	</pre>
 	Look over the output for files that should have their copyright updated
 

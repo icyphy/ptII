@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 77282 2017-11-27 17:10:54Z cxh $
 #
-# @Copyright (c) 2017 The Regents of the University of California.
+# @Copyright (c) 2017-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

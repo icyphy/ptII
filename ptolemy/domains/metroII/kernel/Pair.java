@@ -33,7 +33,7 @@ package ptolemy.domains.metroII.kernel;
  *
  * @author Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *

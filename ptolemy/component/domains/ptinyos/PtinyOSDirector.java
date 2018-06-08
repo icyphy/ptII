@@ -40,7 +40,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Yang Zhao and Edward A. Lee
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating yellow (ellen_zh)
  @Pt.AcceptedRating red (davisj)
  */

@@ -59,7 +59,7 @@ import sun.audio.AudioPlayer;
  @see PlotApplication
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 0.2
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (cxh)
  */

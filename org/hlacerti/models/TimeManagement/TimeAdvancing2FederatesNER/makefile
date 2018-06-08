@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 175 2018-03-27 14:34:24Z gl.lasnier $
 #
-# @Copyright (c) 2017 The Regents of the University of California.
+# @Copyright (c) 2017-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

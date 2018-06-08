@@ -32,6 +32,8 @@ package org.ptolemy.ssm;
  * An interface for actors that perform inference.
  * These actors will be decorated by measurement models.
  * @author ilgea
+@version $Id$
+@since Ptolemy II 11.0
  *
  */
 public interface InferenceActor extends StateSpaceActor {

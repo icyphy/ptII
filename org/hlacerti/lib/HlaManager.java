@@ -1,6 +1,6 @@
 /* This attribute implements a HLA Manager to cooperate with a HLA/CERTI Federation.
 
-@Copyright (c) 2013-2017 The Regents of the University of California.
+@Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -222,7 +222,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id: HlaManager.java 214 2018-04-01 13:32:02Z j.cardoso $
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)

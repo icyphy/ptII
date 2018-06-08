@@ -56,7 +56,7 @@ import ptolemy.util.FileUtilities;
 
  @author Edward A. Lee
  @version $Id$
- @since Ptolemy II 6.1
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

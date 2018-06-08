@@ -1,5 +1,5 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2016-2017 The Regents of the University of California.
+// Copyright (c) 2016-2018 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
