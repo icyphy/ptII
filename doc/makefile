@@ -39,7 +39,6 @@ DIRS =		\
 		design \
 		img \
 		papers \
-		tour \
 		tutorial \
 		ui \
 		test \
@@ -114,7 +113,6 @@ EXTRA_SRCS = \
 	main.htm \
 	mainheader.htm \
 	mkDomains \
-	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \
 	ptIIfaq.htm \
