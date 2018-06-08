@@ -262,6 +262,9 @@ release_mac:
 release_mac_capecode_mac_tar:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
 
+release_mac_update_ftp:
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar update_ftp
+
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
 	@if [ -z `which 7z` ]; then \
