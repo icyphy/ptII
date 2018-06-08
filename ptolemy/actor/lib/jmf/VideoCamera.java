@@ -261,9 +261,7 @@ public class VideoCamera extends Source implements ControllerListener {
         try {
             _processor = Manager.createProcessor(locator);
         } catch (Throwable throwable) {
-            throw new IllegalActionException(
-                    null,
-                    throwable,
+            throw new IllegalActionException(null, throwable,
                     "Failed to create a processor for the media locator '"
                             + locator
                             + "'. Note that you may need to run jmfinit, "
@@ -334,7 +332,8 @@ public class VideoCamera extends Source implements ControllerListener {
         _processor.prefetch();
 
         if (!_waitForState(Controller.Prefetched)) {
-            throw new IllegalActionException("Failed to realize the processor.");
+            throw new IllegalActionException(
+                    "Failed to realize the processor.");
         }
 
         // NOTE: Can get a visual component (which displays the video)

@@ -277,13 +277,6 @@ public class ParticleMutualInformation extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private void printVector(double[] dx) {
-        for (int col = 0; col < dx.length; col++) {
-            System.out.print(" " + dx[col]);
-        }
-        System.out.println();
-    }
-
     private void _addMatrix(double[][] dist, double[][] val) {
         for (int row = 0; row < dist.length; row++) {
             for (int col = 0; col < dist[0].length; col++) {

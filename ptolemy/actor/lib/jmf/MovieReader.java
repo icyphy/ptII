@@ -88,8 +88,8 @@ public class MovieReader extends Source implements ControllerListener {
         super(container, name);
         output.setTypeEquals(BaseType.OBJECT);
         fileOrURL = new FileParameter(this, "fileOrURL");
-        fileOrURL
-        .setExpression("$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
+        fileOrURL.setExpression(
+                "$CLASSPATH/ptolemy/actor/lib/jmf/MrPtolemy.mov");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,14 +140,13 @@ public class MovieReader extends Source implements ControllerListener {
                         // Ignore this exception, throw the original.
                         throw new IllegalActionException(this, throwable2,
                                 "Invalid URL.\n(Tried copying the file '"
-                                        + url.toString()
-                                        + "', to '"
-                                        + (urlCopy == null ? "null" : urlCopy
-                                                .toString())
-                                                + "', (copyFileName was: '"
-                                                + copyFileName
-                                                + "') but that failed with:\n"
-                                                + KernelException
+                                        + url.toString() + "', to '"
+                                        + (urlCopy == null ? "null"
+                                                : urlCopy.toString())
+                                        + "', (copyFileName was: '"
+                                        + copyFileName
+                                        + "') but that failed with:\n"
+                                        + KernelException
                                                 .stackTraceToString(throwable));
                     }
                 }
@@ -223,9 +222,7 @@ public class MovieReader extends Source implements ControllerListener {
         try {
             _player = Manager.createPlayer(_dataSource);
         } catch (Throwable throwable) {
-            throw new IllegalActionException(
-                    this,
-                    throwable,
+            throw new IllegalActionException(this, throwable,
                     "Failed to create a player for the data source. "
                             + "Note that you may need to run jmfinit, which is found "
                             + "in the JMF directory, for example c:/Program Files/"
@@ -238,11 +235,9 @@ public class MovieReader extends Source implements ControllerListener {
         _player.realize();
 
         if (!_waitForState(Controller.Realized)) {
-            throw new IllegalActionException(
-                    null,
+            throw new IllegalActionException(null,
                     "Failed to realize player, last controller event was: "
-                            + _stateTransitionEvent
-                            + "\nThe data source was: "
+                            + _stateTransitionEvent + "\nThe data source was: "
                             + _dataSource.getLocator().toExternalForm()
                             + "\nNote that not all formats are supported, see:\n"
                             + "http://www.oracle.com/technetwork/java/javase/faq-jmf-137005.html#jmf2-support");

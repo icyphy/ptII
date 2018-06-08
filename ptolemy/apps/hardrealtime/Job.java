@@ -59,8 +59,8 @@ public class Job {
      *  @param task The task that released the job.
      *  @exception IllegalActionException If the Time constructor throws it.
      */
-    public Job(Director director, double relativeDeadline,
-            double executionTime, Actor task) throws IllegalActionException {
+    public Job(Director director, double relativeDeadline, double executionTime,
+            Actor task) throws IllegalActionException {
         this(director, relativeDeadline, executionTime, task, null);
     }
 
@@ -73,9 +73,8 @@ public class Job {
      *  @param parentTask The parent of the task that released the job.
      *  @exception IllegalActionException If the Time constructor throws it.
      */
-    public Job(Director director, double relativeDeadline,
-            double executionTime, Actor task, Actor parentTask)
-                    throws IllegalActionException {
+    public Job(Director director, double relativeDeadline, double executionTime,
+            Actor task, Actor parentTask) throws IllegalActionException {
         this._startTime = director.getModelTime();
         this._absoluteDeadline = this._startTime.add(relativeDeadline);
         this._remainingTime = new Time(director, executionTime);

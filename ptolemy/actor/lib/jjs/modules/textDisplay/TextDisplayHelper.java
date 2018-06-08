@@ -87,7 +87,7 @@ public class TextDisplayHelper extends HelperBase {
         // Catch and send to standard output.
         try {
             Top.deferIfNecessary(doDisplay);
-        } catch(Throwable ex) {
+        } catch (Throwable ex) {
             // Ignore, assuming other invocations of deferIfNecessary will fail similarly.
         }
     }
@@ -108,7 +108,7 @@ public class TextDisplayHelper extends HelperBase {
         };
         try {
             Top.deferIfNecessary(doDisplay);
-        } catch(Throwable ex) {
+        } catch (Throwable ex) {
             // Print to standard out.
             System.out.println("TextDisplay: " + text);
         }
@@ -127,7 +127,7 @@ public class TextDisplayHelper extends HelperBase {
         };
         try {
             Top.deferIfNecessary(doDisplay);
-        } catch(Throwable ex) {
+        } catch (Throwable ex) {
             // Print to standard out.
             System.out.println("TextDisplay: " + text);
         }

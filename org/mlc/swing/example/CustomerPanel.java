@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import org.mlc.swing.layout.LayoutFrame;
 
@@ -151,7 +152,7 @@ public class CustomerPanel extends javax.swing.JPanel {
         CustomerPanel customerPanel = new CustomerPanel();
 
         JFrame frame = new JFrame("Edit Customer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(customerPanel, BorderLayout.CENTER);
         frame.setSize(600, 700);

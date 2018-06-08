@@ -144,7 +144,8 @@ public class AutoNameArchTests extends AutoTests {
         // and Ubuntu. A better version number would include the
         // version of GLIBC.
 
-        return modelValues(AutoNameArchTests.autoNameArch(), THERE_ARE_NO_AUTO_ARCH_TESTS);
+        return modelValues(AutoNameArchTests.autoNameArch(),
+                THERE_ARE_NO_AUTO_ARCH_TESTS);
     }
 
     /** Return the auto directory for the current architecture, for example

@@ -260,8 +260,8 @@ public class PHY extends NetworkActorBase {
                 }
 
                 // let us be a little picky about receiving a message
-                if (power > _sensitivity
-                        && (_interference == 0.0 || power / _interference > _SNRThresholdInDB)) {
+                if (power > _sensitivity && (_interference == 0.0
+                        || power / _interference > _SNRThresholdInDB)) {
                     if (_debugging) {
                         //Token dbg = new DoubleToken(power / _interference);
                         _debug(getFullName()
@@ -276,8 +276,8 @@ public class PHY extends NetworkActorBase {
 
                     if (_numBusyTimers == 1) {
                         RecordToken ChannelStatusMsg = new RecordToken(
-                                SignalMsgFields, new Token[] { new IntToken(
-                                        Busy) });
+                                SignalMsgFields,
+                                new Token[] { new IntToken(Busy) });
                         channelStatus.send(0, ChannelStatusMsg);
                     }
 

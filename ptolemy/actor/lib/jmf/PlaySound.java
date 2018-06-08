@@ -137,8 +137,8 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                         _player.removeControllerListener(this);
                     }
 
-                    _player = Manager.createRealizedPlayer(fileNameOrURL
-                            .asURL());
+                    _player = Manager
+                            .createRealizedPlayer(fileNameOrURL.asURL());
                     _player.addControllerListener(this);
 
                     // Initiate as much preprocessing as possible.
@@ -147,13 +147,13 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
                     _gainControl = _player.getGainControl();
 
                     if (percentGain != null) {
-                        _gainControl.setLevel(0.01f * percentGain
-                                .getCurrentValue());
+                        _gainControl.setLevel(
+                                0.01f * percentGain.getCurrentValue());
                     }
                 }
             } catch (IOException ex) {
-                throw new IllegalActionException(this, "Cannot open file: "
-                        + ex.toString());
+                throw new IllegalActionException(this,
+                        "Cannot open file: " + ex.toString());
             } catch (MediaException ex) {
                 throw new IllegalActionException(this, ex,
                         "Exception thrown by media framework");

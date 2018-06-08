@@ -510,15 +510,18 @@ public class CatchUpComposite extends MirrorComposite {
                     .getEnvironmentTimeForLocalTime(time);
             Director director = getExecutiveDirector();
             if (director instanceof SuperdenseTimeDirector) {
-                int environmentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+                int environmentMicrostep = ((SuperdenseTimeDirector) director)
+                        .getIndex();
                 // Microstep should be greater than that of the enclosing director
                 // if the time matches current time.
-                if (getModelTime().equals(time) && microstep < environmentMicrostep) {
+                if (getModelTime().equals(time)
+                        && microstep < environmentMicrostep) {
                     microstep = environmentMicrostep + 1;
                 }
             }
 
-            if (((BooleanToken)_contents.fireOnlyWhenTriggered.getToken()).booleanValue()) {
+            if (((BooleanToken) _contents.fireOnlyWhenTriggered.getToken())
+                    .booleanValue()) {
                 // Do not pass the request up the hierarchy.
                 if (_pendingFiringTimes == null) {
                     _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
@@ -537,7 +540,8 @@ public class CatchUpComposite extends MirrorComposite {
                     if (_pendingFiringTimes == null) {
                         _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
                     }
-                    _pendingFiringTimes.add(new SuperdenseTime(time, microstep));
+                    _pendingFiringTimes
+                            .add(new SuperdenseTime(time, microstep));
                     return time;
                 }
             }
@@ -694,7 +698,8 @@ public class CatchUpComposite extends MirrorComposite {
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
-            fireOnlyWhenTriggered = new Parameter(this, "fireOnlyWhenTriggered");
+            fireOnlyWhenTriggered = new Parameter(this,
+                    "fireOnlyWhenTriggered");
             fireOnlyWhenTriggered.setTypeEquals(BaseType.BOOLEAN);
             fireOnlyWhenTriggered.setExpression("false");
         }

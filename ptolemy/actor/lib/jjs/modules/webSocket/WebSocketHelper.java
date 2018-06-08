@@ -101,7 +101,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 synchronized (WebSocketHelper.this) {
                     if (_webSocket != null) {
                         if (_wsIsOpen) {
-                            _webSocket.close((short)1000, "client is ending");
+                            _webSocket.close((short) 1000, "client is ending");
                             _wsIsOpen = false;
                         }
                         _webSocket = null;

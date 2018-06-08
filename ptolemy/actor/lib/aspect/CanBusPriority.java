@@ -54,6 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
+@Deprecated
 public class CanBusPriority extends Transformer {
 
     /** Construct an actor with the given container and name.

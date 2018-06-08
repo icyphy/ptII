@@ -650,12 +650,12 @@ public class Time implements Comparable {
         // Handle the default case efficiently and exactly.
         double resolution = director.getTimeResolution();
         if (resolution == 10E-10) {
-            return new Time(director,
-                    BigInteger.valueOf(milliseconds).multiply(BigInteger.valueOf(10000000)));
+            return new Time(director, BigInteger.valueOf(milliseconds)
+                    .multiply(BigInteger.valueOf(10000000)));
         }
         // Resolution in ms.
         double resolutionMs = resolution * 1000;
-        long multiple = Math.round(milliseconds/resolutionMs);
+        long multiple = Math.round(milliseconds / resolutionMs);
         return new Time(director, multiple);
     }
 

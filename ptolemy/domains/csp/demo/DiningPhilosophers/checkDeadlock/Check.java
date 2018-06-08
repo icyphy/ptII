@@ -94,13 +94,13 @@ public class Check {
             parser = new MoMLParser();
             _simpleSend = (InterfaceAutomaton) parser.parse(url, url);
         } else {
-            url = ConfigurationApplication.specToURL(base
-                    + "ConditionalSend.xml");
+            url = ConfigurationApplication
+                    .specToURL(base + "ConditionalSend.xml");
             parser = new MoMLParser();
             _send = (InterfaceAutomaton) parser.parse(url, url);
 
-            url = ConfigurationApplication.specToURL(base
-                    + "ConditionalBranchController.xml");
+            url = ConfigurationApplication
+                    .specToURL(base + "ConditionalBranchController.xml");
             parser = new MoMLParser();
             _controller = (InterfaceAutomaton) parser.parse(url, url);
         }
@@ -204,7 +204,7 @@ public class Check {
             check.go();
         } catch (Exception ex) {
             System.out
-            .println(ex.getClass().getName() + ": " + ex.getMessage());
+                    .println(ex.getClass().getName() + ": " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -497,8 +497,8 @@ public class Check {
 
             send.combineInternalTransitions();
 
-            System.out.println("Controller and two send, "
-                    + "after combining internals:");
+            System.out.println(
+                    "Controller and two send, " + "after combining internals:");
             System.out.println(send.getInfo());
         }
 

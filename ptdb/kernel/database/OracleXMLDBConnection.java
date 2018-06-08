@@ -2956,11 +2956,11 @@ public class OracleXMLDBConnection implements DBConnection {
         }
 
          *//**
-            * Return the hash code of the modelName as two models are equal if
-            * their model names are equal. So their has codes are also derived from
-            * model name.
-            * @return Hash code of the model name.
-            */
+             * Return the hash code of the modelName as two models are equal if
+             * their model names are equal. So their has codes are also derived from
+             * model name.
+             * @return Hash code of the model name.
+             */
         /*
         public int hashCode() {
          return _modelName.hashCode();

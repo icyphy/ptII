@@ -341,7 +341,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor
 
                             Director director = null;
                             if (actor instanceof Actor) {
-                                director = ((Actor) actor).getExecutiveDirector();
+                                director = ((Actor) actor)
+                                        .getExecutiveDirector();
                             } else {
                                 Nameable container = actor.getContainer();
 
