@@ -106,7 +106,7 @@ case `uname -s` in
         TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
-        usage=`timeout --help`
+        usage=`timeout --help 2>&1`
         # Check to see if --kill-after is supported
         grep kill-after $usage >& /dev/null
         status=$?
