@@ -1,6 +1,6 @@
 /* An actor that converts a SmoothToken (one that has a double value and an array of derivatives to a DoubleToken.
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,6 +52,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  when an actual token is sent.
 
  @author Thierry S. Nouidui, Christopher Brooks
+@version $Id$
+@since Ptolemy II 11.0
  @version $Id$
  @Pt.ProposedRating Green (thn)
  @Pt.AcceptedRating Red (thn)

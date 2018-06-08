@@ -62,7 +62,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Christopher Brooks.  Based on AccessorCodeGeneratorAdapter by Bert Rodiers
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Yellow (rodiers)
  * @Pt.AcceptedRating Yellow (rodiers)
  */

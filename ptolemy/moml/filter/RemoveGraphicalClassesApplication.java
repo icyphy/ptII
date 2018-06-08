@@ -1,6 +1,6 @@
 /* Remove Graphical Classes Application.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,7 @@ import ptolemy.util.StringUtilities;
 
  @author  Edward A. Lee, Christopher Hylands
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

@@ -43,6 +43,8 @@ import gnu.io.UnsupportedCommOperationException;
  * the IMU sensors.
  *
  * @author Hunter Massey
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @see SerialPortController
  * @see ReaderM

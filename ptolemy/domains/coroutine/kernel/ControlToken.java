@@ -36,7 +36,7 @@ import ptolemy.data.Token;
 /**
  * @author shaver
 @version $Id$
-@since Ptolemy II 10.0
+@since Ptolemy II 11.0
  *
  */
 public abstract class ControlToken extends Token {

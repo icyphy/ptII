@@ -1,6 +1,6 @@
 /* A simple sink actor that consumes and discards double input tokens.
 
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @see ptolemy.moml.filter.DiscardDoubles
  @author Christopher Brooks
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Yellow (cxh)
  */

@@ -50,7 +50,7 @@ Defines an initial value for the state and simulates the model from there.
 
 @author Ilge Akkaya
 @version $Id$
-@since Ptolemy II 10.1
+@since Ptolemy II 11.0
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */

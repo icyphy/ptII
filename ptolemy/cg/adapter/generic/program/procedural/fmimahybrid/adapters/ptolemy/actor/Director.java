@@ -1,6 +1,6 @@
 /* Code generator adapter for generating FMIMA code for Director.
 
- Copyright (c) 2005-2016 The Regents of the University of California.
+ Copyright (c) 2005-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -62,7 +62,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @see GenericCodeGenerator
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (mankit)
  * @Pt.AcceptedRating Red (mankit)
  */

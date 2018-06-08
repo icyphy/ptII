@@ -1,6 +1,6 @@
 /* Simple Java Test Program for JavaFX, used by the ClipPlayer CapeCode accessor.
 
-Copyright (c) 2002-2017 The Regents of the University of California.
+Copyright (c) 2002-2018 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -38,7 +38,7 @@ import javafx.scene.media.Media;
 
     @author Christopher Brooks.
     @version $Id: JAITest.java 61458 2011-07-11 19:54:07Z cxh $
-    @since Ptolemy II 2.1
+    @since Ptolemy II 11.0
     @Pt.ProposedRating Green (cxh)
     @Pt.AcceptedRating Red
 */

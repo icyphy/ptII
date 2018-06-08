@@ -40,6 +40,8 @@ import org.json.XML;
  * the service and the expected response from the service. No dialog
  * is implemented yet!!
  * @author Anne H. Ngu (angu@txstate.edu)
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

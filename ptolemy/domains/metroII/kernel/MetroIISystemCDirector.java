@@ -70,7 +70,7 @@ import ptolemy.util.StringBufferExec;
  * @author Liangpeng Guo
  * @version $Id: MetroIISystemCDirector.java 67896 2013-11-20 02:27:48Z
  *          hudson@moog.eecs.berkeley.edu $
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *

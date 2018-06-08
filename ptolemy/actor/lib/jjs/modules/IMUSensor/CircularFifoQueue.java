@@ -44,7 +44,7 @@ import java.util.Queue;
  * <p>
  * This queue prevents null objects from being added.
  *
- * @since 4.0
+ * @since Ptolemy II 11.0
  * @version $Id$
  */
 public class CircularFifoQueue<E> extends AbstractCollection<E>

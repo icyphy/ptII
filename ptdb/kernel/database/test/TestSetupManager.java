@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 2010-2013 The Regents of the University of California.
+@Copyright (c) 2010-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -53,7 +53,7 @@ import ptdb.kernel.database.OracleXMLDBConnection;
  *
  * @author Yousef Alsaeed
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (yalsaeed)
  * @Pt.AcceptedRating Red (yalsaeed)
  *

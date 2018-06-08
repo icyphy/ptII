@@ -2,7 +2,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 1995-2014 The Regents of the University of California.
+Copyright (c) 1995-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.StringAttribute;
  *
  @author Edward A. Lee, Christian Motika, Miro Spoenemann
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (cxh)
  @Pt.AcceptedRating Red (cxh)
  */

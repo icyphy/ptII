@@ -1,6 +1,6 @@
 /* Utility methods for KIELER connector implementations.
 
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,6 +49,8 @@ import ptolemy.kernel.util.NamedObj;
  * routing mechanisms.
  *
  * @author Ulf Rueegg
+@version $Id$
+@since Ptolemy II 11.0
  *
  */
 public final class KielerLayoutUtil {

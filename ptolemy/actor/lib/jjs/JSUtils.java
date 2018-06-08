@@ -36,6 +36,8 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  *  Java and JavaScript code through Nashorn.
  *
  * @author Marten Lohstroh
+@version $Id$
+@since Ptolemy II 11.0
  * @see ScriptObjectMirror
  */
 public class JSUtils {

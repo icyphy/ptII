@@ -1,6 +1,6 @@
 /* This class implements an analysis reporter for the HLA/CERTI framework.
 
-@Copyright (c) 2017 The Regents of the University of California.
+@Copyright (c) 2017-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -61,7 +61,7 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  @author Gilles Lasnier, Tarciana Cabral de Brito Guerra
  *  @version $Id: HlaReporter.java 214 2018-04-01 13:32:02Z j.cardoso $
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)

@@ -1,6 +1,6 @@
 /* Convert a date to a string.
 
- Copyright (c) 2014-2015 The Regents of the University of California.
+ Copyright (c) 2014-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Patricia Derler
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (pd)
  @Pt.AcceptedRating Red (pd)
  */

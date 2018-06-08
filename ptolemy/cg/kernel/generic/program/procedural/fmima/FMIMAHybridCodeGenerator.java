@@ -1,6 +1,6 @@
 /* Generate a Functional Mockup Interface Master Algorithm (FMIMA) description of a model.
 
-Copyright (c) 2014-2015 The Regents of the University of California.
+Copyright (c) 2014-2018 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -46,7 +46,7 @@ $PTII/bin/ptcg -generatorPackage ptolemy.cg.kernel.generic.program.procedural.fm
 * </pre>
 *  @author Christopher Brooks, Marten Lohstroh, Fabio Cremona
 *  @version $Id$
-*  @since Ptolemy II 10.0
+*  @since Ptolemy II 11.0
 *  @Pt.ProposedRating red (cxh)
 *  @Pt.AcceptedRating red (cxh)
 */

@@ -1,6 +1,6 @@
 /* A generative Explicit-Duration Hidden Markov Model.
 
-Copyright (c) 1998-2015 The Regents of the University of California.
+Copyright (c) 1998-2018 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ duration distributions.
 
  @author Ilge Akkaya
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (ilgea)
  @Pt.AcceptedRating
  */

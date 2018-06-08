@@ -1,5 +1,5 @@
 /** A test director that extends QSSDirector.
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  * calculations.
  * @author Thierry S. Nouidui and Edward A. Lee
  * @version $Id$
- * @since Ptolemy 11.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

@@ -1,6 +1,6 @@
 /* An interactive shell that reads and writes strings.
 
- @Copyright (c) 1998-2016 The Regents of the University of California.
+ @Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -81,7 +81,7 @@ import ptolemy.util.MessageHandler;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 1.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */

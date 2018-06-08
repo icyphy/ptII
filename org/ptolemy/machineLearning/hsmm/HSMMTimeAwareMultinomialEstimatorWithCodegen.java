@@ -1,7 +1,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 2015-2016 The Regents of the University of California.
+Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -71,7 +71,7 @@ import ptolemy.util.StringUtilities;
  *
  * @author Ilge Akkaya
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (ilgea)
  * @Pt.AcceptedRating Red (cxh)
  */

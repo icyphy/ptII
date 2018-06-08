@@ -35,6 +35,8 @@ package ptolemy.domains.wireless.lib.bluetooth;
  * This class defines all allowable Bluetooth Wired commands, that wil be parsed within the Bluetooth Device actor.
  *
  * @author Phillip Azar
+@version $Id$
+@since Ptolemy II 11.0
  *
  * @see BluetoothDevice
  */

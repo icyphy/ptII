@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 66816 2013-07-05 16:14:55Z glasnier $
 #
-# @Copyright (c) 2013-2017 The Regents of the University of California.
+# @Copyright (c) 2013-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

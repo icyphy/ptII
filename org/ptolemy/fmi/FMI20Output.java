@@ -1,6 +1,6 @@
 /* An Functional Mock-up Interface Derivative.
 
- Copyright (c) 2012-2015 The Regents of the University of California.
+ Copyright (c) 2012-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,7 +49,7 @@ import org.w3c.dom.Node;
  *
  * @author Thierry S. Nouidui
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

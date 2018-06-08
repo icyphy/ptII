@@ -1,6 +1,6 @@
 // Simple test model for testing for leaks in Manager.
 /*
-   Copyright (c) 2017 The Regents of the University of California.
+   Copyright (c) 2017-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -42,6 +42,8 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
  *  See https://projects.ecoinformatics.org/ecoinfo/issues/7190
  *
  *  @author Christpher Brooks, based on leak.java by Daniel Crawl
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public class ManagerLeak {

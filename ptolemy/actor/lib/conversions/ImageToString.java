@@ -1,6 +1,6 @@
 /* An actor that converts an AWTImage to a base-64 encoded String.
 
- @Copyright (c) 2003-2016 The Regents of the University of California.
+ @Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Marten Lohstroh
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */
