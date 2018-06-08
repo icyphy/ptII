@@ -44,15 +44,10 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	FileChooserQuery.java \
-	QueryApplet.java \
-	ShowRawDocumentApplet.java
-
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-	QueryApplet.htm \
-	ShowRawDocumentApplet.htm \
 	FileChooserQuery.java
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,9 +71,7 @@ install: all
 
 demos: demo
 demo:	all
-	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
 	CLASSPATH=$(CLASSPATH) java ptolemy.gui.demo.FileChooserQuery
-	CLASSPATH=$(CLASSPATH) appletviewer ShowRawDocumentApplet.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
