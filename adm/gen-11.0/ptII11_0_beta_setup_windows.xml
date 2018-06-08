@@ -390,9 +390,9 @@ The Ptiny pack is required.
 
 <!--MacOSInclude-->
 
-	    <!-- The next line gets substituted for the mac by the makefile. -->
+	    <!-- The next lines gets substituted for the mac by the makefile. -->
 	    <!-- Vergil.app -->
-
+            <!-- CapeCode.app-->
 
 	    <!-- Update this $PTII/mk/jnlp.mk
 		 # Copy the section below to /tmp/f0, then
