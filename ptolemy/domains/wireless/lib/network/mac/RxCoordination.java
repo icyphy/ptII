@@ -241,7 +241,8 @@ public class RxCoordination extends MACActorBase {
 
                             // except power control messages, all others are sent
                             // to the network layer
-                            if (payload_kind >= PCmin && payload_kind <= PCmax) {
+                            if (payload_kind >= PCmin
+                                    && payload_kind <= PCmax) {
                                 toPowerControl.send(0, payload);
                             } else {
                                 SinkRequest.send(0, payload);

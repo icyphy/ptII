@@ -53,14 +53,14 @@ public abstract class AbstractLayoutConfiguration extends Attribute {
 
     /** Available modes of user interaction. */
     public enum InteractionMode {
-        /** No user interaction: full automatic layout. */
-        None,
-        /** User positioning affects cycle detection. */
-        Cycles,
-        /** User positioning affects cycle detection and node layering. */
-        Columns,
-        /** User positioning affects cycle detection, node layering, and node order. */
-        Full;
+    /** No user interaction: full automatic layout. */
+    None,
+    /** User positioning affects cycle detection. */
+    Cycles,
+    /** User positioning affects cycle detection and node layering. */
+    Columns,
+    /** User positioning affects cycle detection, node layering, and node order. */
+    Full;
     }
 
     /**

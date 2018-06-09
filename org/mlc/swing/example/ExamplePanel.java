@@ -33,6 +33,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import org.mlc.swing.layout.LayoutFrame;
 
@@ -84,7 +85,7 @@ public class ExamplePanel extends javax.swing.JPanel {
         ExamplePanel examplePanel = new ExamplePanel();
 
         JFrame frame = new JFrame("Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new BorderLayout());
         frame.getContentPane().add(examplePanel, BorderLayout.CENTER);
         frame.setSize(400, 500);

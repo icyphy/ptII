@@ -197,9 +197,9 @@ public class EDF extends Director {
             _debug("EDF: released jobs: " + _jobs);
         }
 
-        if (_currentJob != null
-                && (currentTime.compareTo(_currentJob.getAbsoluteDeadline()) > 0 || currentTime
-                        .compareTo(_currentJob.getAbsoluteDeadline()) == 0
+        if (_currentJob != null && (currentTime
+                .compareTo(_currentJob.getAbsoluteDeadline()) > 0
+                || currentTime.compareTo(_currentJob.getAbsoluteDeadline()) == 0
                         && !_currentJob.getRemainingTime().isZero())) {
             if (_debugging) {
                 _debug("EDF: current job missed its deadline!");
@@ -234,8 +234,7 @@ public class EDF extends Director {
                 _timeCurrentJobStarted = currentTime;
             } else if (_currentJob != minimumDeadlineJob) {
                 if (_taskPlotEditorFactory.getTaskPlot() != null) {
-                    _taskPlotEditorFactory.getTaskPlot()
-                    .addExecution(
+                    _taskPlotEditorFactory.getTaskPlot().addExecution(
                             _timeCurrentJobStarted.getDoubleValue(),
                             currentTime.getDoubleValue(),
                             _currentJob.getTask());
@@ -250,7 +249,7 @@ public class EDF extends Director {
         if (_currentJob != null) {
             minNextTime = new Time(this, Math.min(minNextTime.getDoubleValue(),
                     currentTime.getDoubleValue()
-                    + _currentJob.getRemainingTime().getDoubleValue()));
+                            + _currentJob.getRemainingTime().getDoubleValue()));
         }
 
         if (currentTime.getDoubleValue() > _simulationEndTime) {
@@ -258,8 +257,8 @@ public class EDF extends Director {
         }
 
         if (_currentJob != null) {
-            _currentJob.executeFor(new Time(this, minNextTime.getLongValue()
-                    - currentTime.getLongValue()));
+            _currentJob.executeFor(new Time(this,
+                    minNextTime.getLongValue() - currentTime.getLongValue()));
         }
 
         // Advance time
@@ -323,8 +322,8 @@ public class EDF extends Director {
         }
         Job minDeadlineJob = _jobs.get(0);
         for (Job job : _jobs) {
-            if (minDeadlineJob.getAbsoluteDeadline().compareTo(
-                    job.getAbsoluteDeadline()) > 0) {
+            if (minDeadlineJob.getAbsoluteDeadline()
+                    .compareTo(job.getAbsoluteDeadline()) > 0) {
                 minDeadlineJob = job;
             }
         }

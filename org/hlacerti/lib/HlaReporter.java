@@ -41,7 +41,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import certi.rti.impl.CertiLogicalTime;
-
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;

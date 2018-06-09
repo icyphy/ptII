@@ -30,17 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.httpClient;
 
-import io.vertx.core.Handler;
-import io.vertx.core.MultiMap;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpClientRequest;
-import io.vertx.core.http.HttpClientResponse;
-import io.vertx.core.http.HttpMethod;
-import io.vertx.core.net.ProxyOptions;
-import io.vertx.core.net.ProxyType;
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -56,6 +45,16 @@ import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
+import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpMethod;
+import io.vertx.core.net.ProxyOptions;
+import io.vertx.core.net.ProxyType;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
@@ -273,7 +272,9 @@ public class HttpClientHelper extends VertxHelperBase {
                         + "See https://stackoverflow.com/questions/34110426/does-java-support-lets-encrypt-certificates/35454903#35454903: ";
             }
             final String finalMessage = message;
-            System.err.println("HttpClientHelper.java: Received an error for request " + _requestNumber + ": " + throwable);
+            System.err.println(
+                    "HttpClientHelper.java: Received an error for request "
+                            + _requestNumber + ": " + throwable);
             throwable.printStackTrace();
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
@@ -643,8 +644,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 int port = (int) urlSpec.get("port");
                 String protocol = (String) urlSpec.get("protocol");
                 client = _vertx.createHttpClient(new HttpClientOptions()
-                        .setDefaultHost(host)
-                        .setDefaultPort(port)
+                        .setDefaultHost(host).setDefaultPort(port)
                         .setKeepAlive((boolean) _options.get("keepAlive"))
                         // NOTE: We use the timeout parameter both for connect and response.
                         // Should these be different numbers?

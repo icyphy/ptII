@@ -221,14 +221,14 @@ public class PlotApplication extends PlotFrame {
     ////                         protected methods                 ////
     @Override
     protected void _about() {
-        JOptionPane.showMessageDialog(this, "PlotApplication class\n"
-                + "By: Edward A. Lee " + "and Christopher Brooks\n" + "Version "
-                + PlotBox.PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "For more information, see\n"
-                + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                + "Copyright (c) 1997-2014, "
-                + "The Regents of the University of California.",
+        JOptionPane.showMessageDialog(this,
+                "PlotApplication class\n" + "By: Edward A. Lee "
+                        + "and Christopher Brooks\n" + "Version "
+                        + PlotBox.PTPLOT_RELEASE + ", Build: $Id$\n\n"
+                        + "For more information, see\n"
+                        + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
+                        + "Copyright (c) 1997-2014, "
+                        + "The Regents of the University of California.",
                 "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -291,8 +291,8 @@ public class PlotApplication extends PlotFrame {
                 _test = true;
                 continue;
             } else if (arg.equals("-version")) {
-                System.out.println("Version " + PlotBox.PTPLOT_RELEASE
-                        + ", Build $Id$");
+                System.out.println(
+                        "Version " + PlotBox.PTPLOT_RELEASE + ", Build $Id$");
                 StringUtilities.exit(0);
                 continue;
             } else if (arg.equals("-width")) {

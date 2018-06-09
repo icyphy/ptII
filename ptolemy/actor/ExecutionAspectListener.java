@@ -52,12 +52,12 @@ public interface ExecutionAspectListener {
 
     /** Execution time event types. */
     public static enum ExecutionEventType {
-        /** Started the execution of an actor. */
-        START,
-        /** Stopped the execution of an actor. */
-        STOP,
-        /** Preempted the execution of an actor. */
-        PREEMPTED
+    /** Started the execution of an actor. */
+    START,
+    /** Stopped the execution of an actor. */
+    STOP,
+    /** Preempted the execution of an actor. */
+    PREEMPTED
     }
 
     /** Initialize listener.

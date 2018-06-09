@@ -44,8 +44,8 @@ public class MyPtolemnizer extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         StringToken inString = (StringToken) input.get(0);
         String regExp = expression.stringValue();
-        StringToken outToken = new StringToken(inString.stringValue()
-                .replaceAll(regExp, "pt"));
+        StringToken outToken = new StringToken(
+                inString.stringValue().replaceAll(regExp, "pt"));
         output.send(0, outToken);
     }
 

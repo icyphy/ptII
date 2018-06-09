@@ -40,6 +40,7 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -95,7 +96,7 @@ public class HomerMainFrame extends JFrame {
      */
     public HomerMainFrame(HomerApplication application) {
         setTitle("Homer");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds(_DEFAULT_BOUNDS, _DEFAULT_BOUNDS, _DEFAULT_FRAME_WIDTH,
                 _DEFAULT_FRAME_HEIGHT);
 

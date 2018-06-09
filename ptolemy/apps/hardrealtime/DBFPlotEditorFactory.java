@@ -90,7 +90,8 @@ public class DBFPlotEditorFactory extends EditorFactory {
                         "dbfPlotterEffigy");
                 schedulePlotEffigy.setPlot(_plot);
                 schedulePlotEffigy.setModel(this.getContainer());
-                schedulePlotEffigy.identifier.setExpression("Demand Bound Function");
+                schedulePlotEffigy.identifier
+                        .setExpression("Demand Bound Function");
                 _plotTableau = configuration
                         .createPrimaryTableau(schedulePlotEffigy);
                 _plot.setVisible(true);

@@ -1623,7 +1623,7 @@ public class JavaScript extends AbstractPlaceableActor
             int derivedLevel = parameter.getDerivedLevel();
             if (token != null && !parameter.isOverridden()
                     && (derivedLevel == Integer.MAX_VALUE
-                       || derivedLevel == 1)) {
+                            || derivedLevel == 1)) {
                 if (parameter.getAttribute("_JSON") != null
                         && !(token instanceof StringToken)) {
                     // Attempt to convert the token to a JSON string.
@@ -1906,7 +1906,7 @@ public class JavaScript extends AbstractPlaceableActor
             int derivedLevel = parameter.getDerivedLevel();
             if (value != null && !parameter.isOverridden()
                     && (derivedLevel == Integer.MAX_VALUE
-                       || derivedLevel == 1)) {
+                            || derivedLevel == 1)) {
 
                 // There is a specified value, and the parameter value
                 // has not been overridden.

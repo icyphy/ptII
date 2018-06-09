@@ -281,8 +281,7 @@ public class ExportModelJUnitTest {
                 // PtinyOS is probably not installed and if it is not installed,
                 // the loading the demos will report missing classes.
                 "ptolemy/actor/ptalon/demo/ptinyos",
-                "ptolemy/domains/ptinyos/demo",
-        };
+                "ptolemy/domains/ptinyos/demo", };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
                 return false;
@@ -295,11 +294,9 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = {
-            "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
-            "ptolemy/domains/ptinyos/demo",
-            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-            "SimplePassPointer", // Only works on 32-bit
+        String[] skip = { "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+                "ptolemy/domains/ptinyos/demo", "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+                "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -336,10 +333,10 @@ public class ExportModelJUnitTest {
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
 
-                          // If hlacerti models are hanging, see
-                          // AutoTests.delayIfNecessary() and consider
-                          // increasing the amount of delay time
-                          "org/hlacerti",
+                // If hlacerti models are hanging, see
+                // AutoTests.delayIfNecessary() and consider
+                // increasing the amount of delay time
+                "org/hlacerti",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
