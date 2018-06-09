@@ -301,6 +301,11 @@
                   targetdir="$INSTALL_PATH/edu/umich/eecs/april"/>
             <file src="../dists/ptII11.0.beta/jar_dist/org/json/json.jar"
                   targetdir="$INSTALL_PATH/org/json"/>
+
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/opencv/opencv.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/opencv"/>
+
+
             <file src="../dists/ptII11.0.beta/jar_dist/org/terraswarm/accessor/accessor.jar"
                   targetdir="$INSTALL_PATH/org/terraswarm/accessor"/>
             <file src="../dists/ptII11.0.beta/jar_dist/org/terraswarm/accessor/demo/demo.jar"
