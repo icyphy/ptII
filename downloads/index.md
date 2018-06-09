@@ -31,7 +31,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   </td>
   <td> 
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.beta.setup.mac.app.tar.gz">ptII11.0.beta.setup.mac.app.tar.gz</a>
-        (Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm">Notes for macOS</a>.
+        <br/>(Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm">Notes for macOS</a>.
   </td>
  </tr>
 
@@ -40,7 +40,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   <td> NA </td>
   <td>
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.beta.setup.linux.tar.gz">ptII11.0.beta.setup.linux.tar.gz</a>
-        (Untar, then invoke <code>java -jar ptII11.0.beta.setup.jar</code> </td>
+        <br/>(Untar, then invoke <code>java -jar ptII11.0.beta.setup.jar</code> </td>
  </tr>
 
  <tr>
@@ -69,7 +69,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   </td>
   <td>
        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.beta.src.zip">ptII11.0.beta.src.zip</a>
-        (<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
+       <br/>(<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
   </td>
  </tr>
 
@@ -80,7 +80,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   </td>
   <td>
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.beta.src.tar">ptII11.0.beta.src.tar</a>
-        (<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
+        <br/>(<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
   </td>
 
  </tr>
