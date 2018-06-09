@@ -107,8 +107,8 @@ case `uname -s` in
         ;;
     *)
         usage=`timeout --help 2>&1`
-        # Check to see if --kill-after is supported
-        grep kill-after $usage >& /dev/null
+        # Check to see if --kill-after is supported.
+        cat $usage | grep kill-after >& /dev/null
         status=$?
         if [ $status -eq 0 ]; then
             echo "timeout supports --kill-after"
