@@ -670,6 +670,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.beta/jar_dist/org/json/json.jar"
                   targetdir="$INSTALL_PATH/org/json"/>
 
+            <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/opencv/opencv.jar"
+                  targetdir="$INSTALL_PATH/org/ptolemy/opencv"/>
+
             <file src="../dists/ptII11.0.beta/jar_dist/org/ptolemy/optimization/optimization.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/optimization"/>
 
