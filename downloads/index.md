@@ -16,7 +16,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   <th> <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/">Ptolemy II 10.0.1</a>
                                                             <i>Production Quality</i>
   </th>
-  <th>Most Recent Nightly Build <i>Experimental, not tested by hand</i> </th>
+  <th> Most Recent <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis">Nightly Build</a> <i>Experimental, not tested by hand</i> </th>
  </tr>
 
  <tr>
