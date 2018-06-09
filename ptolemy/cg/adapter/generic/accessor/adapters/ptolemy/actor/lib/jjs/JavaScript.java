@@ -125,14 +125,16 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                 // However, the Node host has no idea what to do with "emptyRecord()",
                 // so we do the replacement here.
                 if (value.contains("emptyRecord()")) {
-                    System.out.println("ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java: "
-                                       + " parameter " + name + " contains 'emptyRecord()', "
-                                       + " so it is being replaced with '{}'.");
+                    System.out.println(
+                            "ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java: "
+                                    + " parameter " + name
+                                    + " contains 'emptyRecord()', "
+                                    + " so it is being replaced with '{}'.");
                     value = value.replace("emptyRecord()", "{}");
                 }
                 code.append(StringUtilities.sanitizeName(namedObj.getName())
                         + "." + setter + "('" + parameter.getName() + "', "
-                            + value + ");" + _eol);
+                        + value + ");" + _eol);
             }
         }
         return code;

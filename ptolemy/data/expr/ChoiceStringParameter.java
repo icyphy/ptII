@@ -90,11 +90,12 @@ public class ChoiceStringParameter extends StringParameter {
      *   to this container.
      */
     @Override
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == choices) {
             removeAllChoices();
-            String spec = ((StringParameter)choices).stringValue();
+            String spec = choices.stringValue();
             String[] choices = spec.split(",");
             for (int i = 0; i < choices.length; i++) {
                 addChoice(choices[i].trim());

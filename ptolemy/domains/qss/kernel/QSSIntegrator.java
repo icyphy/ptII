@@ -587,7 +587,8 @@ public class QSSIntegrator extends TypedAtomicActor
         String solverSpec = solver.stringValue().trim();
         if (solverSpec.equals("")) {
             // Figure out what order the solver is.
-            solverSpec = ((QSSDirector) director).QSSSolver.stringValue().trim();
+            solverSpec = ((QSSDirector) director).QSSSolver.stringValue()
+                    .trim();
         }
         _qssSolver = ((QSSDirector) director).newQSSSolver(solverSpec);
         if (((BooleanToken) exactInputs.getToken()).booleanValue()) {
@@ -909,7 +910,9 @@ public class QSSIntegrator extends TypedAtomicActor
         // a double[] internally for the value and its derivatives, despite
         // the redundancy with the field storing the value in DoubleToken.
         ModelPolynomial inputModel = _qssSolver.getInputVariableModel(0);
-        inputModel.coeffs[0] = derivatives != null && derivatives.length > 0 ? derivatives[0] : 0;
+        inputModel.coeffs[0] = derivatives != null && derivatives.length > 0
+                ? derivatives[0]
+                : 0;
         if (_maximumInputOrder > 0) {
             // Using QSS2 or QSS3, so derivatives of the input can be used.
             int factorial = 1;

@@ -115,6 +115,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Yellow (glasnier)
  */
+@Deprecated
 public class CanBus extends AtomicCommunicationAspect {
 
     /** Construct a CanBus with a name and a container.

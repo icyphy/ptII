@@ -353,7 +353,7 @@ public class NewComponentDialog extends JPanel {
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         NewComponentDialog dialog = new NewComponentDialog(frame);
 
         ComponentDef componentDef = new ComponentDef();

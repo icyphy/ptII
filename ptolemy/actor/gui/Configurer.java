@@ -346,7 +346,7 @@ public class Configurer extends JPanel implements CloseListener {
      *          decorated attributes should also be included.
      *  @return The visible attributes.
      */
-     private Set<Settable> _getVisibleSettables(final NamedObj object,
+    private Set<Settable> _getVisibleSettables(final NamedObj object,
             boolean addDecoratorAttributes) {
         Set<Settable> attributes = new HashSet<Settable>();
         Iterator<?> parameters = object.attributeList(Settable.class)

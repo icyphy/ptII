@@ -45,7 +45,6 @@ import java.util.logging.Logger;
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
-
 import hla.rti.ArrayIndexOutOfBounds;
 import hla.rti.AttributeHandleSet;
 import hla.rti.AttributeNotDefined;
@@ -93,7 +92,6 @@ import hla.rti.jlc.EncodingHelpers;
 import hla.rti.jlc.NullFederateAmbassador;
 import hla.rti.jlc.RtiFactory;
 import hla.rti.jlc.RtiFactoryFactory;
-
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -663,8 +661,10 @@ public class HlaManager extends AbstractInitializableAttribute
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
 
-            System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-            "createFederationExecution: FED file URL=" + fedFile.asFile().toURI().toURL());
+            System.out.println("Federate: " + _federateName + "- Federation: "
+                    + _federationName + " - "
+                    + "createFederationExecution: FED file URL="
+                    + fedFile.asFile().toURI().toURL());
 
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
@@ -674,8 +674,10 @@ public class HlaManager extends AbstractInitializableAttribute
         } catch (CouldNotOpenFED e) {
             // XXX: FIXME: only for debug purpose
             try {
-                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-                "createFederationExecution: CouldNotOpenFED exception: FED file URL=" + fedFile.asFile().toURI().toURL());
+                System.out.println("Federate: " + _federateName
+                        + "- Federation: " + _federationName + " - "
+                        + "createFederationExecution: CouldNotOpenFED exception: FED file URL="
+                        + fedFile.asFile().toURI().toURL());
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
             }
@@ -1078,7 +1080,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     + hp.getAttributeName() + ",uavTimeStamp="
                     + uavTimeStamp.getTime() + ",value=" + in.toString() + ")"
                     + " ptII_time=" + currentTime.toString() + " certi_time="
-                    + (CertiLogicalTime) _federateAmbassador.hlaLogicalTime);
+                    + _federateAmbassador.hlaLogicalTime);
         } catch (FederateNotExecutionMember e) {
             throw new IllegalActionException(this, e,
                     "FederateNotExecutionMember: " + e.getMessage());
@@ -1171,8 +1173,9 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_debugging) {
             _debug("wrapup() - Resign Federation execution");
         }
-        System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-        "wrapup() - Resign Federation execution");
+        System.out.println("Federate: " + _federateName + "- Federation: "
+                + _federationName + " - "
+                + "wrapup() - Resign Federation execution");
 
         boolean canDestroyRtig = false;
         while (!canDestroyRtig) {
@@ -1189,15 +1192,18 @@ public class HlaManager extends AbstractInitializableAttribute
                             + "Destroy Federation execution - no fail");
                 }
 
-                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-                        "wrapup() - Destroy Federation execution - canDestroyRtig=" + canDestroyRtig);
+                System.out.println("Federate: " + _federateName
+                        + "- Federation: " + _federationName + " - "
+                        + "wrapup() - Destroy Federation execution - canDestroyRtig="
+                        + canDestroyRtig);
 
             } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
                     _debug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
-                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-                        "wrapup() - Exception: FederatesCurrentlyJoined");
+                System.out.println("Federate: " + _federateName
+                        + "- Federation: " + _federationName + " - "
+                        + "wrapup() - Exception: FederatesCurrentlyJoined");
 
             } catch (FederationExecutionDoesNotExist e) {
                 // No more federation.
@@ -1206,8 +1212,10 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
                 canDestroyRtig = true;
 
-                System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-                        "wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig=" + canDestroyRtig);
+                System.out.println("Federate: " + _federateName
+                        + "- Federation: " + _federationName + " - "
+                        + "wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig="
+                        + canDestroyRtig);
 
             } catch (RTIinternalError e) {
                 throw new IllegalActionException(this, e,
@@ -1221,12 +1229,13 @@ public class HlaManager extends AbstractInitializableAttribute
         // Terminate RTIG subprocess.
         if (_certiRtig != null) {
             if (_debugging) {
-                _debug("wrapup() - " + "Try to destroy RTIG process (if authorized by the system)");
+                _debug("wrapup() - "
+                        + "Try to destroy RTIG process (if authorized by the system)");
             }
-            System.out.println("Federate: " + _federateName + "- Federation: " + _federationName + " - " +
-            "wrapup() - " + "Try to destroy RTIG process (if authorized by the system)");
+            System.out.println("Federate: " + _federateName + "- Federation: "
+                    + _federationName + " - " + "wrapup() - "
+                    + "Try to destroy RTIG process (if authorized by the system)");
             _certiRtig.terminateProcess();
-
 
         }
 
@@ -1394,7 +1403,7 @@ public class HlaManager extends AbstractInitializableAttribute
             } // algo3: 5: end while
 
             // algo3: 6: h <- h''    => Update HLA time
-            _federateAmbassador.hlaLogicalTime = (CertiLogicalTime) _federateAmbassador.grantedHlaLogicalTime;
+            _federateAmbassador.hlaLogicalTime = _federateAmbassador.grantedHlaLogicalTime;
 
             // algo3: 7: if receivedRAV then
             if (_federateAmbassador.hasReceivedRAV) {
@@ -2465,7 +2474,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             // Note: Sometimes a received RAV value is different than the UAV value sent.
                             // This could come from the decodeHlaValue and encodeHlaValue CERTI methods.
                             value = MessageProcessing.decodeHlaValue(hs,
-                                    (BaseType) _getTypeFromTab(tObj),
+                                    _getTypeFromTab(tObj),
                                     theAttributes.getValue(i));
 
                             te = new HlaTimedEvent(ts, new Object[] {
@@ -2501,7 +2510,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         throw new FederateInternalError(
                                 "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds: "
-                                + e.getMessage());
+                                        + e.getMessage());
                     } catch (IllegalActionException e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
                         //System.out.println(
@@ -2510,7 +2519,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         throw new FederateInternalError(
                                 "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException: "
-                                + e.getMessage());
+                                        + e.getMessage());
                     }
                 }
             }
@@ -2579,7 +2588,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     // difficult to test this cas, we raise an exception.
                     throw new FederateInternalError(
                             "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
-                            + "found an instance class already registered: " + someName);
+                                    + "found an instance class already registered: "
+                                    + someName);
 
                 } else {
                     _discoverObjectInstanceMap.put(objectInstanceId, someName);
@@ -2622,7 +2632,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     } catch (IllegalActionException e) {
                         throw new FederateInternalError(
                                 "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
-                                + "cannot retrieve HlaSubscriber actor class instance name.");
+                                        + "cannot retrieve HlaSubscriber actor class instance name.");
                     }
                 }
             }
@@ -2679,7 +2689,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
 
-            grantedHlaLogicalTime = (CertiLogicalTime) theTime;
+            grantedHlaLogicalTime = theTime;
             timeAdvanceGrant = true;
 
             // HLA Reporter support.

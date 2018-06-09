@@ -207,8 +207,7 @@ public class TimedPlotter extends Plotter implements TimedActor {
                     derivatives = null;
                 }
                 plot.addPoint(i + offset, currentTimeValue,
-                        currentToken.doubleValue(),
-                        derivatives,
+                        currentToken.doubleValue(), derivatives,
                         _connected.get(i));
                 if (disconnectOnAbsent) {
                     _connected.set(i, true);

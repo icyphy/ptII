@@ -306,7 +306,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
                             if (port.isOutput()) {
                                 NamedObj container = port.getContainer();
                                 if (container instanceof Actor) {
-                                    Director director = ((Actor)container).getDirector();
+                                    Director director = ((Actor) container)
+                                            .getDirector();
                                     director.transferOutputs(port);
                                 }
                             }
@@ -402,7 +403,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         if (name == null) {
             throw new IllegalActionException(this,
                     "No communication input port has been specified for "
-                    + receiver.getContainer().getFullName());
+                            + receiver.getContainer().getFullName());
         }
 
         CommunicationRequestPort port = (CommunicationRequestPort) getEntity(
@@ -419,7 +420,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         if (token != null) {
             RecordToken recordToken = new RecordToken(
                     new String[] { "receiver", "token", "sender" },
-                    new Token[] { new ObjectToken(receiver), token, new ObjectToken(source) });
+                    new Token[] { new ObjectToken(receiver), token,
+                            new ObjectToken(source) });
             List<Token> tokens = _tokens.get(port);
             if (tokens == null) {
                 tokens = new ArrayList<Token>();
