@@ -1824,10 +1824,18 @@ EOF6
 	   *) Darwin=no;    
            esac
 	   if [ "${Darwin}" = "yes" ]; then
-	       if [ -z "${JAVA_HOME}" -o ! -d "${JAVA_HOME}" ]; then
-		   echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
-		   echo "   not setting up the JVM for the app."
-               else
+               if [ -z "${JAVA_HOME}" -o ! -d "${JAVA_HOME}" ]; then
+	           echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
+	           echo "   not setting up the JVM for the app."
+               fi
+               if [ ! -d "${JAVA_HOME}/jre/COPYRIGHT" ]; then
+                   echo "$0: ${JAVA_HOME}/jre/COPYRIGHT does not exist, perhaps you are using Java 10?"
+                   echo "The Java 10 JDK does not include a JRE that is easy to ship separately, so if you do 'export TRAVIS=true' and rerun,"
+                   echo "then a Java 8 JVM will be downloaded.  You may need to remove $MACAPP_APP before rerunning."
+               fi
+           fi        
+           
+	   if [ "${Darwin}" = "yes" -a -d "${JAVA_HOME}/jre/COPYRIGHT" ]; then
 		   # Copy the jvm
 		   ContentsDirectory=`dirname "${JAVA_HOME}"`
 		   jdkVersionDirectory=`dirname ${ContentsDirectory}`
@@ -1867,12 +1875,25 @@ EOF6
                            fi
                        fi
 
+
+		       # Java Advance Imaging
+                       JRE_JAI_DIR="$PTII/vendors/jai-1_1_2_01"
+                       if [ -f "$JRE_JAI_DIR/COPYRIGHT-jai.txt" ]; then
+                           cp $JRE_JAI_DIR/*.txt $jreApp
+                           cp $JRE_JAI_DIR/lib $jreApp/lib/ext
+                       fi
+
 		       # Java Media Framework (JMF)
+                       JRE_JMF_DIR="$PTII/vendors/JMF-2.1.1e"
 		       files="customizer.jar jmf.jar mediaplayer.jar multiplayer.jar"
 		       for file in $files
 		       do
 		           if [ -f /Library/Java/Extensions/$file ]; then
 			       cp /Library/Java/Extensions/$file $jreApp/lib/ext/
+                           else
+                               if [ -f "$JRE_JMF_DIR"/lib/$file ]; then
+                                   cp "$JRE_JMF_DIR"/lib/$file $jreApp/lib/ext/
+                               fi
                            fi
                        done
 
@@ -1888,8 +1909,9 @@ EOF6
 		       #fi
 		       #cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
                    fi
-	       fi
            else
+               # If we are not running under MacOS or we are running under Mac OS with Java 10, then install the prebuilt JVM.
+
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
 	       MacJVMTar="${PTII}/adm/gen-11.0/MacJVM.tar.gz"
 	       if [ -f "$MacJVMTar" ]; then
