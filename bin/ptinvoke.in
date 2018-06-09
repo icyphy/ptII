@@ -1959,9 +1959,8 @@ EOF8
                    # Temporarily always download MacJVM.tar.gz so that we can update the cache.
                    
 		   #if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
+
                    if [ "$TRAVIS" = "true" ]; then
-
-
                        if [ ! -d $INSTALLER_SRCS ]; then
                            mkdir -p $INSTALLER_SRCS
                        fi
@@ -1970,7 +1969,18 @@ EOF8
                    fi
 		   if [ -f "$MacJVMTar" ]; then
 		       echo "Untaring $MacJVMTar in $PTII/ now: `date`"
-		       (cd $PTII/; tar -xf "$MacJVMTar")
+		       (cd $PTII/; tar -zxf "$MacJVMTar")
+
+                       if [ ! -d $PTII/jdk ]; then
+                           echo "$0: untar of $MacJVMTar failed, under Travis, perhaps the cache is corrupt? Downloading again."
+                           wget --quiet -O $MacJVMTar https://ptolemy.berkeley.edu/ptolemyII/MacJVM.tar.gz
+		           (cd $PTII/; tar -zxf "$MacJVMTar")
+                       fi
+                       if [ -f $PTII/jdk/README-PTOLEMY.txt ]; then
+                           echo "$0: Installation of $PTII/jdk succeeded."
+                       else
+                           echo "$0: $PTII/jdk/README-ptolemy.txt does not exist? Installation of $PTII/jdk failed."
+                       fi
 		   else
 		       echo "$0: Could not find MacJVMTar in $MacJVMTar."
                        echo "TRAVIS = $TRAVIS. To download the MacJVM, try 'export TRAVIS=true' and rerun makeapp."
