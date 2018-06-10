@@ -48,7 +48,7 @@ $PTII/bin/ant
 
 ## See also
 
-* [Using Eclipse to develop Ptolemy II $PTII/doc/eclipse/index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm)
+* [Using Eclipse to develop Ptolemy II, $PTII/doc/eclipse/index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm)
 * [Using Ant to build Ptolemy II](https://cdn.rawgit.com/icyphy/ptII/master/doc/coding/ant.htm)
 
 The above two instructions are in the Ptolemy II tree, pulled from the repository via [RawGit](https://rawgit.com). For example, the Eclipse instructions are in the tree at  $PTII/doc/eclipse/index.htm translate to URL https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm.
