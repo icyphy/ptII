@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-# ptII Reports
+# PtII Reports
 * See [https://icyphy.github.io/ptII-test/reports](https://icyphy.github.io/ptII-test/)
 
 ---
