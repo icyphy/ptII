@@ -330,6 +330,9 @@ function ClientRequest(options, responseCallback) {
 
     this.helper = HttpClientHelper.getOrCreateHelper(actor, this);
     this.options = options;
+    
+    // console.log('******* Options:');
+    // console.log(util.inspect(options));
 }
 util.inherits(ClientRequest, EventEmitter);
 exports.ClientRequest = ClientRequest;
@@ -370,7 +373,7 @@ ClientRequest.prototype.write = function (data, encoding) {
 ClientRequest.prototype._handleError = function (message) {
     // There may be no registered error event handler.
     try {
-        this.emit('error', message);
+        this.emit('error', new Error(message));
     } catch (err) {
         error(message);
     }
