@@ -333,31 +333,31 @@
 
   <!-- Tests of the export demos -->
   <patternset id="test.export1.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
   </patternset>
 
   <patternset id="test.export2.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch2.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch2.java" />
   </patternset>
 
   <patternset id="test.export3.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java" />
   </patternset>
 
   <patternset id="test.export4.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch4.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch4.java" />
   </patternset>
 
   <patternset id="test.export5.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch5.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch5.java" />
   </patternset>
 
   <patternset id="test.export6.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch6.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch6.java" />
   </patternset>
 
   <patternset id="test.export7.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch7.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch7.java" />
   </patternset>
   
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->

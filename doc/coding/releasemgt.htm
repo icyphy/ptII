@@ -385,8 +385,8 @@
 	  make chkpackagehtml > /tmp/s
 	  cd $PTII
 	  $PTII/adm/bin/mkpackagehtml `cat /tmp/s`
-	  svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
-	  svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	  git add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	  git commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
 	</pre>
 
       <li> Concatenate all the javadoc files in to one file and run
