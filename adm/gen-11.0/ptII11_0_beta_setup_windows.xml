@@ -35,10 +35,6 @@
 	<name>startConfigure</name>
 	<value>true</value>
       </condition>
-      <condition type="variable" id="startPtiny">
-	<name>startPtiny</name>
-	<value>true</value>
-      </condition>
       <condition type="variable" id="startVergil">
 	<name>startVergil</name>
 	<value>true</value>
@@ -49,9 +45,6 @@
       </condition> 
       <condition type="packselection" id="fullPackSelected">
         <name>Full</name>
-      </condition> 
-      <condition type="packselection" id="ptinyPackSelected">
-        <name>Ptiny</name>
       </condition> 
 
       <condition type="java" id="showShortCutPanel">
@@ -132,8 +125,7 @@
         <panel classname="ShortcutPanel" condition="showShortCutPanel"/>
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
  	<panel classname="UserInputPanel" condition="@fullPackSelected&amp;&amp;!capeCodePackSelected" id="startApplicationPanelFull"/>
- 	<panel classname="UserInputPanel" condition="@ptinyPackSelected&amp;&amp;!capeCodePackSelected&amp;&amp;!fullPackSelected" id="startApplicationPanelPtiny"/>
-        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startPtiny|startVergil"/>
+        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
         <panel classname="FinishPanel"/>
     </panels>
@@ -143,10 +135,10 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="Ptiny" required="yes">
-            <description>Ptiny: The common domains: Continuous, DE, DDF, HDF, Modal, PN, Rendezvous, SDF and SR.
-The Ptiny pack is required. 
-</description>
+        <pack name="Full" required="no">
+            <description>All of the domains, CapeCode, HyVisual and VisualSense.</description>
+
+
             <file src="../dists/ptII11.0.beta/README.md" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.beta/copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.beta/copyright.txt" targetdir="$INSTALL_PATH"/>
@@ -368,9 +360,6 @@ The Ptiny pack is required.
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
-        </pack>
-        <pack name="Full" required="no">
-            <description>All of the domains, HyVisual and VisualSense.</description>
 <!--/MacOSInclude-->
             <file src="../dists/ptII11.0.beta/hyvisual.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.beta/doc/img/hyvisual.ico"
@@ -850,7 +839,7 @@ The Ptiny pack is required.
         </pack>
 
         <pack name="Docs" required="no">
-            <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
+            <description>The documentation including user documentation and Java documentation.</description>
 <!--/MacOSInclude-->
             <file src="../dists/ptII11.0.beta/ptbook.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.beta/doc/img/pdf.ico" targetdir="$INSTALL_PATH/doc/img/"/>
