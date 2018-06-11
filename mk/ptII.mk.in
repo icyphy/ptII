@@ -634,6 +634,9 @@ PTGMP_LIB =	@PTGMP_LIB@
 # Used in domains/makefile.
 PTGRDOMAIN_JAR =	@PTGRDOMAIN_JAR@
 
+# The full path (ptolemy/domains/gr/gr.jar) to the gr.jar file.  Used in mk/jnlp.mk
+PTGRDOMAIN_JAR_FULL=	@PTGRDOMAIN_JAR_FULL@
+
 # Ptolemy II packages that use the Java 3D facility
 # PTGR_PACKAGES is used in ptII/doc/makefile
 PTGR_PACKAGES =		@PTGR_PACKAGES@
