@@ -366,9 +366,9 @@ if [ "$PTJAVA3D_DIR" = "gr" ]; then
     PTJOGL_DIR=@PTJOGL_DIR@
     if [ ! -z "$PTJOGL_DIR" ]; then
         if [ "$DYLD_LIBRARY_PATH" != "" ]; then
-            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/natives/macosx-universal:${DYLD_LIBRARY_PATH}"
         else
-            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/natives/macosx-universal"
         fi
     fi
 fi
