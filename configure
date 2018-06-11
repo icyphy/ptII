@@ -795,6 +795,7 @@ PTHOMER_DIR
 PTHLACERTI_PACKAGES
 PTHLACERTI_DIR
 PTGR_PACKAGES
+PTGRDOMAIN_JAR_FULL
 PTGRDOMAIN_JAR
 PTGMP_LIB
 PTGMP_LD_FLAGS
@@ -10969,6 +10970,9 @@ PTJAVA3D_DIR=
 # Used in domains/makefile
 PTGRDOMAIN_JAR=
 
+# The full path (ptolemy/domains/gr/gr.jar) to the gr.jar file.  Used in mk/jnlp.mk
+PTGRDOMAIN_JAR_FULL=
+
 # We only need to look for Java3D if the gr domain is present
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
@@ -11172,6 +11176,7 @@ $as_echo "$as_me: WARNING: Could not find the Jogl directory.
 
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
+       PTGRDOMAIN_JAR_FULL=ptolemy/domains/gr/gr.jar
        # PTGR_PACKAGES is used in ptII/doc/makefile
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
@@ -15334,6 +15339,9 @@ fi
 
 # Name of the jar file that includes the GR domain if Java 3D was found.
 # Used in domains/makefile.
+
+
+# The full path (ptolemy/domains/gr/gr.jar) to the gr.jar file.  Used in mk/jnlp.mk
 
 
 # Ptolemy II packages that use the Java 3D facility
