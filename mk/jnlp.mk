@@ -375,7 +375,8 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/domains/atc/atc.jar \
 	ptolemy/domains/atc/kernel/kernel.jar \
 	ptolemy/domains/fmima/fmima.jar \
-	ptolemy/domains/gr/gr.jar \
+	$(PTGRDOMAIN_JAR_FULL) \
+	$(JAVA3D_JARS) \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
@@ -486,7 +487,8 @@ HYBRID_SYSTEMS_ONLY0_JNLP_JARS = \
 	doc/codeDocHyVisual.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/de/de.jar \
-	ptolemy/domains/gr/gr.jar \
+	$(PTGRDOMAIN_JAR_FULL) \
+	$(JAVA3D_JARS) \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
@@ -771,6 +773,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/dt/doc/doc.jar \
 	ptolemy/domains/giotto/demo/demo.jar \
 	ptolemy/domains/giotto/doc/doc.jar \
+	$(PTGRDOMAIN_JAR_FULL) \
+	$(JAVA3D_JARS) \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
 	ptolemy/domains/petrinet/demo/demo.jar \
@@ -1650,7 +1654,8 @@ APPLET_DOMAIN_JARS = \
 	ptolemy/domains/de/de.jar \
 	ptolemy/domains/dt/dt.jar \
 	ptolemy/domains/giotto/giotto.jar \
-	ptolemy/domains/gr/gr.jar \
+	$(PTGRDOMAIN_JAR_FULL) \
+	$(JAVA3D_JARS) \
 	ptolemy/domains/hdf/hdf.jar \
 	ptolemy/domains/modal/modal.jar \
 	ptolemy/domains/pn/pn.jar \
