@@ -1,6 +1,6 @@
 /* A helper for a web socket server.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -223,7 +223,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
                 });
                 request.exceptionHandler(throwable -> {
                     // What to do here?
-                    _actor.log("*** Error handling post request to: " + request.absoluteURI());
+                    _actor.log("*** Error handling post request to: "
+                            + request.absoluteURI());
                     _actor.log("*** Error is: " + throwable);
                 });
             });
@@ -241,7 +242,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     HttpServerRequest request = routingContext.request();
                     request.exceptionHandler(throwable -> {
                         // What to do here?
-                        _actor.log("*** Error handling get request to: " + request.absoluteURI());
+                        _actor.log("*** Error handling get request to: "
+                                + request.absoluteURI());
                         _actor.log("*** Error is: " + throwable);
                     });
 
@@ -263,10 +265,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
                     }
                 });
             });
-            
+
             router.exceptionHandler(throwable -> {
                 // What to do here?
-                _actor.log("*** Router error in WebSocket server: " + throwable);
+                _actor.log(
+                        "*** Router error in WebSocket server: " + throwable);
             });
 
             _server.requestHandler(router::accept);

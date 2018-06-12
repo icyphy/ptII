@@ -18,25 +18,10 @@
 	copy <code>.classpath.default</code> to <code>.classpath</code>.
 	This choice is the simpler choice, but might exclude optional
 	third party packages.
-        <br/>
-        If you are working with accessors, then only choose this option if you have already checked out accessors repo, see:
-        <a href="noEclipseSVN.htm">Eclipse is unaware of the version control aspects of the Ptolemy II project, use the shell version of Subversion to update the tree.</a>.
       </li>
       <li> Run <code>./configure</code>.  This choice is more complex, but this choice will include
 	optional third party software that is already installed on your
 	machine.
-
-                <br/>If you checked out the ptII svn repo using read/write
-        access and you have an EECS LDAP account on
-        repo.eecs.berkeley.edu, then running <code>./configure</code>
-        or reloading an accessor will check out the accessors repo for
-        you.
-
-        <br/>If you checked out the ptII svn repo using
-        read/write access and you have an external account name (an
-        account that is an email address) on repo.eecs.berkeley.edu,
-        then you must check out the accessors repo before running
-        configure.
       </li>
     </ol>
 
@@ -45,7 +30,7 @@
 	Choose <b>one</b> of the options below.
 
         <p>If you intend to use CapeCode for work with accessors, then
-        you must install Cygwin so that the svn binary is present.
+        you must install Cygwin so that the git binary is present.
         Installing Cygwin is the second option.</p>
 
 	<h4>A. Copy .classpath to .classpath.default</h4>
@@ -53,13 +38,8 @@
 	  <ol>
 	    <li>In the Windows file browser, find the Ptolemy II source distribution,
 	      <br/>If you installed from the installer, the Ptolemy source distribution will be at  <code>c:\Ptolemy\ptII11.devel</code>.
-	      <br/>If you downloaded Ptolemy II via Subversion, then the Ptolemy II source distribution will be at 
-	      <dl>
-		<dt>Windows 7:</dt>
-		<dd><code>/Users/<i>yourlogin</i>/workspace/ptII</code></dd>
-		<dt>Older versions of Windows:</dt>
-		<dd><code>c:/Documents and Settings/<i>yourlogin</i>/Documents/workspace/ptII</code></dd>
-	      </dl>
+	      <br/>If you downloaded Ptolemy II via Eclipse, then the Ptolemy II source distribution may be at 
+	      <br/><code>/Users/<i>yourlogin</i>/workspace/ptII</code>
 	    <li>Right click on <code>.classpath</code> and select delete.</li>
 	    <li>Right click on <code>.classpath.default</code>, select copy.</li>
 	    <li>Right click on the background of the file browswer window and select paste and paste a copy of the file.
@@ -68,13 +48,9 @@
 	    <li>Right click on the copy, select rename and rename the file
 	      to <code>.classpath.default</code>.
 
-	      <br/>Windows 7 users:  If you get a message "You must type a file name",
+	      <br/>If you get a message "You must type a file name",
 	      then rename the file to <code>.classpath.</code> with a
 	      trailing dot.  The "operating system" will delete the trailing dot.
-
-	      <br/>Windows XP users:  Open the <code>.classpath.default</code> file with an
-	      editor such as Wordpad, Notepad or any other editor and then save the file as
-	      <code>.classpath</code>.  Or, use a DOS prompt.
 
 	      </li>
 
@@ -95,7 +71,7 @@
 	directory.</p>
 
         <p>In addition if you intend to use CapeCode, the IoT
-        framework, you will need Subversion installed, which is best done using Cygwin.</p>
+        framework, you will need Git installed, which is best done using Cygwin.</p>
         
 	<p>The procedure below will modify the <code>.classpath</code> file
 	  that is provided in the version control repository to customize it

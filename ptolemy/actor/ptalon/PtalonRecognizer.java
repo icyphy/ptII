@@ -325,7 +325,7 @@ public class PtalonRecognizer extends antlr.LLkParser
      * <p>#(EXPRESSION)
      * <p>where the text of the token EXPRESSION is the expression
      * inside the XML-like block.
-     * 
+     *
      */
     public final void expression()
             throws RecognitionException, TokenStreamException {
@@ -363,9 +363,9 @@ public class PtalonRecognizer extends antlr.LLkParser
      * Parse for one of:
      * <p>parameter <i>ID</i>
      * <p>actor <i>ID</i>
-     * <p>where parameterType is either "parameter", "intparameter", or 
+     * <p>where parameterType is either "parameter", "intparameter", or
      * "outparameter".
-     * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or 
+     * Generate corresponding tree #(PARAMETER ID), #(INTPARAMETER ID), or
      * #(BOOLPARAMETER ID).
      */
     public final void parameter_declaration()

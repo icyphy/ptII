@@ -1,6 +1,6 @@
 /* A top-level dialog window for configuring the ports of an entity.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -1322,10 +1322,10 @@ public class PortConfigurerDialog extends PtolemyDialog
      A validating JTextField table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-    
+
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-    
+
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1
@@ -1524,10 +1524,10 @@ public class PortConfigurerDialog extends PtolemyDialog
      A validating ComboBox table cell editor for use with JTable.
      To determine if a selection is valid, this class uses the
      CellValidator class.
-    
+
      <p>Based on IntegerEditor from
      http://download.oracle.com/javase/tutorial/uiswing/examples/components/TableFTFEditDemoProject/src/components/IntegerEditor.java
-    
+
      @author Christopher Brooks, Sun Microsystems
      @version $Id$
      @since Ptolemy II 5.1

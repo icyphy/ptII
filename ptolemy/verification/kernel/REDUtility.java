@@ -1,6 +1,6 @@
 /* An utility function for traversing the system and generate files for model checking using Regional Decision Diagram (RED).
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -171,7 +171,7 @@ public class REDUtility {
      * @param bufferSizeDelayActor The buffer size of the TimedDelay actor.
      * @return A Communicating Timed Automata system description of the original
      *         system
-    
+
      * @exception CloneNotSupportedException If thrown while
      * generating an equivalent system without hierarchy.
      * @exception IllegalActionException If there is a problem generating the RED description.

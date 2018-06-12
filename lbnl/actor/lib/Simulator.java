@@ -1014,7 +1014,7 @@ public class Simulator extends SDFTransformer {
     protected final static String LS = System.getProperty("line.separator");
 
     /** Time of token that will be written to the client.
-    
+
         This is equal to the Ptolemy time minus one time step, because at time t_k,
         a client gets the output of other clients at t_{k-1}, which allows the client to
         compute the states and outputs at t_k

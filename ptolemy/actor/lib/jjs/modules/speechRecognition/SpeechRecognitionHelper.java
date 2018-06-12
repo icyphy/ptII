@@ -1,6 +1,6 @@
 /* A helper class for the device discovery accessor.
 
-   Copyright (c) 2017 The Regents of the University of California.
+   Copyright (c) 2017-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -30,15 +30,11 @@ package ptolemy.actor.lib.jjs.modules.speechRecognition;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
-
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.logging.Logger;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;
@@ -93,7 +89,8 @@ public class SpeechRecognitionHelper extends HelperBase {
      * @param actor  The PtolemyII actor associated with this helper.
      * @param helping  The Javascript object this helper is helping.
      */
-    public SpeechRecognitionHelper(Object actor, ScriptObjectMirror helping, ScriptObjectMirror options) throws IllegalActionException {
+    public SpeechRecognitionHelper(Object actor, ScriptObjectMirror helping,
+            ScriptObjectMirror options) throws IllegalActionException {
         super(actor, helping);
 
         if (options != null) {
@@ -107,39 +104,56 @@ public class SpeechRecognitionHelper extends HelperBase {
         cmRootLogger.setLevel(java.util.logging.Level.OFF);
         String conFile = System.getProperty("java.util.logging.config.file");
         if (conFile == null) {
-            System.setProperty("java.util.logging.config.file", "ignoreAllSphinx4LoggingOutput");
+            System.setProperty("java.util.logging.config.file",
+                    "ignoreAllSphinx4LoggingOutput");
         }
 
         // Load speech recognizer by reflection since .jar files are not included with Ptolemy due to size.
 
         try {
-            File jarFile = new File("vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar");
-            URL urls[] = { new URL("jar:file:" + jarFile.getCanonicalPath() + "!/") };
+            File jarFile = new File(
+                    "vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar");
+            URL urls[] = {
+                    new URL("jar:file:" + jarFile.getCanonicalPath() + "!/") };
 
             URLClassLoader loader = URLClassLoader.newInstance(urls);
-            _configurationClass = loader.loadClass("edu.cmu.sphinx.api.Configuration");
-            _recognizerClass = loader.loadClass("edu.cmu.sphinx.api.LiveSpeechRecognizer");
+            _configurationClass = loader
+                    .loadClass("edu.cmu.sphinx.api.Configuration");
+            _recognizerClass = loader
+                    .loadClass("edu.cmu.sphinx.api.LiveSpeechRecognizer");
 
             try {
-                _configuration = _configurationClass.getConstructor().newInstance();
+                _configuration = _configurationClass.getConstructor()
+                        .newInstance();
 
-                Class<?>[] booleanType = {boolean.class};
-                Class<?>[] stringType = {String.class};
-                Class<?>[] configurationType = {_configuration.getClass()};
+                Class<?>[] booleanType = { boolean.class };
+                Class<?>[] stringType = { String.class };
+                Class<?>[] configurationType = { _configuration.getClass() };
 
-                _configuration.getClass().getMethod("setAcousticModelPath", stringType).invoke(_configuration, _acousticModel);
-                _configuration.getClass().getMethod("setDictionaryPath", stringType).invoke(_configuration, _dictionaryPath);
-                _configuration.getClass().getMethod("setLanguageModelPath", stringType).invoke(_configuration, _languageModelPath);
-                _configuration.getClass().getMethod("setUseGrammar", booleanType).invoke(_configuration, false);
+                _configuration.getClass()
+                        .getMethod("setAcousticModelPath", stringType)
+                        .invoke(_configuration, _acousticModel);
+                _configuration.getClass()
+                        .getMethod("setDictionaryPath", stringType)
+                        .invoke(_configuration, _dictionaryPath);
+                _configuration.getClass()
+                        .getMethod("setLanguageModelPath", stringType)
+                        .invoke(_configuration, _languageModelPath);
+                _configuration.getClass()
+                        .getMethod("setUseGrammar", booleanType)
+                        .invoke(_configuration, false);
 
-                _recognizer = _recognizerClass.getConstructor(configurationType).newInstance(_configuration);
+                _recognizer = _recognizerClass.getConstructor(configurationType)
+                        .newInstance(_configuration);
 
             } catch (Throwable throwable) {
-                throw new IllegalActionException(_actor, throwable, "Failed to instantiate speech recognizer.");
+                throw new IllegalActionException(_actor, throwable,
+                        "Failed to instantiate speech recognizer.");
             }
 
         } catch (Throwable throwable) {
-            throw new IllegalActionException(_actor, throwable, "Failed to load speech recognition .jar file.  This file must be downloaded separately.");
+            throw new IllegalActionException(_actor, throwable,
+                    "Failed to load speech recognition .jar file.  This file must be downloaded separately.");
         }
     }
 
@@ -150,7 +164,8 @@ public class SpeechRecognitionHelper extends HelperBase {
      *  @exception IllegalActionException If the language or
      *  dictionary files do not exist.
      */
-    public void setOptions(ScriptObjectMirror options) throws IllegalActionException {
+    public void setOptions(ScriptObjectMirror options)
+            throws IllegalActionException {
         if (options.containsKey("continuous")) {
             _continuous = (Boolean) options.get("continuous");
         } else {
@@ -162,17 +177,22 @@ public class SpeechRecognitionHelper extends HelperBase {
         _languageModelPath = _defaultLanguageModelPath;
 
         // FIXME: We should probably handle Jar URLs here by copying the file to a temporary location.
-        if (options.containsKey("languageModelPath") && !options.get("languageModelPath").toString().isEmpty()) {
-            testFile = FileUtilities.nameToFile((String) options.get("languageModelPath"), null);
+        if (options.containsKey("languageModelPath")
+                && !options.get("languageModelPath").toString().isEmpty()) {
+            testFile = FileUtilities.nameToFile(
+                    (String) options.get("languageModelPath"), null);
             if (!testFile.exists() || !testFile.isFile()) {
-                throw new IllegalActionException(_actor, "SpeechRecognition:  Requested language model file does not "
-                                                 + "exist: " + (String) options.get("languageModelPath"));
+                throw new IllegalActionException(_actor,
+                        "SpeechRecognition:  Requested language model file does not "
+                                + "exist: "
+                                + (String) options.get("languageModelPath"));
             } else {
                 try {
                     _languageModelPath = testFile.getCanonicalPath();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(_actor, "SpeechRecognition:  Could not get the canonical path of "
-                                                     + _languageModelPath);
+                    throw new IllegalActionException(_actor,
+                            "SpeechRecognition:  Could not get the canonical path of "
+                                    + _languageModelPath);
                 }
             }
         }
@@ -180,17 +200,22 @@ public class SpeechRecognitionHelper extends HelperBase {
         _dictionaryPath = _defaultDictionaryPath;
 
         // FIXME: We should probably handle Jar URLs here by copying the file to a temporary location.
-        if (options.containsKey("dictionaryPath") && !options.get("dictionaryPath").toString().isEmpty()) {
-            testFile = FileUtilities.nameToFile((String) options.get("dictionaryPath"), null);
+        if (options.containsKey("dictionaryPath")
+                && !options.get("dictionaryPath").toString().isEmpty()) {
+            testFile = FileUtilities
+                    .nameToFile((String) options.get("dictionaryPath"), null);
             if (!testFile.exists() || !testFile.isFile()) {
-                throw new IllegalActionException(_actor, "SpeechRecognition:  Requested dictionary file does not "
-                                                 + "exist: " + (String) options.get("dictionaryPath"));
+                throw new IllegalActionException(_actor,
+                        "SpeechRecognition:  Requested dictionary file does not "
+                                + "exist: "
+                                + (String) options.get("dictionaryPath"));
             } else {
                 try {
                     _dictionaryPath = testFile.getCanonicalPath();
                 } catch (IOException ex) {
-                    throw new IllegalActionException(_actor, "SpeechRecognition:  Could not get the canonical path of "
-                                                     + _languageModelPath);
+                    throw new IllegalActionException(_actor,
+                            "SpeechRecognition:  Could not get the canonical path of "
+                                    + _languageModelPath);
                 }
             }
         }
@@ -200,67 +225,82 @@ public class SpeechRecognitionHelper extends HelperBase {
      * thread, since it runs continuously.
      */
     public void start() throws IllegalActionException {
-        _stopRequested = false;                // Clear any pending stops.
-        Class<?>[] booleanType = {boolean.class};
+        _stopRequested = false; // Clear any pending stops.
+        Class<?>[] booleanType = { boolean.class };
 
         if (_recognizer == null) {
-            throw new IllegalActionException(_actor, "Cannot start speech recognizer.  Speech recognizer failed to initialize.");
+            throw new IllegalActionException(_actor,
+                    "Cannot start speech recognizer.  Speech recognizer failed to initialize.");
         }
 
         if (_worker == null) {
 
             // Start a thread to transcribe speech until stopped.
             _worker = new Thread() {
-                    public void run() {
-                        try {
-                            _recognizer.getClass().getMethod("startRecognition", booleanType).invoke(_recognizer, true);
-                        } catch (Throwable throwable) {
-                            throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to start.");
-                        }
-
-                        while (!_stopRequested) {
-                            String utterance;
-
-                            try {
-                                _speechResult = _recognizer.getClass().getMethod("getResult").invoke(_recognizer);
-
-                                if (_speechResult != null) {
-                                    utterance = (String) _speechResult.getClass().getMethod("getHypothesis").invoke(_speechResult);
-                                    // Sphinx lmtool generates dictionaries with all-caps words.
-                                    // Convert to lowercase to be less annoying.
-                                    if (utterance.length() > 0) {
-                                        _currentObj.callMember("emit", "result", utterance.toLowerCase());
-                                    }
-                                    if (!_continuous) {
-                                        _worker.interrupt();
-                                    }
-                                }
-                            } catch (Throwable throwable) {
-                                _worker.interrupt();
-                                throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to start.");
-                            }
-                        }
-
-                        try {
-                            _recognizer.getClass().getMethod("stopRecognition").invoke(_recognizer);
-                            _stopRequested = false;
-                            _worker = null;
-                        } catch (Throwable throwable) {
-                            throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to stop.");
-                        }
-                        return;
+                @Override
+                public void run() {
+                    try {
+                        _recognizer.getClass()
+                                .getMethod("startRecognition", booleanType)
+                                .invoke(_recognizer, true);
+                    } catch (Throwable throwable) {
+                        throw new KernelRuntimeException(_actor, null,
+                                throwable,
+                                "Speech recognizer failed to start.");
                     }
-                };
+
+                    while (!_stopRequested) {
+                        String utterance;
+
+                        try {
+                            _speechResult = _recognizer.getClass()
+                                    .getMethod("getResult").invoke(_recognizer);
+
+                            if (_speechResult != null) {
+                                utterance = (String) _speechResult.getClass()
+                                        .getMethod("getHypothesis")
+                                        .invoke(_speechResult);
+                                // Sphinx lmtool generates dictionaries with all-caps words.
+                                // Convert to lowercase to be less annoying.
+                                if (utterance.length() > 0) {
+                                    _currentObj.callMember("emit", "result",
+                                            utterance.toLowerCase());
+                                }
+                                if (!_continuous) {
+                                    _worker.interrupt();
+                                }
+                            }
+                        } catch (Throwable throwable) {
+                            _worker.interrupt();
+                            throw new KernelRuntimeException(_actor, null,
+                                    throwable,
+                                    "Speech recognizer failed to start.");
+                        }
+                    }
+
+                    try {
+                        _recognizer.getClass().getMethod("stopRecognition")
+                                .invoke(_recognizer);
+                        _stopRequested = false;
+                        _worker = null;
+                    } catch (Throwable throwable) {
+                        throw new KernelRuntimeException(_actor, null,
+                                throwable, "Speech recognizer failed to stop.");
+                    }
+                    return;
+                }
+            };
 
             // FIXME: We need a better way to report exceptions.
-            _worker.setDefaultUncaughtExceptionHandler(new Thread.
-                                                       UncaughtExceptionHandler() {
-                    public void uncaughtException(Thread t, Throwable e) {
+            Thread.setDefaultUncaughtExceptionHandler(
+                    new Thread.UncaughtExceptionHandler() {
+                        @Override
+                        public void uncaughtException(Thread t, Throwable e) {
 
-                        System.out.println(t + " throws exception: " + e);
-                        e.printStackTrace();
-                    }
-                });
+                            System.out.println(t + " throws exception: " + e);
+                            e.printStackTrace();
+                        }
+                    });
             _worker.start();
         }
     }

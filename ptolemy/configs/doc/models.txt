@@ -432,6 +432,13 @@ $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemOntology.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemQuantityManager.xml
 $CLASSPATH/ptolemy/demo/FuelSystem/FuelSystemSingleTankImproved.xml
 $CLASSPATH/ptolemy/demo/LaneMerge/LaneMerge.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeClient.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeClientWithCarModel.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeDeterministic.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeDeterministicRegulated.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeOpenLoopRandom.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeRegulated.xml
+$CLASSPATH/ptolemy/demo/LaneMerge/LaneMergeServer.xml
 $CLASSPATH/ptolemy/demo/Office/AugmentedRealityOffice.xml
 $CLASSPATH/ptolemy/demo/Office/Office.xml
 $CLASSPATH/ptolemy/demo/PLC/PLC.xml

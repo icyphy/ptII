@@ -1,6 +1,6 @@
 /* Utility methods to handle HTML Viewer about: calls
 
- Copyright (c) 2003-2017 The Regents of the University of California.
+ Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -98,7 +98,7 @@ public class HTMLAbout {
      *  <p>If the configuration contains an _applicationDemos Parameter
      *  then that parameter is assumed to be an array of strings name
      *  naming HTML files that should be searched for demos and expanded.
-    
+
      *  @param configuration The configuration to look for the
      *  _applicationName attribute in
      *  @return A string containing HTML that describes the about: features.

@@ -1,6 +1,6 @@
 /* This actor implements a subscriber in a HLA/CERTI federation.
 
-@Copyright (c) 2013-2017 The Regents of the University of California.
+@Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -82,7 +82,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaSubscriber.java 214 2018-04-01 13:32:02Z j.cardoso $
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
@@ -224,9 +224,9 @@ public class HlaSubscriber extends TypedAtomicActor {
             /*
             // Update the name and the displayName of the actor.
             try {
-                this.setName(sClassObjectName 
+                this.setName(sClassObjectName
                         + "." + sAttributeName + "." + sClassInstanceName);
-                this.setDisplayName(sClassObjectName 
+                this.setDisplayName(sClassObjectName
                         + "." + sAttributeName + "." + sClassInstanceName);
             } catch (NameDuplicationException e) {
                 throw new IllegalActionException(this,
@@ -343,7 +343,7 @@ public class HlaSubscriber extends TypedAtomicActor {
             // either it is and it has to match the HLA object instance
             // ID of this HlaSubscriber.
 
-            // XXX: FIXME: what to do if this is not a HlaTimedEvent? (-1 case) 
+            // XXX: FIXME: what to do if this is not a HlaTimedEvent? (-1 case)
             if (fromObjectInstanceId == -1
                     || fromObjectInstanceId == _objectInstanceId) {
                 this.outputPortList().get(0).send(0, content);
@@ -425,7 +425,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  the tokens queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
      *  {@link HlaManager} attribute.
-     *  @param event The event containing the updated value of the HLA 
+     *  @param event The event containing the updated value of the HLA
      *  attribute and its time-stamp.
      *  @exception IllegalActionException Not thrown here.
      */
@@ -473,7 +473,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     /** Return HLA class instance name this HlaSubscriber belongs to.
      * @return The HLA class instance name.
-     * @throws IllegalActionException if a bad token string value is provided.
+     * @exception IllegalActionException if a bad token string value is provided.
      */
     public String getClassInstanceName() throws IllegalActionException {
         String name = "";
@@ -579,7 +579,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
 
-    /** HLA attribute handle provided by the RTI for the attribute 
+    /** HLA attribute handle provided by the RTI for the attribute
      *  to subscribe to. */
     private int _attributeHandle;
 

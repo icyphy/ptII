@@ -1,5 +1,5 @@
 /*
- @Copyright (c) 2005-2014 The Regents of the University of California.
+ @Copyright (c) 2005-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -85,12 +85,12 @@ public class TimeDelay extends NamedProgramCodeGeneratorAdapter {
         LinkedList args = new LinkedList();
         //Parameter delay = ((ptolemy.actor.lib.TimeDelay) getComponent()).delay;
         double value = ((DoubleToken) delay.getToken()).doubleValue();
-    
+
         int intPart = (int) value;
         int fracPart = (int) ((value - intPart) * 1000000000.0);
         args.add(Integer.toString(intPart));
         args.add(Integer.toString(fracPart));
-    
+
         codeStream.appendCodeBlock("fireBlock", args);
         return processCode(codeStream.toString());
     }

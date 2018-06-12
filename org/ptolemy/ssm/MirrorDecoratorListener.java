@@ -32,6 +32,8 @@ import ptolemy.data.expr.Parameter;
 /** Listener interface for decorator events.
  *
  *  @author Ilge Akkya
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public interface MirrorDecoratorListener {
@@ -53,28 +55,28 @@ public interface MirrorDecoratorListener {
 
     /** Type of the event. */
     public static enum DecoratorEvent {
-        /** Port was added. */
-        ADDED_PORT,
+                /** Port was added. */
+                ADDED_PORT,
 
-        /** Port was removed. */
-        REMOVED_PORT,
+                /** Port was removed. */
+                REMOVED_PORT,
 
-        /** Parameter was added. */
-        ADDED_PARAMETER,
+                /** Parameter was added. */
+                ADDED_PARAMETER,
 
-        /** Parameter was removed. */
-        REMOVED_PARAMETER,
+                /** Parameter was removed. */
+                REMOVED_PARAMETER,
 
-        /** Parameter was changed. */
-        CHANGED_PARAMETER,
+                /** Parameter was changed. */
+                CHANGED_PARAMETER,
 
-        /** PortParameter was added. */
-        ADDED_PORT_PARAMETER,
+                /** PortParameter was added. */
+                ADDED_PORT_PARAMETER,
 
-        /** PortParameter was removed. */
-        REMOVED_PORT_PARAMETER,
+                /** PortParameter was removed. */
+                REMOVED_PORT_PARAMETER,
 
-        /** PortParameter was changed. */
-        CHANGED_PORT_PARAMETER
+                /** PortParameter was changed. */
+                CHANGED_PORT_PARAMETER
     }
 }

@@ -1,7 +1,7 @@
 /* Director for the distributed version of the synchronous dataflow
  model of computation.
 
- @Copyright (c) 2005-2014 The Regents of Aalborg University.
+ @Copyright (c) 2005-2018 The Regents of Aalborg University.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -256,7 +256,7 @@ public class DistributedSDFDirector extends SDFDirector {
      *  domain-specific operations.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
-    
+
      */
     @Override
     public void fire() throws IllegalActionException {

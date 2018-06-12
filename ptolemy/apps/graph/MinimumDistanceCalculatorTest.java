@@ -45,16 +45,16 @@ public class MinimumDistanceCalculatorTest {
     @Test
     public void testCalculateDistance() {
         List<Entity> entityList = testModel.entityList();
-        int result = MinimumDistanceCalculator.calculateDistance(
-                entityList.toArray(), 0, 2);
+        int result = MinimumDistanceCalculator
+                .calculateDistance(entityList.toArray(), 0, 2);
         Assert.assertEquals(1, result);
 
-        result = MinimumDistanceCalculator.calculateDistance(
-                entityList.toArray(), 0, 0);
+        result = MinimumDistanceCalculator
+                .calculateDistance(entityList.toArray(), 0, 0);
         Assert.assertEquals(0, result);
 
-        result = MinimumDistanceCalculator.calculateDistance(
-                entityList.toArray(), 1, 0);
+        result = MinimumDistanceCalculator
+                .calculateDistance(entityList.toArray(), 1, 0);
         Assert.assertEquals(Integer.MAX_VALUE, result);
 
     }

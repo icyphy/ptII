@@ -1,6 +1,6 @@
 /* An actor that simulates a state dynamics.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -78,7 +78,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Ilge Akkaya
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (ilgea)
  * @Pt.AcceptedRating Red (ilgea)
  */
@@ -477,17 +477,19 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor
         do {
             // Generate process noise.
             _parseTree = _updateTrees.get(PROCESS_NOISE);
-            Token processNoiseSample = _parseTreeEvaluator.evaluateParseTree(_parseTree, _scope);
+            Token processNoiseSample = _parseTreeEvaluator
+                    .evaluateParseTree(_parseTree, _scope);
             if (!(processNoiseSample instanceof ArrayToken)) {
                 throw new IllegalActionException(
-                        "Expression processNoise should yield an array but yields: " + processNoiseSample);
+                        "Expression processNoise should yield an array but yields: "
+                                + processNoiseSample);
             }
-            if (((ArrayToken)processNoiseSample).length() != _stateSpaceSize) {
+            if (((ArrayToken) processNoiseSample).length() != _stateSpaceSize) {
                 throw new IllegalActionException(
                         "Expression processNoise should yield an array of dimension "
-                        + _stateSpaceSize
-                        + ", but it yields an array of dimension "
-                        + ((ArrayToken)processNoiseSample).length());
+                                + _stateSpaceSize
+                                + ", but it yields an array of dimension "
+                                + ((ArrayToken) processNoiseSample).length());
             }
             for (int i = 0; i < _stateSpaceSize; i++) {
                 _parseTree = _updateTrees.get(_stateVariables[i]);
@@ -512,8 +514,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor
         } while (!satisfiesMapConstraints(newState) && trials < MAX_TRIALS);
 
         if (!satisfiesMapConstraints(newState)) {
-            throw new IllegalActionException(this.getName()
-                    + ": After "
+            throw new IllegalActionException(this.getName() + ": After "
                     + MAX_TRIALS
                     + " attempts, did not find a feasible state propagation that satisfies the"
                     + " current map constraints.");

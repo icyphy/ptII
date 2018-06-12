@@ -1,0 +1,28 @@
+<launch4jConfig>
+  <headerType>gui</headerType>
+  <dontWrapJar>false</dontWrapJar>
+  <jar>capecode0_2_beta_setup_windows.jar</jar>
+  <outfile>capecode0_2_beta_setup_windows.exe</outfile>
+  <errTitle>capecodesetup</errTitle>
+  <chdir>.</chdir>
+  <cmdLine></cmdLine>
+  <customProcName>true</customProcName>
+  <stayAlive>true</stayAlive>
+  <icon>../../doc/img/capecode.ico</icon>
+  <jre>
+    <path>jre</path> 
+    <minVersion>1.8.0</minVersion>
+  </jre>
+  <versionInfo>
+    <fileVersion>1.0.0.2</fileVersion>
+    <txtFileVersion>0.2.beta</txtFileVersion>
+    <fileDescription>CapeCode II Installer</fileDescription>
+    <copyright>Copyright (c) 1995-2018 The Regents of the University of California. All rights reserved. http://ptolemy.eecs.berkeley.edu/copyright.htm</copyright>
+    <productVersion>1.0.0.2</productVersion>
+    <txtProductVersion>0.2.beta</txtProductVersion>
+    <productName>Cape Code</productName>
+    <companyName>Ptolemy Project, University of California, Berkeley</companyName>
+    <internalName>capecodesetup</internalName>
+    <originalFilename>capecodesetup.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>

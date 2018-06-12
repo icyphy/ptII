@@ -1,6 +1,6 @@
 /* An actor that outputs data read from a URL.
 
- @Copyright (c) 2003-2014 The Regents of the University of California.
+ @Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -109,7 +109,7 @@ public class StringToXML extends Transformer {
          try {
          //_outToken = new XmlToken[1];
          _outToken = new XmlToken(in);
-        
+
          }
          catch (Exception e) {
          e.printStackTrace();

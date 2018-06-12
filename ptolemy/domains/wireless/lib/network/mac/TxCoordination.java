@@ -263,7 +263,7 @@ public class TxCoordination extends MACActorBase {
 
                     Time endRx = new Time(getDirector(),
                             ((DoubleToken) GotCtsMsg.get("endRx"))
-                            .doubleValue());
+                                    .doubleValue());
                     _ssrc = 0;
 
                     setTimer(SifsTimeout, endRx.add(_dSifsDly * 1e-6));
@@ -419,42 +419,29 @@ public class TxCoordination extends MACActorBase {
     ////                         private methods                   ////
     private RecordToken _createPacket(int subtype, int duration, int RA, int TA)
             throws IllegalActionException {
-        Token[] DataPacketValues = { new IntToken(0),
-                new IntToken(ControlType), new IntToken(subtype),
+        Token[] DataPacketValues = { new IntToken(0), new IntToken(ControlType),
+                new IntToken(subtype), new IntToken(0), new IntToken(0),
                 new IntToken(0), new IntToken(0), new IntToken(0),
                 new IntToken(0), new IntToken(0), new IntToken(0),
-                new IntToken(0), new IntToken(0), new IntToken(123),
-                new IntToken(duration), new IntToken(RA), new IntToken(TA),
-                new IntToken(160) };
+                new IntToken(123), new IntToken(duration), new IntToken(RA),
+                new IntToken(TA), new IntToken(160) };
         RecordToken pkt = new RecordToken(RtsPacket, DataPacketValues);
         return pkt;
     }
 
     private RecordToken _createDataPacket(RecordToken msg, int dest_addr)
             throws IllegalActionException {
-        Token[] DataPacketValues = {
-                new IntToken(0),
-                new IntToken(DataType),
-                new IntToken(Data),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
-                new IntToken(0),
+        Token[] DataPacketValues = { new IntToken(0), new IntToken(DataType),
+                new IntToken(Data), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
+                new IntToken(0), new IntToken(0), new IntToken(0),
                 new IntToken(123),
                 new IntToken(_aSifsTime + _aPreambleLength + _aPlcpHeaderLength
                         + _sAckCtsLng / _mBrate),
-                        new IntToken(dest_addr),
-                        new IntToken(getID()),
-                        new IntToken(0),
-                        new IntToken(_seqNum - _seqNum / 4096 * 4096),
-                        new IntToken(0),
-                        new IntToken(0),
-                        msg,
-                        new IntToken(34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
+                new IntToken(dest_addr), new IntToken(getID()), new IntToken(0),
+                new IntToken(_seqNum - _seqNum / 4096 * 4096), new IntToken(0),
+                new IntToken(0), msg, new IntToken(
+                        34 * 8 + ((IntToken) msg.get("Length")).intValue()) };
         _seqNum++;
 
         RecordToken pkt = new RecordToken(DataPacket, DataPacketValues);

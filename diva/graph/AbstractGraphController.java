@@ -1,5 +1,5 @@
 /*
- @Copyright (c) 1998-2014 The Regents of the University of California.
+ @Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -673,11 +673,11 @@ public abstract class AbstractGraphController implements GraphController {
                 rerender();
 
                 /* Object root = e.getTarget();
-                
+
                  //FIXME - this could be optimized--
                  //        we may not need to rerender every
                  //        node.
-                
+
                  for (Iterator i = _model.nodes(root); i.hasNext(); ) {
                  rerenderNode(i.next());
                  }

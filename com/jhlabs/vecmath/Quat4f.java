@@ -95,7 +95,7 @@ public class Quat4f extends Tuple4f {
                     Quat4f q3 = new Quat4f();
                     Vector3f vectorq1 = new Vector3f( x, y, z );
                     Vector3f vectorq2 = new Vector3f( q.x, q.y, q.z );
-    
+
                     Vector3f tempvec1 = new Vector3f( vectorq1 );
                     Vector3f tempvec2;
                     Vector3f tempvec3;

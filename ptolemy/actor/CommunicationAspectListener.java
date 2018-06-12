@@ -57,10 +57,10 @@ public interface CommunicationAspectListener {
 
     /** Type of the event. */
     public static enum EventType {
-        /** Token was received. */
-        RECEIVED,
-        /** Token was sent. */
-        SENT
+                /** Token was received. */
+                RECEIVED,
+                /** Token was sent. */
+                SENT
     }
 
 }

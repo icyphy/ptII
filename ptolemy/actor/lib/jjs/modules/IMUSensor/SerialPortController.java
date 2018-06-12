@@ -35,6 +35,8 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
  * connected on.
  *
  * @author Hunter Massey and Rajesh Kuni
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @see ReaderM
  * @Pt.ProposedRating Yellow Hunter

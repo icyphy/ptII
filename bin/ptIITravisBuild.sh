@@ -19,7 +19,7 @@
 
 # To test, set the environment variable(s) and invoke the script.
 #
-# GITHUB_TOKEN is used to update the gh-pages branch of the ptII repo
+# GITHUB_TOKEN is used to update the gh-pages branch of the ptII-test repo
 # and the deployment area at https://github.com/icyphy/ptII/releases
 #
 # PT_TRAVIS* Variables that start with "PT_TRAVIS" name targets in this file.
@@ -63,8 +63,9 @@ fi
 # The timeout Can't be more than 50 minutes or 3000 seconds.  45
 # minutes is cutting it a bit close, so we go with a maximum of 35
 # minutes or 2100 seconds.  We can't use Travis' timeout feature
-# because we want to copy the output to gh-pages. The timeouts should
-# vary so as to avoid git conflicts.
+# because we want to copy the output to the gh-pages branch of the
+# ptII-test repo. The timeouts should vary so as to avoid git
+# conflicts.
 
 # The amount of time after ant completes.  This must be enough time to
 # update gh-pages, update the cache and deploy.  If Travis is timing
@@ -105,9 +106,9 @@ case `uname -s` in
         TIMEOUTCOMMAND='timeout -9'
         ;;
     *)
-        usage=`timeout --help`
-        # Check to see if --kill-after is supported
-        grep kill-after $usage >& /dev/null
+        usage=`timeout --help 2>&1`
+        # Check to see if --kill-after is supported.
+        echo "$usage" | grep kill-after >& /dev/null
         status=$?
         if [ $status -eq 0 ]; then
             echo "timeout supports --kill-after"
@@ -270,9 +271,14 @@ runTarget () {
 
 # Copy the file or directory named by
 # source-file-or-directory to directory-in-gh-pages.  For example:
+#
 #   updateGhPages logs/installers.txt logs
-# will copy logs/installers.txt to logs in the gh-pages and push it.
+#
+# will copy logs/installers.txt to logs in the gh-pages branch of the
+# ptII-test repo and push it.
+#
 # If the last argument ends in a /, then a directory by that name is created.
+#
 # The reason we need this is because the Travis deploy to gh-pages seems
 # to overwrite everything in the repo.
 #
@@ -324,7 +330,9 @@ updateGhPages () {
 
     # Don't echo GITHUB_TOKEN
     set +x
-    git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII gh-pages
+    # Note that we use the ptII-test repo here instead of the ptII repo so as to avoid cluttering the ptII changelog
+    # with lots of commits from the tests.
+    git clone --depth=1 --single-branch --branch=gh-pages https://${GITHUB_TOKEN}@github.com/icyphy/ptII-test gh-pages
     set -x
 
     cd gh-pages
@@ -458,9 +466,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # Killing background sleep loop.
     kill %1
 
-    # No need to check in the log each time because this target is
-    # easy to re-run.
-    # updateGhPages $PTII/doc/codeDoc $PTII/doc/*.jar doc/
+    updateGhPages $PTII/doc/codeDoc doc/
 
     # Note that .travis.yml deploys the codeDoc jar files.
 fi
@@ -600,7 +606,8 @@ if [ ! -z "$PT_TRAVIS_JUNITREPORT" ]; then
     npm install @icyphy/github-issue-junit
     export JUNIT_LABEL=junit-results
     export JUNIT_RESULTS_NOT_DRY_RUN=false
-    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII
+    export JUNIT_URL_INDEX=https://icyphy.github.io/ptII-test/reports/junit/html/index.html
+    export GITHUB_ISSUE_JUNIT=https://api.github.com/repos/icyphy/ptII-test
     (cd node_modules/@icyphy/github-issue-junit/scripts; node junit-results.js) 
 
     # Clean JUnit results older than 30 days.

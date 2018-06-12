@@ -2,7 +2,7 @@
 
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 2008-2014 The Regents of the University of California.
+Copyright (c) 2008-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -271,7 +271,7 @@ public class TransformationMode extends ChoiceParameter
 
     /**
      The enumeration of accepted modes.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -359,7 +359,7 @@ public class TransformationMode extends ChoiceParameter
     /**
      A scope extender to resolve names in the scope of the master transformation
      rule even though the expression is specified in a working copy.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

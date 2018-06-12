@@ -1,6 +1,6 @@
 /* An FSM supporting verification using formal methods.
 
- Copyright (c) 2008-2014 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -116,7 +116,7 @@ public class FmvAutomaton extends FSMActor {
      *
      * @param formula The temporal formula used to be attached in the
      * .smv file.
-    
+
      * @param choice The type of the formula. It may be either a CTL or LTL
      *               formula.
      * @param span A constant used to expand the size of the rough domain.

@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2006-2015 The Regents of the University of California.
+# @Copyright (c) 2006-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -367,12 +367,6 @@ For each of the files below, we list demos that are not included in <a href="fil
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
 <ul>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml</a></li>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml</a></li>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml</a></li>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml</a></li>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml</a></li>
- <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml</a></li>
  <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml</a></li>
  <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml</a></li>
 </ul>

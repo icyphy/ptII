@@ -1,7 +1,7 @@
 /* An actor that produces a copy of the most recent input each time
  the trigger input receives an event.
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -293,7 +293,7 @@ public class MostRecent extends Transformer {
      */
     /*    public Set<Inequality> typeConstraints() {
             Set<Inequality> typeConstraints = super.typeConstraints();
-    
+
             try {
                 if (initialValue.getToken() != null) {
                     // Set type of initialValue to be equal to input type
@@ -302,7 +302,7 @@ public class MostRecent extends Transformer {
                     typeConstraints.add(ineq);
                     ineq = new Inequality(input.getTypeTerm(),
                             initialValue.getTypeTerm());
-    
+
                     typeConstraints.add(ineq);
                 }
             } catch (IllegalActionException ex) {
@@ -311,7 +311,7 @@ public class MostRecent extends Transformer {
                 // class.
                 throw new InternalErrorException("Bad initialValue value!");
             }
-    
+
             return typeConstraints;
         }
      */

@@ -1,6 +1,6 @@
 /* This actor implements an output port in a composite communication aspect.
 
-@Copyright (c) 2011-2014 The Regents of the University of California.
+@Copyright (c) 2011-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -68,7 +68,6 @@ public class CommunicationResponsePort extends TypedAtomicActor {
         _tokens = new LinkedList<Token>();
     }
 
-   
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -77,11 +76,12 @@ public class CommunicationResponsePort extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        CommunicationResponsePort newObject = (CommunicationResponsePort) super.clone(workspace);
+        CommunicationResponsePort newObject = (CommunicationResponsePort) super.clone(
+                workspace);
         newObject._tokens = new LinkedList<Token>();
         return newObject;
     }
-    
+
     /** The input port. */
     public TypedIOPort input;
 

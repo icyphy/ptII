@@ -1,7 +1,7 @@
 /* A special parameter in the pattern that can take various values in pattern
    matching.
 
- Copyright (c) 2008-2014 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -246,7 +246,7 @@ public class IterativeParameter extends Parameter
     /**
      The exception to denote that the constraint is violated and no more values
      are available.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -269,7 +269,7 @@ public class IterativeParameter extends Parameter
 
     /**
      The modes of this parameter.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

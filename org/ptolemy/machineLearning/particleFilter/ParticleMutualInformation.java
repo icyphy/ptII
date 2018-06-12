@@ -1,6 +1,6 @@
 /* Mutual-information approximation.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -70,7 +70,7 @@ import ptolemy.math.DoubleMatrixMath;
  *
  * @author Shuhei Emoto
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (shuhei)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -276,13 +276,6 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    private void printVector(double[] dx) {
-        for (int col = 0; col < dx.length; col++) {
-            System.out.print(" " + dx[col]);
-        }
-        System.out.println();
-    }
 
     private void _addMatrix(double[][] dist, double[][] val) {
         for (int row = 0; row < dist.length; row++) {

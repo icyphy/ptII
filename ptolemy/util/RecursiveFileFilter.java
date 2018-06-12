@@ -1,6 +1,6 @@
 /* An actor that produces an array that lists the contents of a directory.
 
-   @Copyright (c) 2003-2014 The Regents of the University of California.
+   @Copyright (c) 2003-2018 The Regents of the University of California.
    All rights reserved.
 
    Permission is hereby granted, without written agreement and without
@@ -348,7 +348,7 @@ public class RecursiveFileFilter implements FilenameFilter {
 
     /**
        A comparator to sort file names.
-    
+
        @author Thomas Huining Feng
        @version $Id$
        @since Ptolemy II 10.0

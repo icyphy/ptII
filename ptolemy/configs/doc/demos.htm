@@ -81,18 +81,27 @@ or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
 
 <li><i>Hybrid systems</i>:
 <!-- GR does not get included in demosPtiny.htm -->
-<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
+<a href="../../domains/continuous/demo/Friction/Friction.xml">Friction</a>
 <br>
-(see also
+(See also
+<a href="../../domains/continuous/demo/BouncingBall/BouncingBallWithoutGR.xml">Bouncing Ball</a>,
+<a href="../../domains/continuous/demo/SinuBouncingBall/SinuBouncingBall.xml">Ball Bouncing on a Sinusoidal Surface</a>
 <a href="../../domains/continuous/demo/HybridPlant/RandomHybridPlant.xml">Hybrid Plant</a>,
-<a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">BouncingBall</a>,
-<a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>,
-<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>
+<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradle.xml">Newtons Cradle</a>,
+<a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a> ,
+<a href="../../domains/continuous/demo/Thermostat/Thermostat.xml">Thermostat</a>,
+<a href="../../domains/continuous/demo/Transmission/Transmission.xml">Transmission</a>,
+<a href="../../domains/continuous/demo/V2V/V2V.xml">Vehicle 2 Vehicle</a>
 )
 <!--/ptinyKeplerDocs-->
 <br>
-<font color="red">NOTE: Some of these models require installation of Java 3D
-  (see https://java3d.dev.java.net/).</font>
+<font color="red">The following models require installation of Java 3D
+  (see https://java3d.dev.java.net/). If you have this, try:</font>
+<br>
+<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">StickyMasses</a>
+<a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">BouncingBall</a>,
+<a href="../../domains/continuous/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>,
+<a href="../../domains/continuous/demo/NewtonsCradle/NewtonsCradleAnimated.xml">NewtonsCradleAnimated</a>
 <br>
 <i>Hybrid systems</i> are a special case of modal models
 where finite-state machines (FSMs) are combined with the continuous-time models
@@ -104,20 +113,24 @@ to get mixed continuous-time and discrete-event models.
 </li><br>
 
 
-<li><i>Internet of Things</i>:
-<a href="../../demo/Office/Office.xml">Office</a>
+<li><i>Accessors</i>:
+<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml">ImageAnnotate</a>
 <br>
 (See also
-<a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>,
+<a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a>
+<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>,
 <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a>,
 <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>,
 <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a>,
-<a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
+<a href="../../demo/Office/Office.xml">Office</a>
 )
 <br>
-CapeCode is a subset of Ptolemy II for building IoT applications. The models in the Office
-demo illustrate create web servers, creating Internet services, and accessing those internet
-services by dynamically instantiating accessors, which are actors written in JavaScript.
+Accessors are JavaScript actors that provide access to devices and/or network services.
+CapeCode is a subset of Ptolemy II for building applications using accessors. These models
+illustrate accessing the system camera,
+creating web servers, creating Internet services, and accessing those Internet
+services.
+Many more demos can be found in the <a href="whatsNew11.0.htm#scripting">what's new documentation</a>.
 </li><br>
 
 
@@ -222,7 +235,7 @@ manipulating audio data.
 <!--/ptinyKeplerDocs-->
 <!--/bcvtbDocs-->
 <br>
-(see also
+(See also
 <a href="../visualsense/intro.htm">VisualSense introduction</a>).
 <br>
 The wireless domain in Ptolemy II
@@ -240,7 +253,7 @@ plus domains that support the design of nodes in a wireless network.
 <li><i>Stochastic hybrid systems</i>:
 <a href="../../domains/continuous/demo/Noise/Noise.xml">Noise</a>
 <br>
-(see also
+(See also
 <a href="../../domains/continuous/demo/Poisson/IncreasingRatePoisson.xml">IncreasingRatePoisson</a>,
 <a href="../../domains/continuous/demo/Hysteresis/HysteresisWithRandomDelay.xml">HysteresisWithRandomDelay</a>,
 <a href="../../domains/continuous/demo/Brownian/Brownian.xml">Brownian</a>
@@ -269,7 +282,7 @@ of Ptolemy II and the relationship between executable and non-executable models.
 <li><i>Statistics</i>:
 <a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">HiddenMarkovModelAnalysis</a>
 <br>
-(see also
+(See also
 <a href="../../demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">GMMConvergenceAnalysis</a>
 ).
 <br>
@@ -293,7 +306,8 @@ Ptolemy II.  This section illustrates some of them.
 
 <li><i>Discrete-Event Modeling</i>:
 <a href="../../domains/de/demo/Inspection/Inspection.xml">Inspection</a>
-(see also
+<br>
+(See also
 <!--/ptinyKeplerDocs-->
 <!-- QueueAndServer uses Colt, which is not part of Kepler -->
 <a href="../../domains/de/demo/QueueAndServer/QueueAndServer.xml">QueueAndServer</a>,
@@ -322,7 +336,10 @@ For multithreaded DE, see
 
 
 <li><i>Continuous-Time Modeling</i>:
-<a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a> (see also
+<a href="../../domains/continuous/demo/Lorenz/Lorenz.xml">Lorenz</a>
+<br>
+(See also
+<a href="../../domains/continuous/demo/DCMotor/DCMotor.xml">DCMotor</a>,
 <a href="../../domains/continuous/demo/Lorenz/LorenzDifferentialSystem.xml">Lorenz with DifferentialSystem</a>,
 <a href="../../domains/continuous/demo/SquareWave/SquareWave.xml">SquareWave</a>,
 <a href="../../domains/continuous/demo/Sinusoid/Sinusoid.xml">Sinusoid</a>)
@@ -339,7 +356,9 @@ signals.
 
 
 <li><i>Synchronous Dataflow</i>:
-<a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a> (See also
+<a href="../../domains/sdf/demo/Spectrum/Spectrum.xml">Spectrum</a>
+<br>
+(See also
 <a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
 <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>, and
 <a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>)
@@ -356,7 +375,9 @@ boundedness and deadlock conditions are checked.
 
 
 <li><i>Process Networks</i>:
-<a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a> (see also
+<a href="../../domains/pn/demo/OrderedMerge/OrderedMerge.xml">OrderedMerge</a>
+<br>
+(See also
 <a href="../../domains/pn/demo/NondeterministicMerge/NondeterministicMerge.xml">NondeterministicMerge</a>,
 <a href="../../domains/pn/demo/QR/QR.xml">QR</a>).
 <br>
@@ -377,7 +398,8 @@ nondeterministic merge actor, illustrated in
 
 <li><i>Rendezvous</i>:
 <a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier</a>
-(see also
+<br>
+(See also
 <a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">ResourcePool</a>,
 <a href="../../domains/rendezvous/demo/Sequencing/Sequencing.xml">ResourcePool</a>,
 <a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">WriteRegulator</a>).
@@ -403,7 +425,8 @@ called barrier synchronization.
 
 <li> <i>Dynamic Dataflow</i>:
 <a href="../../domains/ddf/demo/HanoiTower/HanoiTower.xml">HanoiTower</a>
-(see also
+<br>
+(See also
 <a href="../../domains/ddf/demo/Eratosthenes/Eratosthenes.xml">Eratosthenes</a>,
 <a href="../../domains/ddf/demo/IfThenElse/IfThenElse.xml">IfThenElse</a>,
 <a href="../../domains/ddf/demo/Loop/Loop.xml">Loop</a>,
@@ -423,7 +446,9 @@ towers of Hanoi problem.
 
 
 <li><i>Synchronous/Reactive Modeling</i>:
-<a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> (see also
+<a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a>
+<br>
+(See also
 <a href="../../domains/sr/demo/TrafficLight/TrafficLight.xml">TrafficLight</a> and
 <a href="../../domains/sr/demo/GuardedCount/GuardedCount.xml">GuardedCount</a>).
 <br>
@@ -440,7 +465,8 @@ to a shared medium using a token-ring protocol.
 
 <li> <i>Heterochronous Dataflow</i>:
 <a href="../../domains/hdf/demo/Fibonacci/Fibonacci.xml">Fibonacci</a>
-(see also
+<br>
+(See also
 <a href="../../domains/hdf/demo/Merge/Merge.xml">Merge</a>).
 <br>
 Heterochronous dataflow (HDF) is an extension of synchronous dataflow
@@ -467,6 +493,7 @@ from a counting sequence.
 <!--/bcvtbDocs-->
 <li><i>Event-Oriented Modeling with Ptera</i>:
 <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWashFSM.xml">CarWash</a> with DE, Ptera and FSM
+<br>
 (See also <a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>, <a href="../../domains/ptera/demo/TrafficLight/TrafficLight.xml">TrafficLight</a>).
 <br>
 The Ptera (Ptolemy Event Relationship Actor) domain is a discrete-event model
@@ -533,7 +560,7 @@ The example models a MEMS accelerometer where a digital circuit
 implements feedback control and A/D conversion (a design due to
 Mark Lemkin).
 
-(see also
+(See also
 <!--bcvtbDocs-->
 <a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
 <!--/bcvtbDocs-->
@@ -556,15 +583,17 @@ This section illustrates that infrastructure.
 
 <li><i>JavaScript Integration</i>:
 <a href="../../../ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml">Factorial</a>
+<br>
 (See also
 <a href="../../../ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml">JavaScriptShell</a>,
 <a href="../../../ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml">ModelBuilder</a>,
-<a href="../../demo/Office/Office.xml">Office</a>
+<a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>
 )
 <br>
 Custom actors are easy to write using JavaScript.
 Drag in a JavaScript actor, look inside, and specify the interface (ports
 and parameters) and functionality using the <a href="https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification#in_browser">accessors framework</a>.
+</li><br>
 
 
 <li><i>User Interface</i>:
@@ -572,7 +601,13 @@ and parameters) and functionality using the <a href="https://wiki.eecs.berkeley.
 <br>
 Ptolemy II models can use the default browser on the host to construct displays and/or retrieve user
 input using HTML 5, JavaScript, and CSS.
+</li><br>
+
+
+<li><i>Superdense Time</i>:
+<a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>
 <br>
+Ptolemy II has a sophisticated model of time that cleanly handles multiple simultaneous events.
 </li><br>
 
 
@@ -604,9 +639,18 @@ used to make models much more compact.
 </li><br>
 
 
+<li><i>Model Integration</i>:
+<a href="../../actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml">Functional Mock-up Unit (FMU) Two Ball Collision</a>
+<br>
+The Functional Mockup Interface (FMI) standard is a mechanism for diverse simulators to interact with one another.
+Ptolemy II supports Functional Mockup Units (FMUs) following the 2.0 standard with some extensions for better hybrid system modeling.
+</li><br>
+
+
 <li><i>Model Transformation</i>:
 <a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
-(see also
+<br>
+(See also
 <a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a>,
 <a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>,
 <a href="../../actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a>,
@@ -629,7 +673,8 @@ to statically evaluate arithmetic operations in it, until no more simplification
 
 <li><i>Higher-Order Components</i>:
 <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
-(see also
+<br>
+(See also
 <a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>,
 <a href="../../actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">MobileFunction</a>,
 <a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>,
@@ -650,7 +695,9 @@ Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.
 
 <li>
 <i>Classes, subclasses, and inner classes</i>:
-<a href="ClassesIllustrated.xml">ClassesIllustrated</a> (see also
+<a href="ClassesIllustrated.xml">ClassesIllustrated</a>
+<br>
+(See also
 <a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">Noisy sinewaves</a>
 <!--/bcvtbDocs-->
 <!-- Rijndael includes domains.fsm, which is not shipped with bcvtb -->
@@ -671,7 +718,9 @@ track any changes that are made to the class.
 
 
 <li><i>Three-Dimensional Graphics</i>:
-<a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum</a> (see also
+<a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum</a>
+<br>
+(See also
 <a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a>,
 <a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>,
 <a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>,
@@ -694,7 +743,7 @@ For further details, see the
 
 <li><i>Model Animations</i>:
 <a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
-(see also
+<br>(See also
 <a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">AnimateVergil</a>,
 <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>,
 <a href="../../domains/de/demo/EventButton/EventButton.xml">EventButton</a>
@@ -710,7 +759,7 @@ of one of its own actors.
 
 <li><i>Interactive Signal Plotter</i>:
 <a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketch</a>
-(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>).
+<br>(See also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>).
 <br>
 This model illustrates the use of plotter to provide input
 as well as rendering output from a model.  Right click and drag
@@ -735,7 +784,7 @@ until the next input arrives.
 <a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">StaticUnits</a>
 <!--/bcvtbDocs-->
 <!-- Units includes ct.lib.Integrator, which is not shipped with BCVTB -->
-(see also
+<br>(See also
 <a href="../../data/unit/demo/Units/Units.xml">Units</a>, the
 dynamically checked units system).
 <!--bcvtbDocs-->
@@ -767,7 +816,7 @@ using the "Open URL" command in the File menu.
 
 <li><i>Fixed-Point Arithmetic</i>:
 <a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
-(see also
+<br>(See also
 <a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>)
 <br>
 Ptolemy II data types include a fixed-point data type, where
@@ -779,7 +828,7 @@ and the mechanisms used to handle overflow and rounding.
 </li><br>
 <li><i>Python Integration</i>:
 <a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
-(see also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
+<br>(See also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
 <br>
 Python is a popular interpreted programming language that has
 been integrated into Ptolemy II using the jython Java implementation of Python.
@@ -794,7 +843,7 @@ actors by defining their functionality in Python.
 
 <li><i>Matlab Integration</i>:
 <a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">MatlabExpression</a>
-(see also
+<br>(See also
 <a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a>).
 <br>
 This example uses the Matlab interface created by
@@ -807,7 +856,7 @@ to plot a 3-D surface. This works only if Matlab is installed locally.
 <!-- The following don't work for me.
 <li><i>Image and Video Processing</i>:
 <a href="../../actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml">AdaptiveMedian</a>
-(see also
+<br>(See also
 <a href="../../actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml">ImageReconstruction</a>,
 <a href="../../actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml">VQSequenceDisplay</a>,
 <a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">VideoCapture</a>).

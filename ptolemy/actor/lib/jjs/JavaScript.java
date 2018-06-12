@@ -433,7 +433,7 @@ import ptolemy.util.StringUtilities;
 
    @author Edward A. Lee
    @version $Id$
-   @since Ptolemy II 10.0
+   @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
@@ -748,7 +748,7 @@ public class JavaScript extends AbstractPlaceableActor
 
         return engine;
     }
-    
+
     /** Return the current time as a number (in seconds).
      *  @return The current time.
      */
@@ -1616,8 +1616,14 @@ public class JavaScript extends AbstractPlaceableActor
             // Set the value of the parameter unless
             // the parameter already has a value that is an override,
             // in which case, allow that to prevail by doing nothing here.
+            // If the parameter has derivedLevel of 1, then it was likely
+            // defined by a JavaScript superclass and we are overriding it
+            // here.  If it has a derivedLevel greater than 1, then the
+            // JavaScript instance is likely inside an object-oriented class.
+            int derivedLevel = parameter.getDerivedLevel();
             if (token != null && !parameter.isOverridden()
-                    && parameter.getDerivedLevel() == Integer.MAX_VALUE) {
+                    && (derivedLevel == Integer.MAX_VALUE
+                            || derivedLevel == 1)) {
                 if (parameter.getAttribute("_JSON") != null
                         && !(token instanceof StringToken)) {
                     // Attempt to convert the token to a JSON string.
@@ -1893,9 +1899,15 @@ public class JavaScript extends AbstractPlaceableActor
             Object value = options.get("value");
             // If the parameter is not overridden and not inherited, then set
             // the value.
+            // If the parameter has derivedLevel of 1, then it was likely
+            // defined by a JavaScript superclass and we are overriding it
+            // here.  If it has a derivedLevel greater than 1, then the
+            // JavaScript instance is likely inside an object-oriented class.
+            int derivedLevel = parameter.getDerivedLevel();
             if (value != null && !parameter.isOverridden()
-                     && parameter.getDerivedLevel() == Integer.MAX_VALUE) {
-                
+                    && (derivedLevel == Integer.MAX_VALUE
+                            || derivedLevel == 1)) {
+
                 // There is a specified value, and the parameter value
                 // has not been overridden.
 
@@ -2885,7 +2897,7 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
-    
+
     /** True if a warning has been issued about synchronizeToRealTime. */
     // private static boolean _timeWarningIssued;
 

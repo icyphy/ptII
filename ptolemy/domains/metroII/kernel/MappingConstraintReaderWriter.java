@@ -47,7 +47,7 @@ import java.util.LinkedList;
  * @author Liangpeng Guo
  * @version $Id: MappingConstraintReaderWriter.java 68172 2014-01-22 02:03:40Z
  *          glp $
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *

@@ -1,6 +1,6 @@
 /* Utilities used by Vergil.
 
- Copyright (c) 2004-2014 The Regents of the University of California.
+ Copyright (c) 2004-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -62,7 +62,7 @@ public class VergilUtilities {
      *  If the ptolemy.ptII.MacOS property is set to true, this method
      *  prints the message "ptolemy.ptII.MacOS = true property detected".
      *
-    
+
      *  @return True if the look and feel starts with "Mac OS" or the
      *  ptolemy.ptII.MacOS property is set to true.
      *  @deprecated Use {@link ptolemy.gui.PtGUIUtilities#macOSLookAndFeel()}.

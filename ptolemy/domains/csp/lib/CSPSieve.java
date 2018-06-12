@@ -1,7 +1,7 @@
 /* Sieve filtering out all multiples of a given number for
  the Sieve of Eratosthenes.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -160,7 +160,7 @@ public class CSPSieve extends CSPActor {
      throw new InvalidStateException("Cannot create " +
      "new sieve.");
      }
-    
+
      queueEntityAddedEvent(container, newSieve);
      queueRelationAddedEvent(container, newRel);
      queuePortLinkedEvent(newRel, output);

@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * then airport try to send it after a period of time.
  *  @author Maryam Bagheri
  *  @version $Id$
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */

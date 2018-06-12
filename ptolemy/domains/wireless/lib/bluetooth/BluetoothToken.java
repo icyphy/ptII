@@ -40,6 +40,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * <p>
  *
  * @author Phillip Azar
+@version $Id$
+@since Ptolemy II 11.0
  * @see BluetoothResponseToken
  * @see BluetoothStatusToken
  */

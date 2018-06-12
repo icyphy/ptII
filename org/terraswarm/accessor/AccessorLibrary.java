@@ -1,6 +1,6 @@
 /* A library of accessors.
 
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -267,21 +267,21 @@ public class AccessorLibrary extends EntityLibrary {
 
                 if (_configureText != null && !_configureText.equals("")) {
                     /* FIXME: What to do with included text?
-                    
+
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.
                     String trimmed = _configureText.trim();
-                    
+
                     if (trimmed.startsWith("<?") && trimmed.endsWith("?>")) {
                         trimmed = trimmed.substring(2, trimmed.length() - 2)
                                 .trim();
-                    
+
                         if (trimmed.startsWith("moml")) {
                             trimmed = trimmed.substring(4).trim();
                             parser.parse(_base, trimmed);
                         }
-                    
+
                         // If it's not a moml processing instruction, ignore.
                     } else {
                         // Data is not enclosed in a processing instruction.

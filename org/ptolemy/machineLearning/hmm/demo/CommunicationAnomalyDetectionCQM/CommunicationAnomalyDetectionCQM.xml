@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="CommunicationAnomalyDetectionCQM" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-55.0, -10.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 148, 1197, 822}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={138, 78, 1197, 822}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[963, 712]">
     </property>
@@ -294,13 +294,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 15.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 22, 942, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={50, 23, 1325, 634}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[708, 524]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1091, 524]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.3992505012103637">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6273073270028947">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{726.1379132699274, 630.8877830615941}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{713.6191406250001, 395.6875469761795}">
         </property>
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Compute packet latency">
@@ -1328,8 +1328,6 @@
             </property>
         </property>
         <entity name="in" class="ptolemy.actor.lib.aspect.CommunicationRequestPort">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 470.0}">
             </property>
         </entity>

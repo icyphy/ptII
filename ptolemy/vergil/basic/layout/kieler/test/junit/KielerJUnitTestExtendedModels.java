@@ -1,6 +1,6 @@
 /* JUnit test the Kieler Layout mechanism.
 
- Copyright (c) 2011-2016 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,7 +40,7 @@ package ptolemy.vergil.basic.layout.kieler.test.junit;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */

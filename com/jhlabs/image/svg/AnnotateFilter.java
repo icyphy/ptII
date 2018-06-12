@@ -139,7 +139,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
             } catch (Exception e) {
                 // FIXME Auto-generated catch block
                 e.printStackTrace();
-        
+
                 // If all else fails, paint default graphic.
                 Graphics2D g = destination.createGraphics();
                 g.setStroke(new BasicStroke(2));

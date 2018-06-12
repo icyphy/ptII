@@ -1,6 +1,6 @@
 /* Utilities used to manipulate strings.
 
- Copyright (c) 2002-2017 The Regents of the University of California.
+ Copyright (c) 2002-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -122,16 +122,14 @@ public class StringUtilities {
             Field usrPathsField = ClassLoader.class
                     .getDeclaredField("usr_paths");
             String[] libraryPathsArray = (String[]) unsafe.getObjectVolatile(
-                    ClassLoader.class,
-                    unsafe.staticFieldOffset(usrPathsField));
+                    ClassLoader.class, unsafe.staticFieldOffset(usrPathsField));
             ArrayList<String> libraryPaths = new ArrayList<String>(
                     Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
             }
             libraryPaths.add(directoryName);
-            unsafe.putObjectVolatile(
-                    ClassLoader.class,
+            unsafe.putObjectVolatile(ClassLoader.class,
                     unsafe.staticFieldOffset(usrPathsField),
                     libraryPaths.toArray(new String[libraryPaths.size()]));
             System.setProperty("java.library.path",
@@ -408,7 +406,7 @@ public class StringUtilities {
      *  attempts to determine them and then set them.  See the javadoc
      *  page for java.util.System.getProperties() for a list of system
      *  properties.
-    
+
      *  <p>The following properties are handled specially
      *  <dl>
      *  <dt> "ptolemy.ptII.dir"
@@ -473,8 +471,7 @@ public class StringUtilities {
         // If the property starts with $JAVAROOT, and the
         // propertyName is ptolemy.ptII.dir, then don't return
         // the property yet, instead, refine it.
-        if (property != null
-            && (! propertyName.equals("ptolemy.ptII.dir")
+        if (property != null && (!propertyName.equals("ptolemy.ptII.dir")
                 && !property.startsWith("$JAVAROOT"))) {
             if (propertyName.equals("ptolemy.ptII.dir")
                     && property.startsWith("/cygdrive")

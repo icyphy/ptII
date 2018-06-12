@@ -1,6 +1,6 @@
 /* A mutation request specified in MoML.
 
- Copyright (c) 2000-2014 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -185,7 +185,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  @return An object that deeply contains this one, or null.
      *  @deprecated No longer needed; just use the specified object as
      *  a context.
-    
+
      */
     @Deprecated
     public static NamedObj getDeferredToParent(NamedObj object) {

@@ -307,7 +307,7 @@
 	<pre>
 	  cat /tmp/f | grep -v .class | grep -v codeDoc | grep -v xml | grep -v \
 	  alljtests.tcl | grep -v .htm | grep -v qcf | grep -v .dtd | grep -v \
-	  gif | grep -v .svn | grep -v jhlabs | grep -v jimblackler | grep -v openmodelica/lib/omc/corba \
+	  gif | grep -v .svn | grep -v jhlabs | grep -v jimblackler | grep -v openmodelica/lib/omc/corba | \
 	  grep -v metroIIcomm.java | grep -v swig | grep -v shallow/test/*2java | xargs sh $PTII/adm/copyright/chkcopyright &gt;&amp  /tmp/copycheck 
 	  grep "does not contain a Copyright" /tmp/copycheck | awk '$1 ~ /.java$/ {print $1}' | grep -v /actor/corba >/tmp/jc
 	</pre>
@@ -329,7 +329,7 @@
       <li> Check out all the files again so we can build a release:
 	<pre>
 	  cd $PTII
-	  svn update
+	  git pull
 	  ant
 	  ant jars
 	</pre>
@@ -350,10 +350,10 @@
 	Then check for files that don't have this year's copyright
 	<pre>
 	  cd $PTII/adm/dists
-	  diff -r ptII10.0.1 ptII11.0.devel > /tmp/pt.diffs
+	  diff -r ptII10.0.1 ptII11.0.beta > /tmp/pt.diffs
 	  cd $PTII
 	  grep Copyright `egrep "^Only in ptII10.0.devel" /tmp/pt.diffs | \
-	  grep .java | sed 's@ptII11.0.devel/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
+	  grep .java | sed 's@ptII11.0.beta/@@' | awk '{print substr($3,1,length($3)-1) "/" $4}'` | grep -v `date +%Y` > /tmp/c2
 	</pre>
 	Look over the output for files that should have their copyright updated
 
@@ -385,8 +385,8 @@
 	  make chkpackagehtml > /tmp/s
 	  cd $PTII
 	  $PTII/adm/bin/mkpackagehtml `cat /tmp/s`
-	  svn add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
-	  svn commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	  git add `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
+	  git commit -m "Added package.html and README.txt" `egrep '(README.txt|package.html)' /tmp/s | awk '{print $2}'`
 	</pre>
 
       <li> Concatenate all the javadoc files in to one file and run
@@ -757,7 +757,6 @@ $PTII/bin/ptinvoke ptolemy.vergil.basic.export.ExportModel -force htm -run -open
 </ol>
 
 
-<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
 </body>
 </html>
 

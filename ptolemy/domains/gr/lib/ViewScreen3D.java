@@ -1,6 +1,6 @@
 /* A GR 3D scene viewer.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -49,6 +49,13 @@ import javax.vecmath.Point3d;
 import javax.vecmath.Quat4d;
 import javax.vecmath.Vector3f;
 
+import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
+import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
+import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.geometry.Cylinder;
+import com.sun.j3d.utils.geometry.Sphere;
+import com.sun.j3d.utils.universe.SimpleUniverse;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
@@ -65,13 +72,6 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-
-import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
-import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
-import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.geometry.Cylinder;
-import com.sun.j3d.utils.geometry.Sphere;
-import com.sun.j3d.utils.universe.SimpleUniverse;
 
 ///////////////////////////////////////////////////////////////////
 //// ViewScreen3D
@@ -108,7 +108,7 @@ public class ViewScreen3D extends GRActor3D
         sceneGraphIn.setInput(true);
         sceneGraphIn.setTypeEquals(SceneGraphToken.TYPE);
         sceneGraphIn.setMultiport(true);
-        
+
         title = new StringParameter(this, "title");
         title.setExpression("ViewScreen");
 
@@ -190,7 +190,7 @@ public class ViewScreen3D extends GRActor3D
      *  This parameter is a boolean with default false.
      */
     public Parameter showAxes;
-    
+
     /** The title to put at the top of the frame. */
     public StringParameter title;
 
@@ -562,7 +562,7 @@ public class ViewScreen3D extends GRActor3D
          //VPT3D.rotX(Math.PI/2.0);
          VPT3D.rotX(Math.PI/2);
          VPT3D.setTranslation(new Vector3f(0.0f, -10.0f, 0.0f));
-        
+
          VPTG.setTransform(VPT3D);
          */
     }
@@ -643,7 +643,7 @@ public class ViewScreen3D extends GRActor3D
             //((BranchGroup) node).detach();
             /* if (_debugging) {
              _debug("Node parent = " + node.getParent());
-            
+
              }*/
             //System.out.println("Node parent = " + node.getParent());
             _addChild(node);
@@ -709,7 +709,7 @@ public class ViewScreen3D extends GRActor3D
 
             /* FIXME: experimental code for changing xforms
              double[] db = new double[16];
-            
+
              db[0] = 1.0; db[1] = db[2] = db[3] = 0.0;
              db[4] = 0.0; db[5] = 1.0; db[6] = db[7] = 0.0;
              db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;
@@ -730,7 +730,7 @@ public class ViewScreen3D extends GRActor3D
         /* FIXME experimental code for changing xforms
          public void transformChanged(Transform3D transform) {
          double[] db = new double[16];
-        
+
          transform.get(db);
          for (int i = 0; i < 16; i++) {
          db[8] = db[9] = 0.0; db[10] = 1.0; db[11] = 0.0;

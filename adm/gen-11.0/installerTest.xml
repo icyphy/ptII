@@ -18,7 +18,7 @@
 <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
 <com.izforge.izpack.panels.shortcut.ShortcutPanel id="ShortcutPanel_7">
 <createMenuShortcuts>false</createMenuShortcuts>
-<programGroup>Ptolemy\ptII11.0.devel</programGroup>
+<programGroup>Ptolemy\ptII11.0.beta</programGroup>
 <createDesktopShortcuts>false</createDesktopShortcuts>
 <createStartupShortcuts>false</createStartupShortcuts>
 <shortcutType>user</shortcutType>

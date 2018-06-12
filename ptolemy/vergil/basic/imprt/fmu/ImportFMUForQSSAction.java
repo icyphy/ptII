@@ -1,6 +1,6 @@
 /* Implement the Import FMU for QSS menu choice.
 
-   Copyright (c) 2012-2016 The Regents of the University of California.
+   Copyright (c) 2012-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -81,7 +81,7 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 
    @author  Thierry S. Nouidui.  Based on ImportFMUAction.java by Christopher Brooks
    @version $Id$
-   @since Ptolemy II 10.0
+   @since Ptolemy II 11.0
    @Pt.ProposedRating Red (thn)
    @Pt.AcceptedRating Red (thn)
 */

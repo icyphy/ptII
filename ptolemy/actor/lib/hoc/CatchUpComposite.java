@@ -1,7 +1,7 @@
 /* A composite where events can occur inside between the times when
    the outside model invokes the composite.
 
- Copyright (c) 2004-2015 The Regents of the University of California.
+ Copyright (c) 2004-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -510,15 +510,18 @@ public class CatchUpComposite extends MirrorComposite {
                     .getEnvironmentTimeForLocalTime(time);
             Director director = getExecutiveDirector();
             if (director instanceof SuperdenseTimeDirector) {
-                int environmentMicrostep = ((SuperdenseTimeDirector)director).getIndex();
+                int environmentMicrostep = ((SuperdenseTimeDirector) director)
+                        .getIndex();
                 // Microstep should be greater than that of the enclosing director
                 // if the time matches current time.
-                if (getModelTime().equals(time) && microstep < environmentMicrostep) {
+                if (getModelTime().equals(time)
+                        && microstep < environmentMicrostep) {
                     microstep = environmentMicrostep + 1;
                 }
             }
 
-            if (((BooleanToken)_contents.fireOnlyWhenTriggered.getToken()).booleanValue()) {
+            if (((BooleanToken) _contents.fireOnlyWhenTriggered.getToken())
+                    .booleanValue()) {
                 // Do not pass the request up the hierarchy.
                 if (_pendingFiringTimes == null) {
                     _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
@@ -537,7 +540,8 @@ public class CatchUpComposite extends MirrorComposite {
                     if (_pendingFiringTimes == null) {
                         _pendingFiringTimes = new PriorityQueue<SuperdenseTime>();
                     }
-                    _pendingFiringTimes.add(new SuperdenseTime(time, microstep));
+                    _pendingFiringTimes
+                            .add(new SuperdenseTime(time, microstep));
                     return time;
                 }
             }
@@ -678,27 +682,28 @@ public class CatchUpComposite extends MirrorComposite {
         /** Indicator that the inside model returned false in postfire. */
         private boolean _postfireReturns = true;
     }
-    
-    //////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////
     //// Contents
-    
+
     /** Contents composite that overrides the base class to have a parameter
      *  indicating whether to fire only when triggered.
      */
     public class Contents extends MirrorComposite.MirrorCompositeContents {
 
         // The Contents class should be public so that cloning works.
-        // To test: (cd $PTII/ptolemy/configs/test/; $PTII/bin/ptjacl allConfigs.tcl) 
+        // To test: (cd $PTII/ptolemy/configs/test/; $PTII/bin/ptjacl allConfigs.tcl)
 
         public Contents(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
             super(container, name);
-            
-            fireOnlyWhenTriggered = new Parameter(this, "fireOnlyWhenTriggered");
+
+            fireOnlyWhenTriggered = new Parameter(this,
+                    "fireOnlyWhenTriggered");
             fireOnlyWhenTriggered.setTypeEquals(BaseType.BOOLEAN);
             fireOnlyWhenTriggered.setExpression("false");
         }
-        
+
         /** If false (the default), then whenever any contained actor
          *  makes a fireAt() request, that request is passed up to the container,
          *  and hence this composite will be fired at the requested time.

@@ -1,6 +1,6 @@
 /* An application that reads one or more files specified on the command line.
 
- Copyright (c) 1999-2016 The Regents of the University of California.
+ Copyright (c) 1999-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -1409,7 +1409,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
                         try {
                             /*NamedObj toplevel = _parser.parse(base, inURL);
-                            
+
                             if (toplevel instanceof Configuration) {
                                 _configuration = (Configuration) toplevel;
                             }*/

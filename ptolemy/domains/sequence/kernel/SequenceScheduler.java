@@ -1,6 +1,6 @@
 /* A scheduler for the sequence domain.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -1046,10 +1046,10 @@ public class SequenceScheduler extends Scheduler {
 
             /*
             Actor sequenceActorNode = (Actor) sequenceAtt.getContainer();
-            
+
             // Find node in the hash table
             List<Node> nodeList = _actorGraphNodeList.get(sequenceActorNode);
-            
+
             if (nodeList != null) {
                 sequencedActorGraphNodes.addAll(nodeList);
             }
@@ -1180,18 +1180,18 @@ public class SequenceScheduler extends Scheduler {
 
                 /*
                 printSubGraph(subGraph);
-                
+
                 System.out.println("For actor: " + seqActorNode.getWeight().toString());
                 System.out.println("Printing subGraph edges -- >");
-                
+
                 List<Edge> subGraphData = new ArrayList<Edge>(subGraph.edges());
                 for (Edge edge : subGraphData) {
                 System.out.println("SubGraph Edges: "+ edge );
                 }
                 System.out.println(" Printing subGraph Nodes -- >" );
-                
+
                 List<Node> subGraphNode = new ArrayList<Node>(subGraph.nodes());
-                
+
                 for (Node node : subGraphNode) {
                 System.out.println("SubGraph Node: "+ node );
                 }

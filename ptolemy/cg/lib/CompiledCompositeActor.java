@@ -1,6 +1,6 @@
 /* An aggregation of typed actors with cosimulation option.
 
- Copyright (c) 2007-2015 The Regents of the University of California.
+ Copyright (c) 2007-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -639,7 +639,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
             }
 
             /*} else if (type == PointerToken.POINTER) {
-            
+
                 int[][] tokens = (int[][]) outputTokens;
                 for (int i = 0; i < port.getWidthInside(); i++) {
                     for (int k = 0; k < rate; k++) {
@@ -1025,7 +1025,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                             ((double[][]) tokenHolder)[i] = doubleTokens;
 
                             /*} else if (type == PointerToken.POINTER) {
-                            
+
                             int[] intTokens = new int[rate];
                             for (int k = 0; k < rate; k++) {
                             intTokens[k] = ((PointerToken) tokens[k])

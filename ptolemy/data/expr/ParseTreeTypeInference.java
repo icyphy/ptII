@@ -1,6 +1,6 @@
 /* A visitor for parse trees of the expression language that infers types.
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -908,10 +908,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                             // will be the element type, not the Matrix or Array.
                             Type type = ((Variable) result).getType();
                             if (type instanceof MatrixType) {
-                                return ((MatrixType)type).getElementType();
+                                return ((MatrixType) type).getElementType();
                             }
                             if (type instanceof ArrayType) {
-                                return ((ArrayType)type).getElementType();
+                                return ((ArrayType) type).getElementType();
                             }
                             return type;
                         } else {

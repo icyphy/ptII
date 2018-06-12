@@ -1,6 +1,6 @@
 /* A count and a list of schedule elements.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -425,13 +425,13 @@ public class SequenceSchedule extends Schedule {
             {
                 // Get the next sequence attribute
                 SequenceAttribute seqControlActor = (SequenceAttribute) _independentList.get(i);
-            
+
                 System.out.println("Independent sequence attribute value: " + seqControlActor.getExpression());
                 System.out.println("Actor for this sequence attribute: " + ((Actor) seqControlActor.getContainer()).getFullName());
-            
+
                 // From the control table, get the hash table <String, List> corresponding to this SequenceAttribute
                 Hashtable branches = (Hashtable) _controlTable.get(seqControlActor);
-            
+
                 // This sequence attribute may or may not correspond to a control element
                 // Even if it does, the control element may not have any branches
                 if (branches != null)
@@ -439,15 +439,15 @@ public class SequenceSchedule extends Schedule {
                     // Get the key set
                     Set<String> branchNames = branches.keySet();
                     Iterator branchIterator = branchNames.iterator();
-            
+
                     while (branchIterator.hasNext())
                     {
                         String branchName = ((String) branchIterator.next());
                         System.out.println("Branch name: " + branchName);
-            
+
                         // Get the sequence attributes of actors for this key
                         ArrayList seqAttributes = (ArrayList) branches.get((String) branchIterator.next());
-            
+
                         if (seqAttributes != null)
                         {
                             Iterator actorIterator = seqAttributes.iterator();
@@ -458,7 +458,7 @@ public class SequenceSchedule extends Schedule {
                                 System.out.println("Actor for this sequence attribute: " + ((Actor) seqDependentActor.getContainer()).getFullName());
                             }
                         }
-            
+
                     }
                 }
             }

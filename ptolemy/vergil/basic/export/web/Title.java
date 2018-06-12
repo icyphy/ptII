@@ -1,6 +1,6 @@
 /* Attribute specifying a title for a model or component in a model.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -397,7 +397,7 @@ public class Title extends StringParameter implements WebExportable {
     /*
     protected void _provideElements(WebExporter exporter)
         throws IllegalActionException {
-    
+
         // Create a WebElement for title and add to exporter.
         // Content should only be added once (onceOnly -> true).
         WebElement webElement = WebElement.

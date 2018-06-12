@@ -51,8 +51,7 @@ public class PlotLiveApplet extends PlotApplet {
     public String getAppletInfo() {
         return "PlotLiveApplet " + PlotBox.PTPLOT_RELEASE
                 + " : Demo of PlotLive.\n" + "By: Edward A. Lee\n"
-                + "    Christopher Brooks\n"
-                + "($Id$)";
+                + "    Christopher Brooks\n" + "($Id$)";
     }
 
     /** Start the plot thread.

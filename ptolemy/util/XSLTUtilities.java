@@ -1,6 +1,6 @@
 /* Utilities that manipulate strings using XSLT.
 
- Copyright (c) 2002-2014 The Regents of the University of California.
+ Copyright (c) 2002-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -92,7 +92,7 @@ public class XSLTUtilities {
      *       exportMoMLDTD \
      *       /tmp/SwimmingPool_1.xml
      * </pre>
-    
+
      * @param args At least three arguments:
      * <ul>
      * <li> The first argument is the input file name.</li>

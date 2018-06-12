@@ -1,6 +1,6 @@
 /* An attribute encapsulating a model transformation with the Ptera controller.
 
- Copyright (c) 2008-2014 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -427,7 +427,7 @@ public class TransformationAttribute extends Attribute
      An execution listener that sets the model parameter to contain the
      container of the transformation attribute at the beginning of the
      transformation.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

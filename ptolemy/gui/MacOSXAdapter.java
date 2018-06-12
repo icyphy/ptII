@@ -1,6 +1,6 @@
 /* Support for Mac OS X Specific key bindings.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -113,8 +113,9 @@ public class MacOSXAdapter implements InvocationHandler {
         } catch (NoSuchMethodException ex2) {
             if (!_printedNoSuchMethodExceptionMessageAboutMenu) {
                 _printedNoSuchMethodExceptionMessageAboutMenu = true;
-                System.out.println("Warning: Failed to get the setEnabledAboutMenu method.  "
-                                   + "This is a known limitation of Java 9 and later.");
+                System.out.println(
+                        "Warning: Failed to get the setEnabledAboutMenu method.  "
+                                + "This is a known limitation of Java 9 and later.");
             }
         } catch (Exception ex3) {
             top.report("The about menu could not be set.", ex3);
@@ -186,7 +187,7 @@ public class MacOSXAdapter implements InvocationHandler {
                         _macOSXApplication = applicationClass
                                 .getConstructor((Class[]) null)
                                 .newInstance((Object[]) null);
-                    } catch ( java.lang.reflect.InvocationTargetException ex) {
+                    } catch (java.lang.reflect.InvocationTargetException ex) {
                         if (ex.getCause() instanceof SecurityException) {
                             if (!_printedSecurityExceptionMessage) {
                                 System.out.println("Warning: Failed to get the"
@@ -194,16 +195,17 @@ public class MacOSXAdapter implements InvocationHandler {
                                         + applicationClassName + "\" ("
                                         + applicationClass + "): " + ex
                                         + "(applets and -sandbox always causes this)");
-				_printedSecurityExceptionMessage = true;
+                                _printedSecurityExceptionMessage = true;
                             }
                         }
                         return;
-                    } catch ( java.lang.IllegalAccessException ex2) {
-			if (!_printedIllegalAccessExceptionMessage) {
-			    System.out.println("Warning: Failed to access the Application class "
-					       + applicationClassName + "\" ("
-					       + applicationClass + "): " + ex2);
-			    _printedIllegalAccessExceptionMessage = true;
+                    } catch (java.lang.IllegalAccessException ex2) {
+                        if (!_printedIllegalAccessExceptionMessage) {
+                            System.out.println(
+                                    "Warning: Failed to access the Application class "
+                                            + applicationClassName + "\" ("
+                                            + applicationClass + "): " + ex2);
+                            _printedIllegalAccessExceptionMessage = true;
                         }
                         return;
                     }
@@ -223,11 +225,12 @@ public class MacOSXAdapter implements InvocationHandler {
                         new Object[] { osxAdapterProxy });
             }
         } catch (ClassNotFoundException ex) {
-                if (!_printedNoClassDefFoundMessageApplicationListener) {
-                    System.err.println("Warning The com.apple.eawt.ApplicationListener class was not found.  "
-                                       + "This is a known limitation of Java 9 and later.");
-                    _printedNoClassDefFoundMessageApplicationListener = true;
-                }
+            if (!_printedNoClassDefFoundMessageApplicationListener) {
+                System.err.println(
+                        "Warning The com.apple.eawt.ApplicationListener class was not found.  "
+                                + "This is a known limitation of Java 9 and later.");
+                _printedNoClassDefFoundMessageApplicationListener = true;
+            }
         } catch (Exception ex2) {
             top.report(
                     "There was a problem invoking the addApplicationListener method",
@@ -252,9 +255,6 @@ public class MacOSXAdapter implements InvocationHandler {
 
     /** True if we have printed the NoClassDefFound message for com.apple.eawt.ApplicationListener. */
     private static boolean _printedNoClassDefFoundMessageApplicationListener = false;
-
-    /** True if we have printed the NoClassDefFound message. */
-    private static boolean _printedNoClassDefFoundMessage = false;
 
     /** True if we can't find the setEnabledAboutMenu method and have printed the message. */
     private static boolean _printedNoSuchMethodExceptionMessageAboutMenu = false;

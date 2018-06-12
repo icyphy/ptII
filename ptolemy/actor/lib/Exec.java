@@ -1,6 +1,6 @@
 /* Execute a command in a subprocess.
 
- Copyright (c) 2004-2015 The Regents of the University of California.
+ Copyright (c) 2004-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -126,7 +126,7 @@ public class Exec extends LimitedFiringSource {
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
         command.setExpression("echo \"Hello world.\"");
-        
+
         new Parameter(command.getPort(), "_showName", BooleanToken.TRUE);
 
         directory = new FileParameter(this, "directory");

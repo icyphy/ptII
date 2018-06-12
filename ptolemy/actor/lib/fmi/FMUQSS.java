@@ -1,7 +1,7 @@
 /*  Invoke a Functional Mock-up Interface (FMI) 2.0 Model Exchange Functional
     Mock-up Unit (FMU) which will be integrated using QSS.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -1825,7 +1825,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *
      * @param eventIndicator The event indicator.
      * @param number The number of event indicators.
-    
+
      * @exception IllegalActionException If the fmiGetEventIndicators
      * function is missing, or if calling it does not return fmiOK.
      */
@@ -2299,7 +2299,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * <p>FMU can produce outputs that don't correspond to states.</p>
      *
      * @param currentTime The current simulation time.
-    
+
      */
     private final void _produceOutputs(final Time currentTime)
             throws IllegalActionException {

@@ -1,6 +1,6 @@
 /* Class for modular code generators.
 
-   Copyright (c) 2009-2014 The Regents of the University of California.
+   Copyright (c) 2009-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -416,13 +416,13 @@ public class ModularCodeGenerator extends JavaCodeGenerator {
                             if (addComma) {
                                 mainEntryCode.append(", ");
                             }
-            
+
                             String type = codeGenType(outputPort.getType());
-            
+
                             if (!type.equals("Token") && !isPrimitive(type)) {
                                 type = "Token";
                             }
-            
+
                             for (int i = 0; i < outputPort.getWidth(); i++) {
                                 if (DFUtilities.getTokenConsumptionRate(outputPort) > 1) {
                                     mainEntryCode.append(type + "[] " + outputPort.getName() + "_" + i);

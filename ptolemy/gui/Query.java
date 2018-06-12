@@ -1,6 +1,6 @@
 /* Query dialog.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -2484,7 +2484,7 @@ public class Query extends JPanel {
          *  If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false,
          *  then {@link #actionPerformed(ActionEvent)} uses this method.  Otherwise,
          *  {@link #_actionPerformedFileDialog(ActionEvent)} is used.
-        
+
          *  <p>Under Bash, to test this method, use:</p>
          *  <pre>
          *  export JAVAFLAGS=-Dptolemy.ptII.useFileDialog=false

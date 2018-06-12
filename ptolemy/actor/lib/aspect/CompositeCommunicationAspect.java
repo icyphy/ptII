@@ -1,6 +1,6 @@
 /* This actor implements a communication aspect that is a composite actor.
 
-@Copyright (c) 2011-2014 The Regents of the University of California.
+@Copyright (c) 2011-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -299,14 +299,15 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
                                     .get("receiver")).getValue();
                             Token token = recordToken.get("token");
                             receiver.put(token);
-                            
+
                             // If the receiver is in an output port, then have to transfer
                             // the token to the outside.
                             IOPort port = receiver.getContainer();
                             if (port.isOutput()) {
                                 NamedObj container = port.getContainer();
                                 if (container instanceof Actor) {
-                                    Director director = ((Actor)container).getDirector();
+                                    Director director = ((Actor) container)
+                                            .getDirector();
                                     director.transferOutputs(port);
                                 }
                             }
@@ -402,7 +403,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         if (name == null) {
             throw new IllegalActionException(this,
                     "No communication input port has been specified for "
-                    + receiver.getContainer().getFullName());
+                            + receiver.getContainer().getFullName());
         }
 
         CommunicationRequestPort port = (CommunicationRequestPort) getEntity(
@@ -419,7 +420,8 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
         if (token != null) {
             RecordToken recordToken = new RecordToken(
                     new String[] { "receiver", "token", "sender" },
-                    new Token[] { new ObjectToken(receiver), token, new ObjectToken(source) });
+                    new Token[] { new ObjectToken(receiver), token,
+                            new ObjectToken(source) });
             List<Token> tokens = _tokens.get(port);
             if (tokens == null) {
                 tokens = new ArrayList<Token>();

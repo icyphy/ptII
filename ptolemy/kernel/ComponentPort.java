@@ -1,6 +1,6 @@
 /* A port supporting clustered graphs.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -834,10 +834,10 @@ public class ComponentPort extends Port {
          * EAL 4/21/09.
         if (relation != null) {
             Entity container = (Entity) getContainer();
-        
+
             // Superclass assures that the container is not null.
             Nameable relationContainer = relation.getContainer();
-        
+
             if ((container != relationContainer)
                     && (container.getContainer() != relationContainer)) {
                 throw new IllegalActionException(this, relation,

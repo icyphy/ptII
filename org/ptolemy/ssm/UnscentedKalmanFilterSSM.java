@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Shuhei Emoto
  * @version $Id$
- * @since Ptolemy II 10.1
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (shuhei)
  * @Pt.AcceptedRating
 */

@@ -112,8 +112,8 @@ public class AudioPlayer extends Sink implements ControllerListener {
             _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, "Cannot open file: "
-                    + ex.toString());
+            throw new IllegalActionException(this,
+                    "Cannot open file: " + ex.toString());
         } catch (MediaException ex) {
             throw new IllegalActionException(this,
                     "Exception thrown by media framework: " + ex.toString());

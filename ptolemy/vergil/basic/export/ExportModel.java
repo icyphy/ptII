@@ -1,6 +1,6 @@
 /* Export a model as an image or set of html files.
 
- Copyright (c) 2011-2017 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -89,7 +89,7 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  */
 public class ExportModel {
     /** Export an image of a model to a file or directory.
-    
+
      *  <p>The image is written to a file or directory with the same name
      *  as the model.  If formatName starts with "HTM" or "htm", then
      *  a directory with the same name as the basename of the model is

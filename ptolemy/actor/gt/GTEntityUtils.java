@@ -1,6 +1,6 @@
 /* A set of utilities for handling GTEntities.
 
-@Copyright (c) 2008-2014 The Regents of the University of California.
+@Copyright (c) 2008-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -326,7 +326,7 @@ public class GTEntityUtils {
     /**
      A change request to copy the icon of a newly created entity within a
      container to a given GTEntity.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1
@@ -412,7 +412,7 @@ public class GTEntityUtils {
 
     /**
      A change request to restore the default icon of an entity.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

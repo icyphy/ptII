@@ -1,6 +1,6 @@
 /* JUnit test that exports the demos.
 
-   Copyright (c) 2012-2016 The Regents of the University of California.
+   Copyright (c) 2012-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -280,9 +280,8 @@ public class ExportModelJUnitTest {
                 "Gravitation.xml", "GravitationWithCollisionDetection.xml",
                 // PtinyOS is probably not installed and if it is not installed,
                 // the loading the demos will report missing classes.
-                "ptolemy/actor/ptalon/demo/ptinyos", 
-                "ptolemy/domains/ptinyos/demo",
-        };
+                "ptolemy/actor/ptalon/demo/ptinyos",
+                "ptolemy/domains/ptinyos/demo", };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
                 return false;
@@ -295,11 +294,9 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = {
-            "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
-            "ptolemy/domains/ptinyos/demo",
-            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-            "SimplePassPointer", // Only works on 32-bit
+        String[] skip = { "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+                "ptolemy/domains/ptinyos/demo", "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+                "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -336,10 +333,10 @@ public class ExportModelJUnitTest {
                 "g4ltl/demo/", // These demos require wiring.
                 "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
 
-                          // If hlacerti models are hanging, see
-                          // AutoTests.delayIfNecessary() and consider
-                          // increasing the amount of delay time
-                          "org/hlacerti",
+                // If hlacerti models are hanging, see
+                // AutoTests.delayIfNecessary() and consider
+                // increasing the amount of delay time
+                "org/hlacerti",
                 //"BrockAckerman.xml", // FIXME: Seems to hang when runnning under code coverage.
                 "ConstAbstractInterpretationObservable.xml", // Has links to other models
                 "ConstNonconst/Const.xml", // Has links to other models
@@ -434,6 +431,7 @@ public class ExportModelJUnitTest {
                 "cg/lib/demo/Scale/Scale.xml", // Contains links to other demos.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SequencedActors.xml", // Has links to other models
+                "SecureCommServerClientJS.xml", // Does not run under Travis.
                 "actor/lib/io/comm/demo", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."

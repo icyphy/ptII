@@ -1,6 +1,6 @@
 /* An actor containing a PetriNet composite actor.
 
- Copyright (c) 2001-2014 The Regents of the University of California.
+ Copyright (c) 2001-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -107,7 +107,7 @@ public class PetriNetActor extends TypedCompositeActor {
      *  @return A new PetriNetActor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
-    
+
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {

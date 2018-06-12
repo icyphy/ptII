@@ -1,6 +1,6 @@
 /* An attribute for defining a data type for a port.
 
- Copyright (c) 1999-2015 The Regents of the University of California.
+ Copyright (c) 1999-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -238,9 +238,9 @@ public class TypeAttribute extends Parameter {
                         this,
                         "TypeAttribute can only be contained by instances "
                                 + "of TypedIOPort or org.kepler.moml.PortAttribute.");
-    
+
             }
-    
+
         }
     }
     */

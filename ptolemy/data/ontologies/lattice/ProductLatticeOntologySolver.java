@@ -1,6 +1,6 @@
 /* A solver for product lattice-based ontologies.
  *
- * Copyright (c) 2007-2014 The Regents of the University of California. All
+ * Copyright (c) 2007-2018 The Regents of the University of California. All
  * rights reserved.
  *
  * Permission is hereby granted, without written agreement and without license
@@ -169,7 +169,7 @@ public class ProductLatticeOntologySolver extends LatticeOntologySolver {
         reset();
         NamedObj toplevel = _toplevel();
         LatticeOntologyAdapter toplevelAdapter = (LatticeOntologyAdapter) getAdapter(toplevel);
-        
+
         toplevelAdapter.reinitialize();
         if (containedSolvers != null) {
             for (LatticeOntologySolver innerSolver : containedSolvers) {

@@ -1,6 +1,6 @@
 /* An actor that outputs the previous event when it receives an event.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -140,14 +140,14 @@ public class Previous extends DETransformer {
      */
     /*    public Set<Inequality> typeConstraints() {
             Set<Inequality> typeConstraints = super.typeConstraints();
-    
+
             try {
                 if (initialValue.getToken() != null) {
                     Inequality ineq = new Inequality(initialValue.getTypeTerm(),
                             output.getTypeTerm());
                     typeConstraints.add(ineq);
                 }
-    
+
                 Inequality ineq2 = new Inequality(input.getTypeTerm(),
                         output.getTypeTerm());
                 typeConstraints.add(ineq2);
@@ -157,7 +157,7 @@ public class Previous extends DETransformer {
                 // of the base class.
                 throw new InternalErrorException("Bad initialValue value!");
             }
-    
+
             return typeConstraints;
         }
      */

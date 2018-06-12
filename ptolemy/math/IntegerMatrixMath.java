@@ -5,7 +5,7 @@
  [1] Embree, Paul M. and Bruce Kimble. "C Language Algorithms for Digital
  Signal Processing". Prentice Hall. Englewood Cliffs, NJ, 1991.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -252,7 +252,7 @@ public class IntegerMatrixMath {
 
     /** Return a new matrix that is the formed by bitwise ORing z with
      *  each element of the input matrix (matrix[i][j] | z).
-    
+
      */
     public static final int[][] bitwiseOr(final int[][] matrix, final int z) {
         int rows = _rows(matrix);

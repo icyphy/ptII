@@ -1,6 +1,6 @@
 /* A simple diff utility, implemented in Java.
 
- Copyright (c) 2011-2017 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import java.nio.charset.Charset;
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -110,7 +110,7 @@ public class Diff {
      *  <pre>
      *  java -classpath $PTII ptolemy.util.test.Diff File1.txt File2.txt
      *  </pre>
-    
+
      *  @param args An array of two elements, where
      *  the first element is the filename of the first
      *  file and the second element is the filename of

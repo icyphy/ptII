@@ -32,7 +32,22 @@
 # "make all" should be executed before "make setup".
 # "make all" creates the $PTII/adm/dist/ptIIxxx and tars it up.
 # "make setup" uses the tar files to create installers.
+
+# The idea here is that we create $PTII/dists/ptIIxxx and then create installers based on the contents of that directory.
+
+# $PTII/dists/ptIIxxx/jar_dist contains the jar files necessary for the installers.  $PTII/jars.xml is used to create the jar files.
+
+# To build the installers, we use IzPack.  The primary installer
+# IzPack configuration files are for Windows
+# (ptIIxxx_setup_windows.xml).  Mac and Linux are derived fron the
+# Windows IzPack files by substitution.
+
+# To create Windows .exe files, we use L4J.
+
+# To build the installers, $PTII/build.xml.in contains a test.installers target
+
 # The rules to build WebStart files are in $PTII/mk/jnlp.mk
+
 
 # Variables
 #  If you change the version number, then edit 
@@ -40,14 +55,14 @@
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
 MAJOR_VERSION = 	11.0
-MINOR_VERSION =		devel
+MINOR_VERSION =		beta
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	11_0_devel
+WINDOWS_VERSION =	11_0_beta
 
-CAPECODE_VERSION =	0.2.devel
-CAPECODE_WINDOWS_VERSION =	0_2_devel
+CAPECODE_VERSION =	0.2.beta
+CAPECODE_WINDOWS_VERSION =	0_2_beta
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -84,13 +99,13 @@ PTII_FTP = /users/ptolemy/apache2/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.beta COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII11.0.devel PTIIADM=/tmp/cxh/ptII11.0.devel/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII11.0.beta PTIIADM=/tmp/cxh/ptII11.0.beta/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -206,61 +221,20 @@ CAPECODE_SRC_TAR = $(CAPECODE_CAPECODE_VERSION).tar.gz
 all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) $(CAPECODE_SRC_TAR) #$(PTII_DEVEL_SRC)
 
 ####
-release_terra:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar
-
-release_terra_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc setup
-
-release_terra_capecode_setup_mac_jar:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc capecode_setup_mac_jar
-
-release_terra_test_capecode_setup:
-	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc test_capecode_setup
-
-release_terra_linux:
-	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc capecode_setup_linux_jar
-
-
-
-release_terra_jenkins_setup:
-	$(MAKE) PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup
-
-release_terra_jenkins_test_capecode_setup:
-	$(MAKE) PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc clean all src.jar setup test_capecode_setup
-
-
-release_terra_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc remote4_Test
-
-release_terra_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_152/bin/javadoc update_ftp
-
-####
-release_wessel:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc clean all src.jar
-
-release_wessel_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc setup
-
-release_wessel_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc remote4_Test
-
-release_wessel_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc update_ftp
-
-####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.beta COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_capecode_mac_tar:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
+
+release_mac_update_ftp:
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar update_ftp
 
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
@@ -270,19 +244,19 @@ release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
 release_mac_capecode_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac
 
 release_mac_test_capecode_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
 
 release_mac_capecode_linux:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
 
 release_mac_capecode_setup_64_jar:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_64_jar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.beta COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_64_jar
 
 
 release_mac2_setup:
@@ -404,7 +378,7 @@ $(NODE_WIN): node
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(IZPACK_DIR) $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
+$(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -915,7 +889,6 @@ PTII_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/coroutine \
 		ptolemy/domains/fmi \
 		ptolemy/vergil/basic/imprt/fmu/ImportFMUAsJavaFMUAction.java \
-		ptolemy/domains/giotto/cgc \
 		ptolemy/domains/gr/demo/Demo1 \
 		ptolemy/domains/gr/lib/vr \
 		ptolemy/domains/hs \
@@ -1858,7 +1831,7 @@ PtolemyII_DigitalV1_02.pdf: $(INSTALLER_SRCS)/PtolemyII_DigitalV1_02.pdf
 
 # Download a copy of the book to INSTALLER_SRCS
 BOOK_PDF=PtolemyII_DigitalV1_02.pdf
-BOOK_URL= http://ptolemy.eecs.berkeley.edu/books/Systems/$(BOOK_PDF)
+BOOK_URL= https://ptolemy.berkeley.edu/books/Systems/$(BOOK_PDF)
 BOOK_LOCAL_SRC=$(INSTALLER_SRCS)/$(BOOK_PDF)
 $(BOOK_LOCAL_SRC): $(INSTALLER_SRCS)
 	if [ ! -f $@ ]; then \
@@ -2803,616 +2776,6 @@ remote1jnlp:
 
 
 
-#####################################################################
-# Build on a remote host under JDK1.4
-
-# Remote location of Ptolemy II tree for testing
-# Host to run on
-REMOTE2HOST = carson
-
-# Directory to place test distribution in
-REMOTE2HOME = /vol/$(REMOTE2HOST)/$(REMOTE2HOST)1/ptII
-
-# Actual ptII directory
-REMOTE2PTIIDIST = $(REMOTE2HOME)/ptII$(VERSION)
-
-# Log file to save the results in
-REMOTE2LOG = $(GENLOGDIR)/remote2.out
-
-remote2: remote2jdk1.4
-remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
-	@echo "#"
-	@echo "# Now building target remote2jdk1.4 on $(REMOTE2HOST) with JDK1.4 "
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	ssh $(REMOTE2HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
-		OTHERMAKE=${OTHERMAKE} \
-		PTIIHOME=${PTIIHOME} \
-		PTIIADM=${PTIIADM} \
-		REMOTE2HOST=${REMOTE2HOST} \
-		REMOTE2HOME=${REMOTE2HOME} \
-		TAR=${TAR} \
-		remote2nuke remote2ptiidist remote2distclean \
-		remote2distjdk1.4 remote2distjdk1.4test remote2done \
-		>& $(REMOTE2LOG)" &
-
-remote2fortytwo:
-	$(MAKE) USER=cxh OTHERMAKE=make PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar REMOTE2HOST=fortytwo REMOTE2HOME=/tmp/cxh/r2 remote2
-
-# Remove the remote dist
-# $(REMOTE2DONEFILE) is used to signal when everything is done
-remote2nuke:
-	rm -rf $(REMOTE2PTIIDIST) $(REMOTE2DONEFILE)
-
-#Untar the remote dist.  Usually this is run on the remote machine
-remote2ptiidist: $(REMOTE2PTIIDIST)
-$(REMOTE2PTIIDIST): $(PTII_SRC)
-	@echo "#"
-	@echo "# Now untaring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE2HOME); $(TAR) -zxf $(PTII_SRC))
-
-
-# clean the remote tree
-remote2distclean:
-	@echo "#"
-	@echo "# Now running make clean in $(REMOTE2PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE2PTIIDIST); \
-		$(OTHERMAKE) clean; \
-		find . -name codeDoc -exec rm -rf {} \;)
-
-
-# Compile with JDK1.4
-remote2distjdk1.4:
-	@echo "#"
-	@echo "# Now building target remote2distjdk1.4 with JDK1.4"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE2PTIIDIST); rm -f config.status config.cache; \
-		PTII=$(REMOTE2PTIIDIST) \
-		PATH=/usr/local/j2se/bin:$$PATH ./configure; \
-	PTII=$(REMOTE2PTIIDIST) $(MAKE) -k fast)
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-# Test with JDK1.4
-REMOTE2PTJACL_JAR	= $(REMOTE2PTIIDIST)/ptjacl.jar
-$(REMOTE2PTJACL_JAR):
-	@echo "#"
-	@echo "# Creating $@"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE2PTIIDIST); cvs -d $(CVS_REPOSITORY) checkout tcl; \
-		cd tcl;	\
-		PTII=$(REMOTE2PTIIDIST) \
-		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k sources all install)
-	ls -l $@
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-remote2distjdk1.4test: #$(REMOTE2PTJACL_JAR)
-	@echo "#"
-	@echo "# Now testing with on `hostname`"
-	@echo "# with `java -version`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE2PTIIDIST); \
-		PTII=$(REMOTE2PTIIDIST) \
-		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
-			tests)
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-
-#####################################################################
-# Build on a remote host by doing a git clone
-
-# Host to run on
-REMOTE3HOST = moog
-
-# Directory to build in
-REMOTE3HOME = /vol/$(REMOTE3HOST)/$(REMOTE3HOST)1/ptII
-
-# Actual ptII tree.  Note that there is no version number because
-# we are checking it out from svn
-REMOTE3PTIIDIST = $(REMOTE3HOME)/ptII
-
-# Log file to save the results in
-REMOTE3LOG = $(GENLOGDIR)/remote3.out
-
-remote3: remote3svn
-remote3svn:  $(GENLOGDIR)
-	@echo "#"
-	@echo "# Now building on $(REMOTE3HOST) by doing a svn checkout "
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make remote3nuke >& $(REMOTE3LOG)"
-	# ssh-ing and then using svn to ssh results in
-	# (cd /vol/gauss/gauss2/ptII; svn -d :ext:gigasource.eecs.berkeley.edu:/home/svn checkout ptII; svn update -P -d)
-	# You have no controlling tty and no DISPLAY.  Cannot read passphrase.
-	# so we do the svn co locally
-	cd $(GENDIR); make remote3ptiidist >> $(REMOTE3LOG) 2>&1
-	ssh -x -n $(REMOTE3HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
-		remote3distclean \
-		remote3distbuild remote3distbuild remote3done \
-		>>& $(REMOTE3LOG)" &
-
-# Remove the remote dist
-# $(REMOTE3DONEFILE) is used to signal when everything is done
-remote3nuke:
-	rm -rf $(REMOTE3PTIIDIST) $(REMOTE3DONEFILE)
-
-#Untar the remote dist.  Usually this is run on the remote machine
-remote3ptiidist: $(REMOTE3PTIIDIST)
-$(REMOTE3PTIIDIST):
-	@echo "#"
-	@echo "# Now doing a git clone on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE3HOME); git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII )
-
-
-# clean the remote tree
-remote3distclean:
-	@echo "#"
-	@echo "# Now running make clean in $(REMOTE3PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE3PTIIDIST); \
-		$(OTHERMAKE) clean; \
-		find . -name codeDoc -exec rm -rf {} \;)
-
-
-# Compile
-remote3distbuild:
-	@echo "#"
-	@echo "# Now building in $(REMOTE3PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE3PTIIDIST); rm -f config.status config.cache; \
-		PTII=$(REMOTE3PTIIDIST) ./configure; $(MAKE) -k)
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-# Build Jacl
-REMOTE3PTJACL_JAR	= $(REMOTE3PTIIDIST)/ptjacl.jar
-$(REMOTE3PTJACL_JAR):
-	@echo "#"
-	@echo "# Creating $@"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE3PTIIDIST); cvs -d :ext:gigasource.eecs.berkeley.edu:/home/cvs checkout tcl; \
-		cd tcl; $(MAKE) install)
-	ls -l $@
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-# Test
-remote3disttest: $(REMOTE3PTJACL_JAR)
-	@echo "#"
-	@echo "# Now testing in $(REMOTE3PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE3PTIIDIST); \
-		$(OTHERMAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
-		tests)
-	@echo "$@ `date`"
-	@echo "`uptime`"
-
-
-#####################################################################
-# Since we are running on multiple machines, when we are done
-# each remote build creates a file.  When all the files are present
-# we concatenate the results to the log file and then call ptIInightly-mail
-
-# Log file to concatenate to
-PTIINIGHTLY_TXT = $(PTIIADM)/test/ptIInightly.txt
-
-# Semaphore file for the remote1 build
-REMOTE1DONEFILE = $(GENLOGDIR)/remote1done
-remote1done: $(REMOTE1DONEFILE) remotealldone
-$(REMOTE1DONEFILE):
-	date > $@
-
-# Semaphore file for the remote2 build
-REMOTE2DONEFILE = $(GENLOGDIR)/remote2done
-remote2done: $(REMOTE2DONEFILE) remotealldone
-$(REMOTE2DONEFILE):
-	date > $@
-
-# Semaphore file for the remote3 build
-REMOTE3DONEFILE = $(GENLOGDIR)/remote3done
-remote3done: $(REMOTE3DONEFILE) remotealldone
-$(REMOTE3DONEFILE):
-	date > $@
-
-# Semaphore file for the remote4 build
-REMOTE4DONEFILE = $(GENLOGDIR)/remote4done
-remote4done: $(REMOTE4DONEFILE) remotealldone
-$(REMOTE4DONEFILE):
-	date > $@
-
-# Semaphore file for the remote5 build
-REMOTE5DONEFILE = $(GENLOGDIR)/remote5done
-remote5done: $(REMOTE5DONEFILE) remotealldone
-$(REMOTE5DONEFILE):
-	date > $@
-
-# Semaphore file for the remote6 build
-REMOTE6DONEFILE = $(GENLOGDIR)/remote6done
-remote6done: $(REMOTE6DONEFILE) remotealldone
-$(REMOTE6DONEFILE):
-	date > $@
-
-
-# If the remote done files are present, send email.
-# We used to put remote2.log into ptIInightly_txt.
-remotealldone:
-	if [ -f $(REMOTE4DONEFILE) \
-		-a -f $(REMOTE5DONEFILE) \
-			]; then \
-		date; \
-		echo "Remote processes finished"; \
-		/bin/sh $(PTIIADM)/bin/ptIInightly-mail cxh ; \
-		/bin/sh $(PTIIADM)/bin/ptIIcodegen-mail $(EMAILTO) ; \
-	else \
-		date; \
-		echo "Still waiting"; \
-		ls -l $(REMOTE4DONEFILE) $(REMOTE5DONEFILE); \
-	fi
-
-##########################################################################
-# Build from a tar file - similar to remote1, but w/o test case coverage
-# except for the deep codegen
-
-# Host to run on
-REMOTE4HOST = moog
-
-# Remote location of Ptolemy II tree for testing
-#REMOTE4HOME = /vol/$(REMOTE4HOST)/$(REMOTE4HOST)2/ptII
-#REMOTE4HOME = /export/home1/bldmastr/pttmp/remote4
-REMOTE4HOME = /export/home2/ptII/remote4
-REMOTE4PTIIDIST = $(REMOTE4HOME)/ptII$(VERSION)
-
-# Log file to save the results in
-REMOTE4LOG = $(GENLOGDIR)/remote4.out
-
-remote4_test: $(PTII_SRC) 
-	if [ ! -d test ]; then mkdir test; fi
-	$(MAKE) REMOTE4HOME=$(GENDIR)/test \
-		PTII_FULL=$(PTII_SRC) \
-		remote4nuke remote4ptiidist remote4configure \
-		remote4distclean remote4build \
-		remote4done
-
-# Create a separate tree and build on REMOTE4HOST
-remote4: $(PTII_FULL) $(GENLOGDIR)
-	@echo "#"
-	@echo "# Now building on $(REMOTE4HOST) from dist tar file"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-#	-ssh $(REMOTE4HOST) "cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old"
-#	ssh $(REMOTE4HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
-#		remote4nuke remote4ptiidist remote4configure \
-#		remote4distclean remote4build \
-#		remote4javatest \
-#		remote4done \
-#		 >& $(REMOTE4LOG)" &
-	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
-	-(cd $(GENDIR); cp $(REMOTE4LOG) $(REMOTE4LOG).old)
-	cd $(GENDIR); $(MAKE) -k EMAILTO=$(EMAILTO) \
-		remote4nuke remote4ptiidist remote4configure \
-		remote4distclean remote4build \
-		remote4javatest \
-		remote4done \
-		 > $(REMOTE4LOG) 2>&1
-
-
-# Remove the remote dist
-remote4nuke:
-	rm -rf $(REMOTE4PTIIDIST) $(REMOTE4DONEFILE)
-
-# untarthe remote dist.  Usually this is run on the remote machine
-remote4ptiidist: $(REMOTE4PTIIDIST)
-$(REMOTE4PTIIDIST): $(PTII_FULL)
-	@echo "#"
-	@echo "# Now untaring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4HOME); $(TAR) -xf $(PTII_FULL))
-	@echo "Creating  vendors/jode"
-	(cd $(PTIIHOME); $(TAR) -cf - vendors/jode) | \
-		(cd $(REMOTE4PTIIDIST); $(TAR) -xf -)
-
-remote4configure:
-	@echo "#"
-	@echo "# Now configuring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	rm -f config.cache; PTII=$(REMOTE4PTIIDIST) ./configure)
-
-# Clean the remote4 tree
-remote4distclean:
-	@echo "#"
-	@echo "# Now running make clean in $(REMOTE4PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST); \
-		$(MAKE) clean; \
-		find . -name codeDoc -exec rm -rf {} \;)
-
-remote4distjavadocs:
-	@echo "#"
-	@echo "# Now generating javadocs in $(PTIIDIST) on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	-(cd $(REMOTE4PTIIDIST); $(OTHERMAKE) -k javadocs)
-
-remote4build:
-	@echo "#"
-	@echo "# Now running make fast all install in $(REMOTE4PTIIDIST)"
-	@echo "# on  `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) fast)
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install)
-
-# Run the deep tests, this is likely to take 14 hours.
-remote4javatest:
-	@echo "#"
-	@echo "# Now running make in $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test"
-	@echo "# on  `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
-		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
-		"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=79200 -Xmx384M" \
-		test_long)
-
-##########################################################################
-# Build from a src tar file - similar to remote1, but w/o test case coverage
-# except for the shallow codegen
-
-# Host to run on
-REMOTE5HOST = moog
-
-# Directory to build in
-#REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
-#REMOTE5HOME = /export/home1/bldmastr/pttmp/remote5
-REMOTE5HOME = /export/home2/ptII/remote5
-
-REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
-
-# Log file to save the results in
-REMOTE5LOG = $(GENLOGDIR)/remote5.out
-
-# Create a separate tree and build on REMOTE5HOST
-remote5: $(PTII_FULL) $(GENLOGDIR)
-	@echo "#"
-	@echo "# Now building on $(REMOTE5HOST) from dist tar file"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-#	-ssh $(REMOTE5HOST) "cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old"
-#	ssh $(REMOTE5HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
-#		remote5nuke remote5ptiidist remote5configure \
-#		remote5build \
-#		remote5shallowtest \
-#		remote5done \
-#		 >& $(REMOTE5LOG)" &
-	if [ ! -d $(GENLOGDIR) ]; then mkdir $(GENLOGDIR); fi
-	-(cd $(GENDIR); cp $(REMOTE5LOG) $(REMOTE5LOG).old)
-	cd $(GENDIR); $(MAKE) -k EMAILTO=$(EMAILTO) \
-		remote5nuke remote5ptiidist remote5configure \
-		remote5build \
-		remote5shallowtest \
-		remote5done \
-		 > $(REMOTE5LOG) 2>&1
-
-
-# Remove the remote dist
-remote5nuke:
-	rm -rf $(REMOTE5PTIIDIST) $(REMOTE5DONEFILE)
-
-# untarthe remote dist.  Usually this is run on the remote machine
-remote5ptiidist: $(REMOTE5PTIIDIST)
-$(REMOTE5PTIIDIST): $(PTII_FULL)
-	@echo "#"
-	@echo "# Now untaring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE5HOME); $(TAR) -xf $(PTII_SRC))
-
-remote5configure:
-	@echo "#"
-	@echo "# Now configuring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE5PTIIDIST);	rm -f config.cache; PTII=$(REMOTE5PTIIDIST) ./configure)
-
-
-remote5build:
-	@echo "#"
-	@echo "# Now running make fast all install in $(REMOTE5PTIIDIST)"
-	@echo "# on  `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE5PTIIDIST);	PTII=$(REMOTE5PTIIDIST) $(MAKE) fast install)
-
-
-# Run the shallow tests, this is likely to take 3 hours.
-remote5shallowtest:
-	@echo "#"
-	@echo "# Now running make in $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test"
-	@echo "# on  `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
-		PTII=$(REMOTE5PTIIDIST) \
-		$(MAKE) \
-			"JTCLSHFLAGS=-Dptolemy.ptII.timeOutSeconds=50400 -Xmx256M"\
-			test_long)
-
-
-
-##########################################################################
-# Build from a src tar file - similar to remote1, we only generate
-# test case coverage from the /test/auto/*.xml tests
-
-# Host to run on
-REMOTE6HOST = moog
-
-# Directory to build in
-REMOTE6HOME = /vol/$(REMOTE6HOST)/$(REMOTE6HOST)2/ptII
-
-REMOTE6PTIIDIST = $(REMOTE6HOME)/ptII$(VERSION)
-
-# Log file to save the results in
-REMOTE6LOG = $(GENLOGDIR)/remote6.out
-
-# Create a separate tree and build on REMOTE6HOST
-remote6: $(PTII_FULL) $(GENLOGDIR)
-	@echo "#"
-	@echo "# Now building on $(REMOTE6HOST) from src tar file"
-	@echo "#  Similar to remote1, we only generate test case coverage"
-	@echo "#  from the /test/auto/*.xml tests"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	ssh $(REMOTE6HOST) "cd $(GENDIR); make -k EMAILTO=$(EMAILTO) \
-		remote6nuke remote6ptiidist remote6configure \
-		remote6build \
-		remote6buildjsall \
-		remote6autojsall \
-		remote6done \
-		 >& $(REMOTE6LOG)" &
-
-
-# Remove the remote dist
-remote6nuke:
-	rm -rf $(REMOTE6PTIIDIST) $(REMOTE6DONEFILE)
-
-# untarthe remote dist.  Usually this is run on the remote machine
-remote6ptiidist: $(REMOTE6PTIIDIST)
-
-# $(REMOTE6PTIIDIST) is the same as $(REMOTE1PTIIDIST), so we comment
-# out this rule.
-#$(REMOTE6PTIIDIST): $(PTII_FULL)
-#	@echo "#"
-#	@echo "# Now untaring on `hostname`"
-#	@echo "#"
-#	@echo "$@ `date`"
-#	@echo "`uptime`"
-#	(cd $(REMOTE6HOME); $(TAR) -zxf $(PTII_SRC))
-
-remote6configure:
-	@echo "#"
-	@echo "# Now configuring on `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE6PTIIDIST);	rm -f config.cache; PTII=$(REMOTE6PTIIDIST) ./configure)
-
-
-remote6build:
-	@echo "#"
-	@echo "# Now running make fast all install in $(REMOTE6PTIIDIST)"
-	@echo "# on  `hostname`"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	(cd $(REMOTE6PTIIDIST);	PTII=$(REMOTE6PTIIDIST) $(MAKE) sources fast all install)
-
-# Run JavaScope Code Coverage tool in the distribution tree
-# For command line options, see
-#http://www.gigascale.org/pubs/gsrc-downloads/JavaScope/docs/pdf/UGApxTools.pdf
-
-remote6buildjsall:
-	@echo "#"
-	@echo "# Now running make jsoriginal clean jsbuild in $(REMOTE1PTIIDIST)"
-	@echo "# on  `hostname`"
-	@echo "# Generating test coverage data for: auto directories"
-	@echo "# $(JSALLDIRS)"
-	@echo "# To add to the list of directories, edit "
-	@echo "# ~ptII/adm/gen-latest/makefile"
-	@echo "#"
-	@echo "$@ `date`"
-	@echo "`uptime`"
-	@echo "Removing $(JSDATABASE) in prep for $$x "
-	-ls -ldg $(JSDATABASE) $(JSDATABASE)/*
-	-rm -rf $(JSDATABASE)
-	mkdir $(JSDATABASE)
-
-	@-if [ "x$(JSALLDIRS)" != "x" ]; then \
-		set $(JSALLDIRS); \
-		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making jsall in $$x ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
-				jsoriginal clean jsbuild JSINSTRFLAGS=;\
-			);  \
-		    fi ; \
-		done ; \
-	fi
-
-remote6autojsall:
-	-if [ "x$(JSALLDIRS)" != "x" ]; then \
-		set $(JSALLDIRS); \
-		for x do \
-		    if [ -w $$x/test/auto ] ; then \
-			( cd $$x/test ; \
-			echo making jstest_jauto in $$x/test ; \
-			$(MAKE) $(MFLAGS) $(MAKEVARS) \
-				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
-				jstest_jauto; \
-			);  \
-		    fi ; \
-		done ; \
-	fi
-	jssummary -HTML -PROGRESS \
-		-OUTFILE=$(JSOUTDIR)/coverage.html
-	jsreport -HTML -PROGRESS -RECURSIVE \
-		-OUTDIR=$(JSOUTDIR)
-	# Add links and colorize the coverage.html page
-	sh $(PTIIADM)/bin/coveragerating $(PTII) \
-		$(JSOUTDIR)/coverage.html
-	-chmod -R a+r $(JSOUTDIR)
-
-
 ###########################################################################
 # Rules for cleaning up the distribution
 SPELLEXCLUDEDIRS = 'filter|collections|microstar'
@@ -3467,7 +2830,7 @@ izpackFix: $(IZPACK_DIR)
 	if [ ! -f "$(IZPACK_PLIST).orig" ]; then \
 		cp "$(IZPACK_PLIST)" "$(IZPACK_PLIST).orig"; \
         fi
-	sed 's@<string>1.4+</string>@<string>1.8+</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
+	sed 's@<string>1.[*0-8+]*</string>@<string>1.8+</string>@' "$(IZPACK_PLIST)" > "$(IZPACK_PLIST).tmp"
 	-diff "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 	mv "$(IZPACK_PLIST).tmp" "$(IZPACK_PLIST)"
 
@@ -3488,7 +2851,7 @@ izpacksetup.jar: izpackFix IzpackSetup.class
 #   bash-4.1$ make PTII=/cygdrive/c/Users/cxh.EECS/ptII10.0.1 foo
 # :-|
 make_izpack: $(IZPACK_COMPILE)
-$(IZPACK_COMPILE): $(IZPACK_DIR)
+$(IZPACK_COMPILE): $(IZPACK_DIR) izpackFix
 	 cd $(IZPACK_DIR)/src; ant dist
 
 # Download IzPack
@@ -3781,22 +3144,26 @@ jre:
 
 WINJRE32_TAR=$(INSTALLER_SRCS)/WinJre32.tar.gz
 $(WINJRE32_TAR): $(INSTALLER_SRCS)
-	if [ ! -f $@ ]; then \
+	if [ ! -s $@ ]; then \
 		echo "Downloading WinJre32 $@: `date`"; \
-		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
+		wget -O $@ https://ptolemy.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
 	fi
 
 jre32: $(WINJRE32_TAR)
+	ls -l $<
+	file $<
 	tar -zxf $<
 
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
 $(WINJRE64_TAR): $(INSTALLER_SRCS)
-	if [ ! -f $@ ]; then \
+	if [ ! -s $@ ]; then \
 		echo "Downloading WinJre64 $@: `date`"; \
-		wget --quiet -O $@ https://ptolemy.eecs.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
+		wget --quiet -O $@ https://ptolemy.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
 	fi
 
 jre64: $(WINJRE64_TAR)
+	ls -l $<
+	file $<
 	tar -zxf $<
 
 # This is the main target for creating installers.
@@ -3983,11 +3350,11 @@ ptsetup_mac: $(PTSETUP_MAC).xml
 
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.beta/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.beta/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.beta/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.beta/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.beta/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3996,7 +3363,7 @@ ptsetup_setup_linux: $(PTSETUP_LINUX).xml
 $(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.so@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.beta/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
@@ -4004,9 +3371,9 @@ $(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
 capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
 $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP) #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
-	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.beta/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.beta/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.beta/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
@@ -4017,7 +3384,7 @@ $(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.beta/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
@@ -4149,7 +3516,7 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	fi
 	mkdir dmg
 	mv $(PTSETUP_MAC).app dmg
-	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	echo "See https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
                 hdiutil create -volname $(PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
@@ -4168,7 +3535,7 @@ $(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
 	fi
 	mkdir dmg
 	mv $(CAPECODE_SETUP_MAC).app dmg
-	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	echo "See https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
                 hdiutil create -volname $(CAPECODE_SETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
@@ -4497,7 +3864,7 @@ $(PTBUILDRELEASE):
 	@echo "#"
 	@echo "$@ `date`"
 	if [ ! -d tmp/build ]; then mkdir -p tmp/build; fi
-	#(cd tmp/build; wget http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
+	#(cd tmp/build; wget https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII$(VERSION).src.tar; tar -xf ptII$(VERSION).src.tar);
 	(cd tmp/build; tar -xf ../../ptII$(VERSION).src.tar);
 
 

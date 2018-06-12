@@ -60,7 +60,7 @@ import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event.Status;
  *
  * @author Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (glp)
  * @Pt.AcceptedRating Red (glp)
  *
@@ -71,27 +71,27 @@ public abstract class FireMachine implements StartOrResumable {
      * Predefined states for the wrapped actor.
      */
     public enum State {
-        /**
-         * The initial state.
-         */
-        START,
-        /**
-         * The state before getfire() is called.
-         */
-        BEGIN,
-        /**
-         * The state when getfire() 'yield returns' some internal MetroII
-         * events.
-         */
-        PROCESS,
-        /**
-         * The state after getfire() normally completes.
-         */
-        END,
-        /**
-         * The final state.
-         */
-        FINAL
+    /**
+     * The initial state.
+     */
+    START,
+    /**
+     * The state before getfire() is called.
+     */
+    BEGIN,
+    /**
+     * The state when getfire() 'yield returns' some internal MetroII
+     * events.
+     */
+    PROCESS,
+    /**
+     * The state after getfire() normally completes.
+     */
+    END,
+    /**
+     * The final state.
+     */
+    FINAL
     }
 
     /**

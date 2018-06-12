@@ -1,6 +1,6 @@
 /* Director for solving algebraic loops.
 
- Copyright (c) 2000-2016 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -596,7 +596,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
     /**
      A class for solving algebraic loops.
-    
+
      This class solves an algebraic loop of the form x=g(x)
      <pre>
          -----------
@@ -631,7 +631,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      Eugene L. Allgower and Kurt Georg,
      Introduction to Numerical Continuation Methods,
      Classics in Applied Mathematics, Vol. 45, SIAM, 2003.
-    
+
      @author Michael Wetter
      */
     abstract class AlgebraicLoopSolver {

@@ -1,6 +1,6 @@
 /* Discrete Time (DT) domain director.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -291,57 +291,57 @@ public class DTDirector extends SDFDirector {
         // with prefire return false in SDFDirector.fire()
         /*
          _debugViewSchedule();
-        
+
          if (container == null) {
          throw new InvalidStateException("DTDirector " + getName() +
          " fired, but it has no container!");
          } else {
-        
+
          Scheduler scheduler = getScheduler();
          if (scheduler == null)
          throw new IllegalActionException("Attempted to fire " +
          "DT system with no scheduler");
          Enumeration allActors = scheduler.schedule();
          while (allActors.hasMoreElements()) {
-        
+
          Actor actor = (Actor)allActors.nextElement();
-        
+
          boolean isFiringNonDTCompositeActor = false;
-        
+
          if (actor instanceof CompositeActor) {
          CompositeActor compositeActor = (CompositeActor) actor;
          Director  insideDirector =
          compositeActor.getDirector();
-        
+
          if ( !(insideDirector instanceof DTDirector)) {
          isFiringNonDTCompositeActor = true;
          _insideDirector = insideDirector;
          }
          }
-        
+
          if (isFiringNonDTCompositeActor) {
          _pseudoTimeEnabled = true;
          }
-        
-        
+
+
          if (!actor.prefire()) {
          throw new IllegalActionException(this,
          (ComponentEntity) actor, "Actor " +
          "is not ready to fire.");
          }
-        
+
          if (_debugging)
          _debug("Firing " + ((Nameable)actor).getFullName());
-        
+
          actor.fire();
-        
+
          // note: short circuit evaluation here
          _postFireReturns = actor.postfire() && _postFireReturns;
-        
+
          if (isFiringNonDTCompositeActor) {
          _pseudoTimeEnabled = false;
          }
-        
+
          }
          }*/
         super.fire();

@@ -1,6 +1,6 @@
 /* An action that is associated with a figure.
 
- Copyright (c) 2000-2016 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -159,10 +159,10 @@ public class FigureAction extends AbstractAction {
              } else if (source instanceof JMenuItem) {
              // Action activated using a context menu.
              JMenuItem item = (JMenuItem) source;
-            
+
              if (item.getParent() instanceof JContextMenu) {
              _sourceType = CONTEXTMENU_TYPE;
-            
+
              JContextMenu menu = (JContextMenu) item.getParent();
              parent = menu.getInvoker();
              _target = (NamedObj) menu.getTarget();

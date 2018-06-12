@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2018 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -330,6 +330,9 @@ function ClientRequest(options, responseCallback) {
 
     this.helper = HttpClientHelper.getOrCreateHelper(actor, this);
     this.options = options;
+    
+    // console.log('******* Options:');
+    // console.log(util.inspect(options));
 }
 util.inherits(ClientRequest, EventEmitter);
 exports.ClientRequest = ClientRequest;
@@ -370,7 +373,7 @@ ClientRequest.prototype.write = function (data, encoding) {
 ClientRequest.prototype._handleError = function (message) {
     // There may be no registered error event handler.
     try {
-        this.emit('error', message);
+        this.emit('error', new Error(message));
     } catch (err) {
         error(message);
     }

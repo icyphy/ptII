@@ -1,6 +1,6 @@
 /* An attribute that represents a MoML parser.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -79,7 +79,7 @@ public class ParserAttribute extends SingletonAttribute {
 
     /** Clone the attribute into the specified workspace.  The
      *  resulting object a null value for the value of the parser.
-    
+
      *  @param workspace The workspace for the cloned object.
      *  @return A new attribute.
      *  @exception CloneNotSupportedException If a derived class contains

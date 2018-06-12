@@ -942,7 +942,7 @@ public final class LinAlg {
 
         /* Test code template
            Try -45,-45 ; -45 +45 ; -45 134; -45 136 ; 0 90
-        
+
         double q0[] = LinAlg.rollPitchYawToQuat(new double[] {0, 0, Math.toRadians(-45)});
         double q1[] = LinAlg.rollPitchYawToQuat(new double[] {0, 0, Math.toRadians(-45)});
         for (double w = 0; w <= 1; w+= 0.1)
@@ -2212,10 +2212,10 @@ public final class LinAlg {
           for (int dim = 1; dim <= 4; dim++) {
           for (int iter = 0; iter < 1000; iter++) {
           double M[][] = randomMatrix(dim, dim, r);
-        
+
           double qident[][] = matrixAB(M, inverse(M));
           double ident[][] = identity(dim);
-        
+
           double err = max(abs(subtract(qident, ident)));
           if (err > 1E-10)
           System.out.println("WARNING: inverse dim="+dim+" err: "+err);
@@ -2527,7 +2527,7 @@ public final class LinAlg {
                         double w2 = 1;
                         if (p.length >= 3)
                             w2 = p[2]*p[2];
-        
+
                         chi2 += w2*w2*(ypred-p[1])*(ypred-p[1]);
                     }
                     System.out.printf("%15f \n", chi2);
@@ -2614,7 +2614,7 @@ public final class LinAlg {
      *
      * The plane and points must be in the same coordinate frame
      * @see #transformPlane(double[][], double[])
-    
+
      *
      * We then test each of the points; if they are all on the
      * positive side of the plane, we return true.

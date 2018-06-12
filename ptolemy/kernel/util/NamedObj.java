@@ -1813,10 +1813,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
     public void removeHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners != null) {
             Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
-                .iterator();
+                    .iterator();
             while (listeners.hasNext()) {
-                WeakReference<HierarchyListener> reference = listeners
-                    .next();
+                WeakReference<HierarchyListener> reference = listeners.next();
                 if (reference.get() == listener) {
                     listeners.remove();
                 }
@@ -2862,22 +2861,21 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             NamedObj container = getContainer();
             if (container != null) {
                 Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
-                            .iterator();
+                        .iterator();
                 while (listeners.hasNext()) {
-                        WeakReference<HierarchyListener> reference = listeners
-                                .next();
-                        container.addHierarchyListener(reference.get());
+                    WeakReference<HierarchyListener> reference = listeners
+                            .next();
+                    container.addHierarchyListener(reference.get());
                 }
             }
 
             Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
-                .iterator();
+                    .iterator();
             while (listeners.hasNext()) {
-                WeakReference<HierarchyListener> reference = listeners
-                    .next();
+                WeakReference<HierarchyListener> reference = listeners.next();
                 reference.get().hierarchyChanged();
-            //for (HierarchyListener listener : _hierarchyListeners) {
-            //    listener.hierarchyChanged();
+                //for (HierarchyListener listener : _hierarchyListeners) {
+                //    listener.hierarchyChanged();
             }
         }
     }
@@ -2893,10 +2891,9 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             throws IllegalActionException {
         if (_hierarchyListeners != null) {
             Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
-                .iterator();
+                    .iterator();
             while (listeners.hasNext()) {
-                WeakReference<HierarchyListener> reference = listeners
-                    .next();
+                WeakReference<HierarchyListener> reference = listeners.next();
                 reference.get().hierarchyWillChange();
             }
             // If changing the hierarchy is acceptable to all listeners,
@@ -2906,10 +2903,10 @@ public class NamedObj implements Changeable, Cloneable, Debuggable,
             NamedObj container = getContainer();
             if (container != null) {
                 Iterator<WeakReference<HierarchyListener>> listeners2 = _hierarchyListeners
-                    .iterator();
+                        .iterator();
                 while (listeners2.hasNext()) {
                     WeakReference<HierarchyListener> reference = listeners2
-                        .next();
+                            .next();
                     container.removeHierarchyListener(reference.get());
                 }
             }

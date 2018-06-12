@@ -1,6 +1,6 @@
 /* An component accessor that consists of an interface and a script.
 
-   Copyright (c) 2015-2017 The Regents of the University of California.
+   Copyright (c) 2015-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -502,7 +502,8 @@ public class JSAccessor extends JavaScript {
                                         + _commands + "\n" + "The output was: "
                                         + exec.buffer);
                     } else {
-                        MessageHandler.status("Could not update the accessors repository");
+                        MessageHandler.status(
+                                "Could not update the accessors repository");
                     }
                 }
             } catch (Throwable throwable) {
@@ -512,12 +513,13 @@ public class JSAccessor extends JavaScript {
                             "Failed to check out the accessors repository.");
                     IOException ioException = new IOException(
                             "Failed to check out the accessors repository with:\n"
-                                    + _commands + "\n"
-                                    + "The output was: " + exec.buffer);
+                                    + _commands + "\n" + "The output was: "
+                                    + exec.buffer);
                     ioException.initCause(throwable);
                     throw ioException;
                 } else {
-                    MessageHandler.status("Could not update the accessors repository");
+                    MessageHandler.status(
+                            "Could not update the accessors repository");
                 }
             }
         }
@@ -603,11 +605,13 @@ public class JSAccessor extends JavaScript {
             } catch (IOException ex) {
                 System.out.println(
                         "JSAccessor: Could not look up the local accessor directory.  "
-			+ "The String URL of the accessor or *PtDoc.xml file: \"" + urlSpec + "\".  "
-			+ "The proposed URL of the accessor or *PtDoc.xml file: \"" + accessorOrPtDocURL
-			+ "\" (which is being returned).  "
-			+ "Exception was: " + ex);
-		ex.printStackTrace();
+                                + "The String URL of the accessor or *PtDoc.xml file: \""
+                                + urlSpec + "\".  "
+                                + "The proposed URL of the accessor or *PtDoc.xml file: \""
+                                + accessorOrPtDocURL
+                                + "\" (which is being returned).  "
+                                + "Exception was: " + ex);
+                ex.printStackTrace();
             }
         }
         return accessorOrPtDocURL;

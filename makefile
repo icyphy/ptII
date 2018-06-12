@@ -2,7 +2,7 @@
 #
 # @Version: $Id$
 #
-# Copyright (c) 1995-2017 The Regents of the University of California.
+# Copyright (c) 1995-2018 The Regents of the University of California.
 # All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
@@ -62,7 +62,7 @@ PTPACKAGE = 	ptII
 #  cd $PTII/adm
 #  svn cp gen-N.M gen-N.O
 # and update the versions in gen-N.O/makefile and the .xml files
-PTVERSION =	11.0.devel
+PTVERSION =	11.0.beta
 PTCLASSJAR =
 
 

@@ -123,8 +123,8 @@ public class VideoPlayer extends Sink implements ControllerListener {
             _player.addControllerListener(this);
             _player.prefetch();
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, "Cannot open file: "
-                    + input);
+            throw new IllegalActionException(this, ex,
+                    "Cannot open file: " + input);
         } catch (MediaException ex) {
             throw new IllegalActionException(this, ex,
                     "Exception thrown by media framework on " + input);

@@ -1,6 +1,6 @@
 /* Generate an index of actors.
 
- Copyright (c) 2006-2015 The Regents of the University of California.
+ Copyright (c) 2006-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -48,7 +48,7 @@ import ptolemy.moml.MoMLParser;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ActorIndex
 
 /** Generate actor/demo index files.

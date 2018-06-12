@@ -1,6 +1,6 @@
 /* A port supporting message passing.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -3594,7 +3594,7 @@ public class IOPort extends ComponentPort {
      public List sourcePortList(Receiver receiver) {
      // This is a surprisingly difficult thing to do...
      List result = new LinkedList();
-    
+
      // Next, we iterate over ports in the sourcePortList() to find
      // those that have one of these receivers in their remote
      // receiver list.
@@ -4310,7 +4310,7 @@ public class IOPort extends ComponentPort {
      *  workspace, so the caller should be.
      *  This method ignores the relations for which the width still has
      *  to be inferred.
-    
+
      *  @param except The relation to exclude.
      *  @return The sums of the width of the relations linked on the outside,
      *  except for the specified port.

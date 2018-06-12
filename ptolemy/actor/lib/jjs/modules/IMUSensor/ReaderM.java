@@ -32,6 +32,8 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
  * the serial port.
  *
  * @author Hunter Massey and Rajesh Kuni
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @see SerialPortController
  * @Pt.ProposedRating Yellow Hunter
