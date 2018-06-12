@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2018 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -353,12 +353,12 @@ public class CircleGeometry implements Geometry {
              double y1 = _rect.getY();
              double x2 = x1 + _rect.getWidth();
              double y2 = y1 + _rect.getHeight();
-            
+
              x1 += y;
              y1 += y;
              x2 -= y;
              y2 -= y;
-            
+
              // Check if below minimum allowable size.  If so, put the
              // coordinates back where they were.
              if (x2 - x1 < _minSize) {
@@ -369,7 +369,7 @@ public class CircleGeometry implements Geometry {
              y1 -= y;
              y2 += y;
              }
-            
+
              // Set the rectangle.
              _rect.setFrameFromDiagonal(x1,y1,x2,y2);
              */

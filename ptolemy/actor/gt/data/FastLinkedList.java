@@ -1,6 +1,6 @@
 /* A linked list that provides efficient add and removal functions.
 
-@Copyright (c) 2007-2014 The Regents of the University of California.
+@Copyright (c) 2007-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -421,7 +421,7 @@ public class FastLinkedList<E> implements Collection<E> {
 
     /**
      An entry in this linked list that contains an element.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

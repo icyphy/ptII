@@ -1,6 +1,6 @@
 /* A base class for shared memory actors in the sequence domain.
 
- Copyright (c) 2009-2014 The Regents of the University of California.
+ Copyright (c) 2009-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -529,7 +529,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                             {
                                     container = container.getContainer();
                             }
-            
+
                             for (int i = 0; i < momlChangeRequests.size(); i++)
                             {
                                     container.addChangeListener(this);
@@ -537,7 +537,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
                                     request.setUndoable(true);
                                     container.requestChange(request);
                             }
-            
+
             }
              */
 
@@ -632,13 +632,13 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
     /*
      *     protected void _setValue(Token value) throws IllegalActionException {
        Attribute variable = getModifiedVariable();
-    
+
        if (variable instanceof Variable) {
            Token oldToken = ((Variable) variable).getToken();
-    
+
            if (oldToken == null || !oldToken.equals(value)) {
                ((Variable) variable).setToken(value);
-    
+
             // Beth 09/23/09 validate() used to be here
            }
            // Beth 09/23/09
@@ -651,7 +651,7 @@ public abstract class SequencedSharedMemoryActor extends SetVariable {
            ((Variable) variable).validate();
        } else if (variable instanceof Settable) {
            ((Settable) variable).setExpression(value.toString());
-    
+
            // NOTE: If we don't call validate(), then the
            // change will not propagate to dependents.
            ((Settable) variable).validate();

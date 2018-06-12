@@ -1,6 +1,6 @@
 /* A subclass of Query supporting Ptolemy II attributes.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -904,13 +904,13 @@ public class PtolemyQuery extends Query
                          // Here, we need to handle instances of Variable
                          // specially.  This is too bad...
                          if (attribute instanceof Variable) {
-                        
+
                          // Will this ever happen?  A
                          // Variable that is not a NamedObj???
                          // Retrieve the token to force
                          // evaluation, so as to check the
                          // validity of the new value.
-                        
+
                          ((Variable)attribute).getToken();
                          }
                          */

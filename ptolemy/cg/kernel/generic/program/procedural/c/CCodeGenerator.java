@@ -1,6 +1,6 @@
 /* Code generator for the C language.
 
- Copyright (c) 2005-2016 The Regents of the University of California.
+ Copyright (c) 2005-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -2519,7 +2519,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     CCode.append("struct CompositeActor* "
                             + CodeGeneratorAdapter.generateName(containedActor)
                             + ";" + _eol + comment("Struct in CCcodeGenerator Kevin"));
-                
+
                 HCode.append("extern struct CompositeActor* "
                         + CodeGeneratorAdapter.generateName(containedActor)
                         + ";" + _eol);
@@ -3014,7 +3014,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      *  sanitized version of the model name, and a ".mk" extension.
      *  Thus, for a model named "Foo", we might generate a makefile in
      *  "$HOME/codegen/Foo.mk".
-    
+
      *  <p>Under Java under Windows, your <code>$HOME</code> variable
      *  is set to the value of the <code>user.home</code>System property,
      *  which is usually something like

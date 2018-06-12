@@ -1,6 +1,6 @@
 /* This class extends a TimedEvent to integrate HLA specific information.
 
-@Copyright (c) 2013-2017 The Regents of the University of California.
+@Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -42,9 +42,9 @@ import ptolemy.actor.util.TimedEvent;
  * The <i>objectInstanceID</i> parameter give information on who
  * is responsible of an UAV (Update Attribute Value). An UAV is an update
  * value of a HLA attribute which belongs to a HLA class instance.
- * 
+ *
  * See the {@link HlaSubscriber} for its usage and more information.
- * 
+ *
  *  @author Gilles Lasnier based on OriginatedEvent.java by David Come
  *  @version $Id: HlaTimedEvent.java 151 2018-03-06 14:43:59Z gl.lasnier $
  *  @since Ptolemy II 11.0
@@ -75,7 +75,7 @@ public class HlaTimedEvent extends TimedEvent {
         return _hlaObjectInstanceId;
     }
 
-    /** Check if two HlaTimedEvent objects are equals. 
+    /** Check if two HlaTimedEvent objects are equals.
      *  @param hlaTimedEvent A HlaTimedEvent object.
      *  @return true if the two objects are equals, false otherwise.
      */

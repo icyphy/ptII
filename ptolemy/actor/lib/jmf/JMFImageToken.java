@@ -88,6 +88,7 @@ public class JMFImageToken extends ImageToken {
     /** Return the value of this token.
      *  @return The value of this token.
      */
+    @Override
     public Buffer getValue() {
         return _value;
     }

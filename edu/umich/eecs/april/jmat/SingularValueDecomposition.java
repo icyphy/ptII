@@ -65,7 +65,7 @@ package edu.umich.eecs.april.jmat;
 public class SingularValueDecomposition {
     /** Octave/MATLAB:
         (M x N) = (M x M) * (M x N) * (N x N)
-    
+
         JAMA:
         (M x N) = (M x N) * (N x N) * (N x N)
         i.e., the left singular vectors are not computed. (The missing singular values are zero).

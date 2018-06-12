@@ -1,6 +1,6 @@
 /* The DE domain director.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -702,7 +702,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // NOTE: The Time constructor that takes a long argument interprets
             // that long as a multiple of the time resolution.
             // Hence, we use the static milliseconds() method.
-            Time modelTimeForCurrentRealTime = Time.milliseconds(this, elapsedTime);
+            Time modelTimeForCurrentRealTime = Time.milliseconds(this,
+                    elapsedTime);
             return fireAt(actor, modelTimeForCurrentRealTime);
         } else {
             // NOTE: We do not need to override the functionality of
@@ -1237,10 +1238,10 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // we check if there's any external input.
             Iterator<?> inputPorts = container.inputPortList().iterator();
             boolean hasInput = false;
-        
+
             while (inputPorts.hasNext() && !hasInput) {
                 IOPort port = (IOPort) inputPorts.next();
-        
+
                 for (int i = 0; i < port.getWidth(); i++) {
                     if (port.hasToken(i)) {
                         hasInput = true;
@@ -1248,7 +1249,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     }
                 }
             }
-        
+
             if (!hasInput) {
                 // If there is no internal event, it is not the correct
                 // time to fire.

@@ -1,5 +1,5 @@
 /** A test director that extends QSSDirector.
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -57,7 +57,7 @@ import ptolemy.kernel.util.Workspace;
  * calculations.
  * @author Thierry S. Nouidui and Edward A. Lee
  * @version $Id$
- * @since Ptolemy 11.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -190,7 +190,8 @@ public class QSSDirector extends DEDirector {
 
     /** Gets the list of all available QSS solver names. */
     public static String[] getQSSSolverNames() {
-        return new String[] { "QSS1", "QSS2Fd", "QSS2FdJac", "QSS2Pts", "QSS2Qts", "QSS3Fd", "QSS3Pts", "LIQSS1", "LIQSS2Fd" };
+        return new String[] { "QSS1", "QSS2Fd", "QSS2FdJac", "QSS2Pts",
+                "QSS2Qts", "QSS3Fd", "QSS3Pts", "LIQSS1", "LIQSS2Fd" };
     }
 
     /** Set the default solver method and list solver alternatives for the specified solver.

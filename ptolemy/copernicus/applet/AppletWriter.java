@@ -1,6 +1,6 @@
 /* A transformer that writes an applet version of the model.
 
- Copyright (c) 2001-2015 The Regents of the University of California.
+ Copyright (c) 2001-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -2101,7 +2101,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
     /** Create a jar file.
      *        Based on http://www.java2s.com/Code/Java/File-Input-Output/CreateJarfile.htm
-    
+
      */
     private void _createJarFile(File jarFile, File optionalJarFile,
             String[] jarFileNames, File[] filesToBeJared) throws Exception {

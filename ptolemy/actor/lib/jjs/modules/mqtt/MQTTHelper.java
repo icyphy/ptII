@@ -1,6 +1,6 @@
 /* A helper class for the MQTT module in JavaScript.
 
-Copyright (c) 2015-2017 The Regents of the University of California.
+Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -193,7 +193,7 @@ public class MQTTHelper extends HelperBase {
                     _currentObj.callMember("emit", "close");
                 }
             });
-            
+
             _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
 
                 @Override
@@ -269,7 +269,7 @@ public class MQTTHelper extends HelperBase {
             }
             try {
                 _mqttClient.close();
-            } catch(Throwable ex) {
+            } catch (Throwable ex) {
                 System.err.println("Closing MQTT connection failed: " + ex);
             }
         }

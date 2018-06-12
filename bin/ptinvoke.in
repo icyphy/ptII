@@ -3,7 +3,7 @@
 # Author:  Christopher Hylands
 # Version: $Id$
 #
-# Copyright (c) 1998-2017 The Regents of the University of California.
+# Copyright (c) 1998-2018 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -350,6 +350,12 @@ case "$JVERSION" in
 	;;
 esac
 
+#### Java Advanced Imaging
+JAI_JARS=@JAI_JARS@
+if [ ! -z "$JAI_JARS" ]; then
+    JAI_JARS="${CLASSPATHSEPARATOR}${JAI_JARS}"
+fi
+   
 #### Java 3D
 # PTJAVA3D_DIR is set to gr if configure found Java 3D
 PTJAVA3D_DIR=@PTJAVA3D_DIR@
@@ -360,9 +366,9 @@ if [ "$PTJAVA3D_DIR" = "gr" ]; then
     PTJOGL_DIR=@PTJOGL_DIR@
     if [ ! -z "$PTJOGL_DIR" ]; then
         if [ "$DYLD_LIBRARY_PATH" != "" ]; then
-            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/natives/macosx-universal:${DYLD_LIBRARY_PATH}"
         else
-            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/natives/macosx-universal"
         fi
     fi
 fi
@@ -779,7 +785,7 @@ fi
 # If you update ALL_JARS, please update mk/ptII.mk.in
 #
 #
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${RXTX_JARS}${DBXML_JARS}${G4LTL_JARS}${HOMER_JARS}${ITEXTPDF_JAR}${PTJACL_JARS}${JAVA3D_JARS}${JAVACV_JARS}${JAVAMAIL_JARS}${JAVASCRIPT_JARS}${OAUTH_JARS}${JCERTI_JARS}${JMF_JARS}${JNA_JARS}${JOYSTICK_JARS}${JSOUP_JARS}${JUNIT_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${OAUTH_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${OSCP5_JARS}${PDFRENDERER_JARS}${PROCESSING_JARS}${PTALON_JARS}${PSDF_JARS}${PTPROTOBUF_JARS}${PTSLF4J_JARS}${PTSERVER_JARS}${PTPAHO_MQTT_JARS}${PTANGO_JARS}${PTRTOOL_JARS}${PTSERVLET_JARS}${PTSVGSALAMANDER_JARS}${PTRSYNTAXTEXTAREA_JARS}${SAXON_JARS}${SPHINX4_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVERTX_JARS}${PTWEBCAMCAPTURE_JARS}${PTXBJLIB_JARS}${SOOT_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${BACKTRACK_JARS}${CALTROP_JARS}${CHIC_JARS}${COLT_JARS}${RXTX_JARS}${DBXML_JARS}${G4LTL_JARS}${HOMER_JARS}${ITEXTPDF_JAR}${PTJACL_JARS}${JAI_JARS}${JAVA3D_JARS}${JAVACV_JARS}${JAVAMAIL_JARS}${JAVASCRIPT_JARS}${OAUTH_JARS}${JCERTI_JARS}${JMF_JARS}${JNA_JARS}${JOYSTICK_JARS}${JSOUP_JARS}${JUNIT_JARS}${JXL_JARS}${JYTHON_JARS}${JXTA_JARS}${KIELER_JARS}${GIOTTO_JARS}${OAUTH_JARS}${OPENCV_JARS}${MYSQL_JAR}${ORACLE_OJDBC_JAR}${OSCP5_JARS}${PDFRENDERER_JARS}${PROCESSING_JARS}${PTALON_JARS}${PSDF_JARS}${PTPROTOBUF_JARS}${PTSLF4J_JARS}${PTSERVER_JARS}${PTPAHO_MQTT_JARS}${PTANGO_JARS}${PTRTOOL_JARS}${PTSERVLET_JARS}${PTSVGSALAMANDER_JARS}${PTRSYNTAXTEXTAREA_JARS}${SAXON_JARS}${SPHINX4_JARS}${TOOLS_JAR}${TOSJARS}${NC2MOML_JARS}${PTVERTX_JARS}${PTWEBCAMCAPTURE_JARS}${PTXBJLIB_JARS}${SOOT_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG} ${JYTHON_JFLAG} -Xmx4096M"
 
 #### Sandbox
@@ -1818,10 +1824,18 @@ EOF6
 	   *) Darwin=no;    
            esac
 	   if [ "${Darwin}" = "yes" ]; then
-	       if [ -z "${JAVA_HOME}" -o ! -d "${JAVA_HOME}" ]; then
-		   echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
-		   echo "   not setting up the JVM for the app."
-               else
+               if [ -z "${JAVA_HOME}" -o ! -d "${JAVA_HOME}" ]; then
+	           echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
+	           echo "   not setting up the JVM for the app."
+               fi
+               if [ ! -d "${JAVA_HOME}/jre/COPYRIGHT" ]; then
+                   echo "$0: ${JAVA_HOME}/jre/COPYRIGHT does not exist, perhaps you are using Java 10?"
+                   echo "The Java 10 JDK does not include a JRE that is easy to ship separately, so if you do 'export TRAVIS=true' and rerun,"
+                   echo "then a Java 8 JVM will be downloaded.  You may need to remove $MACAPP_APP before rerunning."
+               fi
+           fi        
+           
+	   if [ "${Darwin}" = "yes" -a -d "${JAVA_HOME}/jre/COPYRIGHT" ]; then
 		   # Copy the jvm
 		   ContentsDirectory=`dirname "${JAVA_HOME}"`
 		   jdkVersionDirectory=`dirname ${ContentsDirectory}`
@@ -1834,6 +1848,39 @@ EOF6
 		       jreApp=$jdkApp/jre
 		       mkdir -p $jreApp/lib
 
+                       cat >> $jreApp/README-PTOLEMY.txt <<EOF8
+This is a JDK for Mac OS.
+
+The $PTII/jdk directory is created by building
+$PTII/bin/{CapeCode,Ptiny,Vergil.app} by $PTII/bin/ptinvoke
+
+$PTII/bin/ptinvoke is created from $PTII/bin/ptinvoke.in by
+$PTII/configure.
+
+If, under Mac OS, $PTII/jdk does not exist and JAVA_HOME is set to a
+Java 1.8 JRE, then ptinvoke will create $PTII/jdk.
+
+Note that JDK 10 has a different layout for the JRE, so if JAVA_HOME
+is set to a JDK 10, then $PTII/jdk will not be created.
+
+If $PTII/jdk does not exist and JAVA_HOME is a JDK 10 JDK, and if the
+TRAVIS environment variable is set to true, then
+https://ptolemy.berkeley.edu/ptolemyII/MacJVM.tar.gz
+is downloaded.
+
+That file is created by hand.
+
+Because Travis-ci runs on a non Mac machine, the Travis-ci build
+caches a copy of MacJVM.tar.gz in $PTII/vendors/installer.
+
+$PTII/bin/ptinvoke checks to see if $PTII/installers/MacJVM.tar.gz is
+present and if it is not and TRAVIS=true, then it is downloaded
+
+To update $PTII/jdk in the Travis build, it is necessary to temporarily
+modify $PTII/bin/ptinvoke.in so that it always downloads MacJVMTar instead
+of checking for it in vendors/installer.
+
+EOF8
 		       #cp $ContentsDirectory/Info.plist $jdkApp/Contents/
 
 		       cp $JAVA_HOME/jre/{COPYRIGHT,LICENSE,README,THIRDPARTYLICENSEREADME-JAVAFX.txt,THIRDPARTYLICENSEREADME.txt,Welcome.html} $jdkApp
@@ -1861,12 +1908,25 @@ EOF6
                            fi
                        fi
 
+
+		       # Java Advance Imaging
+                       JRE_JAI_DIR="$PTII/vendors/jai-1_1_2_01"
+                       if [ -f "$JRE_JAI_DIR/COPYRIGHT-jai.txt" ]; then
+                           cp $JRE_JAI_DIR/*.txt $jreApp
+                           cp $JRE_JAI_DIR/lib $jreApp/lib/ext
+                       fi
+
 		       # Java Media Framework (JMF)
+                       JRE_JMF_DIR="$PTII/vendors/JMF-2.1.1e"
 		       files="customizer.jar jmf.jar mediaplayer.jar multiplayer.jar"
 		       for file in $files
 		       do
 		           if [ -f /Library/Java/Extensions/$file ]; then
 			       cp /Library/Java/Extensions/$file $jreApp/lib/ext/
+                           else
+                               if [ -f "$JRE_JMF_DIR"/lib/$file ]; then
+                                   cp "$JRE_JMF_DIR"/lib/$file $jreApp/lib/ext/
+                               fi
                            fi
                        done
 
@@ -1882,8 +1942,9 @@ EOF6
 		       #fi
 		       #cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
                    fi
-	       fi
            else
+               # If we are not running under MacOS or we are running under Mac OS with Java 10, then install the prebuilt JVM.
+
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
 	       MacJVMTar="${PTII}/adm/gen-11.0/MacJVM.tar.gz"
 	       if [ -f "$MacJVMTar" ]; then
@@ -1894,7 +1955,12 @@ EOF6
 		   # When we are building a release PTII might be set to dists/ptII11.0.devel so MacJVM.tar won't be found.
                    INSTALLER_SRCS=$PTII/vendors/installer
 		   MacJVMTar=$INSTALLER_SRCS/MacJVM.tar.gz
-		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
+
+                   # Temporarily always download MacJVM.tar.gz so that we can update the cache.
+                   
+		   #if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
+
+                   if [ "$TRAVIS" = "true" ]; then
                        if [ ! -d $INSTALLER_SRCS ]; then
                            mkdir -p $INSTALLER_SRCS
                        fi
@@ -1903,7 +1969,18 @@ EOF6
                    fi
 		   if [ -f "$MacJVMTar" ]; then
 		       echo "Untaring $MacJVMTar in $PTII/ now: `date`"
-		       (cd $PTII/; tar -xf "$MacJVMTar")
+		       (cd $PTII/; tar -zxf "$MacJVMTar")
+
+                       if [ ! -d $PTII/jdk ]; then
+                           echo "$0: untar of $MacJVMTar failed, under Travis, perhaps the cache is corrupt? Downloading again."
+                           wget --quiet -O $MacJVMTar https://ptolemy.berkeley.edu/ptolemyII/MacJVM.tar.gz
+		           (cd $PTII/; tar -zxf "$MacJVMTar")
+                       fi
+                       if [ -f $PTII/jdk/README-PTOLEMY.txt ]; then
+                           echo "$0: Installation of $PTII/jdk succeeded."
+                       else
+                           echo "$0: $PTII/jdk/README-ptolemy.txt does not exist? Installation of $PTII/jdk failed."
+                       fi
 		   else
 		       echo "$0: Could not find MacJVMTar in $MacJVMTar."
                        echo "TRAVIS = $TRAVIS. To download the MacJVM, try 'export TRAVIS=true' and rerun makeapp."

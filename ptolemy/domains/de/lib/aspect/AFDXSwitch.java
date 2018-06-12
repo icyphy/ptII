@@ -1,6 +1,6 @@
 /* This communication aspect actor implements an AFDX switch.
 
-@Copyright (c) 2011-2014 The Regents of the University of California.
+@Copyright (c) 2011-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -282,7 +282,7 @@ public class AFDXSwitch extends AtomicCommunicationAspect {
             _inputTokens.put(i, new LinkedList<TimedEvent>());
             _outputTokens.put(i, new LinkedList<TimedEvent>());
         }
-        
+
         // Read the switching table from the parameters.
         for (int i = 0; i < attributeList().size(); i++) {
             Attribute attribute = (Attribute) attributeList().get(i);

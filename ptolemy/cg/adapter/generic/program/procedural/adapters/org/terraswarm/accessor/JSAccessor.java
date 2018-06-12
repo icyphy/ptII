@@ -39,7 +39,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
  @author Jia Zou, based on JSAccessor.java by Gang Zhou, Bert Rodiers
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (jiazou)
  @Pt.AcceptedRating Red (jiazou)
  */

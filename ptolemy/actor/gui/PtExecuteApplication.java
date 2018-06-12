@@ -1,6 +1,6 @@
 /* An application that executes models specified on the command line.
 
- Copyright (c) 1999-2014 The Regents of the University of California.
+ Copyright (c) 1999-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -184,7 +184,7 @@ public class PtExecuteApplication extends MoMLApplication {
      *  If there is an _applicationInitializer parameter, then
      *  construct it.  The _applicationInitializer parameter contains
      *  a string that names a class to be initialized.
-    
+
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */

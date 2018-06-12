@@ -1,6 +1,6 @@
 /* An actor that consumes a specified amount of real time.
 
- Copyright (c) 2008-2014 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -139,18 +139,18 @@ public class ExecutionTime extends LimitedFiringSource {
         }
         long executionTimeValue = ((LongToken) executionTime.getToken())
                 .longValue();
-        //long granularityValue = ((LongToken) granularity.getToken())
-        //        .longValue();
+        long granularityValue = ((LongToken) granularity.getToken())
+                .longValue();
         boolean realTimeValue = ((BooleanToken) realTime.getToken())
                 .booleanValue();
         boolean moreToDo = true;
         long count = 0L;
+        int dummy = 0;
         while (moreToDo) {
             // NOTE: The number here determines the granularity.
-            //int dummy = 0;
-            //for (int i = 0; i < granularityValue; i++) {
-            //    dummy++;
-            //}
+            for (int i = 0; i < granularityValue; i++) {
+                dummy++;
+            }
             if (realTimeValue) {
                 moreToDo = System.currentTimeMillis()
                         - start < executionTimeValue;
@@ -159,6 +159,9 @@ public class ExecutionTime extends LimitedFiringSource {
             }
             count++;
         }
+        // To ensure that an optimizer does not optimize it away, print the
+        // dummy variable.
+        System.out.println("Fired ExecutionTime: " + dummy);
         // Produce on the output the actual time consumed, in case because
         // of the granularity above it differs from the specified time.
         Token result = new LongToken(System.currentTimeMillis() - start);

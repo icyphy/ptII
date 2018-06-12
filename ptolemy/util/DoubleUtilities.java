@@ -34,6 +34,8 @@ import java.math.BigInteger;
  * This code is used by ptolemy.actor.util.Time to improve performance.
  *
  * @author Louis Wasserman, based on https://code.google.com/p/guava-libraries/source/browse/guava/src/com/google/common/math/DoubleUtils.java
+@version $Id$
+@since Ptolemy II 11.0
  */
 public final class DoubleUtilities {
     private DoubleUtilities() {

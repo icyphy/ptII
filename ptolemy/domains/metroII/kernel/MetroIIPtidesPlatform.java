@@ -98,7 +98,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * @author Patricia Derler, Liangpeng Guo
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (derler)
  * @Pt.AcceptedRating Red (derler)
  */

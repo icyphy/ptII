@@ -1,6 +1,6 @@
 /* The type of base token classes.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -593,14 +593,14 @@ public abstract class BaseType implements Type {
      private NumericalType() {
      super(Numerical.class, "numerical");
      }
-    
+
      public Token convert(Token t) throws IllegalActionException {
      throw new IllegalActionException(
      "Cannot convert token "
      + t
      + " to type numerical, because numerical is not a concrete type.");
      }
-    
+
      public int getTypeHash() {
      return 7;
      }

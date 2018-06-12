@@ -6,7 +6,7 @@
  Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with
  Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -1515,7 +1515,7 @@ public class SignalProcessing {
      *  h(t) = (1/(sqrt(2 * PI) * stdDev) *
      *         exp(-(t - mean)<sup>2</sup> / (2 * stdDev<sup>2</sup>))
      *  </pre>
-    
+
      */
     public static class GaussianSampleGenerator
             implements DoubleUnaryOperation {

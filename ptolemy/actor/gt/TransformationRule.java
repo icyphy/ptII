@@ -1,6 +1,6 @@
 /* A transformation rule that contains a pattern and a replacement.
 
-@Copyright (c) 2007-2014 The Regents of the University of California.
+@Copyright (c) 2007-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -553,7 +553,7 @@ public class TransformationRule extends MultiCompositeActor
 
     /**
      A director to be associated with this actor, which does nothing.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

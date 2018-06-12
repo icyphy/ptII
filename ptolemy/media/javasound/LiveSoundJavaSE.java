@@ -1,7 +1,7 @@
 /*
  Implementation of LiveSoundInterface actor that in dependent on javax.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -639,7 +639,7 @@ public class LiveSoundJavaSE extends LiveSoundCommon
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-    
+
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.

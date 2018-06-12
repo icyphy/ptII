@@ -1,6 +1,6 @@
 /* A JFileChooser or FileDialog.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -218,7 +218,7 @@ public class PtFileChooser extends Container {
      *  DIRECTORIES_ONLY, then this class must have been instantiated
      *  with a mode of FileBrowser.LOAD or JFileChooser.OPEN_DIALOG in
      *  the constructor.</p>
-    
+
      *  @param mode One of JFileChooser.FILES_ONLY, JFileChooser.DIRECTORIES_ONLY or
      *  JFileChooser.FILES_AND_DIRECTORIES.
      */

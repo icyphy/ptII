@@ -6,7 +6,7 @@
 <link href="default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<h1>The Ptolemy Project - Ptolemy II Version 11.0.devel</h1>
+<h1>The Ptolemy Project - Ptolemy II Version 11.0.beta</h1>
 <!--vergilDocs-->
 <!--ptinyKeplerDocs-->
 <!--NOTE:  If this file is called 'mainVergil.htm' then do not edit it
@@ -29,14 +29,14 @@ interconnection of actors. In Ptolemy II, the semantics of a model is
 not determined by the framework, but rather by a software component in
 the model called a director, which implements a model of
 computation. The Ptolemy Project has developed directors supporting
-<a href="../ptolemy/domains/pn/doc/main.htm">process networks (PN)</a>,
 <a href="../ptolemy/domains/de/doc/main.htm">discrete-events (DE)</a>,
 <a href="../ptolemy/domains/sdf/doc/main.htm">dataflow (SDF)</a>,
 <a href="../ptolemy/domains/sr/doc/main.htm">synchronous/reactive(SR)</a>,
-<a href="../ptolemy/domains/rendezvous/doc/main.htm">rendezvous-based models</a>,
-<a href="../ptolemy/domains/gr/doc/main.htm">3-D visualization</a>,
-and
 <a href="../ptolemy/domains/continuous/doc/main.htm">continuous-time</a>
+<a href="../ptolemy/domains/pn/doc/main.htm">process networks (PN)</a>,
+<a href="../ptolemy/domains/rendezvous/doc/main.htm">rendezvous-based models</a>,
+and
+<a href="../ptolemy/domains/gr/doc/main.htm">3-D visualization</a>,
 models.
 Each level of the hierarchy in a model can
 have its own director, and distinct directors can be composed
@@ -63,6 +63,8 @@ interconnections. A graphical editor called Vergil supports visual
 editing of this abstract syntax. An XML concrete syntax called MoML
 provides a persistent file format for the models. Various specialized
 tools have been created from this framework, including
+<a href="https://ptolemy.berkeley.edu/projects/chess/capecode/#in_browser">CapeCode</a>
+(for Internet of Things systems),
 <a href="http://ptolemy.eecs.berkeley.edu/hyvisual/#in_browser">HyVisual</a>
 (for hybrid systems modeling),
 <a href="http://www.kepler-project.org/#in_browser">Kepler</a>
@@ -75,49 +77,14 @@ of the infrastructure include an actor abstract semantics, which
 enables the interoperability of distinct models of computation with a
 well-defined semantics; a model of time (specifically, super-dense
 time, which enables interaction of continuous dynamics and imperative
-logic); and a sophisticated type system supporting type checking, type
-inference, and polymorphism. The type system has recently been
-extended to support user-defined ontologies <a href="#6">[6]</a>.  Various experiments
+logic); a scripting infrastructure based on JavaScript;
+and a sophisticated type system supporting type checking, type
+inference, and polymorphism. The type system has been
+extended to support user-defined ontologies <a href="#6">[6]</a>.
+Various experiments
 with synthesis of implementation code and abstractions for
 verification are included in the project.
-
-References
-
-<p><a name="1">[1]</a>
-  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
-  <br/><i>The definitive overview of Ptolemy II including instructions about how to use Vergil.</i>
-  <br/>The models provided in this book are also <a href="https://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/#in_browser" target="_top">available online<a>.</li> 
 </p>
-
-<p><a name="2">[2]</a>
-Johan Eker, Jorn Janneck, Edward A. Lee, Jie Liu, Xiaojun
-Liu, Jozsef Ludvig, Sonia Sachs, Yuhong Xiong. "<a href="http://chess.eecs.berkeley.edu/pubs/488.html#in_browser">Taming heterogeneity - the Ptolemy approach</a>,"
-<i>Proceedings of the IEEE</i>, 91(1):127-144,
-January 2003. 
-<br>(<i>Key citation for the Ptolemy project</i>)
-</p>
-
-<p><a name="3">[3]</a>
-Edward A. Lee. "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html#in_browser">Finite State Machines and Modal Models in Ptolemy II</a>," Technical report,  EECS Department,
-University of California, Berkeley, UCB/EECS-2009-151,
-December, 2009.
-</p>
-
-<p><a name="4">[4]</a>
- 	E. A. Lee and H. Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">Operational Semantics of Hybrid Systems</a>," Invited paper in Proceedings of Hybrid Systems: Computation and Control (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
-</p>
-
-<p><a name="5">[5]</a>
-E. A. Lee, H. Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browser">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT '07, September 30 - October 3, 2007, Salzburg, Austria.
-</p>
-
-<p><a name="6">[6]</a>
-	M.-K. Leung, T. Mandl, E. A. Lee, E. Latronico,
-C. Shelton, S. Tripakis, and B. Lickly, "<a href="http://chess.eecs.berkeley.edu/pubs/611.html#in_browser">Scalable Semantic Annotation using Lattice-based Ontologies,</a>" ACM/IEEE 12th International Conference
-on Model Driven Engineering Languages and Systems (MODELS), Denver,
-CO, USA, 4-9 October, 2009.
-</p>
-
 <h3>Resources</h3>
 <p>
 The <a href="http://ptolemy.eecs.berkeley.edu/index.html#in_browser">Ptolemy Project web page</a>
@@ -132,7 +99,6 @@ The project is named after
 <a href="http://ptolemy.eecs.berkeley.edu/people/ptolemy.htm#in_browser">Claudius Ptolemaeus</a>,
 the second century Greek astronomer, mathematician, and geographer.
 </p>
-
 <p>
 Ptolemy II includes a growing suite of <i>domains</i>, each of which
 realizes a model of computation.  It also includes a component library,
@@ -152,6 +118,8 @@ Domains that are reasonably mature:
 	 finite state machines and modal model (redesign of the FSM domain)
 <li> <a href="../ptolemy/domains/pn/doc/main.htm">PN</a>:
 	process networks with asynchronous message passing
+<li> <a href="../ptolemy/domains/ptera/doc/main.htm">Ptera</a>:
+        ptolemy event relation Actor
 <li> <a href="../ptolemy/domains/rendezvous/doc/main.htm">Rendezvous</a>:
 	process networks with synchronous message passing
 <li> <a href="../ptolemy/domains/sdf/doc/main.htm">SDF</a>:
@@ -187,8 +155,6 @@ Domains that are still experimental:
         concurrent processes
 <li> <a href="../ptolemy/domains/psdf/doc/main.htm">PSDF</a>:
 	parameterized synchronous dataflow
-<li> <a href="../ptolemy/domains/ptera/doc/main.htm">Ptera</a>:
-        ptolemy event relation Actor
 <li> <a href="../ptolemy/domains/pthales/doc/main.htm">Pthales</a>:
         multidimensional dataflow
 <li> <a href="../ptolemy/domains/scr/doc/main.htm">SCR</a>:
@@ -198,6 +164,43 @@ Domains that are still experimental:
 <!--vergilDocs-->
 <!--ptinyKeplerDocs-->
 </ul>
+</p>
+<h3>References</h3>
+
+<p><a name="1">[1]</a>
+  Claudius Ptolemaeus, Editor, "<a href="http://ptolemy.eecs.berkeley.edu/books/Systems/index.htm#in_browser">System Design, Modeling, and Simulation Using Ptolemy II</a>", Ptolemy.org, 2014. (included in the release as <a href="books/systems/PtolemyII_DigitalV1_02.pdf#in_browser" target="_top"><code>$PTII/doc/books/systems/PtolemyII_DigitalV1_02.pdf</code></a>)
+  <br/><i>The definitive overview of Ptolemy II including instructions about how to use Vergil.</i>
+  <br/>The models provided in this book are also <a href="https://ptolemy.eecs.berkeley.edu/books/Systems/models/doc/books/systems/#in_browser" target="_top">available online<a>.</li> 
+</p>
+
+<p><a name="2">[2]</a>
+Johan Eker, Jorn Janneck, Edward A. Lee, Jie Liu, Xiaojun
+Liu, Jozsef Ludvig, Sonia Sachs, Yuhong Xiong. "<a href="http://chess.eecs.berkeley.edu/pubs/488.html#in_browser">Taming heterogeneity - the Ptolemy approach</a>,"
+<i>Proceedings of the IEEE</i>, 91(1):127-144,
+January 2003. 
+<br>(<i>Key citation for the Ptolemy project</i>)
+</p>
+
+<p><a name="3">[3]</a>
+Edward A. Lee. "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-151.html#in_browser">Finite State Machines and Modal Models in Ptolemy II</a>," Technical report,  EECS Department,
+University of California, Berkeley, UCB/EECS-2009-151,
+December, 2009.
+</p>
+
+<p><a name="4">[4]</a>
+ 	E. A. Lee and H. Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/05/OperationalSemantics/#in_browser">Operational Semantics of Hybrid Systems</a>," Invited paper in Proceedings of Hybrid Systems: Computation and Control (HSCC) LNCS 3414, Zurich, Switzerland, March 9-11, 2005, pp.25-53.
+</p>
+
+<p><a name="5">[5]</a>
+E. A. Lee, H. Zheng, "<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/07/unifying/index.htm#in_browser">Leveraging Synchronous Language Principles for Heterogeneous Modeling and Design of Embedded Systems</a>," EMSOFT '07, September 30 - October 3, 2007, Salzburg, Austria.
+</p>
+
+<p><a name="6">[6]</a>
+	M.-K. Leung, T. Mandl, E. A. Lee, E. Latronico,
+C. Shelton, S. Tripakis, and B. Lickly, "<a href="http://chess.eecs.berkeley.edu/pubs/611.html#in_browser">Scalable Semantic Annotation using Lattice-based Ontologies,</a>" ACM/IEEE 12th International Conference
+on Model Driven Engineering Languages and Systems (MODELS), Denver,
+CO, USA, 4-9 October, 2009.
+</p>
 <p></p>
 </body>
 </html>

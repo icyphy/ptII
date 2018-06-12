@@ -104,8 +104,8 @@ import ptolemy.util.MessageHandler;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class MovieWriter extends Sink implements ControllerListener,
-DataSinkListener {
+public class MovieWriter extends Sink
+        implements ControllerListener, DataSinkListener {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -282,9 +282,9 @@ DataSinkListener {
             try {
                 _jmfImageToken = (JMFImageToken) token;
             } catch (ClassCastException ex) {
-                throw new IllegalActionException(this, ex, "Failed to cast "
-                        + token.getClass()
-                        + " to a JMFImageToken.\nToken was: " + token);
+                throw new IllegalActionException(this, ex,
+                        "Failed to cast " + token.getClass()
+                                + " to a JMFImageToken.\nToken was: " + token);
             }
 
             if (_debugging) {
@@ -295,8 +295,8 @@ DataSinkListener {
             buffer = _jmfImageToken.getValue();
 
             if (!_bufferArrayList.add(buffer)) {
-                throw new IllegalActionException("Could not add buffer "
-                        + "to the array list");
+                throw new IllegalActionException(
+                        "Could not add buffer " + "to the array list");
             }
         }
 
@@ -316,8 +316,8 @@ DataSinkListener {
             }
 
             if (_confirmOverwrite) {
-                if (!MessageHandler.yesNoQuestion("OK to overwrite " + _file
-                        + "?")) {
+                if (!MessageHandler
+                        .yesNoQuestion("OK to overwrite " + _file + "?")) {
                     throw new IllegalActionException(this,
                             "Please select another file name.");
                 }
@@ -335,7 +335,8 @@ DataSinkListener {
             Image image = _jmfImageToken.asAWTImage();
             int width = image.getWidth(null);
             int height = image.getHeight(null);
-            ImageDataSource imageDataSource = new ImageDataSource(width, height);
+            ImageDataSource imageDataSource = new ImageDataSource(width,
+                    height);
             Processor processor;
 
             try {
@@ -355,19 +356,19 @@ DataSinkListener {
             }
 
             if (_fileType == _QUICKTIME) {
-                processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.QUICKTIME));
+                processor.setContentDescriptor(
+                        new ContentDescriptor(FileTypeDescriptor.QUICKTIME));
             } else if (_fileType == _AVI) {
-                processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.MSVIDEO));
+                processor.setContentDescriptor(
+                        new ContentDescriptor(FileTypeDescriptor.MSVIDEO));
             } else if (_fileType == _MPEG) {
-                processor.setContentDescriptor(new ContentDescriptor(
-                        FileTypeDescriptor.MPEG));
+                processor.setContentDescriptor(
+                        new ContentDescriptor(FileTypeDescriptor.MPEG));
             } else {
-                throw new InternalErrorException("type = " + _fileType
-                        + ", which is not one of " + _QUICKTIME
-                        + "(QUICKTIME), " + _AVI + "(AVI) or " + _MPEG
-                        + "(MPEG).");
+                throw new InternalErrorException(
+                        "type = " + _fileType + ", which is not one of "
+                                + _QUICKTIME + "(QUICKTIME), " + _AVI
+                                + "(AVI) or " + _MPEG + "(MPEG).");
             }
 
             TrackControl[] trackControl = processor.getTrackControls();
@@ -388,8 +389,8 @@ DataSinkListener {
             DataSource dataSource = processor.getDataOutput();
 
             if (dataSource == null) {
-                throw new IllegalActionException("Processor does not have "
-                        + "output DataSource");
+                throw new IllegalActionException(
+                        "Processor does not have " + "output DataSource");
             }
 
             if (_debugging) {

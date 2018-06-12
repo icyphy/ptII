@@ -2,7 +2,7 @@
  The Injector class is responsible for loading implementation based on a
  interface.
 
- Copyright (c) 2011-2016 The Regents of the University of California.
+ Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ import java.util.HashMap;
 public class Injector {
 
     ///////////////////////////////////////////////////////////////////
-    ////                   public methods                          ////
+    ////                         public methods                    ////
 
     /**
      * Get implementation for the provided interface based on the
@@ -125,7 +125,7 @@ public class Injector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                   private variables                       ////
+    ////                         private variables                 ////
     /**
      * The resolved interface to the implementation class mappings.
      */

@@ -218,8 +218,8 @@ public class TaskFrame extends Transformer {
         if (_initial) {
             iconText += "<circle cx=\"50\" cy=\"50\" r=\"27\"  style=\"fill:white\"/>";
         }
-        iconText += String.format(textFormat, 35, yPosition, "C: "
-                + _executionTime);
+        iconText += String.format(textFormat, 35, yPosition,
+                "C: " + _executionTime);
         yPosition += yJump;
         iconText += String.format(textFormat, 35, yPosition, "D: " + _deadline);
         iconText += "</svg>";

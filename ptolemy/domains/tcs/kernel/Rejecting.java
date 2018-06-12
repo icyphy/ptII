@@ -35,6 +35,8 @@ import ptolemy.data.Token;
 
 /** An interface for actors that can reject inputs.
  *  @author Marjan Sirjani and Edward A. Lee
+@version $Id$
+@since Ptolemy II 11.0
  */
 public interface Rejecting {
 

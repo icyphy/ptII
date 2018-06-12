@@ -269,7 +269,7 @@ public class JSONML {
      * the attributes will be in the JSONObject as properties. If the tag
      * contains children, the object will have a "childNodes" property which
      * will be an array of strings and JsonML JSONObjects.
-    
+
      * Comments, prologs, DTDs, and <code>&lt;[ [ ]]&gt;</code> are ignored.
      * @param x An XMLTokener of the XML source text.
      * @return A JSONObject containing the structured data from the XML string.

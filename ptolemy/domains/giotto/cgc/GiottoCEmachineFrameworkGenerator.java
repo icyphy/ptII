@@ -93,7 +93,7 @@ import ptolemy.util.StringUtilities;
 
  @author Edward A. Lee, Vinay Krishnan
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (vkris)
  */
@@ -423,7 +423,7 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             if (type.endsWith("array")) {
                 codeString
                         .append("typedef " + type.substring(0, type.length() - 5
-                /* Length of "array" */) + " *" + type + ";" + _endLine
+                        /* Length of "array" */) + " *" + type + ";" + _endLine
                                 + _endLine);
             }
         }

@@ -1,6 +1,6 @@
 /* Utilities used to manipulate classes
 
- Copyright (c) 2003-2014 The Regents of the University of California.
+ Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -102,7 +102,7 @@ public class ClassUtilities {
     }
 
     /** Lookup a jar URL and return the resource.
-    
+
      *  A resource is a file such as a class file or image file that
      *  is found in the classpath.  A jar URL is a URL that refers to
      *  a resource in a jar file.  For example,

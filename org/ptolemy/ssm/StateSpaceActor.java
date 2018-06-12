@@ -33,6 +33,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * space model.
  *
  *  @author Ilge Akkya
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public interface StateSpaceActor extends Actor {

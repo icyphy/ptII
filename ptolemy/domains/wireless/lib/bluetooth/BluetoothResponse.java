@@ -32,6 +32,8 @@ package ptolemy.domains.wireless.lib.bluetooth;
  * This enum defines all allowable Bluetooth Responses.
  *
  * @author Phillip Azar
+@version $Id$
+@since Ptolemy II 11.0
  * @see BluetoothResponseToken
  */
 public enum BluetoothResponse {

@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2008 The Regents of the University of California.
+# @Copyright (c) 1998-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -44,15 +44,10 @@ TCL_SRCS = \
 
 
 JSRCS = \
-	FileChooserQuery.java \
-	QueryApplet.java \
-	ShowRawDocumentApplet.java
-
-
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) \
-	QueryApplet.htm \
-	ShowRawDocumentApplet.htm \
 	FileChooserQuery.java
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS)
+
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -76,9 +71,7 @@ install: all
 
 demos: demo
 demo:	all
-	CLASSPATH=$(CLASSPATH) appletviewer QueryApplet.htm
 	CLASSPATH=$(CLASSPATH) java ptolemy.gui.demo.FileChooserQuery
-	CLASSPATH=$(CLASSPATH) appletviewer ShowRawDocumentApplet.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

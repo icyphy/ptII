@@ -183,7 +183,7 @@ public class NewComponentDialog extends JPanel {
     <p>
     For example, if the component is a JButton, this method is the
     equivalent of <code>new JButton(<i>text</i>)</code>.
-    
+
     @return Component An instance of the component, null if there
     is a problem in the specification. [It is recommended that the
     'Preview' button should be clicked before exiting the dialog.]
@@ -353,7 +353,7 @@ public class NewComponentDialog extends JPanel {
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         NewComponentDialog dialog = new NewComponentDialog(frame);
 
         ComponentDef componentDef = new ComponentDef();

@@ -1,6 +1,6 @@
 /* An actor that converts an AWTImage to a base-64 encoded String.
 
- @Copyright (c) 2003-2016 The Regents of the University of California.
+ @Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Marten Lohstroh
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */
@@ -103,23 +103,25 @@ public class ImageToString extends Converter {
         super.fire();
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Object inputValue = input.get(0);
-        if (! (inputValue instanceof AWTImageToken)) {
-            throw new IllegalActionException(this, "The input value \""
-                                             + inputValue + "\" is not an AWTImageToken, "
-                                             + "it is a " + inputValue.getClass());
+        if (!(inputValue instanceof AWTImageToken)) {
+            throw new IllegalActionException(this,
+                    "The input value \"" + inputValue
+                            + "\" is not an AWTImageToken, " + "it is a "
+                            + inputValue.getClass());
         } else {
             RenderedImage image = getRenderedImage(
-                                                   ((AWTImageToken) inputValue).getValue());
+                    ((AWTImageToken) inputValue).getValue());
             try {
-                OutputStream encodedStream = Base64.getUrlEncoder().wrap(outputStream);
+                OutputStream encodedStream = Base64.getUrlEncoder()
+                        .wrap(outputStream);
                 ImageIO.write(image, "png", encodedStream); // FIXME: Use parameter instead.
                 encodedStream.close(); // Important, flushes the output buffer.
-                StringToken result = new StringToken(
-                                                     outputStream.toString(StandardCharsets.US_ASCII.name()));
+                StringToken result = new StringToken(outputStream
+                        .toString(StandardCharsets.US_ASCII.name()));
                 output.send(0, result);
             } catch (final IOException ioe) {
                 throw new IllegalActionException(this, ioe,
-                                                 "Unable to convert image to base-64 string.");
+                        "Unable to convert image to base-64 string.");
             }
         }
     }

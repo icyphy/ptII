@@ -1824,7 +1824,7 @@ public class PtParser/*@bgen(jjtree)*/ implements PtParserTreeConstants,
         (
                   (
                     primaryElement()
-    
+
                             [
                                     <PERIOD> <ID>
                                     {
@@ -1832,7 +1832,7 @@ public class PtParser/*@bgen(jjtree)*/ implements PtParserTreeConstants,
                                             hasName = true;
                                     }
                             ]
-    
+
                             [
                                     <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
                                     {

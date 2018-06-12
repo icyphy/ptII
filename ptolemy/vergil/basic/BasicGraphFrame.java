@@ -1,6 +1,6 @@
 /* A simple graph view for Ptolemy models
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -3113,7 +3113,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
      *  <p>If {@link ptolemy.gui.PtGUIUtilities#useFileDialog()} returns false
      *  then {@link ptolemy.gui.Top#_saveAs()} uses this method.  Otherwise,
      *  {@link #_saveAsFileDialogComponent()} is used.</p>
-    
+
      *  @return A file dialog for save as.
      */
     @Override

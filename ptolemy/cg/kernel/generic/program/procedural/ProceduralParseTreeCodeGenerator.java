@@ -1,6 +1,6 @@
 /* A base class visitor for parse trees of the expression language.
 
- Copyright (c) 2006-2016 The Regents of the University of California
+ Copyright (c) 2006-2018 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -708,7 +708,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
 
         /*
          ptolemy.data.Token test = _evaluatedChildToken;
-        
+
          if (!(test instanceof BooleanToken)) {
          throw new IllegalActionException(
          "Functional-if must branch on a boolean, but instead test "
@@ -716,16 +716,16 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
          + test.toString() + "an instance of "
          + test.getClass().getName()));
          }
-        
+
          boolean value = ((BooleanToken) test).booleanValue();
-        
+
          // Choose the correct sub-expression to evaluate,
          // and type check the other.
          if (_typeInference == null) {
          _typeInference = new ParseTreeTypeInference();
          }
-        
-        
+
+
          if (value) {
          */
         //_fireCode.append(" ? ");
@@ -913,10 +913,10 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
              + "operation on " + nextToken + " which is a "
              + result.getClass().getName());
              }
-            
+
              if (flag != ((BooleanToken) nextToken).booleanValue()) {
              _evaluatedChildToken = (BooleanToken.getInstance(!flag));
-            
+
              // Note short-circuit eval.
              return;
              }
@@ -1161,7 +1161,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                                 + "unsigned byte meet these criteria.\n"
                                 + "Use pow(10, 3.5) for non-integer exponents");
             }
-            
+
             try {
                 times = ((ptolemy.data.ScalarToken) token).intValue();
             } catch (IllegalActionException ex) {
@@ -1383,7 +1383,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                               throw new IllegalActionException("The " + operator.image
                               + " operator can only be applied between scalars.");
                               }
-                 
+
                               ScalarToken leftScalar = (ScalarToken) leftToken;
                               ScalarToken rightScalar = (ScalarToken) rightToken;
                  */
@@ -1465,13 +1465,13 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
                     + " operator requires "
                     + "the left operand to be a scalar.");
         }
-        
+
         if (!(bitsToken instanceof ScalarToken)) {
             throw new IllegalActionException("The " + operator
                     + " operator requires "
                     + "the right operand to be a scalar.");
         }
-        
+
         // intValue() is used rather than testing for IntToken
         // because any token with an intValue() is OK.  However,
         // we need a try...catch to generate a proper error message.
@@ -1625,7 +1625,7 @@ public class ProceduralParseTreeCodeGenerator extends AbstractParseTreeVisitor
          + " not defined on " + result
          + " which does not support bitwise operations.");
          }
-        
+
          //result = (ptolemy.data.Token) ((BitwiseOperationToken) result)
          //        .bitwiseNot();
          } else {

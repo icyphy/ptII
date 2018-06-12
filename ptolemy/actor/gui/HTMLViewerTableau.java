@@ -1,6 +1,6 @@
 /* A tableau representing an HTML window.
 
- Copyright (c) 2000-2014 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -270,7 +270,7 @@ public class HTMLViewerTableau extends Tableau {
      *  file:/C:/ptII/doc/codeDoc/ptolemy/util/package-summary.html#package_description]
      *  will return:
      *  jar:file:/C:/cxh/ptII/doc/codeDoc.jar!/doc/codeDoc/ptolemy/kernel/package-summary.html#package_description
-    
+
      *
      *  @param urlName The absolute URL to be converted.
      *  @return The jar url that refers to a file if the file can be found

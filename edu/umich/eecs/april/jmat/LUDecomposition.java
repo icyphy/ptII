@@ -134,18 +134,18 @@ public class LUDecomposition {
       {
       LU = A.copy();
       int m = LU.m, n = LU.n;
-    
+
       pivsign = 1;
       piv = new int[m];
       for (int i = 0; i < m; i++)
       piv[i] = i;
-    
+
       // Main loop.
       for (int k = 0; k < n; k++) {
-    
+
       if (n > 1000)
       System.out.printf("%d / %d\r", k, n);
-    
+
       // Find pivot.
       int p = k;
       if (autoPivot) {
@@ -155,7 +155,7 @@ public class LUDecomposition {
       }
       }
       }
-    
+
       // Exchange if necessary.
       if (p != k) {
       // swap rows p and k.
@@ -163,20 +163,20 @@ public class LUDecomposition {
       int t = piv[p]; piv[p] = piv[k]; piv[k] = t;
       pivsign = -pivsign;
       }
-    
+
       // Compute multipliers and eliminate k-th column.
       if (k<n && LU.get(k,k) != 0.0) {
-    
+
       double scale = 1.0 / LU.get(k,k);
-    
+
       Vec Lrowk = LU.getRow(k);
-    
+
       for (int i = k+1; i < m; i++) {
       Vec Lrowi = LU.getRow(i);
       Lrowi.set(k, Lrowi.get(k) * scale);
-    
+
       double Lik = Lrowi.get(k);
-    
+
       Lrowk.addTo(Lrowi, -Lik, k+1, n-1);
       }
       }

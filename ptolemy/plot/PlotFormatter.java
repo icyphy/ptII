@@ -1,6 +1,6 @@
 /* A panel for controlling the format of a plotter.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -442,13 +442,13 @@ public class PlotFormatter extends JPanel {
         // the one of the individual points (both will be and'ed).
         /*
         boolean[][] result = new boolean[points.size()][];
-        
+
         for (int dataset = 0; dataset < points.size(); dataset++) {
             ArrayList<PlotPoint> pts = points.get(dataset);
             result[dataset] = new boolean[pts.size()];
-        
+
             boolean first = true;
-        
+
             for (int i = 0; i < pts.size(); i++) {
                 PlotPoint pt = pts.get(i);
                 pt.connected = value && !first;

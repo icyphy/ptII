@@ -1,7 +1,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 2014-2016 The Regents of the University of California.
+Copyright (c) 2014-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -63,7 +63,7 @@ import ptolemy.kernel.util.Workspace;
  * is a record with width, height, and grid fields. The width and height
  * are positive integers, and the grid is an array of integer values for
  * each position in the map.
- * 
+ *
  * This actor decorates any entity in the model that implements the
  * MapConstrained interface.
  *

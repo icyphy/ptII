@@ -43,7 +43,7 @@ import ptolemy.util.test.junit.JUnitCGCArduinoTestBase;
 
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */

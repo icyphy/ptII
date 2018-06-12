@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2014 The Regents of the University of California.
+# @Copyright (c) 2004-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	PtDoclet.java \
-	PtIndexer.java \
-	RatingTaglet.java
+	PtIndexer.java
 
 OTHER_FILES_TO_BE_JARED = \
 	stylesheet.css

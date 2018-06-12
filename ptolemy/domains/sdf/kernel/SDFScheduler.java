@@ -1,6 +1,6 @@
 /* A Scheduler for the SDF domain
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -254,7 +254,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param entity The entity that is being fired.
      *  @return The number of times that the given entity will fire
      *  @exception IllegalActionException If thrown by getSchedule().
-    
+
      */
     public int getFiringCount(Entity entity) throws IllegalActionException {
         getSchedule();
@@ -940,7 +940,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         /* FIXME: This is bogus. It rules out perfectly legitimate models.
         Entity changeContext = analysis.getChangeContext(variable);
-        
+
         if (!((changeContext == model) || changeContext.deepContains(model))) {
             throw new IllegalActionException(variable,
                     "The SDF rate parameter changes during "

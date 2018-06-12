@@ -13,35 +13,25 @@
     <p>The Ptolemy II source code is available in two formats:</p>
     <ol>
       <li>The stable release - download a tar file that is created annually.</li>
-      <li>The development version - access the Ptolemy group version control system, which uses a tool called Subversion.</li>
+      <li>The development version - access the Ptolemy group version control system, available via Github.</li>
     </ol>
     <p>The advantage of the tar file is that it is tested and stable.</p>
     <p>The advantage of the development version is that it has the
       latest and greatest changes.  However, there could be bugs and
-      instability in the development version. To access the
-      development version, you must either install TortoiseSVN, or Cygwin
-      or install an Eclipse Subversion plug-in.  Currently,
-      we prefer a plug-in called "Subversive".</p>
+      instability in the development version.
 
     <!--/eclipseSimple-->
-    <p>There several ways to set up the ptII project:</p>
+    <p>There two ways to set up the ptII project:</p>
     <ol>
-      <li> <a href="noSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project.</a>
+      <li> <a href="noVC.htm" target="main">Eclipse is <b>unaware</b> of the version control aspects of the project.</a>
 	<br/>If you are downloading the source from major Ptolemy release,
 	and don't want to update regularly, or you do not have network access, then use this choice.
-	<br/><i>(No Eclipse Subversion plug-in (Subversive),
-	No Subversion (<code>svn</code>) from the command line).</i>
+	<br/><i>(No <code>git</code> from the command line).</i>
       </li>
 
-      <li> <a href="noEclipseSVN.htm" target="main">Eclipse is unaware of the version control aspects of the project, use the TortoiseSVN version of Subversion or the Cygwin command line version of Subversion to update the tree.</a>
-
-	<br/><i>(No Eclipse Subversion plug-in (Subversive),
-	use Subversion (<code>svn</code>) from the command line).</i>
-      </li>
-
-      <li> <a href="eclipseSVN.htm" target="main">Eclipse is aware of the Subversion aspects of the project.</a> 
-	<br/><i>(Use both the Eclipse Subversion plug-in (Subversive) and the
-	shell <code>svn</code> command).</i>
+      <li> <a href="eclipseVC.htm" target="main">Eclipse is <b>aware</b> of the Version Control aspects of the project.</a>
+        <br/><i>(Use both the Eclipse Git plugin and optionally the
+	shell <code>git</code> command).</i>
 
 	<br/>This choice is the <b>preferred</b> choice for collaborating with the Ptolemy group because it means that your Ptolemy II tree can get recent changes.
 	<br/>The downside is that that the development tree is under development, so there may be bugs or instability.
@@ -53,11 +43,6 @@
 
 
     <!--/eclipseSimple-->
-    <p>Without the Eclipse Subversive plug-in, you'll need to manage the Subversion aspects in the
-      usual way, i.e. with Subversion commands being submitted to a bash
-      shell.  With Subversive, Eclipse will do all sorts of things to "help"
-      you. Most of these things are good, but there is a learning curve.</p>
-
 
     <p>Please choose <b>one</b> of the methods above to set up Eclipse for Ptolemy II.
 

@@ -34,6 +34,15 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.ptolemy.machineLearning.Algorithms;
 
+/**
+ * AlgorithmsTest class.
+ *
+ * @author ilgea
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class AlgorithmsTest {
 
     @Test

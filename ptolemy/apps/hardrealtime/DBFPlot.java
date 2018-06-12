@@ -63,8 +63,6 @@ public class DBFPlot extends Plot {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-
-
     /**
      * Add the release time and deadline of a job in the execution being drawn,
      * and redraw the plot.
@@ -83,14 +81,14 @@ public class DBFPlot extends Plot {
             double _executionTime = 0.0;
 
             if (job.getTask() instanceof PeriodicTask) {
-                _executionTime += ((IntToken) ((PeriodicTask) job.getTask()).executionTime
-                        .getToken()).intValue();
+                _executionTime += ((IntToken) ((PeriodicTask) job
+                        .getTask()).executionTime.getToken()).intValue();
             } else if (job.getTask() instanceof TaskFrame) {
-                _executionTime += ((IntToken) ((TaskFrame) job.getTask()).executionTime
-                        .getToken()).intValue();
+                _executionTime += ((IntToken) ((TaskFrame) job
+                        .getTask()).executionTime.getToken()).intValue();
             } else {
-                System.out.println("job is not PeriodicTask or TaskFrame but "
-                        + job);
+                System.out.println(
+                        "job is not PeriodicTask or TaskFrame but " + job);
             }
             List<Double> list = _executionTimesAndDeadlines.get(deadline);
             if (list == null) {
@@ -105,14 +103,14 @@ public class DBFPlot extends Plot {
         }
     }
 
-
+    @Override
     protected void finalize() {
         TreeSet<Double> set = new TreeSet<Double>();
         set.addAll(_executionTimesAndDeadlines.keySet());
         Iterator<Double> iterator = set.iterator();
         double executionTime = 0.0;
         while (iterator.hasNext()) {
-            Double key = (Double) iterator.next();
+            Double key = iterator.next();
             List<Double> executionTimes = _executionTimesAndDeadlines.get(key);
             this.addPoint(0, key, executionTime, true);
             for (int i = 0; i < executionTimes.size(); i++) {

@@ -1,6 +1,6 @@
 /* A helper class for the httpServer JavaScript module.
 
-@Copyright (c) 2015-2017 The Regents of the University of California.
+@Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -168,7 +168,7 @@ public class HttpServerHelper extends VertxHelperBase {
             _actor.clearTimeout(requestID);
 
             HttpServerResponse response = request.response();
-            
+
             if (response.closed()) {
                 // Response has been closed already. Nothing to do.
                 return;

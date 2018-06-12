@@ -38,13 +38,6 @@ public class MatrixParserTokenManager implements MatrixParserConstants {
         debugStream = ds;
     }
 
-    private final int jjStopStringLiteralDfa_0(int pos, long active0) {
-        switch (pos) {
-        default:
-            return -1;
-        }
-    }
-
     private int jjStopAtPos(int pos, int kind) {
         jjmatchedKind = kind;
         jjmatchedPos = pos;

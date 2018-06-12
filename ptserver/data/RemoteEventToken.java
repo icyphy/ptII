@@ -52,13 +52,13 @@ public class RemoteEventToken extends Token {
     /** Type of notification message being sent to the user.
      */
     public enum EventType {
-        /** An exception was raised.
-         */
-        EXCEPTION,
+    /** An exception was raised.
+     */
+    EXCEPTION,
 
-        /** The server is shutting down.
-         */
-        SERVER_SHUTDOWN
+    /** The server is shutting down.
+     */
+    SERVER_SHUTDOWN
     }
 
     ///////////////////////////////////////////////////////////////////

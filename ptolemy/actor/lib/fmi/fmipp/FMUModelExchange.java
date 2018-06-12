@@ -174,8 +174,8 @@ public class FMUModelExchange extends Transformer {
             try {
                 _fmiModelDescription = FMUFile.parseFMUFile(fmuFileName);
             } catch (IOException ex) {
-                throw new IllegalActionException(this, ex, "Failed to unzip \""
-                        + fmuFileName + "\".");
+                throw new IllegalActionException(this, ex,
+                        "Failed to unzip \"" + fmuFileName + "\".");
             }
 
             // Set _tmpPath to the directory that contains modelDescription.xml
@@ -184,25 +184,23 @@ public class FMUModelExchange extends Transformer {
             for (File file : _fmiModelDescription.files) {
                 String fileName = file.toString();
                 if (fileName.endsWith(sentinelFileName)) {
-                    _tmpPath = fileName.substring(0, fileName.length()
-                            - sentinelFileName.length());
+                    _tmpPath = fileName.substring(0,
+                            fileName.length() - sentinelFileName.length());
                     break;
                 }
             }
             System.out.println("FMUModelExchange: _tmpPath: " + _tmpPath);
             if (_tmpPath == null) {
-                throw new IllegalActionException(
-                        this,
-                        "Did not find sentinel file "
-                                + sentinelFileName
-                                + "."
-                                + (_fmiModelDescription.files.size() <= 0 ? "No files were unzipped from the FMU file "
-                                        + fmuFileName + "."
+                throw new IllegalActionException(this,
+                        "Did not find sentinel file " + sentinelFileName + "."
+                                + (_fmiModelDescription.files.size() <= 0
+                                        ? "No files were unzipped from the FMU file "
+                                                + fmuFileName + "."
                                         : "The first file in the fmuFile "
-                                        + fmuFileName
-                                        + " was "
-                                        + _fmiModelDescription.files
-                                        .get(0) + "."));
+                                                + fmuFileName + " was "
+                                                + _fmiModelDescription.files
+                                                        .get(0)
+                                                + "."));
             }
 
             //             try { // make the error handling better, because if the file is not valid, its not possible to cancel the error message, one has to use ok instead ;)
@@ -274,22 +272,22 @@ public class FMUModelExchange extends Transformer {
             //             }
         } else if (attribute == lookAheadHorizon) {
             if (!lookAheadHorizon.getExpression().isEmpty()) {
-                _lookAheadHorizonValue = Double.valueOf(lookAheadHorizon
-                        .getExpression());
+                _lookAheadHorizonValue = Double
+                        .valueOf(lookAheadHorizon.getExpression());
             } else {
                 _lookAheadHorizonValue = 0.1;
             }
         } else if (attribute == lookAheadStepSize) {
             if (!lookAheadStepSize.getExpression().isEmpty()) {
-                _lookAheadStepSizeValue = Double.valueOf(lookAheadStepSize
-                        .getExpression());
+                _lookAheadStepSizeValue = Double
+                        .valueOf(lookAheadStepSize.getExpression());
             } else {
                 _lookAheadStepSizeValue = 0.01;
             }
         } else if (attribute == integratorStepSize) {
             if (!integratorStepSize.getExpression().isEmpty()) {
-                _integratorStepSizeValue = Double.valueOf(integratorStepSize
-                        .getExpression());
+                _integratorStepSizeValue = Double
+                        .valueOf(integratorStepSize.getExpression());
             } else {
                 _integratorStepSizeValue = 0.001;
             }
@@ -416,8 +414,8 @@ public class FMUModelExchange extends Transformer {
         if (_eventTime - checkTime.getDoubleValue() < 0) { // check if we could be outside the lookahead horizone
             //            _fireAt(_eventTime - getDirector().getTimeResolution()); // if yes, fire a little bit earlier
             //nextevent = director.fireFMU((Actor) this, new Time(getDirector(), _eventTime - getDirector().getTimeResolution()), 1);
-            _nextEvent = new Time(getDirector(), _eventTime
-                    - getDirector().getTimeResolution());
+            _nextEvent = new Time(getDirector(),
+                    _eventTime - getDirector().getTimeResolution());
             _fireAt(_nextEvent);
         } else {
             //            _fireAt(_eventTime); // fire at next event or now + lookahead
@@ -532,7 +530,8 @@ public class FMUModelExchange extends Transformer {
                 String pair = pairs[i];
                 String[] keyValue = pair.split("=");
                 helper.string_array_setitem(foo, i, keyValue[0]);
-                helper.double_array_setitem(bar, i, Double.valueOf(keyValue[1]));
+                helper.double_array_setitem(bar, i,
+                        Double.valueOf(keyValue[1]));
             }
             _nStartValues = pairs.length;
         } else {
@@ -559,8 +558,8 @@ public class FMUModelExchange extends Transformer {
 
         _fireAt(getDirector().getModelStopTime());
 
-        _debug("ModelStopTime=", Double.toString(getDirector()
-                .getModelStopTime().getDoubleValue()));
+        _debug("ModelStopTime=", Double
+                .toString(getDirector().getModelStopTime().getDoubleValue()));
     }
 
     @Override
@@ -592,12 +591,12 @@ public class FMUModelExchange extends Transformer {
             _fmu.delete();
             _fmu = null;
         } else {
-            System.out
-            .println("FMUModelExchange: not calling _fmu.delete because fmu is null");
+            System.out.println(
+                    "FMUModelExchange: not calling _fmu.delete because fmu is null");
 
         }
-        System.out
-        .format("-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
+        System.out.format(
+                "-FMUModelExchange::wrapup: %d times fired with and %d times without input%n",
                 _some, _none);
     }
 

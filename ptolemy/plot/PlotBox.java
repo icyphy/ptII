@@ -3057,8 +3057,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     protected void _help() {
         String message = "Ptolemy plot package\n" + "By: Edward A. Lee\n"
                 + "and Christopher Brooks\n" + "Version " + PTPLOT_RELEASE
-                + ", Build: $Id$\n\n"
-                + "Key bindings:\n"
+                + ", Build: $Id$\n\n" + "Key bindings:\n"
                 + "   Cntrl-c:  copy plot to clipboard (PNG format), if permitted\n"
                 + "   D: dump plot data to standard out\n"
                 + "   E: export plot to standard out (EPS format)\n"

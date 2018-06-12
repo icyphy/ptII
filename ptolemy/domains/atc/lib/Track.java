@@ -62,7 +62,7 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  If there is one in transit, then it rejects all inputs.
  *  @author Maryam Bagheri
  *  @version $Id$
- *  @since Ptolemy II 10.0
+ *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */

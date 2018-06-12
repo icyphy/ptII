@@ -56,6 +56,8 @@ import ptolemy.kernel.util.IllegalActionException;
  * BluetoothResponse enum element contained within this object.</p>
  *
  * @author Phillip Azar
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @param <T> - the type for the data contained within this token.
  * @see BluetoothResponse

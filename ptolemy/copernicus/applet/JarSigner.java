@@ -103,7 +103,7 @@ public class JarSigner {
      *  </pre>
      *  @param args An array of two arguments, the first element is the name of the jar file
      *  to be read in, the second is the name of the signed jar file to be created.
-    
+
      */
     public static void main(String args[]) {
         if (args.length != 2) {

@@ -1,6 +1,6 @@
 /* A server with a fixed or variable service time.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.util.Time;
@@ -107,11 +108,11 @@ public class Server extends DETransformer {
         priority.setExpression("0.0");
         priority.setTypeEquals(BaseType.DOUBLE);
         // Put the priority port at the bottom of the icon by default.
-        cardinality = new StringAttribute(priority.getPort(),
-                "_cardinal");
+        cardinality = new StringAttribute(priority.getPort(), "_cardinal");
         cardinality.setExpression("SOUTH");
 
-        _queues = new TreeMap<Double, PriorityQueue<Job>>(new PriorityComparator());
+        _queues = new TreeMap<Double, PriorityQueue<Job>>(
+                new PriorityComparator());
 
         _queueCounter = 0;
         _queueSize = 0;
@@ -186,8 +187,8 @@ public class Server extends DETransformer {
             if (newCapacity > 0 && queueSize() > newCapacity) {
                 throw new IllegalActionException(this,
                         "Queue size (" + queueSize()
-                                + ") exceed requested capacity "
-                                + newCapacity + ").");
+                                + ") exceed requested capacity " + newCapacity
+                                + ").");
             }
         } else {
             super.attributeChanged(attribute);
@@ -205,7 +206,8 @@ public class Server extends DETransformer {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Server newObject = (Server) super.clone(workspace);
         newObject.output.setTypeSameAs(newObject.input);
-        newObject._queues = new TreeMap<Double, PriorityQueue<Job>>(new PriorityComparator());
+        newObject._queues = new TreeMap<Double, PriorityQueue<Job>>(
+                new PriorityComparator());
         return newObject;
     }
 
@@ -242,8 +244,8 @@ public class Server extends DETransformer {
 
         Job currentJob = this.peekQueue();
         if (currentJob != null) {
-            currentJob.serviceTimeRemaining =
-                    _nextTimeFree.subtractToDouble(currentTime);
+            currentJob.serviceTimeRemaining = _nextTimeFree
+                    .subtractToDouble(currentTime);
         }
 
         long nextQueueCounter = _queueCounter;
@@ -254,7 +256,8 @@ public class Server extends DETransformer {
             double priorityValue = ((DoubleToken) priority.getToken())
                     .doubleValue();
             Token token = input.get(0);
-            this.enqueue(new Job(token, serviceTimeValue, priorityValue, currentTime));
+            this.enqueue(new Job(token, serviceTimeValue, priorityValue,
+                    currentTime));
             if (_debugging) {
                 _debug("Read input with value " + token
                         + ", and put into queue, which now has size"
@@ -267,7 +270,7 @@ public class Server extends DETransformer {
         // If appropriate, produce output.
         Job job = this.peekQueue();
         if (job != null && currentTime.compareTo(_nextTimeFree) == 0 &&
-                /* We check the queueCounter to ensure at least a microstep delay */
+        /* We check the queueCounter to ensure at least a microstep delay */
                 job.queueCounter < nextQueueCounter) {
             job = this.dequeue();
             Token outputToken = job.payload;
@@ -275,8 +278,8 @@ public class Server extends DETransformer {
             // Indicate that the server is free.
             if (_debugging) {
                 _debug("Produced output " + outputToken
-                        + ", so queue now has size " + queueSize()
-                        + " at time " + currentTime);
+                        + ", so queue now has size " + queueSize() + " at time "
+                        + currentTime);
             }
         }
         size.send(0, new IntToken(queueSize()));
@@ -374,7 +377,7 @@ public class Server extends DETransformer {
         }
         return super.postfire();
     }
-    
+
     /** Clear the queue so that the capacity can be changed.
      *  @exception IllegalActionException If the superclass throws it.
      */
@@ -404,18 +407,19 @@ public class Server extends DETransformer {
 
     private static class PriorityComparator implements Comparator<Double> {
         public static int compare(double a, double b) {
-            return Double.compare(b, a);  // Note the swapped order (higher priorities come first)
+            return Double.compare(b, a); // Note the swapped order (higher priorities come first)
         }
+
         @Override
         public int compare(Double a, Double b) {
-            return compare((double)a, (double)b);
+            return compare((double) a, (double) b);
         }
     }
 
     /** A data structure containing a token and a service time. */
     private static class Job implements Comparable<Job> {
-        public Job(Token payload, double serviceTime,
-                double priority, Time creationTime) {
+        public Job(Token payload, double serviceTime, double priority,
+                Time creationTime) {
             this.payload = payload;
             this.serviceTimeRemaining = serviceTime;
             this.priority = priority;
@@ -424,15 +428,16 @@ public class Server extends DETransformer {
 
         public Token payload;
         public double serviceTimeRemaining;
-        public double priority;    //     priority=1 >     priority=0
-        public Time creationTime;  // creationTime=1 < creationTime=0
-        public long queueCounter;  // queueCounter=1 < queueCounter=0
+        public double priority; //     priority=1 >     priority=0
+        public Time creationTime; // creationTime=1 < creationTime=0
+        public long queueCounter; // queueCounter=1 < queueCounter=0
 
         @Override
         public int compareTo(Job other) {
             int result = 0;
             if (result == 0) {
-                result = PriorityComparator.compare(this.priority, other.priority);
+                result = PriorityComparator.compare(this.priority,
+                        other.priority);
             }
             if (result == 0) {
                 result = this.creationTime.compareTo(other.creationTime);

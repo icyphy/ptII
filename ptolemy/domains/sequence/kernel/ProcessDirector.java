@@ -1,6 +1,6 @@
 /* Director for the sequence model of computation plus processes.
 
- Copyright (c) 2009-2014 The Regents of the University of California.
+ Copyright (c) 2009-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -271,7 +271,7 @@ public class ProcessDirector extends SequencedModelDirector {
 
             /*
             System.out.println("Sorted process attributes:");
-            
+
             // Print out the sorted processAttributes
             Iterator i = processAttributes.iterator();
             while (i.hasNext())
@@ -308,15 +308,15 @@ public class ProcessDirector extends SequencedModelDirector {
             // This could be changed in the future to have an option to allow unreachable actors
             //System.out.println("There are unreachable upstream actors in the model: ");
             StringBuffer unreachableActors = new StringBuffer("");
-        
+
             for (Actor a : _scheduler.unreachableActorList())
             {
                 //System.out.println("Unreachable: " + a.getFullName());
                 unreachableActors.append(a.getFullName() + ", ");
             }
-        
+
             // System.out.println("Unreachable actors: " + unreachableActors);
-        
+
             // Remove the last two characters ", "
             // Throw exception
             throw new IllegalActionException("There are unreachable upstream actors in the model: " + unreachableActors.substring(0, unreachableActors.length() - 2));

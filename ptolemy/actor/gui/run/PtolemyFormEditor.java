@@ -1,6 +1,6 @@
 /* A panel for editing the layout of a customizable run control panel.
 
- Copyright (c) 2007-2016 The Regents of the University of California.
+ Copyright (c) 2007-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,7 +27,7 @@
  This class is based on FormEditor by Michael Connor, which
  bears the following copyright:
 
- * Copyright (c) 2004-2016 by Michael Connor. All Rights Reserved.
+ * Copyright (c) 2004-2018 by Michael Connor. All Rights Reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -368,32 +368,32 @@ public class PtolemyFormEditor extends JPanel {
 
         /* FIXME
          *
-        
+
         NewComponentDialog dlg = NewComponentDialog.editDialog(
                 (JFrame) _layoutFrame, componentDef);
         if (!dlg.succeeded())
             return false;
-        
+
         componentDef.name = uniqueName(dlg.getComponentName(), component);
         String newname = componentDef.name;
-        
+
         Component newcomponent = dlg.getInstance();
         containerLayout.removeLayoutComponent(component);
         containerLayout.addComponent(newname, componentDef, cellConstraints);
-        
+
         container.remove(component);
         container.add(newcomponent, newname);
-        
+
         newComponents.remove(component);
         newComponents.add(newcomponent);
-        
+
         if (componentDef.isContainer) {
             // @todo losing components INSIDE the container!!
             //layoutFrame.replaceContainer(name, newName, (Container) newcomponent);
             layoutFrame.removeContainer(name);
             layoutFrame.addContainer(newname, (Container) newcomponent);
         }
-        
+
         updateLayout(newcomponent);
         _updateList();
          */

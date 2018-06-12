@@ -40,6 +40,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 /** A GUI for the Context Aware accessor.
  * @author Anne H. Ngu (angu@txstate.edu)
+@version $Id$
+@since Ptolemy II 11.0
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

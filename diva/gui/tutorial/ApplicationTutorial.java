@@ -1,7 +1,7 @@
 /*
  * $Id$
  *
- @Copyright (c) 1998-2014 The Regents of the University of California.
+ @Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -152,15 +152,15 @@ public class ApplicationTutorial extends AbstractApplication {
      // only handle text documents.
      TextDocument document = (TextDocument) d;
      System.out.println("displaying");
-    
+
      if (_displayedDocument != null) {
      // Pull the text out of the editor and stuff it back into the
      // document.
      _displayedDocument.setText(_editorPane.getText());
      }
-    
+
      _displayedDocument = document;
-    
+
      if (document != null) {
      // Pull the text out of the new document and stuff it
      // into the editor.

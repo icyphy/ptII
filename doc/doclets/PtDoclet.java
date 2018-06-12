@@ -1,6 +1,6 @@
 /* Javadoc Doclet that generates PtDoc XML
 
- Copyright (c) 2006-2016 The Regents of the University of California.
+ Copyright (c) 2006-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -478,7 +478,7 @@ public class PtDoclet {
 
     /** Index of keywords in the documentation. */
     private static PtIndexer _ptIndexer;
-    
+
     /** Set to true for verbose messages. */
     private static boolean _verbose = false;
 }

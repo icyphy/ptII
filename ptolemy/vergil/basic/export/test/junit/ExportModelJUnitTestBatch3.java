@@ -28,28 +28,11 @@
 
 package ptolemy.vergil.basic.export.test.junit;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.Before;
 
 import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import ptolemy.actor.Manager;
-import ptolemy.actor.gui.ConfigurationApplication;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.export.ExportModel;
 
 ///////////////////////////////////////////////////////////////////
 //// ExportModelJUnitTestBatch3
@@ -70,14 +53,13 @@ import ptolemy.vergil.basic.export.ExportModel;
  * $PTII/bin/ptinvoke org.junit.runner.JUnitCore ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTestBatch3
  * </pre>
  * <p>
- * This test uses JUnitParams from <a
- * href="http://code.google.com/p/junitparams/#in_browser"http://code.google.com/p/junitparams/</a>,
+ * This test uses JUnitParams from <a href="http://code.google.com/p/junitparams/#in_browser">http://code.google.com/p/junitparams/</a>,
  *  which is released under <a href="http://www.apache.org/licenses/LICENSE-2.0#in_browser">Apache License 2.0</a>.
  * </p>
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
@@ -85,6 +67,7 @@ import ptolemy.vergil.basic.export.ExportModel;
 public class ExportModelJUnitTestBatch3 extends ExportModelJUnitTestBatch {
 
     /** Run demos 221 through 290. */
+    @Override
     public Object[] demos() throws IOException {
         return super.demos(221, 290);
     }

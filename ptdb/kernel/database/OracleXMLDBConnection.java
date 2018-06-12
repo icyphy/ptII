@@ -1,5 +1,5 @@
 /*
-@Copyright (c) 2010-2016 The Regents of the University of California.
+@Copyright (c) 2010-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -2954,13 +2954,13 @@ public class OracleXMLDBConnection implements DBConnection {
          }
          return false;
         }
-        
+
          *//**
-            * Return the hash code of the modelName as two models are equal if
-            * their model names are equal. So their has codes are also derived from
-            * model name.
-            * @return Hash code of the model name.
-            */
+             * Return the hash code of the modelName as two models are equal if
+             * their model names are equal. So their has codes are also derived from
+             * model name.
+             * @return Hash code of the model name.
+             */
         /*
         public int hashCode() {
          return _modelName.hashCode();

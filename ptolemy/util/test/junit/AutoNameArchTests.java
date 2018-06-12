@@ -1,6 +1,6 @@
 /* Run the Ptolemy model tests in the auto/os.name-os.arch directory using JUnit.
 
-   Copyright (c) 2016 The Regents of the University of California.
+   Copyright (c) 2016-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -143,14 +143,15 @@ public class AutoNameArchTests extends AutoTests {
         // So, linux64 is not sufficient to differentiate between RHEL
         // and Ubuntu. A better version number would include the
         // version of GLIBC.
-        
-        return modelValues(AutoNameArchTests.autoNameArch(), THERE_ARE_NO_AUTO_ARCH_TESTS);
+
+        return modelValues(AutoNameArchTests.autoNameArch(),
+                THERE_ARE_NO_AUTO_ARCH_TESTS);
     }
 
     /** Return the auto directory for the current architecture, for example
      *  "macosx-x86_64/".
-     *  @return the auto directory for the current architecture.   
-     */   
+     *  @return the auto directory for the current architecture.
+     */
     public static String autoNameArch() {
         String osName = System.getProperty("os.name").replaceAll("\\s", "")
                 .toLowerCase();

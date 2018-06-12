@@ -1,7 +1,7 @@
 /* An actor that evaluates matlab expressions with input ports
  providing variables
 
- Copyright (c) 1998-2016 The Regents of the University of California and
+ Copyright (c) 1998-2018 The Regents of the University of California and
  Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -184,7 +184,7 @@ import ptolemy.matlab.Engine.ConversionParameters;
  using '/Applications/MATLAB_R2018a.app/bin/maci' for Matlab's engine libraries
  </pre>
 
- Then run
+ <p>Then run</p>
  <pre>
  cd $PTII
  ant
@@ -192,7 +192,7 @@ import ptolemy.matlab.Engine.ConversionParameters;
  make
  cd $PTII/ptolemy/matlab
  make clean; make
- <pre>
+ </pre>
 
  <p>Here's what libraries are used by libptmatlab.jnilib</p>
 
@@ -241,10 +241,6 @@ import ptolemy.matlab.Engine.ConversionParameters;
 
  <p>Use the <code>otool</code> <code>-L</code> and <code>-l</code>
  commands to ensure that <code>libeng.dylib</code> can be found.</p>
-
-
-
-
 
  @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
  @version $Id$

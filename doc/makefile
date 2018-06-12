@@ -3,7 +3,7 @@
 # Version: $Id$
 # Makefile Author: Christopher Hylands
 #
-# Copyright (c) 1997-2017 The Regents of the University of California.
+# Copyright (c) 1997-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -39,7 +39,6 @@ DIRS =		\
 		design \
 		img \
 		papers \
-		tour \
 		tutorial \
 		ui \
 		test \
@@ -114,7 +113,6 @@ EXTRA_SRCS = \
 	main.htm \
 	mainheader.htm \
 	mkDomains \
-	oldFeatures.htm \
 	ptII$(PTVERSION).release.htm \
 	ptII$(PTVERSION).releaseHyVisual.htm \
 	ptIIfaq.htm \

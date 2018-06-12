@@ -1,10 +1,10 @@
 # Makefile for moml/demo directory
 #
-# @Authors: Edward A. Lee
+# @Authors: Edward A. Lee, Christopher Brooks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2009 The Regents of the University of California.
+# @Copyright (c) 1998-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,12 +58,9 @@ EXTRA_SRCS = \
 	$(JSRCS) \
 	index.htm \
 	example.xml \
-	modulation.htm \
 	modulation.xml \
-	modulationShow.htm \
 	moml.dtd \
 	plotConfigure.xml \
-	sinewaveShow.htm \
 	test.xml
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -86,7 +83,7 @@ install: all jars
 
 demos: demo
 demo:	subdemo all
-	CLASSPATH=$(CLASSPATH) appletviewer modulation.htm
+	$(ROOT)/bin/vergil modulation.xml
 
 
 # Get the rest of the rules

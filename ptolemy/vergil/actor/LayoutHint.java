@@ -1,6 +1,6 @@
 /* Layout Hint Attribute for Ptolemy relations to specify bendpoints for an explicit routing for links.
 
- @Copyright (c) 2011-2016 The Regents of the University of California.
+ @Copyright (c) 2011-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -121,7 +121,7 @@ import ptolemy.util.StringUtilities;
  * {@link Location}.</p>
  *
  * @author Hauke Fuhrmann, (kieler@informatik.uni-kiel.de), Ulf Rueegg
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (haf)
  * @Pt.AcceptedRating Red (haf)
  */

@@ -1,6 +1,6 @@
 /* A token that contains a set of label/token pairs.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -129,10 +129,10 @@ public class RecordToken extends AbstractNotConvertibleToken {
         } else {
             if (init.trim().equals("{}")) {
                 throw new IllegalActionException("A record token cannot be"
-                    + " created from the expression '" + init
-                    + "' because '{}' could be either an empty record"
-                    + " or an empty array.  To create an empty record, "
-                    + "use 'emptyRecord()'.");                                                 
+                        + " created from the expression '" + init
+                        + "' because '{}' could be either an empty record"
+                        + " or an empty array.  To create an empty record, "
+                        + "use 'emptyRecord()'.");
 
             }
             throw new IllegalActionException("A record token cannot be"

@@ -6,12 +6,11 @@
   <body>
     <p>Generate code for the Functional Mockup Unit Master Algorithm (FMIMA).</p>
 
-    <p>Two master algorithms are available:
+    <p>Two master algorithms are available:</p>
     <ul>
     <li>FMI 2.0 CoSimulation MA</li>
     <li>FMI Hybrid MA</li>
     </ul>
-    </p>
 
     <p>This code generator use the algorithm defined in
       <br>David Broman, Christopher Brooks, Lev Greenberg, Edward A. Lee, Michael Masin, Stavros Tripakis and Michael Wetter, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2013/EECS-2013-153.html">Determinate Composition of FMUs for Co-Simulation</a>," EECS Department
@@ -79,7 +78,7 @@
     <h2>How it works</h2>
     <p>In a nut shell, the code iterates through the model, finding actors and attributes. An adapter class is searched for that will handle each actor and attribute. If an adapter is not found, then an adapter for the parent class of the actor or attribute is searched for.</p>
 
-    <h4>What to modify</h4>
+    <h3>What to modify</h3>
     <dl>
       <dt><code>$PTII/ptolemy/cg/kernel/generic/program/procedural/fmima/FMIMACodeGenerator.java</code></dt>
       <dd>Copies the C files in <code>$PTII/ptolemy/actor/lib/fmi/ma/includes/</code> and <code>shared/</code></dd>

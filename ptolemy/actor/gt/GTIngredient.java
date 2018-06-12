@@ -1,7 +1,7 @@
 /* Superclass of criteria and operations that can be associated with entities in
    a transformation rule.
 
-@Copyright (c) 2007-2014 The Regents of the University of California.
+@Copyright (c) 2007-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -372,7 +372,7 @@ public abstract class GTIngredient {
     /**
      An iterator to read the fields one by one in a string that describes the
      values of all the elements.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 7.1

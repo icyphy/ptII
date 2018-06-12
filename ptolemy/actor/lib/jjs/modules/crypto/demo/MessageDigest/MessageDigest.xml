@@ -2,28 +2,28 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MessageDigest" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.beta">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1553, 1014}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 877}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1319, 904]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 767]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3466358731766708">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0978998598830836">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{505.025965175022, 569.1199239454504}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{543.6762695312499, 331.6436416472878}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for symmetric encryption and decryption of data.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 0.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 570.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current hash algorithms&#10;MD5&#10;SHA-1&#10;SHA-256">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 30.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -47,25 +47,29 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current HMAC  algorithms&#10;HmacSHA1&#10;HmacSHA256">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 690.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 30.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 160.0}">
         </property>
     </entity>
     <entity name="InputData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={951, 1051, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 585.0}">
         </property>
     </entity>
     <entity name="RandomBytes" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('size');&#10;	this.output('output');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('size', function() {&#10;		var size = self.get('size');&#10;		var bytes = crypto.randomBytes(size);&#10;		var x = new Uint8Array(bytes);&#10;		console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -78,7 +82,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 335}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, 170.0}">
         </property>
         <port name="size" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -91,7 +95,7 @@
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 170.0}">
         </property>
     </entity>
     <entity name="Digest" class="ptolemy.actor.lib.gui.Display">
@@ -99,16 +103,20 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1034, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 485.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1000.0, 485.0}">
         </property>
     </entity>
     <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;hello world!&quot;, &quot;bye world!&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 315.0}">
         </property>
     </entity>
     <entity name="Hash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var bytes = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		//var buf = [0,1,2,3,4];&#10;		//console.log(bytes.concat(buf));&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -121,7 +129,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 495.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{740.0, 485.0}">
         </property>
         <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -134,19 +142,11 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;hello world!&quot;">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 480}">
-        </property>
-    </entity>
     <entity name="EncryptWithHash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var mac = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		var buf = [0,1,2,3,4];&#10;		console.log(input.concat(mac));&#10;		//console.log(input.concat(buf));&#10;		&#10;		var bytes = crypto.symmetricEncrypt(input.concat(mac), self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -159,7 +159,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 645.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 315.0}">
         </property>
         <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -181,22 +181,26 @@
         </port>
     </entity>
     <entity name="InputData2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1493, 846, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 170.0}">
         </property>
     </entity>
     <entity name="EncryptedData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1779, 943, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 780.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{880.0, 315.0}">
         </property>
     </entity>
     <entity name="DecryptWithHash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.output('hashOk');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;function arrayEquals(a, b) {&#10;	if (a.length != b.length) {&#10;		return false;&#10;	}&#10;	for (var i = 0; i &lt; a.length; i++) {&#10;		if (a[i] != b[i]) {&#10;			return false;&#10;		}&#10;	}&#10;	return true;&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var bytes = crypto.symmetricDecrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		var hashAlgorithm = self.getParameter('hashAlgorithm');&#10;		var hashLength = crypto.getHashLength(hashAlgorithm);&#10;		&#10;		var data = bytes.slice(0, bytes.length - hashLength);&#10;		var givenHash = bytes.slice(bytes.length - hashLength);&#10;		console.log(data);&#10;		console.log(givenHash);&#10;		var computedHash = crypto.hash(data, hashAlgorithm);&#10;		console.log(computedHash);&#10;		self.send('hashOk', arrayEquals(givenHash, computedHash));&#10;		//var mac = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		&#10;		//var buf = [0,1,2,3,4];&#10;		//console.log(input.concat(mac));&#10;		//console.log(input.concat(buf));&#10;		&#10;		//var bytes = crypto.symmetricEncrypt(input.concat(mac), self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		//console.log(bytes.split(10));&#10;		self.send('output', data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -209,7 +213,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 680.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 210.0}">
         </property>
         <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -234,19 +238,19 @@
         </port>
     </entity>
     <entity name="DecryptedData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 614, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={935, 470, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 680.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{880.0, 200.0}">
         </property>
     </entity>
     <entity name="HashOK" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1101, 824, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 745.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{880.0, 255.0}">
         </property>
     </entity>
     <entity name="ArrayUpdate" class="ptolemy.actor.lib.ArrayUpdate">
@@ -254,10 +258,14 @@
         </property>
         <property name="value" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 715.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{890.0, 375.0}">
         </property>
     </entity>
     <entity name="Hmac" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hmacAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var result = crypto.hmac(input, self.getParameter('key'), self.getParameter('hmacAlgorithm'));&#10;&#10;		self.send('output', result);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -270,7 +278,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 815.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{570.0, 410.0}">
         </property>
         <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -296,68 +304,92 @@
         </port>
     </entity>
     <entity name="HmacDigest" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={876, 1067, 1280, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[524.8392944335938, 843.806396484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 410.0}">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;RandomBytes.size&quot;,x=385.0,y=170.0}, tail={id=&quot;Ramp.output&quot;,x=260.0,y=170.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[400.0, 420.0]">
+        <vertex name="vertex1" value="{660.0, 485.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InputData.input&quot;,x=710.0,y=585.0}, tail={id=&quot;relation5.vertex1&quot;,x=660.0,y=485.0}, points={660.0,585.0} },{ head={id=&quot;relation6.vertex1&quot;,x=490.0,y=315.0}, tail={id=&quot;relation5.vertex1&quot;,x=660.0,y=485.0}, points={490.0,485.0} },{ head={id=&quot;Hash.input&quot;,x=740.0,y=485.0}, tail={id=&quot;relation5.vertex1&quot;,x=660.0,y=485.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 325.0]">
+        <vertex name="vertex1" value="{175.0, 160.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=70.0,y=160.0}, tail={id=&quot;relation2.vertex1&quot;,x=175.0,y=160.0}, points={} },{ head={id=&quot;Ramp.trigger&quot;,x=260.0,y=170.0}, tail={id=&quot;relation2.vertex1&quot;,x=175.0,y=160.0}, points={} },{ head={id=&quot;relation.vertex1&quot;,x=250.0,y=315.0}, tail={id=&quot;relation2.vertex1&quot;,x=175.0,y=160.0}, points={175.0,315.0} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 410.0]">
+        <vertex name="vertex1" value="{250.0, 315.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sequence.enable&quot;,x=390.0,y=315.0}, tail={id=&quot;relation.vertex1&quot;,x=250.0,y=315.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[530.0, 500.0]">
+        <vertex name="vertex1" value="{890.0, 485.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Hash.output&quot;,x=740.0,y=485.0}, tail={id=&quot;relation3.vertex1&quot;,x=890.0,y=485.0}, points={} },{ head={id=&quot;Digest.input&quot;,x=1000.0,y=485.0}, tail={id=&quot;relation3.vertex1&quot;,x=890.0,y=485.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[345.0, 420.0]">
+        <vertex name="vertex1" value="{490.0, 315.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Sequence.output&quot;,x=390.0,y=315.0}, tail={id=&quot;relation6.vertex1&quot;,x=490.0,y=315.0}, points={} },{ head={id=&quot;Hmac.input&quot;,x=570.0,y=410.0}, tail={id=&quot;relation6.vertex1&quot;,x=490.0,y=315.0}, points={490.0,410.0} },{ head={id=&quot;EncryptWithHash.input&quot;,x=560.0,y=315.0}, tail={id=&quot;relation6.vertex1&quot;,x=490.0,y=315.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{390.0, 340.0}">
+        <vertex name="vertex1" value="{475.0, 170.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;RandomBytes.output&quot;,x=385.0,y=170.0}, tail={id=&quot;relation8.vertex1&quot;,x=475.0,y=170.0}, points={} },{ head={id=&quot;InputData2.input&quot;,x=540.0,y=170.0}, tail={id=&quot;relation8.vertex1&quot;,x=475.0,y=170.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[530.0, 650.0]">
+        <vertex name="vertex1" value="{825.0, 315.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;EncryptedData.input&quot;,x=880.0,y=315.0}, tail={id=&quot;relation9.vertex1&quot;,x=825.0,y=315.0}, points={} },{ head={id=&quot;relation11.vertex1&quot;,x=660.0,y=210.0}, tail={id=&quot;relation9.vertex1&quot;,x=825.0,y=315.0}, points={660.0,315.0} },{ head={id=&quot;EncryptWithHash.output&quot;,x=560.0,y=315.0}, tail={id=&quot;relation9.vertex1&quot;,x=825.0,y=315.0}, points={} },{ head={id=&quot;ArrayUpdate.input&quot;,x=890.0,y=375.0}, tail={id=&quot;relation9.vertex1&quot;,x=825.0,y=315.0}, points={825.0,375.0} } }">
+        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DecryptWithHash.output&quot;,x=725.0,y=210.0}, tail={id=&quot;DecryptedData.input&quot;,x=880.0,y=200.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DecryptWithHash.hashOk&quot;,x=725.0,y=210.0}, tail={id=&quot;HashOK.input&quot;,x=880.0,y=255.0}, points={825.0,220.0,825.0,255.0} } }">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[655.0, 655.0]">
+        <vertex name="vertex1" value="{660.0, 210.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DecryptWithHash.input&quot;,x=725.0,y=210.0}, tail={id=&quot;relation11.vertex1&quot;,x=660.0,y=210.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Hmac.output&quot;,x=570.0,y=410.0}, tail={id=&quot;HmacDigest.input&quot;,x=710.0,y=410.0}, points={} } }">
+        </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="InputData.input" relation="relation5"/>

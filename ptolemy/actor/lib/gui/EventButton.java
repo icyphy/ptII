@@ -1,6 +1,6 @@
 /* An actor that generates an empty token in response to a click of a button.
 
- @Copyright (c) 1998-2016 The Regents of the University of California.
+ @Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -60,7 +60,7 @@ import ptolemy.util.MessageHandler;
 
  @author  Edward A. Lee
  @version $Id$
- @since Ptolemy II 2.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */

@@ -1,6 +1,6 @@
 /* A class that supports live audio capture and playback.
 
- Copyright (c) 2000-2014 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -690,7 +690,7 @@ public class LiveSound {
      *
      *  @exception IOException If another object currently has access
      *   to the audio capture resources or if stopping the playback throws it.
-    
+
      *  @exception IllegalStateException If the specified
      *   object did not hold an exclusive lock on the
      *   playback audio resources when this method was invoked.

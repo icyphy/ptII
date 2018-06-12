@@ -1,6 +1,6 @@
 /* An actor to execute the input model.
 
-@Copyright (c) 2008-2015 The Regents of the University of California.
+@Copyright (c) 2008-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -194,7 +194,7 @@ public class ModelExecutor extends TypedAtomicActor {
 
     /**
      A wrapper composite actor in which input models are executed.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0
@@ -299,7 +299,7 @@ public class ModelExecutor extends TypedAtomicActor {
         /**
          The director to be used in the wrapper that handles requests from the
          directors of the models to be executed.
-        
+
          @author Thomas Huining Feng
          @version $Id$
          @since Ptolemy II 8.0
@@ -531,7 +531,7 @@ public class ModelExecutor extends TypedAtomicActor {
     /**
      The port of the wrapper. The get and send methods delegate to the port with
      the same name of the model executor.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

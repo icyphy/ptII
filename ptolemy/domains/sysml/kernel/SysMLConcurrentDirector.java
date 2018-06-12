@@ -1,6 +1,6 @@
 /* Director for SysML in the style of IBM Rational Rhapsody.
 
- Copyright (c) 2012-2014 The Regents of the University of California.
+ Copyright (c) 2012-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -419,7 +419,7 @@ public class SysMLConcurrentDirector extends ProcessDirector {
     /** For all inputs in the input queue of the container of this
      *  actor, put the input token into the inside of the corresponding
      *  output port and then transfer outputs from that port.
-    
+
      *  @exception IllegalActionException If transfer fails.
      */
     @Override

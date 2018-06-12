@@ -30,6 +30,8 @@ package org.ptolemy.ssm;
 /** An interface to define a Gaussian model.
  *
  *  @author Ilge Akkya
+@version $Id$
+@since Ptolemy II 11.0
  *  @version $Id$
  */
 public interface GaussianModel {

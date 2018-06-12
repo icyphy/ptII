@@ -4,7 +4,7 @@
 
  @Version: $Id$
 
- @Copyright (c) 1997-2014 The Regents of the University of California.
+ @Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -126,7 +126,7 @@ public class PlotApplet extends JApplet {
     }
 
     /** Initialize the applet.  Read the applet parameters.
-    
+
      *  Subclasses that extend this method and call Swing UI methods
      *  should do so in the Swing Event thread by calling
      *  SwingUtilities.invokeAndWait().

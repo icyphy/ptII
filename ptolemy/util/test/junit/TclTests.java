@@ -1,6 +1,6 @@
 /* Run the Tcl tests under JUnit.
 
-   Copyright (c) 2011-2016 The Regents of the University of California.
+   Copyright (c) 2011-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -203,7 +203,7 @@ public class TclTests {
 
     /**
      * Run a tclFile.
-    
+
      * <p>Timeout after 480000 ms.  The
      * ptolemy/cg/kernel/generic/program/procedural/java/test/AutoAdapter.tcl
      * test requires more than 240 seconds.</p>

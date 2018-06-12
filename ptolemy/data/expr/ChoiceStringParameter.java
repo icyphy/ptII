@@ -1,6 +1,6 @@
 /* A parameter that is in string mode and has a list of choices.
 
- Copyright (c) 2003-2009 The Regents of the University of California.
+ Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,7 +33,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// ChoiceStringParameter
 
 /**
@@ -73,13 +73,13 @@ public class ChoiceStringParameter extends StringParameter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** A comma-separated list of choices. */
     public StringParameter choices;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** React to a change in an attribute.  This method is called by
      *  a contained attribute when its value changes.  This overrides
      *  the base class to check whether the attribute is choices, and if
@@ -90,11 +90,12 @@ public class ChoiceStringParameter extends StringParameter {
      *   to this container.
      */
     @Override
-    public void attributeChanged(Attribute attribute) throws IllegalActionException {
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
         super.attributeChanged(attribute);
         if (attribute == choices) {
             removeAllChoices();
-            String spec = ((StringParameter)choices).stringValue();
+            String spec = choices.stringValue();
             String[] choices = spec.split(",");
             for (int i = 0; i < choices.length; i++) {
                 addChoice(choices[i].trim());

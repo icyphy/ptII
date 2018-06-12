@@ -1,7 +1,7 @@
 /* An event to transform the model in the model parameter with the encapsulated
    transformation rule.
 
- Copyright (c) 2008-2014 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -319,7 +319,7 @@ public class Transform extends GTEvent
 
     /**
      The configurer to be embedded in the transform event.
-    
+
      @author Thomas Huining Feng
      @version $Id$
      @since Ptolemy II 8.0

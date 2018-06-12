@@ -40,7 +40,11 @@
        Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
        awk -F '"' '{print $2}' /tmp/e | sed 's@/$@@' | sed 's@/@.@g' | sort | awk '{printf("%s.*,", $1)}'
        (Lame) -->
-  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+  <!-- Javadoc 10 can't handle UDPSocketHelper:
+           [javadoc] javadoc: error - An internal exception has occurred. 
+           [javadoc] 	(com.sun.tools.javac.code.ClassFinder$BadClassFile: bad class file: /Users/cxh/src/ptII11.0.devel/ptolemy/actor/lib/jjs/modules/udpSocket/UDPSocketHelper$UDPSocket$1$2.class       
+  -->
+  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,org.terraswarm.accessor.accessors.web.node_modules.*,org.terraswarm.accessor.accessors-svn,ptolemy.apps.*,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output,ptolemy.actor.lib.jjs.modules.udpSocket.*" />
 
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
@@ -329,31 +333,31 @@
 
   <!-- Tests of the export demos -->
   <patternset id="test.export1.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch1.java" />
   </patternset>
 
   <patternset id="test.export2.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch2.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch2.java" />
   </patternset>
 
   <patternset id="test.export3.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch3.java" />
   </patternset>
 
   <patternset id="test.export4.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch4.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch4.java" />
   </patternset>
 
   <patternset id="test.export5.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch5.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch5.java" />
   </patternset>
 
   <patternset id="test.export6.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch6.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch6.java" />
   </patternset>
 
   <patternset id="test.export7.includes">
-    <include name="**/ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch7.java" />
+    <include name="ptolemy/vergil/basic/export/test/junit/ExportModelJUnitTestBatch7.java" />
   </patternset>
   
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
@@ -384,6 +388,9 @@
 
     <!-- OpenModelica is not typically installed. -->
     <exclude name="**/ptolemy/domains/openmodelica/lib/test/junit/JUnitTclTest.*" />
+
+    <!-- PtinyOS is not likely to be installed. -->
+    <exclude name="**/ptolemy/domains/ptinyos/**/JUnitTclTest.*" />
 
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/arduino/**"/>
     <exclude name="**/ptolemy/cg/adapter/generic/program/procedural/c/mbed/**" />
@@ -725,7 +732,7 @@ For example:
     <bundleapp
        applicationCategory="public.app-category.developer-tools"
        name="Ptiny"
-       copyright="Copyright (c) 1995-2017 The Regents of the University of California. All rights reserved."
+       copyright="Copyright (c) 1995-2018 The Regents of the University of California. All rights reserved."
        displayname="Ptiny"
        identifier="ptole"
        mainclassname="ptolemy.vergil.VergilApplication"

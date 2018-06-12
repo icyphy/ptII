@@ -34,7 +34,7 @@ package ptolemy.domains.coroutine.kernel;
 /**
  * @author shaver
 @version $Id$
-@since Ptolemy II 10.0
+@since Ptolemy II 11.0
  *
  */
 public class ControlEntryToken extends ControlToken {

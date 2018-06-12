@@ -1,6 +1,6 @@
 /* Receiver for rendezvous style communication.
 
- Copyright (c) 2005-2014 The Regents of the University of California.
+ Copyright (c) 2005-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -456,7 +456,7 @@ public class RendezvousReceiver extends AbstractReceiver
      * @exception TerminateProcessException If the actor to which this
      * receiver belongs has been terminated while still running i.e it
      * was not allowed to run to completion.
-    
+
      */
     @Override
     public void putArrayToAll(Token[] tokens, int numberOfTokens,

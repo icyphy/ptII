@@ -1,5 +1,5 @@
 /*
- @Copyright (c) 2003-2014 The Regents of the University of California.
+ @Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -313,9 +313,9 @@ public class DataflowActorInterpreter {
      final Expression [] expressions =
      outputExpression.getExpressions();
      final Expression repeatExpr = outputExpression.getRepeatExpr();
-    
+
      int repeatValue = 1;
-    
+
      // FIXME: handle multiports
      if (repeatExpr != null) {
      repeatValue = context.intValue(eval.evaluate(repeatExpr));

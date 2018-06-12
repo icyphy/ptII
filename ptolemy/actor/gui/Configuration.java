@@ -1,6 +1,6 @@
 /* Base class for Ptolemy configurations.
 
- Copyright (c) 2000-2016 The Regents of the University of California.
+ Copyright (c) 2000-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -609,7 +609,8 @@ public class Configuration extends CompositeEntity
      *  @exception ClassNotFoundException If a class cannot be found.
      */
     public static String checkCloneFields(NamedObj namedObj)
-        throws CloneNotSupportedException, IllegalAccessException, IllegalActionException, NameDuplicationException,
+            throws CloneNotSupportedException, IllegalAccessException,
+            IllegalActionException, NameDuplicationException,
             ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
         StringBuffer results = new StringBuffer();
@@ -635,11 +636,11 @@ public class Configuration extends CompositeEntity
         }
 
         if (namedObjClone instanceof Attribute) {
-            ((Attribute)namedObjClone).setContainer(null);
+            ((Attribute) namedObjClone).setContainer(null);
         } else if (namedObjClone instanceof ComponentEntity) {
-            ((ComponentEntity)namedObjClone).setContainer(null);
+            ((ComponentEntity) namedObjClone).setContainer(null);
         } else if (namedObjClone instanceof Port) {
-            ((Port)namedObjClone).setContainer(null);
+            ((Port) namedObjClone).setContainer(null);
         }
 
         return results.toString();
@@ -1255,8 +1256,8 @@ public class Configuration extends CompositeEntity
      *  @exception NameDuplicationException If thrown by a parent class.
      */
     @Override
-    public void setContainer(CompositeEntity container) throws
-        IllegalActionException, NameDuplicationException {
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             throw new IllegalActionException(this,
                     "Configuration can only be at the top level "
@@ -1562,10 +1563,11 @@ public class Configuration extends CompositeEntity
                     // Put the effigy into the directory
                     ModelDirectory directory = getDirectory();
                     if (directory == null) {
-                        throw new NullPointerException("While trying to open " + entity + " in "
-                                                       + container + ", getDirectory() returned null?  "
-                                                       + "Perhaps an entity of name \""
-                                                       + _DIRECTORY_NAME + "\" was not created?");
+                        throw new NullPointerException("While trying to open "
+                                + entity + " in " + container
+                                + ", getDirectory() returned null?  "
+                                + "Perhaps an entity of name \""
+                                + _DIRECTORY_NAME + "\" was not created?");
                     }
                     effigy.setName(directory.uniqueName(entity.getName()));
                     effigy.setContainer(directory);

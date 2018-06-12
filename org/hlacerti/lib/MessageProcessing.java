@@ -1,7 +1,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 2015-2016 The Regents of the University of California.
+Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  * <p>This class implements the functionalities to encode/decode
  * HLA values received from HLA/CERTI.</p>
- * 
+ *
  *  @author David Come, Contributors: Gilles Lasnier
  *  @version $Id: MessageProcessing.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0

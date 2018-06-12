@@ -1,6 +1,6 @@
 /* An utility function for traversing the system and generate files for model checking.
 
- Copyright (c) 2008-2015 The Regents of the University of California.
+ Copyright (c) 2008-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -77,7 +77,7 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-    
+
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException
@@ -108,7 +108,7 @@ public class RTMaudeUtility {
      *
      * @param model The system under analysis.
      * @param formula
-    
+
      * @return The converted .maude format of the system.
      * @exception IllegalActionException
      * @exception NameDuplicationException

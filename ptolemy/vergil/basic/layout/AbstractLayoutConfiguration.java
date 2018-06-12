@@ -1,6 +1,6 @@
 /*
 
-Copyright (c) 2011-2016 The Regents of the University of California.
+Copyright (c) 2011-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Settable;
  * @see ptolemy.vergil.basic.layout.kieler.KielerLayoutAction
  * @author Miro Spoenemann, Christoph Daniel Schulze, Ulf Rueegg
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (msp)
  * @Pt.AcceptedRating Red (msp)
  */
@@ -53,14 +53,14 @@ public abstract class AbstractLayoutConfiguration extends Attribute {
 
     /** Available modes of user interaction. */
     public enum InteractionMode {
-        /** No user interaction: full automatic layout. */
-        None,
-        /** User positioning affects cycle detection. */
-        Cycles,
-        /** User positioning affects cycle detection and node layering. */
-        Columns,
-        /** User positioning affects cycle detection, node layering, and node order. */
-        Full;
+    /** No user interaction: full automatic layout. */
+    None,
+    /** User positioning affects cycle detection. */
+    Cycles,
+    /** User positioning affects cycle detection and node layering. */
+    Columns,
+    /** User positioning affects cycle detection, node layering, and node order. */
+    Full;
     }
 
     /**

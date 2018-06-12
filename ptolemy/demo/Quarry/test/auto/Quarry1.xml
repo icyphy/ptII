@@ -26,7 +26,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 40.0]">
         </property>
     </entity>
-    <entity name="Track" class="Track">
+    <entity name="Track" class="ptolemy.demo.Quarry.Track">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 115.0]">
         </property>
         <property name="length" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -35,7 +35,7 @@
         </property>
         <property name="population" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <entity name="Throttle" class="Throttle">
+        <entity name="Throttle" class="ptolemy.demo.Quarry.Throttle">
             <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
                 <port name="full" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -45,14 +45,14 @@
             </entity>
         </entity>
     </entity>
-    <entity name="Garage" class="Garage">
+    <entity name="Garage" class="ptolemy.demo.Quarry.Garage">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 115.0]">
         </property>
         <property name="vehicles" class="ptolemy.data.expr.Parameter" value="5">
         </property>
         <property name="population" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <entity name="Throttle" class="Throttle">
+        <entity name="Throttle" class="ptolemy.demo.Quarry.Throttle">
             <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
                 <port name="full" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>

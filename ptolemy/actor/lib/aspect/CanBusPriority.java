@@ -1,6 +1,6 @@
 /* This actor implements a CAN bus priority filter.
 
-@Copyright (c) 2010-2014 The Regents of the University of California.
+@Copyright (c) 2010-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -54,6 +54,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Red (derler)
    @Pt.AcceptedRating Red (derler)
  */
+@Deprecated
 public class CanBusPriority extends Transformer {
 
     /** Construct an actor with the given container and name.

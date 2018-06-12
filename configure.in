@@ -4486,6 +4486,9 @@ PTJAVA3D_DIR=
 # Used in domains/makefile
 PTGRDOMAIN_JAR=
 
+# The full path (ptolemy/domains/gr/gr.jar) to the gr.jar file.  Used in mk/jnlp.mk
+PTGRDOMAIN_JAR_FULL=
+
 # We only need to look for Java3D if the gr domain is present
 JAVA3D_USER_DIR="$PTII/ptolemy/domains/gr"
 
@@ -4508,9 +4511,9 @@ else
     fi
 
     if test -z "$JAVA3D_DIR" ; then
-       # Special version of Java3D for Mac OS X, see http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D
+       # Special version of Java3D for Mac OS X, see https://wiki.eecs.berkeley.edu/ptexternal/Main/Java3D
        if test "`uname -s`" = "Darwin"; then 
-           directory=`ls -d $PTII/vendors/j3d/Darwin/*/lib/ext`
+           directory=`ls -d $PTII/vendors/j3d/lib`
        else
            directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
        fi
@@ -4528,25 +4531,6 @@ else
 	updateClasspath "$JAVA3D_DIR/j3dcore.jar"
 	updateClasspath "$JAVA3D_DIR/j3dutils.jar"
 	updateClasspath "$JAVA3D_DIR/vecmath.jar"
-    else
-	Java3DClasspath="$tmpClasspath"
-    fi
-
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
-    startdir=$PTII
-    cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
-        PT_MSG_RESULT($Java3DClasspath)
-
-	if test "`uname -s`" = "Darwin"; then 
- 	    AC_MSG_CHECKING([for Jogl])
-            AC_ARG_WITH(jogl, [  --with-jogl=DIR       use jogl-all.jar and gluegen.jar from DIR,
-			  Java3D under Mac OS with JDK 1.7 and later requires Jogl.
-			  Usually Jogl is installed in $PTII/vendors/jogl],
-	        JOGL_DIR=$withval,
-	        JOGL_DIR=)
 
             if test -f /System/Library/Java/Extensions/j3dcore.jar; then
                AC_MSG_WARN([/System/Library/Java/Extensions/j3dcore.jar exists.
@@ -4585,43 +4569,63 @@ else
     For details, see
     https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D])
             fi
+
+
+    else
+	Java3DClasspath="$tmpClasspath"
+    fi
+
+    # We need to run javac in the config directory so that javac from jdk1.1.6
+    # under NT and cygwin works properly
+    startdir=$PTII
+    cd "$srcdir/config"
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
+        PT_MSG_RESULT($Java3DClasspath)
+
+	if test "`uname -s`" = "Darwin"; then 
+ 	    AC_MSG_CHECKING([for Jogl])
+            AC_ARG_WITH(jogl, [  --with-jogl=DIR       use jogl-all.jar and gluegen.jar from DIR,
+			  Java3D under Mac OS with JDK 1.7 and later requires Jogl.
+			  Usually Jogl is installed in $PTII/vendors/jogl],
+	        JOGL_DIR=$withval,
+	        JOGL_DIR=)
+
 	    if test -z "$JOGL_DIR" ; then
-                directory=`ls -d $PTII/vendors/jogl/*/jar`
+                directory=`ls -d $PTII/vendors/jogl/lib`
                 if test -d "$directory"; then
        	            JOGL_JAR_DIR="$directory"
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar" -a -f "$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"; then
+		if test -f "$JOGL_JAR_DIR/jogamp-fat.jar" ; then
 		     PT_MSG_RESULT($JOGL_JAR_DIR)
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"
-		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
-		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
-		    updateClasspath "$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/jogamp-fat.jar"
+		    updateClasspath "$JOGL_JAR_DIR/jogamp-fat.jar"
 		else
 		    AC_MSG_WARN([Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
-   We don't include Jogl in the ptII source code repository because it is so large.
-   To install, do
-       mkdir -p $PTII/vendors/jogl
-       cd $PTI/vendors/jogl
-       wget http://jogamp.org/deployment/v2.2.4/archive/jogamp-all-platforms.7z
-       7z x jogamp-all-platforms.7z
+   To install, 
+       mkdir -p $PTII/vendors/jogl/lib
+       cd $PTI/vendors/jogl/lib
+       wget http://show.docjava.com/book/cgij/code/jnlp/libs/jogl/jogamp-fat.jar
+
+       mkdir natives
+       wget -m -np http://show.docjava.com/book/cgij/code/jnlp/libs/jogl/natives/macosx-universal
+       mv show.docjava.com/book/cgij/code/jnlp/libs/jogl/natives/macosx-universal/ natives
+
        cd $PTII
        ./configure
-   If you don't have 7z, the on the Mac install Mac Ports from https://www.macports.org/
-   and then do
-       sudo port install p7zip
-   and then proceed with:
-       7z x jogamp-all-platforms.7z
-       cd $PTII
-       ./configure
-])
-		fi
-            fi
+
+       ])
+
+               fi
+           fi
        fi
+       
 
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
+       PTGRDOMAIN_JAR_FULL=ptolemy/domains/gr/gr.jar
        # PTGR_PACKAGES is used in ptII/doc/makefile
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
@@ -4635,16 +4639,22 @@ else
     where DIR contains j3dcore.jar, j3dutils.jar and vecmath.jar, for example:
     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext]
     Under Mac OS X, a special version of Java 3D is present in $PTII/vendors/j3d/Darwin.
-    See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D
+    See https://wiki.eecs.berkeley.edu/ptexternal/Main/Java3D
     Under Mac OS X, Jogl must also be installed.  Configure looks for Jogl
-    in $PTII/vendors/jogl/*/jar.  Jogl may be found at http://jogamp.org/jogl/www/.
+    in $PTII/vendors/jogl/lib.  Jogl may be found at http://jogamp.org/jogl/www/.
     Try:
-       cd $PTII/vendors; mkdir jogl; cd jogl
-       wget http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z
-       7z x  jogamp-all-platforms.7z
-    If you don't have 7z, get it from http://www.7-zip.org/download.html
+       mkdir -p $PTII/vendors/jogl/lib
+       cd $PTI/vendors/jogl/lib
+       wget http://show.docjava.com/book/cgij/code/jnlp/libs/jogl/jogamp-fat.jar
+
+       mkdir natives
+       wget -m -np http://show.docjava.com/book/cgij/code/jnlp/libs/jogl/natives/macosx-universal
+       mv show.docjava.com/book/cgij/code/jnlp/libs/jogl/natives/macosx-universal/ natives
+
     Then rerun ./configure ])
+
     fi
+
     cd "$startdir"
 fi
 
@@ -7540,6 +7550,9 @@ AC_SUBST(PTGMP_LIB)
 # Name of the jar file that includes the GR domain if Java 3D was found.
 # Used in domains/makefile.
 AC_SUBST(PTGRDOMAIN_JAR)
+
+# The full path (ptolemy/domains/gr/gr.jar) to the gr.jar file.  Used in mk/jnlp.mk
+AC_SUBST(PTGRDOMAIN_JAR_FULL)
 
 # Ptolemy II packages that use the Java 3D facility
 # PTGR_PACKAGES is used in ptII/doc/makefile

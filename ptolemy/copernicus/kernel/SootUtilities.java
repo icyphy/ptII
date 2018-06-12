@@ -1,6 +1,6 @@
 /* Utilities to use with Soot
 
- Copyright (c) 2001-2015 The Regents of the University of California.
+ Copyright (c) 2001-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -131,12 +131,12 @@ public class SootUtilities {
      *  defining class for the given field and the definition occurs
      *  within an initializer (for instance fields) or a static
      *  initializer (for static fields).
-    
+
      public static void assertFinalField(SootClass theClass,
      SootField theField) {
      // First make the field final.
      theField.setModifiers(theField.getModifiers() | Modifier.FINAL);
-    
+
      // Find any assignment to the field in the class and convert
      // them to Exceptions, unless they are in constructors,
      // in which case ignore them.
@@ -146,10 +146,10 @@ public class SootUtilities {
      if (method.getName().equals("<init>")) {
      continue;
      }
-    
+
      JimpleBody body = (JimpleBody)method.retrieveActiveBody();
      Chain units = body.getUnits();
-    
+
      for (Iterator stmts = units.snapshotIterator();
      stmts.hasNext();) {
      Stmt stmt = (Stmt)stmts.next();
@@ -176,12 +176,12 @@ public class SootUtilities {
      FieldRef ref = (FieldRef)value;
      if (ref.getField() == theField) {
      System.out.println("inlining stmt = " + stmt);
-    
+
      box.setValue(Evaluator
      .getConstantValueOf(newValue));
      }
      }
-    
+
      }
      }
      }
@@ -2049,15 +2049,15 @@ public class SootUtilities {
 
                 /*
                  List successorList = block.getSuccs();
-                
+
                  if (successorList.size() == 2) {
                  Block whileBody, whileSucc;
                  boolean found = false;
-                
+
                  whileBody = whileSucc = block;
                  whileBody = (Block) successorList.get(0);
                  whileSucc = (Block) successorList.get(1);
-                
+
                  if ((whileBody.getPreds().size() == 1) &&
                  (whileBody.getSuccs().size() == 1) &&
                  (whileBody.getSuccs().get(0) == block))
@@ -2067,13 +2067,13 @@ public class SootUtilities {
                  bt = whileSucc;
                  whileSucc = whileBody;
                  whileBody = bt;
-                
+
                  if ((whileBody.getPreds().size() == 1) &&
                  (whileBody.getSuccs().size() == 1) &&
                  (whileBody.getSuccs().get(0) == block))
                  found = true;
                  }
-                
+
                  if (found) {
                  if (con
                  System.out.println("found while Loop:");

@@ -1,6 +1,6 @@
 /* Support for the websocket accessor.
 
-@Copyright (c) 2015-2017 The Regents of the University of California.
+@Copyright (c) 2015-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -101,7 +101,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 synchronized (WebSocketHelper.this) {
                     if (_webSocket != null) {
                         if (_wsIsOpen) {
-                            _webSocket.close((short)1000, "client is ending");
+                            _webSocket.close((short) 1000, "client is ending");
                             _wsIsOpen = false;
                         }
                         _webSocket = null;

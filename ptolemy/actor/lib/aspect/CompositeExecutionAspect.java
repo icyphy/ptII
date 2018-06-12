@@ -1,6 +1,6 @@
 /* This is a composite execution aspect.
 
-@Copyright (c) 2008-2014 The Regents of the University of California.
+@Copyright (c) 2008-2018 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -341,7 +341,8 @@ public class CompositeExecutionAspect extends TypedCompositeActor
 
                             Director director = null;
                             if (actor instanceof Actor) {
-                                director = ((Actor) actor).getExecutiveDirector();
+                                director = ((Actor) actor)
+                                        .getExecutiveDirector();
                             } else {
                                 Nameable container = actor.getContainer();
 

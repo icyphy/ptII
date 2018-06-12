@@ -3,7 +3,7 @@
  *
  * Below is the copyright agreement for the Ptolemy II system.
  *
- * Copyright (c) 2007-2014 The Regents of the University of California. All
+ * Copyright (c) 2007-2018 The Regents of the University of California. All
  * rights reserved.
  *
  * Permission is hereby granted, without written agreement and without license
@@ -174,7 +174,7 @@ public class ConceptAttribute extends AbstractSettableAttribute {
      *  of the static public instances of the inner class Visibility.
      *  This is enforced by making it impossible to construct instances
      *  of this inner class outside this interface definition.
-    
+
      *  @param visibility The visibility of this Settable.
      *  @see #getVisibility()
      */
