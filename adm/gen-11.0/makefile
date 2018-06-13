@@ -438,6 +438,8 @@ $(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(N
 	mkdir -p $(PTIIDIST)/vendors/jogl
 	cp $(PTIIHOME)/vendors/jogl/*.txt $(PTIIDIST)/vendors/jogl
 	mkdir -p $(PTIIDIST)/vendors/jogl/lib
+	-ls $PTII/vendors/jogl
+	-ls $PTII/vendors/jogl/lib
 	cp $(PTIIHOME)/vendors/jogl/lib/*.jar $(PTIIDIST)/vendors/jogl/lib
 	cp -r $(PTIIHOME)/vendors/jogl/lib/natives $(PTIIDIST)/vendors/jogl/lib
 	# Vergil.app needs the shared libraries to appear in bin/natives.
@@ -707,7 +709,7 @@ $(PTZIPRELEASE):
 	@echo "$@ `date`"
 	if [ ! -d $@ ]; then mkdir -p $@; fi
 	(cd $@; tar -xf ../ptII$(VERSION).src.tar);
-	(cd $@/ptII$(VERSION); rm -rf vendors/izpack vendors/j3d vendors/launch4j; pwd; ls -l vendors)
+	(cd $@/ptII$(VERSION); rm -rf vendors/izpack vendors/j3d vendors/jogl vendors/launch4j; pwd; ls -l vendors)
 
 src.zip: $(PTII_FULL_ZIP)
 ptii.src.zip: $(PTII_FULL_ZIP)
