@@ -76,7 +76,7 @@ set timeOutSeconds 9876
 set major_version 11.0
 set minor_version beta
 set version $major_version.$minor_version
-set windows_version 11_0_beta
+set windows_version 11_0_1
 set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
