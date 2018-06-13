@@ -2,11 +2,11 @@
 <html>
   <head>
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-    <title>Ptolemy II 11.0.beta Release Notes</title>
+    <title>Ptolemy II 11.0.1 Release Notes</title>
     <link href="default.css" rel="stylesheet" type="text/css">
   </head>
   <body bgcolor="#faf0e6">
-    <h1>Ptolemy II 11.0.beta Release Notes</h1>
+    <h1>Ptolemy II 11.0.1 Release Notes</h1>
 
     Ptolemy II is a set of Java packages supporting heterogeneous,
     concurrent modeling and design.  Its <code>kernel</code> package
@@ -119,12 +119,12 @@
 
     <h2>Platforms</h2>
 
-    <p>The core of Ptolemy II 11.0.beta is 100% Java.
+    <p>The core of Ptolemy II 11.0.1 is 100% Java.
       In principle, it may be possible to compile Ptolemy II 11.0 under Java 1.8.</p>
 
-    <p>We developed Ptolemy II 11.0.beta under Mac OS X, Windows and Linux with JDK 1.8.0_101.</p>
+    <p>We developed Ptolemy II 11.0.1 under Mac OS X, Windows and Linux with JDK 1.8.0_101.</p>
 
-    <p>Ptolemy II 11.0.beta will not compile under Java 1.3 because we use the
+    <p>Ptolemy II 11.0.1 will not compile under Java 1.3 because we use the
       java.lang.URI class, which is present only in Java 1.4 and later.
       JDK 1.5 or later is required so that these packages can use generics:
       backtrack, ptalon and others.  JDK 1.6 is required because
@@ -148,11 +148,11 @@
       <!-- 
 	   sed 's@ptdoc:@codeDoc/@' ptII10.0.release.htm  > /tmp/a
 	   awk '{ if ($0 ~ /href="codeDoc/) {gsub(.html"\\.", "/", $0); print $0} else {print $0} }' /tmp/a > /tmp/b
-	   awk '{ if ($0 ~ /.xml"/) {sub("href=\"../..", "href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/ptolemy", $0); print $0} else {print $0} }' ptII10.0.release.htm > /tmp/b
+	   awk '{ if ($0 ~ /.xml"/) {sub("href=\"../..", "href=\"http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.1/ptolemy", $0); print $0} else {print $0} }' ptII10.0.release.htm > /tmp/b
 	-->
 
       <!--whatsnew-->
-      <h2><a name="highlights">Ptolemy II 11.0.beta Highlights</a></h2>
+      <h2><a name="highlights">Ptolemy II 11.0.1 Highlights</a></h2>
 
     <p>Contents:</p>
     <ul>
@@ -237,7 +237,7 @@
     </ul>
 
     <h2><a name="demos" id="demos">New demonstrations</a></h2>
-    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
+    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.1 | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.1/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
 
          OR
          $PTII/adm/bin/updateNewDemos
@@ -274,7 +274,7 @@
       <li class="c1">
 	<h3>Features</h3>
 	<!--
-            grep "Only in .*ptII11.0.beta" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+            grep "Only in .*ptII11.0.1" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
           -->
 	<ul>
 	  <li><i>Link to the demo on the website</i></li>
@@ -284,7 +284,7 @@
 
     <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
     <!--
-        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.beta" |  sort | sed 's@Only in .*ptII11.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.1" |  sort | sed 's@Only in .*ptII11.0.1/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
       -->
     <ul>
       <li><em>New Domain Polymorphic actors</em>:
@@ -343,7 +343,7 @@
     <p>Most models developed under Ptolemy II 1.0.1,
       2.0.1, 3.0.2, 4.0.1, 5.0.2  or HyVisual 2.2-beta, 3.0, 4.0.1, 5.0.1,
       6.0.2, 7.0.1, 8.0.1 and 10.0.1
-      should run under Ptolemy II 11.0.beta</p>
+      should run under Ptolemy II 11.0.1</p>
 
     <p>The MoMLParser includes a list of backward
       compatibility filters that make certain changes on models
@@ -363,17 +363,17 @@
     <!--vergilDocs-->
     <h2><a name="limitations">Limitations</a></h2>
     <ul>
-      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 11.0.beta Limitations Page</a> - Limitations found after release.</li>
+      <li><a href="http://ptolemy.eecs.berkeley.edu/ptolemy/ptII7.0/limitations.htm#in_browser" target="_top">Ptolemy II 11.0.1 Limitations Page</a> - Limitations found after release.</li>
       <li><a href="https://github.com/icyphy/ptII/issues">Ptolemy II Issues</a></li>
     </ul>
 
 
-    <p>Version 11.0.beta has the following limitations:</p>
+    <p>Version 11.0.1 has the following limitations:</p>
 
     <h3>Release Limitations</h3>
     <ul>
       <li> The gzipped tar file of Ptolemy II  source files with Unix line endings
-	(<code>ptII11.0.beta.src.tar.gz</code>)
+	(<code>ptII11.0.1.src.tar.gz</code>)
 	<B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
 	untar this file with a checksum error because the pathnames are longer
 	than 100 characters.
@@ -422,7 +422,7 @@
 	    to are not present. </li>
 	  
 	  <li>Under WebStart, in the HOC
-	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution/">ParallelExecution</a>
+	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.1/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution/">ParallelExecution</a>
 	    and
 	    <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources/">SpontanousSources</a>
 	    models, it is  not possible to look inside the ThreadedComposites.</li>
@@ -438,9 +438,9 @@
 	      at ptolemy.actor.lib.io.LineReader._openAndReadFirstTwoLines(LineReader.java:344)
 	      at ptolemy.actor.lib.io.LineReader.fire(LineReader.java:225)
 	    </pre>
-	  <li>Running <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">Ptango SmartRoom under WebStart</a> brings up a partial page?
+	  <li>Running <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.1/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">Ptango SmartRoom under WebStart</a> brings up a partial page?
 	    <ol>
-	      <li>Go to <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.beta/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/</a></li>
+	      <li>Go to <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.1/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/">http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII11.0.1/org/ptolemy/ptango/demo/SmartRoom/SmartRoom/</a></li>
 	      <li>Click on "Launch" to download the Web Start files.</li>
 	      <li>Run the model</li>
 	      <li>Click on the annotation to open <a href="http://localhost:8078/room">http://localhost:8078/room</a></li>
@@ -762,7 +762,7 @@
       <li>Boolean and integer dataflow.</li>
     </ul>
     <p>For limitations discovered after the release, see the
-      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 11.0.beta website</a>
+      <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/#in_browser" target="_top">Ptolemy II 11.0.1 website</a>
 
       <!--/vergilDocs-->
       <!-- Leave a trailing p here so that there is a little space at the bottom -->
