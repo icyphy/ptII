@@ -2924,6 +2924,7 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 	-ls -l $(PTIIDIST)/doc
 	-ls -l $(PTIIDIST)/doc/codeDoc
 	-ls -l $(PTIIDIST)/bin/vergil
+	-ls -l $(PTSETUP).xml
 	rm -rf jre; mkdir jre
 	(cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
 	$(IZPACK_COMMAND) $@ $<
@@ -2945,6 +2946,7 @@ $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergi
 	@echo "# Now building target setup64_jar: PTSETUP_64.jar: $@"
 	@echo "# `date`"
 	ls -l $(PTIIDIST)/bin/vergil
+	-ls -l $(PTSETUP)_64.xml
 	rm -rf jre; mkdir jre
 	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
 	$(IZPACK_COMMAND) $@ $<
