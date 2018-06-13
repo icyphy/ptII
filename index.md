@@ -42,7 +42,6 @@ $PTII/bin/ant
 
 * [Nightly build (using Travis)](https://travis-ci.org/icyphy/ptII)
   * [PtII specific Travis Notes](https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis) 
-  * [Logs](https://icyphy.github.io/ptII-test/logs/index.html)
   * [JUnit test output](https://icyphy.github.io/ptII-test/reports/junit/html/index.html)
   * [Complete test reports](https://icyphy.github.io/ptII-test/reports/index.html)
   * [Historical JUnit test summaries](https://github.com/icyphy/ptII-test/issues/1)  
