@@ -79,6 +79,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/Hue/OccupancyLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Lifx/Lifx.xml
 $CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
+$CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/SemanticRepository.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
