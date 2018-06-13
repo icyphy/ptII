@@ -189,15 +189,15 @@
             <file src="../dists/ptII11.0.beta/jar_dist/lib/opencv-341.jar"
 	          targetdir="$INSTALL_PATH/lib"/>
 
-            <file src="../dists/ptII11.0beta/vendors/j3d"
+            <file src="../dists/ptII11.0.beta/vendors/j3d"
                   targetdir="$INSTALL_PATH/vendors"
                   os="mac"/>
 
-            <file src="../dists/ptII11.0beta/vendors/jogl"
+            <file src="../dists/ptII11.0.beta/vendors/jogl"
                   targetdir="$INSTALL_PATH/vendors"
                   os="mac"/>
 
-            <file src="../dists/ptII11.0beta/bin/natives"
+            <file src="../dists/ptII11.0.beta/bin/natives"
                   targetdir="$INSTALL_PATH/bin"
                   os="mac"/>
 
