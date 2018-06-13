@@ -431,24 +431,17 @@ $(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(N
 	#
 	# Set up vendors directory for making docs and jar_dist
 	#
-	# Java3D
-	mkdir -p $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
-	-cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/
-	cp $(PTIIHOME)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/* $(PTIIDIST)/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental/lib/ext/
+	# Java3D (for the Mac)
+	cp -r $(PTIIHOME)/vendors/j3d $(PTIIDIST)/vendors
 	#
 	# Jogl (for the Mac)
-	if [ ! -f $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar ]; then \
-		echo "Downloading Jogl for the mac because it is too damn big to check in."; \
-		mkdir $(PTIIHOME)/vendors/jogl; \
-		cd $(PTIIHOME)/vendors/jogl; \
-		date; \
-		wget --quiet http://jogamp.org/deployment/jogamp-current/archive/jogamp-all-platforms.7z; \
-		7z x jogamp-all-platforms.7z; \
-	fi
-	mkdir -p $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
-	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
-	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
-	#
+	mkdir -p $(PTIIDIST)/vendors/jogl
+	cp $(PTIIHOME)/vendors/jogl/*.txt $(PTIIDIST)/vendors/jogl
+	mkdir -p $(PTIIDIST)/vendors/jogl/lib
+	cp $(PTIIHOME)/vendors/jogl/*.jar $(PTIIDIST)/vendors/jogl/lib
+	cp -r $(PTIIHOME)/vendors/jogl/natives $(PTIIDIST)/bin/jogl/lib
+	# Vergil.app needs the shared libraries to appear in bin/natives.
+	cp -r $(PTIIHOME)/vendors/jogl/natives $(PTIIDIST)/bin/
 	# Install jsdoc from the npm repo
 	(cd $(PTIIDIST); rm -rf node_modules; mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)

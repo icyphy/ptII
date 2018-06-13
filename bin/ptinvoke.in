@@ -1952,15 +1952,13 @@ EOF8
 		   echo "Untaring $MacJVMTar in $PTII/"
 		   (cd $PTII/; tar -xf "$MacJVMTar")
 	       else
-		   # When we are building a release PTII might be set to dists/ptII11.0.devel so MacJVM.tar won't be found.
+		   # When we are building a release PTII might be set
+		   # to dists/ptII11.0.devel so MacJVM.tar will not be
+		   # found.
                    INSTALLER_SRCS=$PTII/vendors/installer
 		   MacJVMTar=$INSTALLER_SRCS/MacJVM.tar.gz
 
-                   # Temporarily always download MacJVM.tar.gz so that we can update the cache.
-                   
-		   #if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
-
-                   if [ "$TRAVIS" = "true" ]; then
+		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
                        if [ ! -d $INSTALLER_SRCS ]; then
                            mkdir -p $INSTALLER_SRCS
                        fi
@@ -1986,6 +1984,25 @@ EOF8
                        echo "TRAVIS = $TRAVIS. To download the MacJVM, try 'export TRAVIS=true' and rerun makeapp."
 		   fi
 	       fi	   
+
+	       # Java3D
+	       JAVA3D_DIR="$PTII/vendors/j3d"
+	       if [ ! -d "$JAVA3D_DIR" ]; then
+		   echo "$0: Java 3D directory \"$JAVA3D_DIR\" not found.  Java 3D probably won't work."
+               else 
+		   # cp $JAVA3D_DIR/lib/*.jar $jreApp/lib/ext/ 
+		   # cp $JAVA3D_DIR/*.txt $jreApp
+  		   # Jogl, needed by Java 3D
+		   JOGL_DIR=$PTII/vendors/jogl
+		   if [ ! -d "$JOGL_DIR" ]; then
+		       echo "$0: Jogl directory \"$JOGL_DIR\" not found.  Java 3D probably won't work."
+		   else
+                       if [ ! -d "$PTII/bin/natives" ]; then
+                           echo "$0: copying $JOGL_DIR to $PTII/bin"
+		           cp -r "$JOGL_DIR/lib/natives" "$PTII/bin/"
+                       fi
+                   fi
+               fi
 	   fi # Darwin
            fi # JAVA16
   	else    
