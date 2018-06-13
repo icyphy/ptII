@@ -438,10 +438,10 @@ $(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(N
 	mkdir -p $(PTIIDIST)/vendors/jogl
 	cp $(PTIIHOME)/vendors/jogl/*.txt $(PTIIDIST)/vendors/jogl
 	mkdir -p $(PTIIDIST)/vendors/jogl/lib
-	cp $(PTIIHOME)/vendors/jogl/*.jar $(PTIIDIST)/vendors/jogl/lib
-	cp -r $(PTIIHOME)/vendors/jogl/natives $(PTIIDIST)/bin/jogl/lib
+	cp $(PTIIHOME)/vendors/jogl/lib/*.jar $(PTIIDIST)/vendors/jogl/lib
+	cp -r $(PTIIHOME)/vendors/jogl/lib/natives $(PTIIDIST)/vendors/jogl/lib
 	# Vergil.app needs the shared libraries to appear in bin/natives.
-	cp -r $(PTIIHOME)/vendors/jogl/natives $(PTIIDIST)/bin/
+	cp -r $(PTIIHOME)/vendors/jogl/lib/natives $(PTIIDIST)/bin/
 	# Install jsdoc from the npm repo
 	(cd $(PTIIDIST); rm -rf node_modules; mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
