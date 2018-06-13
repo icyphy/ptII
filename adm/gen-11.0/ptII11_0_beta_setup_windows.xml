@@ -135,7 +135,7 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="Full" required="no">
+        <pack name="Full" required="yes">
             <description>All of the domains, CapeCode, HyVisual and VisualSense.</description>
 
 
