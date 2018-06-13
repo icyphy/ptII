@@ -1958,7 +1958,10 @@ EOF8
                    INSTALLER_SRCS=$PTII/vendors/installer
 		   MacJVMTar=$INSTALLER_SRCS/MacJVM.tar.gz
 
-		   if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
+                   # For the update of theUpdate the MacJVM Jar.
+		   # if [ ! -f "$MacJVMTar" -a "$TRAVIS" = "true" ]; then
+
+		   if [ "$TRAVIS" = "true" ]; then
                        if [ ! -d $INSTALLER_SRCS ]; then
                            mkdir -p $INSTALLER_SRCS
                        fi
