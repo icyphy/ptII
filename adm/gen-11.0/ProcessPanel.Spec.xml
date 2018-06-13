@@ -44,12 +44,7 @@
 	<arg>$INSTALL_PATH/bin/CapeCode.app</arg>
       </executefile>
   </job>
-  <job name="Execute Ptiny.app" condition="startPtiny">
-    <os family="mac" />
-      <executefile name="/usr/bin/open">
-	<arg>$INSTALL_PATH/bin/Ptiny.app</arg>
-      </executefile>
-  </job>
+
   <job name="Execute Vergil.app" condition="startVergil">
     <executeForPack name="Full"/>
     <os family="mac" />
@@ -62,11 +57,6 @@
   <job name="Execute capecode.exe"  condition="startCapeCode">
     <os family="windows" />
     <executefile name="$INSTALL_PATH/capecode.exe">
-    </executefile>
-  </job>
-  <job name="Execute ptiny.exe"  condition="startPtiny">
-    <os family="windows" />
-    <executefile name="$INSTALL_PATH/ptiny.exe">
     </executefile>
   </job>
   <job name="Execute vergil.exe" condition="startVergil">

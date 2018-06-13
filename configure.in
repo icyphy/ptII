@@ -4476,7 +4476,7 @@ fi
 
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
-#       https://java3d.dev.java.net/
+#       http://www.oracle.com/technetwork/java/javase/overview/index-jsp-138252.html
 #--------------------------------------------------------------------
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
@@ -4604,6 +4604,8 @@ else
 		else
 		    AC_MSG_WARN([Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
+
+   See http://forum.jogamp.org/Crash-on-Macos-using-Java-9-td4038267.html
    To install, 
        mkdir -p $PTII/vendors/jogl/lib
        cd $PTI/vendors/jogl/lib
@@ -4630,7 +4632,7 @@ else
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        AC_MSG_WARN(['"$JAVAC" -classpath "$Java3DClasspath" java3dTest.java' failed.
-    Java 3D may be found at https://java3d.java.net/
+    Java 3D may be found at http://www.oracle.com/technetwork/java/javase/overview/index-jsp-138252.html
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
@@ -4642,6 +4644,9 @@ else
     See https://wiki.eecs.berkeley.edu/ptexternal/Main/Java3D
     Under Mac OS X, Jogl must also be installed.  Configure looks for Jogl
     in $PTII/vendors/jogl/lib.  Jogl may be found at http://jogamp.org/jogl/www/.
+
+    See http://forum.jogamp.org/Crash-on-Macos-using-Java-9-td4038267.html
+
     Try:
        mkdir -p $PTII/vendors/jogl/lib
        cd $PTI/vendors/jogl/lib
