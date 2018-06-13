@@ -55,7 +55,7 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	ptII
 # If you change the version number, be sure to edit 
-# adm/test/Nightly*.tcl, doc/*,
+# adm/test/Nightly*.tcl, adm/*/test/*.tcl, doc/*,
 # ptolemy/configs/*, ptolemy/configs/doc and
 # ptolemy/kernel/attributes/VersionAttribute.java
 # Also, create a new build director:

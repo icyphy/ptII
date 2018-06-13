@@ -69,9 +69,9 @@ if {[string compare test [info procs nightlyMake]] == 1} then {
 
 # These variables match variables in the $PTII/adm/gen-$version/makefile
 set major_version 11.0
-set minor_version devel
+set minor_version beta
 set version $major_version.$minor_version
-set windows_version 11_0_devel
+set windows_version 11_0_beta
 set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
