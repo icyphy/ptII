@@ -135,7 +135,7 @@
         We specify here our packs.
     -->
     <packs>
-        <pack name="Full" required="no">
+        <pack name="Full" required="yes">
             <description>All of the domains, CapeCode, HyVisual and VisualSense.</description>
 
 
@@ -188,6 +188,18 @@
 <!--MacOSInclude-->
             <file src="../dists/ptII11.0.beta/jar_dist/lib/opencv-341.jar"
 	          targetdir="$INSTALL_PATH/lib"/>
+
+            <file src="../dists/ptII11.0.beta/vendors/j3d"
+                  targetdir="$INSTALL_PATH/vendors"
+                  os="mac"/>
+
+            <file src="../dists/ptII11.0.beta/vendors/jogl"
+                  targetdir="$INSTALL_PATH/vendors"
+                  os="mac"/>
+
+            <file src="../dists/ptII11.0.beta/bin/natives"
+                  targetdir="$INSTALL_PATH/bin"
+                  os="mac"/>
 
 <!-- Mac and Linux: The makefile substitutes a directive to include the Mac and Linux Node directory for the next line. -->
 <!-- NodeDirectory -->

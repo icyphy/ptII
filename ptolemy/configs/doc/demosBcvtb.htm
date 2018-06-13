@@ -9,335 +9,526 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <!-- $Id$ -->
-    <!--
-	demosPtiny.htm is derived from this file by including
-	anything between the tags vergilDoc and /vergilDoc.
-	The vergilDoc tags are used by $PTII/doc/javahtml.awk
-	to generate demosPtiny.htm.
-      -->
-    <link href="../../../doc/default.css" rel="stylesheet" type="text/css">
+<!-- $Id$ -->
+<!--
+demosPtiny.htm is derived from this file by including
+anything between the tags vergilDoc and /vergilDoc.
+The vergilDoc tags are used by $PTII/doc/javahtml.awk
+to generate demosPtiny.htm.
+-->
+<link href="../../../doc/default.css" rel="stylesheet" type="text/css">
   </head>
 
 <body>
-    <!--bcvtbDocs-->
-    <h1> Tour of Ptolemy II </h1>
-
-    <!--
-	Note:  demos should go with in the directory of their respective
-	domains. Demo xml files should usually be upper case, and have the
-	same name as the directory they reside in; so we should
-	have sdf/demo/Foo/Foo.xml.
-	The reason that the xml files are upcased is so that if
-	we do code generation, we get Foo.java instead of foo.java
-      -->
-
-    If you are viewing this from within Vergil, the graphical
-    editor for Ptolemy II, then
-    many of the following links will open models that highlight the
-    key features of Ptolemy II. If you are using an ordinary
-    web browser, then you will see the XML definition of the models.
-    To run the models in Vergil,
-    click on the red triangle in the toolbar. The
-    diagrams are fully editable, so feel free to explore.
-    You can also access the <a href="completeDemosBcvtb.htm">complete list of demos</a>
-    <!-- whatNew.htm links to whatsNew4.0.htm, which has many of features
-	 not present in ptiny -->
-    <!--vergilDocs-->
-    . Contents:
-    <ul>
-      <li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
-      </li>
-
-      <li> <a href="#basic">Models of Computation</a>: A rich suite of semantic models for actors.
-      </li>
-
-      <li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
-      </li>
-
-      <li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
-      </li>
-
-      <li> <a href="#libraries">Actor Libraries</a>: Useful libraries of actors.
-	<!--vergilDocs-->
-      </li>
-
-    </ul>
-
-
-
-    <h2>
-      <a name="domain">Domain-Specific Modeling</a>
-    </h2>
-
-
-    Ptolemy II can be used to build sophisticated application domain-specific modeling capabilities
-    and frameworks. These frameworks can be packaged as separate executable
-    applications (e.g. HyVisual or VisualSense)
-    or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
-    <ul>
-
-
-
-	<!--vergilDocs-->
-	<br>
-    </li>
-	
-	
-	<li><i>Internet of Things</i>:
-    <a href="../../demo/Office/Office.xml">Office</a>
-	(See also
-    <a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>,
-    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a>,
-    <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>,
-    <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a>,
-    <a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
-	)
-	<br>
-	CapeCode is a subset of Ptolemy II for building IoT applications. The models in the Office
-	demo illustrate create web servers, creating Internet services, and accessing those internet
-	services by dynamically instantiating accessors, which are actors written in JavaScript.
-    </li>
-    
-	
-	<li><i>Communication Security</i>: 
-	<a href=../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>
-	(See also
-	<a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a>
-	)
-	<br>
-	Ptolemy II includes an innovative way to model delays, failures, and attacks on communication channels using 
-	a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming perfect channels),
-	and then an aspect is woven with the model to specify the impairments imposed by the channel.
-	</li>
-	
-	
-	<li><i>Image Processing</i>:
-    <a href="../../actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>
-	(See also
-	<a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a>,
-	<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>
-	)
-	<br>
-	These demos illustrate the ability to capture images from your camera and manipulate them.
-    </li>
-
-
-	<li><i>Audio</i>:
-    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>
-	(See also
-	<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a>,
-	<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
-	)
-	<br>
-	Using the accessors of CapeCode, Ptolemy II provides capabilities for capturing, playing, and
-	manipulating audio data.
-    </li>
-
-
-    <li><i>Wireless networks</i>: <a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
-	<!--/ptinyKeplerDocs-->
-	<!--bcvtbDocs-->
-	<!--ptinyKeplerDocs-->
-      <!--bcvtbDocs-->
-      <li><i>Mixed-Signal Modeling</i>:
-	<!--bcvtbDocs-->
-	<a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
-	<!--bcvtbDocs-->
-      </li>
-
-    </ul>
-
-    <!--bcvtbDocs-->
-
-    <h2>
-      <a name="infrastructure">Modeling Infrastructure</a>
-    </h2>
-
-
-    Ptolemy II models are built on an underlying framework that provides a rich
-    set of generic capabilities that are available in all models.
-    This section illustrates that infrastructure.
-    <ul>
-
-
-    </li>
-      <li><i>User Interface</i>:
-	<a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a>
-	<br>
-	Ptolemy II models can use the default browser on the host to construct displays and/or retrieve user
-	input using HTML 5, JavaScript, and CSS.
-	<br>
-    </li>
-
-
-
-	<!--bcvtbDocs-->
-
-
-
-      </li>
-
-      <li><i>Expression Language</i>:
-	<a href="../../domains/continuous/demo/Transmission/Transmission.xml">Transmission</a>.
-	<br>
-
-
-	To simplify creating new components, Ptolemy II contains a functional
-	expression language.  The expression language is integrated with the
-	type system, allowing static type checking of polymorphic expressions
-	with few type annotations.  The expression language also allows new,
-	encapsulated functions, called function closures, to be defined and
-	passed as data.  This model illustrates how function closures can be
-	used to make models much more compact.
-
-	<br>
-
-
-
-	<!--vergilDocs-->
-
-      </li>
-
-      <li><i>Interactive Signal Plotter</i>:
-	<a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketch</a>
-	(see also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>).
-	<br>
-
-
-	This model illustrates the use of plotter to provide input
-	as well as rendering output from a model.  Right click and drag
-	on the plot to trace out a new signal. The model runs each time you
-	do this.
-
-	<br>
-
-
-
-      </li>
-
-      <li><i>Matlab Integration</i>:
-	<a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">MatlabExpression</a>
-	(see also
-	<a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a>).
-
-	<br>
-
-
-	This example uses the Matlab interface created by
-	Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
-	to plot a 3-D surface. This works only if Matlab is installed locally.
-
-	<br>
-
-
-
-      </li>
-
-      <li>
-	<i>Classes, subclasses, and inner classes</i>:
-	<a href="ClassesIllustrated.xml">ClassesIllustrated</a> (see also
-	<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">Noisy sinewaves</a>
-	<!--bcvtbDocs-->  
-	).
-	<br>
-
-
-	Actor-oriented classes, subclasses, and
-	inner classes with inheritance are a special feature of Ptolemy II.
-	They provide modularity mechanisms analogous to those of object-oriented
-	design, but adapted to actor-oriented design. This capability permits, for
-	example, defining a class of models that can have instances and subclasses.
-	The instances and subclasses inherit all the features of the class, and
-	track any changes that are made to the class.
-
-	<br>
-
-
-
-      </li>
-
-      <li><i>Model Animations</i>:
-	<!--bcvtbDocs-->
-	<a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">AnimateVergil</a>
-	<!--vergilDocs-->
-	<!--bcvtbDocs-->
-	<br>
-
-
-	Ptolemy II models can, while executing, control their visual rendition
-	in Vergil, the visual editor for Ptolemy II.
-	In this example, a model alters the position in the Vergil diagram
-	of one of its own actors.
-
-	<br>
-
-
-
-	<!--vergilDocs-->
-
-      </li>
-
-      <li><i>Statically Checked Units System</i>:
-	<a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">StaticUnits</a>
-	<!--bcvtbDocs-->
-	<br>
-
-
-	This model illustrates the use of the statically
-	checked units system. A unit system
-	defines a set of interrelated dimensions and measures. For example, in
-	the time dimension, we might have seconds, minutes, hours, days, weeks,
-	and fortnights. Ptolemy II includes two experimental units systems,
-	one that is statically checked and one that is dynamically checked.
-
-	<br>
-
-
-
-      </li>
-
-      <li><i>Network Integration</i>:
-	<a href="../../moml/demo/Networked/Networked.xml">Networked</a>.<br>
-
-
-	This example illustrates that models may be defined in a networked,
-	distributed fashion.
-	This model contains a component that is defined on the Ptolemy project
-	website.  When you open the model, you will be alerted to the fact
-	that it requires loading a model definition from a remote source.
-	If you agree to proceed, then you will have a model with a remotely
-	defined component.  The component itself is at
-	<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml#in_browser" target="_top">http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
-	You can open that definition by clicking on the hyperlink, or by
-	using the "Open URL" command in the File menu.
-
-	<br>
-
-
-
-      </li>
-
-
-	<!--/ptinyKeplerDocs-->
-	<!--bcvtbDocs-->
-
-	<!--vergilDocs-->
-      </li>
-
-      <li> <a href="../../actor/lib/comm/demo/TrellisDecoder/TrellisDecoder.xml">TrellisDecoder</a>:
-	Communication library.
-
-      </li>
-
-    </ul>
-
-
-
-    <!--vergilDocs-->
-  </body>
-</html>
-</body>
-</html>
+<!--bcvtbDocs-->
+<h1> Tour of Ptolemy II </h1>
+
+<!--
+Note:  demos should go with in the directory of their respective
+domains. Demo xml files should usually be upper case, and have the
+same name as the directory they reside in; so we should
+have sdf/demo/Foo/Foo.xml.
+The reason that the xml files are upcased is so that if
+we do code generation, we get Foo.java instead of foo.java
+-->
+
+If you are viewing this from within Vergil, the graphical
+editor for Ptolemy II, then
+many of the following links will open models that highlight the
+key features of Ptolemy II. If you are using an ordinary
+web browser, then you will see the XML definition of the models.
+To run the models in Vergil,
+click on the red triangle in the toolbar. The
+diagrams are fully editable, so feel free to explore.
+You can also access the <a href="completeDemosBcvtb.htm">complete list of demos</a>
+<!-- whatNew.htm links to whatsNew4.0.htm, which has many of features
+ not present in ptiny -->
+<!--vergilDocs-->
+. Contents:
+<ul>
+<li> <a href="#domain">Domain-Specific Modeling</a>: Domain-specific modeling and design.
+</li>
+
+<li> <a href="#basic">Concurrent Models of Computation</a>: A rich suite of semantic models for actors.
+</li>
+
+<li> <a href="#heterogeneous">Heterogeneous Modeling</a>: Mixing models of computation.
+</li>
+
+<li> <a href="#infrastructure">Modeling Infrastructure</a>: Capabilities shared by all uses of Ptolemy II.
+</li>
+
+<li> <a href="#libraries">Actor Libraries</a>: Useful libraries of actors.
+</li>
+
+<li> <a href="#experimental">Experimental</a>: Demonstrations of less mature capabilities.
+</li>
+
+</ul>
+
+
+
+<h2>
+<a name="domain">Domain-Specific Modeling</a>
+</h2>
+Ptolemy II can be used to build sophisticated application domain-specific modeling capabilities
+and frameworks. These frameworks can be packaged as separate executable
+applications (e.g. HyVisual or VisualSense)
+or accessed from within Ptolemy II. Here, we illustrate some such frameworks.
+<ul>
+
+
+<!--vergilDocs-->
+<br>
+</li><br>
+
+
+<li><i>Accessors</i>:
+<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml">ImageAnnotate</a>
+<br>
+(See also
+<a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a>
+<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>,
+<a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a>,
+<a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>,
+<a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a>,
+<a href="../../demo/Office/Office.xml">Office</a>
+)
+<br>
+Accessors are JavaScript actors that provide access to devices and/or network services.
+CapeCode is a subset of Ptolemy II for building applications using accessors. These models
+illustrate accessing the system camera,
+creating web servers, creating Internet services, and accessing those Internet
+services.
+Many more demos can be found in the <a href="whatsNew11.0.htm#scripting">what's new documentation</a>.
+</li><br>
+
+
+<li><i>Signal Processing</i>:
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
+<br>
+(See also
+<a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>,
+<a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>,
+<a href="../../domains/sdf/demo/SynthesizedVoice/SynthesizedVoice.xml">SynthesizedVoice</a>
+)
+<br>
+Ptolemy II includes a library and models of computation suitable for
+signal processing, communication systems design, and image and video processing.
+These demos show spectral estimation, adaptive filters, and model-based sound synthesis.
+They illustrate the use of synchronous dataflow (SDF) for signal processing.
+</li><br>
+
+
+<li><i>Aspects</i>: 
+<a href="../../actor/lib/aspect/demo/MonitorExecutionTimes/MonitorExecutionTimes.xml">MonitorExecutionTimes</a>
+<br>
+(See also
+<a href="../../actor/lib/aspect/demo/CompositeQM/CompositeQM.xml">CompositeQM</a>,
+<a href="../../actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a>,
+<a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithDecorator.xml">GeneratorRegulatorProtectorWithDecorator</a>,
+<a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithProcessor.xml">GeneratorRegulatorProtectorWithProcessor</a>,
+<a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">GeneratorRegulatorProtectorWithSpecificationAsAspect</a>
+)
+<br>
+Ptolemy II includes an innovative way to model execution times and communication delays, failures, and attacks using 
+a principle called aspect-oriented modeling. A model is constructed with ideal behavior (assuming zero execution times and perfect channels),
+and then an aspect is woven with the model to specify execution times and impairments imposed by the channel.
+The aspects can also be used to simply monitor executions or communications for conformance against some specification.
+</li><br>
+
+
+<li><i>Estimation and Learning</i>:
+<a href="../../../org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange.xml">ParticleFilterRange</a>
+<br>
+(See also
+<a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml">OpenLoopTwoRobotTargetLocalization</a>,
+<a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">OnlineTrajectoryOptimization</a>,
+<a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml">JointParticleFilter</a>,
+<a href="../../../ptolemy/demo/RobotMPC/RobotMPC.xml">RobotMPC</a>
+)
+<br>
+These demos use particle filters to construct estimates of the location of a target given imperfect sensor data.
+They then perform optimization to physically move the sensors to improve the location estimate.
+</li><br>
+
+
+<li><i>Optimization</i>:
+<a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization</a>
+<br>
+(See also
+<a href="../../../org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml">LinearRegression</a>
+)
+<br>
+These demos show how to specify a function to be optimized to generate control signals.
+</li><br>
+
+
+<li><i>Statistical Models</i>:
+<a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">HiddenMarkovModelAnalysis</a>
+<br>
+(See also
+<a href="../../../org/ptolemy/machineLearning/clustering/demo/KMeans/KMeans.xml">KMeans</a>
+)
+<br>
+These demos illustrate various ways to construct probabilistic models, with an emphasis on hidden-Markov models and K-means clustering.
+</li><br>
+
+
+<li><i>Image Processing</i>:
+<a href="../../actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a>
+<br>
+(See also
+<a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a>,
+<a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>
+)
+<br>
+These demos illustrate the ability to capture images from your camera and manipulate them.
+</li><br>
+
+
+<li><i>Audio</i>:
+<a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>
+<br>
+(See also
+<a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">KarplusStrong</a>,
+<a href="../../domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">SoundSpectrum</a>
+)
+<br>
+Using the accessors of CapeCode, Ptolemy II provides capabilities for capturing, playing, and
+manipulating audio data.
+</li><br>
+
+
+<li><i>Wireless networks</i>:
+<a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>
+<!--/ptinyKeplerDocs-->
+<!--bcvtbDocs-->
+<!--ptinyKeplerDocs-->
+<!--bcvtbDocs-->
+<li><i>Mixed-Signal Modeling</i>:
+<!--bcvtbDocs-->
+<a href="../../domains/continuous/demo/Switch/Switch.xml">Switching Continuous</a>
+<!--bcvtbDocs-->
+</li><br>
+
+</ul>
+
+<!--bcvtbDocs-->
+
+<h2>
+<a name="infrastructure">Modeling Infrastructure</a>
+</h2>
+Ptolemy II models are built on an underlying framework that provides a rich
+set of generic capabilities that are available in all models.
+This section illustrates that infrastructure.
+<ul>
+
+
+<li><i>JavaScript Integration</i>:
+<a href="../../../ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml">Factorial</a>
+<br>
+(See also
+<a href="../../../ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml">JavaScriptShell</a>,
+<a href="../../../ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml">ModelBuilder</a>,
+<a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a>
+)
+<br>
+Custom actors are easy to write using JavaScript.
+Drag in a JavaScript actor, look inside, and specify the interface (ports
+and parameters) and functionality using the <a href="https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification#in_browser">accessors framework</a>.
+</li><br>
+
+
+<li><i>User Interface</i>:
+<a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a>
+<br>
+Ptolemy II models can use the default browser on the host to construct displays and/or retrieve user
+input using HTML 5, JavaScript, and CSS.
+</li><br>
+
+
+<li><i>Superdense Time</i>:
+<a href="../../domains/continuous/demo/LevelCrossingDetectorDetectsGlitches/LevelCrossingDetectorDetectsGlitches.xml">LevelCrossingDetectorDetectsGlitches</a>
+<br>
+Ptolemy II has a sophisticated model of time that cleanly handles multiple simultaneous events.
+</li><br>
+
+
+<li><i>The Type System</i>:
+<a href="../../data/type/demo/Router/Router.xml">Router</a>.
+<br>
+This model illustrates the very sophisticated type system
+of Ptolemy II, where type constraints propagate transparently,
+actors are polymorphic, and composite types such as records and
+arrays are supported.
+This example illustrates composite types, where records are
+constructed out of tokens with various types. Here, a record
+models a packet in a packet-switched network, where variable
+delays may result in out-of-order arrival of packets.
+<br>
+</li><br>
+
+
+<li><i>Expression Language</i>:
+<a href="../../domains/continuous/demo/Transmission/Transmission.xml">Transmission</a>.
+<br>
+To simplify creating new components, Ptolemy II contains a functional
+expression language.  The expression language is integrated with the
+type system, allowing static type checking of polymorphic expressions
+with few type annotations.  The expression language also allows new,
+encapsulated functions, called function closures, to be defined and
+passed as data.  This model illustrates how function closures can be
+used to make models much more compact.
+</li><br>
+
+
+<li><i>Model Integration</i>:
+<a href="../../actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xml">Functional Mock-up Unit (FMU) Two Ball Collision</a>
+<br>
+The Functional Mockup Interface (FMI) standard is a mechanism for diverse simulators to interact with one another.
+Ptolemy II supports Functional Mockup Units (FMUs) following the 2.0 standard with some extensions for better hybrid system modeling.
+</li><br>
+
+
+<li><i>Model Transformation</i>:
+<a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
+<br>
+(See also
+<a href="../../domains/ptera/demo/AdaptiveCarWash/AdaptiveCarWash.xml">AdaptiveCarWash</a>,
+<a href="../../actor/gt/demo/ConstOptimization/ConstOptimization.xml">ConstOptimization</a>,
+<a href="../../actor/gt/demo/DiningPhilosophers/DiningPhilosophers.xml">DiningPhilosophers</a>,
+<a href="../../actor/gt/demo/GameOfLife/GameOfLife.xml">GameOfLife</a>,
+<a href="../../actor/gt/demo/MapReduce/MapReduce.xml">MapReduce</a>,
+<a href="../../actor/gt/demo/RegressionTest/RegressionTest.xml">RegressionTest</a>
+).
+<br>
+Model transformation is a technique to manipulate models as first-class citizens. An atomic transformation
+rule is defined in a TransformationRule actor. Inputs to a TransformationRule actor are tokens containing
+models to be transformed, and outputs are tokens containing the results. Multiple transformations can be
+programmed by a model to transform the input models step by step. Other actors that are commonly used in model
+transformation include ModelGenerator to generate initial models, and ModelView to show the contents of input
+models in new windows. In the <a href="../../actor/gt/demo/SinewaveOptimization/SinewaveOptimization.xml">SinewaveOptimization</a>
+demo, a transformation is repeatedly applied to the initial model (<a href="../../actor/gt/demo/SinewaveOptimization/Sinewave.xml">Sinewave</a>)
+to statically evaluate arithmetic operations in it, until no more simplification can be done.
+<br>
+</li><br>
+
+
+<li><i>Higher-Order Components</i>:
+<a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
+<br>
+(See also
+<a href="../../actor/lib/hoc/demo/Case/Case.xml">Case</a>,
+<a href="../../actor/lib/hoc/demo/MobileFunction/MobileFunction.xml">MobileFunction</a>,
+<a href="../../domains/sdf/demo/MultipleRuns/MultipleRuns.xml">MultipleRuns</a>,
+<a href="../../actor/lib/hoc/demo/IterateOverArray/IterateOverArray.xml">IterateOverArray</a>,
+<a href="../../actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml">DFTSubSet</a>,
+<a href="../../actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml">ApplyFFT</a>
+).
+<br>
+Higher-order components are components that operate on components.
+The <a href="../../actor/lib/hoc/demo/HocDE/HocDE.xml">HocDE</a>
+example contains a component that is a composite actor that
+replicates itself some specified number of times to operate on
+multiple channels of input.  This capability was created by
+Zoltan Kemenczy and Sean Simmons, Research In Motion, Ltd.
+<br>
+</li><br>
+
+
+<li>
+<i>Classes, subclasses, and inner classes</i>:
+<a href="ClassesIllustrated.xml">ClassesIllustrated</a>
+<br>
+(See also
+<a href="../../domains/sdf/demo/NoisySinewave/NoisySinewave.xml">Noisy sinewaves</a>
+<!--bcvtbDocs-->  
+).
+<br>
+Actor-oriented classes, subclasses, and
+inner classes with inheritance are a special feature of Ptolemy II.
+They provide modularity mechanisms analogous to those of object-oriented
+design, but adapted to actor-oriented design. This capability permits, for
+example, defining a class of models that can have instances and subclasses.
+The instances and subclasses inherit all the features of the class, and
+track any changes that are made to the class.
+<br>
+</li><br>
+
+
+<li><i>Three-Dimensional Graphics</i>:
+<a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum</a>
+<br>
+(See also
+<a href="../../domains/gr/demo/Helen/Helen.xml">Helen</a>,
+<a href="../../domains/sdf/demo/Gravitation/Gravitation.xml">Gravitation</a>,
+<a href="../../domains/gr/demo/SolarSystem/SolarSystem.xml">SolarSystem</a>,
+<a href="../../domains/continuous/demo/StickyMasses/StickyMasses.xml">Sticky Masses</a>
+and <a href="../../domains/continuous/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>).
+<br>
+<font color="red">NOTE: These models require that you have
+  installed Java 3D from Sun
+  (see https://java3d.dev.java.net/).</font>
+<br>
+The <a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum</a> example shows a continuous-time physical model of pendulum
+animated in the <i>graphics</i> (GR) domain, in which graphical components
+can be assembled and dynamically manipulated.  Note that clicking
+and dragging in the graphics window rotates the model.
+For further details, see the
+<a href="../../domains/gr/doc/main.htm">GR domain</a>.
+<br>
+</li><br>
+
+
+<li><i>Model Animations</i>:
+<a href="../../actor/parameters/demo/Bouncer/Bouncer.xml">Bouncer</a>
+<br>(See also
+<a href="../../vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml">AnimateVergil</a>,
+<a href="../../domains/wireless/demo/WirelessSoundDetection/WirelessSoundDetection.xml">WirelessSoundDetection</a>,
+<a href="../../domains/de/demo/EventButton/EventButton.xml">EventButton</a>
+).
+<br>
+Ptolemy II models can, while executing, control their visual rendition
+in Vergil, the visual editor for Ptolemy II.
+In this example, a model alters the position in the Vergil diagram
+of one of its own actors.
+<br>
+</li><br>
+
+
+<li><i>Interactive Signal Plotter</i>:
+<a href="../../domains/sdf/demo/Sketch/Sketch.xml">Sketch</a>
+<br>(See also <a href="../../domains/sdf/demo/FourierSeries/FourierSeries.xml">FourierSeries</a>).
+<br>
+This model illustrates the use of plotter to provide input
+as well as rendering output from a model.  Right click and drag
+on the plot to trace out a new signal. The model runs each time you
+do this.
+<br>
+</li><br>
+
+
+<li><i>Persistent Ports</i>:
+<a href="../../../ptolemy/domains/modal/demo/PersistentIO/PersistentIO.xml">PersistentIO</a>:
+<br>
+In several domains (DE, SR, Continuous), a port may have no value (it is "absent") when
+the actor fires.  Setting the defaultValue parameter of a port ensures that it is never absent.
+Initially, the value will be given by the parameter.
+When an input arrives, the value of that input replaces the default value thereafter
+until the next input arrives.
+</li><br>
+
+
+<li><i>Statically Checked Units System</i>:
+<a href="../../data/unit/demo/StaticUnits/StaticUnits.xml">StaticUnits</a>
+<!--bcvtbDocs-->
+<br>
+This model illustrates the use of the statically
+checked units system. A unit system
+defines a set of interrelated dimensions and measures. For example, in
+the time dimension, we might have seconds, minutes, hours, days, weeks,
+and fortnights. Ptolemy II includes two experimental units systems,
+one that is statically checked and one that is dynamically checked.
+</li><br>
+
+
+<li><i>Network Integration</i>:
+<a href="../../moml/demo/Networked/Networked.xml">Networked</a>.<br>
+This example illustrates that models may be defined in a networked,
+distributed fashion.
+This model contains a component that is defined on the Ptolemy project
+website.  When you open the model, you will be alerted to the fact
+that it requires loading a model definition from a remote source.
+If you agree to proceed, then you will have a model with a remotely
+defined component.  The component itself is at
+<a href="http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml#in_browser" target="_top">http://ptolemy.eecs.berkeley.edu/xml/models/Waveform.xml</a>.
+You can open that definition by clicking on the hyperlink, or by
+using the "Open URL" command in the File menu.
+<br>
+</li><br>
+
+
+<li><i>Fixed-Point Arithmetic</i>:
+<a href="../../domains/sdf/demo/FixFIR/FixFIR.xml">FixFIR</a>
+<br>(See also
+<a href="../../domains/sdf/demo/FixPoint/FixPoint.xml">FixPoint</a>)
+<br>
+Ptolemy II data types include a fixed-point data type, where
+a model can explicitly control the binary representation of numbers
+and the mechanisms used to handle overflow and rounding.
+</li><br>
+
+
+</li><br>
+<li><i>Python Integration</i>:
+<a href="../../actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml">Ptolemnizer</a>
+<br>(See also <a href="../../actor/lib/python/demo/PythonScale/PythonScale.xml">PythonScale</a>).
+<br>
+Python is a popular interpreted programming language that has
+been integrated into Ptolemy II using the jython Java implementation of Python.
+This example shows that use of Python to alter a string entered by the user
+to modify any word that begins with "t" so that it begins with "pt".
+This leverages the excellent string processing capabilities in Python.
+Python can also be used to prototype
+actors by defining their functionality in Python.
+<br>
+</li><br>
+
+
+<li><i>Matlab Integration</i>:
+<a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">MatlabExpression</a>
+<br>(See also
+<a href="../../matlab/demo/MatlabContinuous/MatlabContinuous.xml">Matlab in Continuous</a>).
+<br>
+This example uses the Matlab interface created by
+Zoltan Kemenczy and Sean Simmons, of Research in Motion Ltd.,
+to plot a 3-D surface. This works only if Matlab is installed locally.
+<br>
+</li><br>
+
+
+<!-- The following don't work for me.
+<li><i>Image and Video Processing</i>:
+<a href="../../actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml">AdaptiveMedian</a>
+<br>(See also
+<a href="../../actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml">ImageReconstruction</a>,
+<a href="../../actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml">VQSequenceDisplay</a>,
+<a href="../../actor/lib/jmf/demo/VideoCapture/VideoCapture.xml">VideoCapture</a>).
+<br>
+
+
+If you install the optional packages JAI (Java advanced imaging) and
+JMF (Java media framework), then you can use a library of actors
+that operates on images and video signals, including video captured
+from a video camera.
+<br>
+</li><br>
+-->
+
+
+
+
+
+</ul>
+
+
+
+<h2>
+<a name="libraries">Actor Libraries</a>
+</h2>
+
+
+Ptolemy II includes several actor libraries that provide sophisticated
+functions. A few of those are illustrated by the models here.
+<ul>
+
+
+
+<li><a href="../../domains/sdf/demo/Array/Array.xml">Array</a>:
+Actors that operate on matrices and arrays.
+
+</li><br>
+<!--/ptinyKeplerDocs-->
 </body>
 </html>

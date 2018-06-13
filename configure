@@ -10960,7 +10960,7 @@ fi
 
 #--------------------------------------------------------------------
 #	Test for javax.media.j3d (Java 3D)
-#       https://java3d.dev.java.net/
+#       http://www.oracle.com/technetwork/java/javase/overview/index-jsp-138252.html
 #--------------------------------------------------------------------
 # PTJAVA3D_DIR is set to gr and used in
 # $PTII/ptolemy/actor/lib/makefile if Java 3D was found
@@ -11137,6 +11137,8 @@ $as_echo "$JOGL_JAR_DIR" >&6; }; fi
 		else
 		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
+
+   See http://forum.jogamp.org/Crash-on-Macos-using-Java-9-td4038267.html
    To install,
        mkdir -p $PTII/vendors/jogl/lib
        cd $PTI/vendors/jogl/lib
@@ -11152,6 +11154,8 @@ $as_echo "$JOGL_JAR_DIR" >&6; }; fi
        " >&5
 $as_echo "$as_me: WARNING: Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
+
+   See http://forum.jogamp.org/Crash-on-Macos-using-Java-9-td4038267.html
    To install,
        mkdir -p $PTII/vendors/jogl/lib
        cd $PTI/vendors/jogl/lib
@@ -11178,7 +11182,7 @@ $as_echo "$as_me: WARNING: Could not find the Jogl directory.
        PTGR_PACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib"
     else
        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTest.java' failed.
-    Java 3D may be found at https://java3d.java.net/
+    Java 3D may be found at http://www.oracle.com/technetwork/java/javase/overview/index-jsp-138252.html
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.
@@ -11188,7 +11192,7 @@ $as_echo "$as_me: WARNING: Could not find the Jogl directory.
     ./configure --with-java3D=/usr/java/j3d-1_5_2-linux-amd64/lib/ext
     Under Mac OS X" >&5
 $as_echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$Java3DClasspath\" java3dTest.java' failed.
-    Java 3D may be found at https://java3d.java.net/
+    Java 3D may be found at http://www.oracle.com/technetwork/java/javase/overview/index-jsp-138252.html
     Java 3D is only needed if you want to build in
     $JAVA3D_USER_DIR,
     otherwise the build will proceed fine without Java 3D.

@@ -35,10 +35,6 @@
 	<name>startConfigure</name>
 	<value>true</value>
       </condition>
-      <condition type="variable" id="startPtiny">
-	<name>startPtiny</name>
-	<value>true</value>
-      </condition>
       <condition type="variable" id="startVergil">
 	<name>startVergil</name>
 	<value>true</value>
@@ -150,7 +146,7 @@
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel" condition="showShortCutPanel"/>
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
-        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startPtiny|startVergil"/>
+        <panel classname="ProcessPanel" condition="startConfigure|startCapeCode|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
 	<panel classname="HTMLInfoPanel" condition="installOnMac" id="capeCodeStartupMacOSX" />
         <panel classname="FinishPanel"/>
@@ -493,7 +489,7 @@
 
         </pack>
         <pack name="Docs" required="no">
-            <description>The documentation for Ptiny and the full version of Vergil including user documentation and java documentation.</description>
+            <description>The documentation including user documentation and java documentation.</description>
 <!--/MacOSInclude-->
 <!--/LinuxInclude -->
             <file src="../dists/ptII11.0.beta/ptbook.exe" targetdir="$INSTALL_PATH"/>
