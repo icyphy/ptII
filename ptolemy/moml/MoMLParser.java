@@ -6455,7 +6455,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // We don't need the results of the parse because
         // the context for the parser has been set so the
         // objects are already in the hierarchy.
-        /*NamedObj result = */newParser.parse(_base, input);
+        /*NamedObj result = */newParser.parse(_base, fileName, input);
 
         // Have to mark the contents derived objects, so that
         // the icon is not exported with the MoML export.
