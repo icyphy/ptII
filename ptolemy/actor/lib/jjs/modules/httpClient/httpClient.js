@@ -284,10 +284,15 @@ function ClientRequest(options, responseCallback) {
         	query = query.substring(0, query.length - 1);
         }
         // url.getPath() may add a trailing /. Remove.
+        // NO!!! This is wrong. Many websites forward to a location with a trailing
+        // slash, so this will create an infinite loop!
+        // See: https://webmasters.googleblog.com/2010/04/to-slash-or-not-to-slash.html
         var path = url.getPath();
+        /*
         if (path !== null && path.length > 0 && path[path.length - 1] === '/') {
             path = path.substring(0, path.length - 1);
         }
+        */
         options.url = {
             'host': url.getHost(),
             'path': path,
