@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 137, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={521, 111, 1191, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[957, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.00000000000006, 255.18164062500006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.49999999999994, 255.18164062500006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -31,7 +31,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this model to work, you must first start an instance of&#10;a semantic repository (with data) on localhost port 7200.&#10;For example, try graphDB http://graphdb.ontotext.com/&#10;with the sample dataset that comes with the download.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this model to work, you must first start an instance of&#10;a semantic repository (with data) named &quot;FirstRepo&quot; on localhost &#10;port 7200. For example, try graphDB http://graphdb.ontotext.com/&#10;with the sample dataset that comes with the download.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 305.0]">
         </property>
@@ -56,11 +56,11 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={565, 527, 792, 373}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={448, 348, 792, 373}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 329]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 260.0]">
         </property>
     </entity>
     <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
@@ -141,7 +141,7 @@
             <property name="timeout (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The amount of time (in milliseconds) to wait for a response&#10;  before triggering a null response and an error. This defaults to 20000.">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 260.0]">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -194,45 +194,33 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="query" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation2"/>
+    <link port="SingleEvent.output" relation="relation"/>
     <link port="Display.input" relation="relation3"/>
-    <link port="StringConst2.output" relation="relation"/>
-    <link port="StringConst2.trigger" relation="relation2"/>
+    <link port="StringConst2.output" relation="relation4"/>
+    <link port="StringConst2.trigger" relation="relation"/>
     <link port="SemanticRepository.response" relation="relation3"/>
-    <link port="SemanticRepository.query" relation="relation"/>
+    <link port="SemanticRepository.query" relation="relation4"/>
 </entity>

@@ -7,18 +7,16 @@
 <installpath>test/installerTest</installpath>
 </com.izforge.izpack.panels.target.TargetPanel>
 <com.izforge.izpack.panels.packs.PacksPanel id="PacksPanel_4">
-<pack index="0" name="Ptiny" selected="true"/>
-<pack index="1" name="Full" selected="true"/>
-<pack index="2" name="Docs" selected="true"/>
-<pack index="3" name="FullDocs" selected="true"/>
-<pack index="4" name="JRE" selected="true"/>
-<pack index="5" name="Sources" selected="true"/>
+<pack index="0" name="Full" selected="true"/>
+<pack index="1" name="Docs" selected="true"/>
+<pack index="2" name="JRE" selected="true"/>
+<pack index="3" name="Sources" selected="true"/>
 </com.izforge.izpack.panels.packs.PacksPanel>
 <com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_5"/>
 <com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
 <com.izforge.izpack.panels.shortcut.ShortcutPanel id="ShortcutPanel_7">
 <createMenuShortcuts>false</createMenuShortcuts>
-<programGroup>Ptolemy\ptII11.0.beta</programGroup>
+<programGroup>Ptolemy\ptII11.0.1</programGroup>
 <createDesktopShortcuts>false</createDesktopShortcuts>
 <createStartupShortcuts>false</createStartupShortcuts>
 <shortcutType>user</shortcutType>
