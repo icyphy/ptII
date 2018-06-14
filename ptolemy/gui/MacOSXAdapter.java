@@ -28,6 +28,7 @@
 
 package ptolemy.gui;
 
+import java.awt.Desktop;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -92,6 +93,29 @@ public class MacOSXAdapter implements InvocationHandler {
      */
     public static void setAboutMethod(Top top, Method aboutMethod) {
         _setHandler(top, new MacOSXAdapter("handleAbout", top, aboutMethod));
+        if (_desktop != null) {
+            // Running under Java 9 or later. Use the Desktop class.
+            // Use reflection here so that this compiles under Java 8.
+            try {
+                Class[] args = new Class[1];
+                args[0] = Class.forName("java.awt.desktop.AboutHandler");
+                Method setAboutHandler = _desktop.getClass().getMethod("setAboutHandler", args);
+                Object handler = Proxy.newProxyInstance(args[0].getClassLoader(), 
+                        args,
+                        new InvocationHandler() {
+                    @Override
+                    public Object invoke(Object proxy, java.lang.reflect.Method method, Object[] args) throws Throwable {
+                        // AboutHandler has only one method, so we don't need to check anything here.
+                        return aboutMethod.invoke(top, (Object[]) null);
+                    }
+                });
+                setAboutHandler.invoke(_desktop, new Object[] { handler });
+            } catch (Exception e) {
+                System.err.println("Warning: Desktop class not working as expected: " + e);
+                System.err.println("About menu will not work properly. You can continue using the system.");
+            }
+            return;
+        }
         if (_macOSXApplication == null) {
             // _setHandler should set _macOSXApplication, so perhaps
             // we are running as Applet or under -sandbox.
@@ -152,6 +176,27 @@ public class MacOSXAdapter implements InvocationHandler {
      *  @param adapter The adapter.
      */
     private static void _setHandler(Top top, MacOSXAdapter adapter) {
+        // Sadly, Oracle broke backward compatibility with Java 9, so we have
+        // to use a different technique.
+        String version = System.getProperty("java.version");
+        int dot = version.indexOf(".");
+        int majorVersion = Integer.parseInt(version.substring(0, dot));
+        if (majorVersion >= 9) {
+            // Desktop class exists in Java 8, so this will compile.
+            // But the methods we need to not exist, so we use reflection for those.
+            if (Desktop.isDesktopSupported()) {
+                _desktop = Desktop.getDesktop();
+            } else {
+                if (!_printedMacInitializerWarning) {
+                    _printedMacInitializerWarning = true;
+                    System.err.println(
+                            "FIXME: Top.java: java.version is 9 or later, and Desktop is not"
+                            + " supported on this platform, so no Mac menus and key bindings yet.");
+                }
+            }
+            return;
+        }
+
         try {
             Class applicationClass = null;
             String applicationClassName = "com.apple.eawt.Application";
@@ -237,6 +282,13 @@ public class MacOSXAdapter implements InvocationHandler {
                     ex2);
         }
     }
+    
+    /** An instance of java.awt.Desktop, upon which methods are invoked.
+     *  This variable is used only if the Java version is 9 or more.
+     *  Our usage is designed to compile with Java 8, using reflection
+     *  to avoid directly referencing methods that are not present in Java 8.
+     */
+    private static Desktop _desktop;
 
     /** An instance of com.apple.eawt.Application, upon which methods are invoked.
      *  We use Object here instead of com.apple.eawt.Application so as to avoid
@@ -244,18 +296,22 @@ public class MacOSXAdapter implements InvocationHandler {
      *  The _setHandler() method sets macOSXApplication.
      *  If we are running as an unsigned applet or using -sandbox, then
      *  this variable will be null.
+     *  This variable is used only if the Java version is 8 or less.
      */
     private static Object _macOSXApplication;
 
     /** True if we have printed the IllegalAccess message. */
     private static boolean _printedIllegalAccessExceptionMessage = false;
 
+    /** True if we have printed the Mac initializer warning. */
+    private static boolean _printedMacInitializerWarning = false;
+
     /** True if we have printed the NoClassDefFound message for com.apple.eawt.Application. */
     private static boolean _printedNoClassDefFoundMessageApplication = false;
 
     /** True if we have printed the NoClassDefFound message for com.apple.eawt.ApplicationListener. */
     private static boolean _printedNoClassDefFoundMessageApplicationListener = false;
-
+    
     /** True if we can't find the setEnabledAboutMenu method and have printed the message. */
     private static boolean _printedNoSuchMethodExceptionMessageAboutMenu = false;
 
