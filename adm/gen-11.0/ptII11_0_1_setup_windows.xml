@@ -40,9 +40,6 @@
 	<value>true</value>
       </condition>
 
-      <condition type="packselection" id="capeCodePackSelected">
-        <name>CapeCode</name>
-      </condition> 
       <condition type="packselection" id="fullPackSelected">
         <name>Full</name>
       </condition> 
@@ -876,7 +873,7 @@
         </pack>
 <!--MacOSInclude-->
 
-        <pack name="Sources" required="no">
+        <pack name="Sources" required="yes">
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
