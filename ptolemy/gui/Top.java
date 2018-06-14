@@ -694,7 +694,7 @@ public abstract class Top extends JFrame
                         + "By: Claudius Ptolemaeus, ptolemy@eecs.berkeley.edu\n"
                         + "For more information, see\n"
                         + "http://ptolemy.eecs.berkeley.edu/ptolemyII\n\n"
-                        + "Copyright (c) 1997-2016, "
+                        + "Copyright (c) 1997-2018, "
                         + "The Regents of the University of California.",
                 "About Ptolemy II", JOptionPane.INFORMATION_MESSAGE);
     }
@@ -1760,14 +1760,6 @@ public abstract class Top extends JFrame
 
     /** Initialize the menus and key bindings for Mac OS X. */
     private void _macInitializer() {
-        if (System.getProperty("java.version").startsWith("9")) {
-            if (!_printedMacInitializerWarning) {
-                _printedMacInitializerWarning = true;
-                System.err.println(
-                        "Top.java: java.version starts with 9, so no Mac menus and key bindings yet.");
-            }
-            return;
-        }
         // FIXME: This code causes a memory leak because
         // MacOSXAdapter and JPopupMenu return retain references to
         // ActorGraphFrame.  Also, MacOSXAdapter uses deprecated
@@ -2238,9 +2230,6 @@ public abstract class Top extends JFrame
 
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
-
-    /** True if we have printed the Mac initializer warning. */
-    private static boolean _printedMacInitializerWarning = false;
 
     /** Timer used for status messages. */
     private Timer _statusMessageTimer;
