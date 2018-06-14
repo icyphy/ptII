@@ -771,6 +771,7 @@ public abstract class Top extends JFrame
      *
      *  @return The items in the File menu.
      */
+    @SuppressWarnings("deprecation") // Java 10, inanely, deprecated getMenuShortcutKeyMask and replaced it with getMenuShortcutKeyMaskEx, which has the same signature. This makes no sense and violates principles of OO design. They should have just fixed getMenuShortcutKeyMask.
     protected JMenuItem[] _createFileMenuItems() {
         JMenuItem[] fileMenuItems = new JMenuItem[13];
 
