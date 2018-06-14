@@ -4512,11 +4512,14 @@ else
 
     if test -z "$JAVA3D_DIR" ; then
        # Special version of Java3D for Mac OS X, see https://wiki.eecs.berkeley.edu/ptexternal/Main/Java3D
-       if test "`uname -s`" = "Darwin"; then 
-           directory=`ls -d $PTII/vendors/j3d/lib`
-       else
-           directory=`ls -d $PTII/vendors/j3d/*/lib/ext`
-       fi
+
+       # Note that under Travis, we want to select the Java3D from
+       # vendors/j3d/lib so that when we create Vergil.app,
+       # bin/Vergil.app/Contents/Info.plist refers to vendors/j3d/lib
+       # and not /usr/share/java/j3d*.
+
+       directory=`ls -d $PTII/vendors/j3d/lib`
+
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
        else 

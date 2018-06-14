@@ -6,12 +6,12 @@
 <html>
   <head>
     <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
-    <title>Ptolemy II 11.0.beta Release Notes</title>
+    <title>Ptolemy II 11.0.1 Release Notes</title>
     <link href="default.css" rel="stylesheet" type="text/css">
   </head>
   <body>
       <!--whatsnew-->
-      <h2><a name="highlights">Ptolemy II 11.0.beta Highlights</a></h2>
+      <h2><a name="highlights">Ptolemy II 11.0.1 Highlights</a></h2>
 
     <p>Contents:</p>
     <ul>
@@ -103,7 +103,7 @@
     </ul>
 
     <h2><a name="demos" id="demos">New demonstrations</a></h2>
-    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.beta | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.beta/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
+    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.1 | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.1/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1/" target="_top">\1</a>@' | sort 
 
          OR
          $PTII/adm/bin/updateNewDemos
@@ -140,7 +140,7 @@
       <li class="c1">
 	<h3>Features</h3>
 	<!--
-            grep "Only in .*ptII11.0.beta" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
+            grep "Only in .*ptII11.0.1" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
           -->
 	<ul>
 	  <li><i>Link to the demo on the website</i></li>
@@ -150,7 +150,7 @@
 
     <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
     <!--
-        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.beta" |  sort | sed 's@Only in .*ptII11.0.beta/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
+        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.1" |  sort | sed 's@Only in .*ptII11.0.1/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"codeDoc/" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
       -->
     <ul>
       <li><em>New Domain Polymorphic actors</em>:
@@ -209,7 +209,7 @@
     <p>Most models developed under Ptolemy II 1.0.1,
       2.0.1, 3.0.2, 4.0.1, 5.0.2  or HyVisual 2.2-beta, 3.0, 4.0.1, 5.0.1,
       6.0.2, 7.0.1, 8.0.1 and 10.0.1
-      should run under Ptolemy II 11.0.beta</p>
+      should run under Ptolemy II 11.0.1</p>
 
     <p>The MoMLParser includes a list of backward
       compatibility filters that make certain changes on models

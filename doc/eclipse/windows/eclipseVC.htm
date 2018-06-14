@@ -86,6 +86,23 @@
     </ol>
 
     
+    <li>If you do not have a <code>git</code> binary installed, and you wish to use CapeCode, the development environment for IoT Accessors, then you will also need to check out the accessors git repo from within Eclipse.
+        <ol>
+          <li>In the Git Repositories pane, click on the icon at the top with an arrow.  If you hover over this icon, you will see "Clone a Git Repository and add the clone to this view"</li>
+          <li>In the Clone Git Repository window, click on Clone URI</li>
+          <li>In the Clone Git Repository window, enter the following for URI: <code>https://github.com/icyphy/accessors</code></li> and click on Next
+          <li>In the Clone Git Repository window/Branch Selection, select only the master branch.</li>
+
+          <li><b>Important:</b> In the Local Destination window,
+          change the Destination Directory to
+          the <code>org/terraswarm/accessor</code> directory where
+            the <code>ptII</code> repo was checked out.  Typically, this of the format
+            <code>C:\Users\<i>YourLogin</i>\git\ptII\org\terraswarm\accessor</code>
+          <li>Hit Finish, the accessors repo should be checked out.  </li>
+        </ol>
+      </li>
+
+
     <p> To set up the Eclipse project, follow these steps:</p>
     <ol>
       <li> In the File menu, select New | Project ..</li>
@@ -141,7 +158,7 @@
           </table>
         </blockquote>
 
-      </li>
+      </li
       <li> Click Finish.</li>
 
       <li> The Setting Build Paths window may appear and ask if you want to remove all the generated resources from the old location 'ptII/bin'.  <b>Click No</b>.
@@ -156,6 +173,9 @@
         </br>All users should go on to <a href="setupClasspath.htm" target="main">Set up the Eclipse ptII project .classpath for Ptolemy II</a>
       </li>
 
+      
+
     </ol>
+
   </body>
 </html>
