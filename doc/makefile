@@ -79,11 +79,8 @@ UI_FILES_TO_BE_JARED = \
 	expressions.pdf \
 	openInstanceHelp.htm \
 	release.htm \
-	sandbox.htm \
-	webStartHelp.htm \
-	webStartHelp_index.htm \
-	whatsnew.htm \
-	whatsnewVergil.htm
+	sandbox.htm
+
 
 EXTRA_SRCS = \
 	$(UI_FILES_TO_BE_JARED) \
@@ -113,24 +110,20 @@ EXTRA_SRCS = \
 	main.htm \
 	mainheader.htm \
 	mkDomains \
-	ptII$(PTVERSION).release.htm \
-	ptII$(PTVERSION).releaseHyVisual.htm \
 	ptIIfaq.htm \
 	ptinyBcvtb.awk \
 	ptinyKepler.awk \
 	removeasd \
 	toc.css \
 	toc.htm \
-	troubleshooting.htm \
-	types.htm \
-	whatsnew.awk
+	types.htm
+
 
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
 	mainVergil.htm \
 	mainVergilPtiny.htm \
 	mainVergilPtinyKepler.htm \
-	ptII$(PTVERSION).releaseVergil.htm \
 	troubleshootingVergil.htm
 
 # Include these jars in PTAUXALLJAR
@@ -868,54 +861,13 @@ mainVergilPtinyKepler.htm: mainVergilPtiny.htm
 	awk -f $(ROOT)/doc/ptinyKepler.awk mainVergilPtiny.htm | grep -v rendezvous | grep -v "with synchronous message" | \
 	sed -e 's@completeDemosPtiny.htm@completeDemosPtinyKepler.htm@' > $@  
 
-# Generate a file that consists of only the text within
-# <!--vergilDoc--> ... <!--/vergilDoc--> blocks
-ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
-	awk -f javahtml.awk ptII$(PTVERSION).release.htm > $@  
-ptII$(PTVERSION).releaseHyVisual.htm: ptII$(PTVERSION).release.htm
-	awk -f hyVisualHtml.awk ptII$(PTVERSION).release.htm > $@  
-troubleshootingVergil.htm: troubleshooting.htm
-	awk -f javahtml.awk troubleshooting.htm > $@  
 
-# Generate a file that consists of only the text within
-# <!--whatsnew--> ... <!--/whatsnew--> blocks
-whatsnew.htm: ptII$(PTVERSION).release.htm
-	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
-
-# Convert demo/*/*.htm to demo/*/*.xml
-# Pull out the links to the domains/*/doc/body.htm
-# For example:
-#  <a href="../ptolemy/domains/tm/doc/body.htm" target="body">Timed Multitasking Domain</a>
-# becomes:
-#  <a href="../ptolemy/domains/tm/doc/main.htm">Timed Multitasking Domain</a>
-#
-whatsnewVergil.htm: whatsnew.htm
-	sed -e 's@\(demo/[^/]*/[^/]*\).htm@\1.xml@g' \
-	    -e 's@<a href="\([^"]*/domains/[^/]*/doc/\)body.htm" target="[^"]*">\([^<]*\)</a>@<a href="\1main.htm">\2</a>@' \
-            -e 's@<body .*>@<body>@' \
-		< whatsnew.htm > whatsnewVergil.htm
 
 # Files that are derived from other files, such as ptII$(PTVERSION).release.htm
 DERIVED_FILES = \
 	mainVergil.htm \
 	mainVergilPtiny.htm \
-	mainVergilPtinyKepler.htm \
-	ptII$(PTVERSION).releaseVergil.htm \
-	ptII$(PTVERSION).releaseHyVisual.htm \
-	troubleshootingVergil.htm \
-	whatsnew.htm \
-	whatsnewVergil.htm 
-
-update: $(DERIVED_FILES)
-	svn commit -m "Master files changed" \
-		mainVergil.htm \
-		mainVergilPtiny.htm \
-		mainVergilPtinyKepler.htm \
-		ptII$(PTVERSION).releaseVergil.htm \
-		troubleshootingVergil.htm \
-		whatsnew.htm whatsnewVergil.htm 
-	rm -f docConfig.jar
-	$(MAKE) docConfig.jar
+	mainVergilPtinyKepler.htm
 
 update_clean: 
 	rm -f $(DERIVED_FILES)
