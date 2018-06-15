@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="WatchEmulator" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.1">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -20,9 +20,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 566]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0226885307151081">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 283.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{373.6797235063512, 260.83251953125006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Emulate a watch, transmit the data via UDP,&#10;read the data and plot it.">
@@ -381,14 +381,16 @@
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
+        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="message" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
         <port name="listening" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
         </port>
         <port name="accelerometer" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
