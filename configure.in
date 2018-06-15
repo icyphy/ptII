@@ -4349,6 +4349,7 @@ else
     updateExcludes "ptolemy/actor/lib/io/comm/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/IMUSensor/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/serial/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/xbee/"
 fi 
 
 #--------------------------------------------------------------------
