@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetectorDetectsGlitches" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.1">
     </property>
     <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 996, 738}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 30, 1017, 738}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 628]">
     </property>
@@ -261,9 +261,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.11840474385028885">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -275,9 +275,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.10144362919984352">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation3" class="ptolemy.domains.modal.kernel.Transition">
@@ -289,9 +289,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.07843834906139703">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <relation name="relation4" class="ptolemy.domains.modal.kernel.Transition">
@@ -301,9 +301,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
                 </property>
                 <property name="gamma" class="ptolemy.data.expr.Parameter" value="1.2500026338190071">
                 </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="history" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </relation>
             <link port="state1.incomingPort" relation="relation4"/>
@@ -522,35 +522,17 @@ The final state (state4) simply connects the input to the output.</text></svg></
     <entity name="LevelCrossingDetector1" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 135.0]">
         </property>
     </entity>
     <entity name="LevelCrossingDetector2" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="1.25">
         </property>
-        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 195.0]">
         </property>
     </entity>
     <entity name="LevelCrossingDetector3" class="ptolemy.domains.continuous.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="-0.45">
-        </property>
-        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 265.0]">
         </property>

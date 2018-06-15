@@ -10,6 +10,7 @@ env:
     # - PT_TRAVIS_CLEAN=true
     - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
+    - PT_TRAVIS_TEST_INSTALLERS=true
     - PT_TRAVIS_TEST_CAPECODE1_XML=true
     - PT_TRAVIS_TEST_CAPECODE2_XML=true
     - PT_TRAVIS_TEST_CAPECODE3_XML=true
@@ -25,8 +26,6 @@ env:
     - PT_TRAVIS_TEST_EXPORT5_XML=true
     - PT_TRAVIS_TEST_EXPORT6_XML=true
     - PT_TRAVIS_TEST_EXPORT7_XML=true
-    # Building the installers tends to fail in deployment, so do this last.
-    #   - PT_TRAVIS_TEST_INSTALLERS=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
@@ -108,8 +107,8 @@ install:
   - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true; fi
   - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' || true; fi
 
-  # Flush the cache for this file under test.export2.xml
-  - if [ "$PT_TRAVIS_TEST_EXPORT2_XML" = true ]; then  wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' ; jar -tvf $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar || true; fi
+  # Uncomment the next line to flush the cache for this file under test.export2.xml
+  # - if [ "$PT_TRAVIS_TEST_EXPORT2_XML" = true ]; then  wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar' ; jar -tvf $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar || true; fi
 
   # Needed for building installers.
   - sudo ln -s /bin/tar /usr/local/bin/tar
@@ -185,11 +184,7 @@ stages:
   # job or RUN_TESTS=true.
   - test
   #
-  # The report stage should be run before installers because deploying
-  # installers might fail.
   - report
-  - installers
-  - deploy
 
 # Below are the definitions for the stages.
 jobs:
@@ -208,17 +203,6 @@ jobs:
     - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_JUNITREPORT=true
-    #
-    # Build the installers last because it might fail.
-    - stage: installers
-      script:
-        - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
-        - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
-        - $PTII/bin/ptIITravisBuild.sh $SECONDS
-        - echo "Done with ptIITravisBuild.sh at $SECONDS seconds."
-        # Killing background sleep loop.
-        - kill %1
-      env: PT_TRAVIS_TEST_INSTALLERS=true
 
 # See https://docs.travis-ci.com/user/caching
 cache:

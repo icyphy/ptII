@@ -1404,7 +1404,7 @@ public class JSAccessor extends JavaScript {
             }
         }
 
-        String nodeVersion = "$CLASSPATH/vendors/node/node-v8.4.0";
+        String nodeVersion = "$CLASSPATH/vendors/node/node-v7.10.1";
         String nodeBinary = "";
         String npmBinary = "";
         if (osName != null) {
