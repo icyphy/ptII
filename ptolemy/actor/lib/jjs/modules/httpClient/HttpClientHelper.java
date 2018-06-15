@@ -395,7 +395,10 @@ public class HttpClientHelper extends VertxHelperBase {
             final boolean isText = (contentType == null)
                     || (contentType.startsWith("text"))
                     || (contentType.startsWith("application/javascript"))
-                    || (contentType.startsWith("application/json"));
+                    || (contentType.startsWith("application/json"))
+                    || (contentType.startsWith("application/sparql-results+json"))
+                    || (contentType.startsWith("application/rdf+json"));
+            System.out.println(isText);
             final boolean isMultipart = (contentType != null)
                     && (contentType.startsWith("multipart"));
             if (isMultipart) {
