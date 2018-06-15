@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="UserInterface" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.1">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 45, 1044, 630}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 45, 1044, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 520]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[810, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.0, 260.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{405.0, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceFixedPage: Display a fixed, static web page upon initialization.">
@@ -37,16 +37,6 @@
             </property>
         </property>
     </property>
-    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
-        </property>
-        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 35.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
         </property>
@@ -54,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demos for the UserInterface Accessor">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 30.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">

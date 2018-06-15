@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SigmaDelta" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.1">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -26,7 +26,7 @@
     </property>
     <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="-20.0">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 522]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -56,7 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 817, 564}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 838, 632}, maximized=false}">
     </property>
     <property name="AnnotationUpdated2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -86,7 +86,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 261.0}">
     </property>
     <entity name="ContinuousSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -94,13 +94,11 @@
         <property name="feedbackGain" class="ptolemy.data.expr.Parameter" value="feedbackGain">
         </property>
         <property name="ContinuousDirector" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
-            </property>
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+            </property>
+            <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-4">
             </property>
@@ -109,6 +107,8 @@
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+            </property>
+            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-6">
             </property>
@@ -349,12 +349,6 @@
     <entity name="delay" class="ptolemy.domains.de.lib.TimedDelay">
         <property name="delay" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
-        <property name="TimedDelayIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={137, 109, 815, 518}, maximized=false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 225.0]">
@@ -368,12 +362,6 @@
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.7, 0.3}">
-        </property>
-        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 225.0]">
         </property>
@@ -413,12 +401,6 @@
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="{0.1, 0.1, 0.1, 0.1, 0.1, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05}">
         </property>
-        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 315.0">
         </property>
     </entity>
@@ -430,12 +412,6 @@
         <property name="interpolation" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="taps" class="ptolemy.data.expr.Parameter" value="repeat(50, 0.02)">
-        </property>
-        <property name="FIRIcon" class="ptolemy.vergil.icon.EditorIcon">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
-            </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
-            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 315.0]">
         </property>
