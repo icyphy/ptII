@@ -1,0 +1,17 @@
+{
+    "http://ptolemy.berkeley.edu/ParkingSpot1" : {
+        "http://ptolemy.berkeley.edu/Contains" : [{
+            "value": "http://ptolemy.berkeley.edu/car1",
+            "type" : "uri"
+            }
+        ]
+    },
+
+    "http://ptolemy.berkeley.edu/Garage" : {
+        "http://ptolemy.berkeley.edu/Contains" : [{
+            "value": "http://ptolemy.berkeley.edu/ParkingSpot1",
+            "type" : "uri"
+            }
+        ]
+    }
+}
