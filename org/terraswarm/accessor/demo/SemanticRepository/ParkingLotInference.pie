@@ -1,0 +1,21 @@
+Prefices
+{
+
+}
+
+Axioms
+{
+
+}
+
+
+Rules
+{
+    Id: ContainsTransitive
+    
+    x  <http://ptolemy.berkeley.edu/Contains>  y
+    y  <http://ptolemy.berkeley.edu/Contains>  z
+    -------------------------------
+    x  <http://ptolemy.berkeley.edu/Contains>  z
+}
+
