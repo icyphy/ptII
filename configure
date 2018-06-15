@@ -10714,11 +10714,13 @@ $as_echo "ok, RXTX is probably in the jre directory" >&6; }; fi
     if test "$RXTX_PRESENT" = "no"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
+    or serial accessors.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
     file placed at $PTII/lib/nrjavaserial-3.11.0.devel.jar and configure rerun." >&5
 $as_echo "$as_me: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
+    or serial accessors.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
     file placed at $PTII/lib/nrjavaserial-3.11.0.devel.jar and configure rerun." >&2;}
@@ -10737,6 +10739,8 @@ else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/IMUSensor/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/serial/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/xbee/"
 fi
 
 #--------------------------------------------------------------------
