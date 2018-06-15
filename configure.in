@@ -4329,6 +4329,7 @@ else
     if test "$RXTX_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
+    or serial accessors.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
     file placed at $PTII/lib/nrjavaserial-3.11.0.devel.jar and configure rerun.])
