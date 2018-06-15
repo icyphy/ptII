@@ -76,7 +76,7 @@ import ptolemy.data.Token;
    (see the associated httpRequest.js JavaScript module, which defines
    this class and utility functions for creating it).
 
-   @author Marten Lohstroh, Edward A. Lee, contributors: Ravi Akella, Christopher Brooks.
+   @author Marten Lohstroh, Edward A. Lee, contributors: Ravi Akella, Christopher Brooks, Matt Weber.
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
@@ -450,8 +450,15 @@ public class HttpClientHelper extends VertxHelperBase {
                                             }
                                         } else {
                                             // FIXME: Need to handle other MIME types.
+                                            
+                                            // Changed default to parse body as string
                                             _requestObj.callMember("_response",
-                                                    response, body.getBytes());
+                                                     response, body.toString());
+
+                                            // Here is the old code that would parse body as bytes
+                                            // 
+                                            // _requestObj.callMember("_response",
+                                            //         response, body.getBytes());
                                         }
                                     }
                                 });
@@ -495,8 +502,15 @@ public class HttpClientHelper extends VertxHelperBase {
                                                     body);
                                         } else {
                                             // FIXME: Need to handle other MIME types.
+
+                                            // Changed default to parse body as string
                                             _requestObj.callMember("_response",
-                                                    response, body.getBytes());
+                                                     response, body.toString());
+
+                                            // Here is the old code that would parse body as bytes
+                                            // 
+                                            // _requestObj.callMember("_response",
+                                            //         response, body.getBytes());
                                         }
                                     }
                                 });
