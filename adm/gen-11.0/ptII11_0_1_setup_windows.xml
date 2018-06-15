@@ -40,6 +40,9 @@
 	<value>true</value>
       </condition>
 
+      <condition type="packselection" id="capeCodePackSelected">
+        <name>CapeCode</name>
+      </condition> 
       <condition type="packselection" id="fullPackSelected">
         <name>Full</name>
       </condition> 
