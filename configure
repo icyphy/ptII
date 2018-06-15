@@ -10616,8 +10616,8 @@ $as_echo "$RXTX_USER_DIR is not present,
     # Use curly brackets around PTII so that if rxtx is not present
     # then ${PTII} will appear in ptinvoke.
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for rxtx directory" >&5
-$as_echo_n "checking for rxtx directory... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for rxtx serial port interface" >&5
+$as_echo_n "checking for rxtx serial port interface... " >&6; }
 
 # Check whether --with-rxtx was given.
 if test "${with_rxtx+set}" = set; then :
@@ -10628,11 +10628,42 @@ fi
 
 
     if test -f "$RXTX_JAR"; then
-        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+	if test "`uname -s`" = "Darwin"; then
+            if test -f /Library/Java/Extensions/RXTXcomm.jar ; then
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: /Library/Java/Extensions/RXTXcomm.jar exists, which
+    will cause problems compiling IMUSensor.java:
+        error: incompatible types: CommPort cannot be converted to SerialPort
+    As a result, classes that use the serial port will not be compiled.
+    To fix this remove the file:
+        sudo rm /Library/Java/Extensions/RXTXcomm.jar
+    If you can't remove it, it is because of macOS SIP
+    (https://support.apple.com/en-us/HT204899).
+    Search the web for how to disable SIP temporarily by rebooting.
+    After removing the file, rerun ./configure" >&5
+$as_echo "$as_me: WARNING: /Library/Java/Extensions/RXTXcomm.jar exists, which
+    will cause problems compiling IMUSensor.java:
+        error: incompatible types: CommPort cannot be converted to SerialPort
+    As a result, classes that use the serial port will not be compiled.
+    To fix this remove the file:
+        sudo rm /Library/Java/Extensions/RXTXcomm.jar
+    If you can't remove it, it is because of macOS SIP
+    (https://support.apple.com/en-us/HT204899).
+    Search the web for how to disable SIP temporarily by rebooting.
+    After removing the file, rerun ./configure" >&2;}
+            else
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RXTX_JAR" >&5
 $as_echo "$RXTX_JAR" >&6; }; fi
-	RXTX_PRESENT=yes
-	updateClasspath "$RXTX_JAR"
+   	        RXTX_PRESENT=yes
+	        updateClasspath "$RXTX_JAR"
+            fi
+        else
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RXTX_JAR" >&5
+$as_echo "$RXTX_JAR" >&6; }; fi
+   	    RXTX_PRESENT=yes
+	    updateClasspath "$RXTX_JAR"
+        fi
     else
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Did not find
 	'$RXTX_JAR'" >&5
