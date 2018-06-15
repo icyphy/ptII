@@ -4347,6 +4347,7 @@ else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/IMUSensor/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/serial/"
 fi 
 
 #--------------------------------------------------------------------
