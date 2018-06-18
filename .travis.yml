@@ -251,11 +251,9 @@ deploy:
     api_key: $GITHUB_TOKEN
     file_glob: true
     file:
-      - $PTII/adm/gen-11.0/capecode0.2.1.setup.linux.tar.gz
       - $PTII/adm/gen-11.0/capecode0.2.1.setup.mac.app.tar.gz
       - $PTII/adm/gen-11.0/capecode0_2_1_setup_windows_64.exe
       - $PTII/adm/gen-11.0/capecode0.2.1.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.1.setup.linux.tar.gz
       - $PTII/adm/gen-11.0/ptII11.0.1.setup.mac.app.tar.gz
       - $PTII/adm/gen-11.0/ptII11_0_1_setup_windows_64.exe
       - $PTII/adm/gen-11.0/ptII11_0_1_setup_windows.exe
