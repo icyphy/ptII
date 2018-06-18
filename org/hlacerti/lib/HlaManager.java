@@ -1514,7 +1514,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private void _hlaDebug(String reason) {
         String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
-        _hlaDebug(dbgHeader + reason);
+        _debug(dbgHeader + reason);
     }
 
     /** Customized system debug message for {@link #HlaManager}.
@@ -1522,7 +1522,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private void _hlaDebugSys(String reason) {
         String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
-        _hlaDebugSys(dbgHeader + reason);
+        System.out.println(dbgHeader + reason);
     }    
 
     /** RTI service for time-stepped federate TAR
