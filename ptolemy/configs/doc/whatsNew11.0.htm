@@ -4,7 +4,7 @@
 
   <head>
     <!--
-        This file has pointers to tours of what's new in version 10.0
+        This file has pointers to tours of what's new in version 11.0
 
         The version number should match
         ptolemy.kernel.attributes.VersionAttribute.CURRENT_VERSION
@@ -32,11 +32,6 @@
 	  <li><a href="#aspects"><i>Aspects</i></a></li>
 	</ul>
       </li>
-      <li><a href="#demos">New demonstrations</a>
-	<ul>
-	  <li><a href="#FirstDemo"><i>First Demo</i></a></li>
-	</ul>
-      </li>
       <li><a href="#mocs">Models of Computation</a></li>
       <li><a href="#actorDemos">Actor Demonstrations</a></li>
       <li><a href="#other">Other Key New Capabilities</a></li>
@@ -47,17 +42,17 @@
     </ul>
 
     <h2><a name="highlights" id="highlights">Highlights</a></h2>
-<!------------------------------------------------>
+    <!------------------------------------------------>
     <h3><a name="scripting" id="scripting">Scripting, Accessors, and CapeCode</a></h3>
-    
-Ptolemy II now includes a major new way to define actors using the JavaScript actor.
-This can be used to put specialized functionality into a model easily, without having to create custom Java actors.
-A library of such scripted actors is provided that supports inclusion into models of significant networking
-capabilities, including web servers, web clients, sockets, and MQTT, for example, and interfaces to various devices
-including cameras, audio, and IoT devices.
-Models built exclusively with such actors, which are also called accessors, and using the DE director,
-can be code generated and executed independently of Ptolemy II in host based on Node.js.
-A subset of Ptolemy II known as CapeCode provides a convenient environment for developing such applications.
+
+    Ptolemy II now includes a major new way to define actors using the JavaScript actor.
+    This can be used to put specialized functionality into a model easily, without having to create custom Java actors.
+    A library of such scripted actors is provided that supports inclusion into models of significant networking
+    capabilities, including web servers, web clients, sockets, and MQTT, for example, and interfaces to various devices
+    including cameras, audio, and IoT devices.
+    Models built exclusively with such actors, which are also called accessors, and using the DE director,
+    can be code generated and executed independently of Ptolemy II in host based on Node.js.
+    A subset of Ptolemy II known as CapeCode provides a convenient environment for developing such applications.
 
     <h4>References</h4>
     <ul>
@@ -66,254 +61,165 @@ A subset of Ptolemy II known as CapeCode provides a convenient environment for d
     </ul>
 
     <h4>Demos</a></h4>
-    <ul><!-- Please keep the demos alphabetical -->
-    
-          <li><a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a> </li>
-              <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/AsymmetricEncrypt.xml">AsymmetricEncrypt</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>:
-        <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioCapture.xml">AudioCapturer</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioClipPlayer.xml">AudioClipPlayer</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioRecorder.xml">AudioRecorder</a> and
-        <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioSynthesis.xml">AudioSynthesis</a> </li>
-      <li><a href="../../../org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml">AugmentedReality</a></li>
-      <li><a href="../../../org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.xml">AugmentedRealityVideoSOHO</a></li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/Camera.xml">Camera</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/CaptureOpenLoop.xml">CaptureOpenLoop</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/CameraWebSocket/CameraWebSocket.xml">CameraWebSocket</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml">ComputerVision</a> (Requires OpenCV)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/Discovery.xml">Discovery</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml">Dots</a></li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml">FaceDetector</a> (Requires OpenCV)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera.xml">FaceDetectorCamera</a> (Requires OpenCV) </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml">Factorial</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Foscam/Foscam.xml">Foscam</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/discovery/demo/Heartbeat/Heartbeat.xml">Heartbeat</a> Requires a key </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml">HelloUserInterface</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml">HttpServer</a> </li>
-      <li> <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a> lightbulb demonstrations:
-         <a href="../../../org/terraswarm/accessor/demo/Hue/HueToggle.xml">HueToggle</a>,
--        <a href="../../../org/terraswarm/accessor/demo/Hue/MotionLights.xml">MotionLights</a> and
-         <a href="../../../org/terraswarm/accessor/demo/Hue/OccupancyLights.xml">OccupancyLights (Requires OpenCV)</a>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml">ImageAnnotate</a> and motion detection </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml">KeyValueStoreClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml">JavaScript Shell</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/Kubi/Kubi.xml">Kubi</a> (Requires Kubi Hardware and OpenCV)</li>
-      <li> <a href="../../../org/terraswarm/accessor/demo/Lifx/Lifx.xml">Lifx</a> (Requires Lifx)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml">LocalStorage</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/MessageDigest/MessageDigest.xml">MessageDigest</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml">ModelBuilder</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml">MQTTPubSub</a> </li>
-      <li><a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a></li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount.xml">OccupancyCount</a> (Requires OpenCV)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/RandomBytes/RandomBytes.xml">RandomBytes</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml">REST Services</a>:
-        <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml">REST Simple</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>
-      <li><a href="../../../org/terraswarm/accessor/demo/Scarab/Scarab.xml">Scarab</a></li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml">SecureCommClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml">SecureCommServer</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient.xml">SecureCommServerClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.xml">SecureCommServerClientWithAuthManager</a> </li>
-          <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml">SecurePubSub</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml">SpeechRecognition</a> (requires Sphinx4)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml">SinusoidFFT</a> </li>
-      <!-- ><li><a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/SpeechSynthesis.xml">SpeechSynthesis</a> </li>-->
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml">SocketDoubleArrayBatched</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml">SocketImage</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml">SocketString</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml">SocketUnsignedShort</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml">SpeakingServerListeningClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/SymmetricEncrypt/SymmetricEncrypt.xml">SymmetricEncrypt</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml">TCPSocket</a>, 
-        <a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
-      <li><a href=".././../../ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml">TestComposite</a> (Code generation for models that contain only JSAccessor actors.)</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml">Testing</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml">TwoWebSockets</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a> consisting of
-        <a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml">UserInterfaceVideo</a> and
-        <a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml">UserInterfaceInteractive</a>,
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml">UDPSocket</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxBus/VertxBus.xml">VertxBus</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml">WatchCommandUpdater.xml</a>Requires Moto 360 watch and speech recognition software </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml">VertxChat</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml">WatchEmulator</a> </li>
-      <li><a href="../../../org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml">WatchHandRaisingLight.xml</a>Requires Moto 360 watch and Philips Hue</li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a></li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a> 
-        <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">Client</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">Server</a>,
-        <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml">SecureClient</a> and
-        <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml">SecureServer</a>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml">WebSocketClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph.xml">WebSocketGraph</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml">WebSocketFullDuplex</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage.xml">WebSocketImage</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog.xml">WebSocketLog</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml">WebSocketsServerClient</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml">XBeeHelloWorld</a> (Requires XBee Hardware) </li>
-      <li><a href="../../../ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml">XBeeDataTypes</a> (Requires XBee Hardware) </li>
+<ul><!-- Please keep the demos alphabetical -->
+  
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/AprilTags/AprilTags.xml">AprilTags</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/AsymmetricEncrypt.xml">AsymmetricEncrypt</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml">Audio</a>:
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioCapture.xml">AudioCapturer</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioClipPlayer.xml">AudioClipPlayer</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioRecorder.xml">AudioRecorder</a> and
+    <a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/AudioSynthesis.xml">AudioSynthesis</a> </li>
+  <li><a href="../../../org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml">AugmentedReality</a></li>
+  <li><a href="../../../org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.xml">AugmentedRealityVideoSOHO</a></li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/Camera.xml">Camera</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/CaptureOpenLoop.xml">CaptureOpenLoop</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/CameraWebSocket/CameraWebSocket.xml">CameraWebSocket</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml">ComputerVision</a> (Requires OpenCV)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/Discovery.xml">Discovery</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/Dots/Dots.xml">Dots</a></li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml">FaceDetector</a> (Requires OpenCV)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetectorCamera/FaceDetectorCamera.xml">FaceDetectorCamera</a> (Requires OpenCV) </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml">Factorial</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/cameras/demo/Foscam/Foscam.xml">Foscam</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/discovery/demo/Heartbeat/Heartbeat.xml">Heartbeat</a> Requires a key </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml">HelloUserInterface</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml">HttpServer</a> </li>
+  <li> <a href="../../../org/terraswarm/accessor/demo/Hue/Hue.xml">Hue</a> lightbulb demonstrations:
+    <a href="../../../org/terraswarm/accessor/demo/Hue/HueToggle.xml">HueToggle</a>,
+    -        <a href="../../../org/terraswarm/accessor/demo/Hue/MotionLights.xml">MotionLights</a> and
+    <a href="../../../org/terraswarm/accessor/demo/Hue/OccupancyLights.xml">OccupancyLights (Requires OpenCV)</a>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageAnnotate/ImageAnnotate.xml">ImageAnnotate</a> and motion detection </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/ImageFilters.xml">ImageFilters</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/imageFilters/demo/ImageFilters/Random.xml">Random</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/KeyValueStoreClient/KeyValueStoreClient.xml">KeyValueStoreClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml">JavaScript Shell</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/aprilTags/demo/Kubi/Kubi.xml">Kubi</a> (Requires Kubi Hardware and OpenCV)</li>
+  <li> <a href="../../../org/terraswarm/accessor/demo/Lifx/Lifx.xml">Lifx</a> (Requires Lifx)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml">LocalStorage</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/MessageDigest/MessageDigest.xml">MessageDigest</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml">ModelBuilder</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml">MQTTPubSub</a> </li>
+  <li><a href="../../../org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml">NaturalLanguage</a></li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/faceDetector/demo/OccupancyCount/OccupancyCount.xml">OccupancyCount</a> (Requires OpenCV)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/RandomBytes/RandomBytes.xml">RandomBytes</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/REST.xml">REST Services</a>:
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/RESTSimple.xml">REST Simple</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/httpClient/demo/REST/Weather.xml">Weather.xml</a>
+  <li><a href="../../../org/terraswarm/accessor/demo/Scarab/Scarab.xml">Scarab</a></li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml">SecureCommClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml">SecureCommServer</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClient/SecureCommServerClient.xml">SecureCommServerClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.xml">SecureCommServerClientWithAuthManager</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml">SecurePubSub</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SecureSocket/SecureSocket.xml">SecureSocket</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml">SpeechRecognition</a> (requires Sphinx4)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml">SinusoidFFT</a> </li>
+  <!-- ><li><a href="../../../ptolemy/actor/lib/jjs/modules/audio/demo/Audio/SpeechSynthesis.xml">SpeechSynthesis</a> </li>-->
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml">SocketDoubleArrayBatched</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml">SocketImage</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml">SocketString</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml">SocketUnsignedShort</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml">SpeakingServerListeningClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/crypto/demo/SymmetricEncrypt/SymmetricEncrypt.xml">SymmetricEncrypt</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocket.xml">TCPSocket</a>, 
+    <a href="../../../ptolemy/actor/lib/jjs/modules/socket/demo/TCPSocket/TCPSocketImage.xml">TCPSocketImage</a>
+  <li><a href=".././../../ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml">TestComposite</a> (Code generation for models that contain only JSAccessor actors.)</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml">Testing</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml">TwoWebSockets</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterface.xml">UserInterface</a> consisting of
+    <a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceVideo.xml">UserInterfaceVideo</a> and
+    <a href="../../../ptolemy/actor/lib/jjs/modules/userInterface/demo/UserInterface/UserInterfaceInteractive.xml">UserInterfaceInteractive</a>,
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/udpSocket/demo/UDPSocket/UDPSocket.xml">UDPSocket</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxBus/VertxBus.xml">VertxBus</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/speechRecognition/demo/WatchCommandUpdater/WatchCommandUpdater.xml">WatchCommandUpdater.xml</a>Requires Moto 360 watch and speech recognition software </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml">VertxChat</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml">WatchEmulator</a> </li>
+  <li><a href="../../../org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml">WatchHandRaisingLight.xml</a>Requires Moto 360 watch and Philips Hue</li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/httpServer/demo/WebServer/WebServer.xml">WebServer</a></li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/WebSocketChat.xml">WebSocketChat</a> 
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Client.xml">Client</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/Server.xml">Server</a>,
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureClient.xml">SecureClient</a> and
+    <a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketChat/SecureServer.xml">SecureServer</a>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketClient.xml">WebSocketClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketGraph/WebSocketGraph.xml">WebSocketGraph</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml">WebSocketFullDuplex</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketImage/WebSocketImage.xml">WebSocketImage</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLog.xml">WebSocketLog</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml">WebSocketsServerClient</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml">XBeeHelloWorld</a> (Requires XBee Hardware) </li>
+  <li><a href="../../../ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml">XBeeDataTypes</a> (Requires XBee Hardware) </li>
 
-          <!-- <li><a href="../../../ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml">AudioFFT</a> </li> -->
-          <!-- <li><a href="../../../ptolemy/actor/lib/jjs/modules/contextAware/demo/ContextAware/ContextAware.xml">ContextAware</a> </li> -->
+  <!-- <li><a href="../../../ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml">AudioFFT</a> </li> -->
+  <!-- <li><a href="../../../ptolemy/actor/lib/jjs/modules/contextAware/demo/ContextAware/ContextAware.xml">ContextAware</a> </li> -->
 
-    </ul>
+</ul>
 <!------------------------------------------------>
-    <h3><a name="learning" id="learning">Learning, Estimation, and Optimization</a></h3>
-    
+<h3><a name="learning" id="learning">Learning, Estimation, and Optimization</a></h3>
+
 Ptolemy II now includes a library of machine learning, estimation, and optimization actors developed by Ilge Akkaya.
 This includes support for particle filtering, model-predictive control, hidden Markov models,
 and various statistical analysis tools.
 
-    <h4>References</h4>
-    <ul>
-      <li>Ilge Akkaya, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-159.html#in_browser">Data-Driven Cyber-Physical Systems via Real-Time Stream Analytics and Machine Learning</a>," PhD Thesis, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2016-159, October 25, 2016.</li>
-      <li>Ilge Akkaya, Shuhei Emoto, Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1078.html">PILOT: An Actor-oriented Learning and Optimization Toolkit</a>," in Proceedings of Second International Workshop on Robotic Sensor Networks (RSN'15), part of Cyber-Physical Systems Week, Seattle, WA, USA, April 13, 2015.</li>
-    </ul>
+<h4>References</h4>
+<ul>
+  <li>Ilge Akkaya, "<a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2016/EECS-2016-159.html#in_browser">Data-Driven Cyber-Physical Systems via Real-Time Stream Analytics and Machine Learning</a>," PhD Thesis, EECS Department, University of California, Berkeley, Technical Report No. UCB/EECS-2016-159, October 25, 2016.</li>
+  <li>Ilge Akkaya, Shuhei Emoto, Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1078.html">PILOT: An Actor-oriented Learning and Optimization Toolkit</a>," in Proceedings of Second International Workshop on Robotic Sensor Networks (RSN'15), part of Cyber-Physical Systems Week, Seattle, WA, USA, April 13, 2015.</li>
+</ul>
 
-    <h4>Demos</a></h4>
-    <ul><!-- Please keep the demos alphabetical -->
-          <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.xml">CommunicationAnomalyDetectionCQM</a> </li>
-          <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.xml">Communication Anomaly Detection Using HMM Estimation</a>  </li>
-          <li><a href="../../../org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml">Constrained Simple Linear Regression</a>  </li>
-          <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a>  </li>
-          <li><a href="../../demo/ProbabilisticModels/GaussianMixtureModel.xml">Gaussian Mixture Model</a>  </li>
-          <li><a href="../../demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">Gaussian Mixture Model Parameter Estimation</a>  </li>
-          <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModel.xml">Hidden Markov Model</a>  </li>
-          <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">Hidden Markov Model Analysis</a>  </li>
-    	  <li><a href="../../../org/ptolemy/machineLearning/clustering/demo/KMeans/KMeans.xml">K-Means Clustering</a> </li>
-          <li><a href="../../../org/ptolemy/optimization/demo/LeastSquaresNodeLocalization/LeastSquaresNodeLocalization.xml">LeastSquaresNodeLocalization</a> </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml">Multi-Observer Particle Filtering</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml">Multi Robot Intruder Tracking</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization - Distributed Computation</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.xml">Open-Loop Target Localization - Single Robot</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml">Open-Loop Target Localization - Two Robots</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange.xml">Particle Filter Range</a>  </li>
-          <li><a href="../../../ptolemy/demo/ProbabilisticModels/ProbabilisticModels.xml">ProbabilisticModels</a> </li>
-          <li><a href="../../../org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml">Simple Function Minimization</a>  </li>
-    </ul>
+<h4>Demos</a></h4>
+<ul><!-- Please keep the demos alphabetical -->
+  <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.xml">CommunicationAnomalyDetectionCQM</a> </li>
+  <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.xml">Communication Anomaly Detection Using HMM Estimation</a>  </li>
+  <li><a href="../../../org/ptolemy/optimization/demo/LinearRegression/LinearRegression.xml">Constrained Simple Linear Regression</a>  </li>
+  <li><a href="../../demo/ProbabilisticModels/TwoStateMarkovChain.xml">Discrete-Time Markov Chain</a>  </li>
+  <li><a href="../../demo/ProbabilisticModels/GaussianMixtureModel.xml">Gaussian Mixture Model</a>  </li>
+  <li><a href="../../demo/ProbabilisticModels/GMMConvergenceAnalysis.xml">Gaussian Mixture Model Parameter Estimation</a>  </li>
+  <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModel.xml">Hidden Markov Model</a>  </li>
+  <li><a href="../../demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml">Hidden Markov Model Analysis</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/clustering/demo/KMeans/KMeans.xml">K-Means Clustering</a> </li>
+  <li><a href="../../../org/ptolemy/optimization/demo/LeastSquaresNodeLocalization/LeastSquaresNodeLocalization.xml">LeastSquaresNodeLocalization</a> </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/JointParticleFilter.xml">Multi-Observer Particle Filtering</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml">Multi Robot Intruder Tracking</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/OnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OnlineTrajectoryOptimization/DistributedOnlineTrajectoryOptimization.xml">Online Robot Trajectory Optimization - Distributed Computation</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopSingleRobotTargetLocalization/OpenLoopSingleRobotTargetLocalization.xml">Open-Loop Target Localization - Single Robot</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.xml">Open-Loop Target Localization - Two Robots</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/particleFilter/demo/ParticleFilterRange/ParticleFilterRange.xml">Particle Filter Range</a>  </li>
+  <li><a href="../../../ptolemy/demo/ProbabilisticModels/ProbabilisticModels.xml">ProbabilisticModels</a> </li>
+  <li><a href="../../../org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.xml">Simple Function Minimization</a>  </li>
+</ul>
 <!------------------------------------------------>
-    <h3><a name="aspects" id="learning">Aspects</a></h3>
+<h3><a name="aspects" id="learning">Aspects</a></h3>
 
 Using aspect-oriented modeling, Ptolemy II models can be decorated with other Ptolemy II models that alter the behavior of the original model in
 well-defined ways. This can be used, for example, to using a model of a network (the aspect model) to model communication delays in some application model.
 Aspect models can also model computation times, security attacks, and failures.
 
-    <h4>References</h4>
-    <ul>
-      <li>Ilge Akkaya, Patricia Derler, Shuhei Emoto, and Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1161.html#in_browser">Systems engineering for Industrial Cyber-Physical Systems using Aspects</a>," IEEE Proceedings, Vol. 104, Issue 5, pp 997-1012, April 20, 2016.</li>
-      <li>Ilge Akkaya, Yan Liu, and Edward A. Lee. "<a href="https://dx.doi.org/10.1007/978-3-662-45928-7_1#in_browser">Modeling and Simulation of Network Aspects for Distributed Cyber-Physical Energy Systems</a>," In Cyber Physical Systems Approach to Smart Electric Power Grid, pp. 1-23. Springer Berlin Heidelberg, 2015.</li>
-    </ul>
+<h4>References</h4>
+<ul>
+  <li>Ilge Akkaya, Patricia Derler, Shuhei Emoto, and Edward A. Lee, "<a href="http://chess.eecs.berkeley.edu/pubs/1161.html#in_browser">Systems engineering for Industrial Cyber-Physical Systems using Aspects</a>," IEEE Proceedings, Vol. 104, Issue 5, pp 997-1012, April 20, 2016.</li>
+  <li>Ilge Akkaya, Yan Liu, and Edward A. Lee. "<a href="https://dx.doi.org/10.1007/978-3-662-45928-7_1#in_browser">Modeling and Simulation of Network Aspects for Distributed Cyber-Physical Energy Systems</a>," In Cyber Physical Systems Approach to Smart Electric Power Grid, pp. 1-23. Springer Berlin Heidelberg, 2015.</li>
+</ul>
 
-    <h4>Estimation and Learning Demonstrations</a></h4>
-    <ul><!-- Please keep the demos alphabetical -->
-	  <li><a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">GeneratorRegulatorProtectorWithSpecificationAsAspect</a> (see also <a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBusNotAsAspect.xml">GeneratorRegulatorProtectorWithBusNotAsAspect</a>)</li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CanBus/CanBus.xml">CanBus</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a> </li>
-          <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml"> Channel Fault Model</a>  </li>
-          <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.xml">CommunicationAnomalyDetectionCQM</a> </li>
-          <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.xml">Communication Anomaly Detection Using HMM Estimation</a>  </li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/CompositeQM/CompositeQM.xml">CompositeQM</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/DE/DE.xml">DE</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/DE/DE2.xml">DE2</a> </li>
-      <li><a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">GeneratorRegulatorProtectorWithSpecificationAsAspect</a> </li>
-      <li><a href="../../../ptolemy/actor/lib/aspect/demo/MonitorExecutionTimes/MonitorExecutionTimes.xml">MonitorExecutionTimes</a> </li>
+<h4>Estimation and Learning Demonstrations</a></h4>
+<ul><!-- Please keep the demos alphabetical -->
+  <li><a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">GeneratorRegulatorProtectorWithSpecificationAsAspect</a> (see also <a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithBusNotAsAspect.xml">GeneratorRegulatorProtectorWithBusNotAsAspect</a>)</li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/CanBus/CanBus.xml">CanBus</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/CarTrackingAttackModeling/CarTrackingAttackModeling.xml">CarTrackingAttackModeling</a> </li>
+  <li><a href="../../demo/ProbabilisticModels/ChannelFaultModel.xml"> Channel Fault Model</a>  </li>
+  <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.xml">CommunicationAnomalyDetectionCQM</a> </li>
+  <li><a href="../../../org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.xml">Communication Anomaly Detection Using HMM Estimation</a>  </li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/CompositeQM/CompositeQM.xml">CompositeQM</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/DE/DE.xml">DE</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/DE/DE2.xml">DE2</a> </li>
+  <li><a href="../../demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml">GeneratorRegulatorProtectorWithSpecificationAsAspect</a> </li>
+  <li><a href="../../../ptolemy/actor/lib/aspect/demo/MonitorExecutionTimes/MonitorExecutionTimes.xml">MonitorExecutionTimes</a> </li>
 
-    </ul>
+</ul>
 <!------------------------------------------------>
 
 
-    <h3><a name="demos" id="demos">New demonstrations</a></h3>
-    <!-- grep "Only in" /tmp/pt78.diff | grep 11.0.1 | grep demo | awk '{if ($4 !~ /\./) {print "<a href=\"" $3 "/" $4}}' | sed 's@:/@/@'| sed 's@src/ptII11.0.1/ptolemy@../..@' | sed 's@/\([^/]*$\)@/\1/\1.xml">\1</a>@' | sort 
-
-         OR
-         $PTII/adm/bin/updateNewDemos
-
-      -->
-
-    <h4><a name="newDemo1">New Demos 1</a></h4>
-    <ul>
-      <li><i>Link to demo .xml file</i></li>
-    </ul>
-
-    <h3><a name="mocs">Models of Computation</a></h3>
-
-    <h4>New MoC or existing MoC with new Demos</h4>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><i>New MoC Demo</i></li>
-    </ul>
-
-    <h3>Actor Demonstrations</h3>
-
-    <h4>New Actor Demos</h4>
-    <ul><!-- Please keep the demos alphabetical -->
-      <li><i>New demo</i></li>
-    </ul>
-
-    <h2><a name="other" id="other">Other Key New Capabilities</a></h2>
-    <ul>
-      <li>Features
-	<!--
-            grep "Only in .*ptII11.0.1" /tmp/pt.diffs | egrep -v '\.java$' | egrep -v '\.class' | egrep -v '\.jar' | egrep -v '/test/' | egrep -v ' test$' | egrep -v ' junit$' | egrep -v "/test: " | grep -v Icon.xml | grep -v README.txt | grep -v package.html
-          -->
-      </li>
-    </ul>
-
-    <h2><a name="libraries" id="libraries">New and Enhanced Actor Libraries</a></h2>
-    <!--
-        grep "Only in" /tmp/pt.diffs | egrep "\.java$" | grep "Only in .*ptII11.0.1" |  sort | sed 's@Only in .*ptII11.0.1/@@' |  sed 's@/@.@g' | sed 's@.java@@' | awk -F : '{print "<li><a href=\"ptdoc:" $1 "." $2 "\">" $2 "</a>"}' | sed 's/\. /./' | sed 's/> />/'
-      -->
-    <ul>
-      <li><em>New Domain Polymorphic actors</em>:
-	<ul>
-	  <li><i> Link to ptdoc</i></li>
-	</ul>
-      </li>
-      <li><em>New Domain1 actors</em>:
-	<ul>
-	  <li><i> Link to ptdoc</i></li>
-	</ul>
-      </li>
-    </ul>
-
-    <h2><a name="features" id="features">Additional Features</a></h2>
-
-    <h3>Additional Feature 1</h3>
-    <ul>
-      <!-- Use in_browser to link to javadoc because vergil has problems with the html generated by javadoc -->
-      <li><i>Link to package javadoc</i></li>
-      <li><i>Link to ptdoc for new actors</i></li>
-    </ul>
-
-    <h3>Other new classes</h3>
-    <ul>
-      <li><i>package name</i>
-	<ul>
-	  <li><i>link to ptdoc</i></li>
-	</ul>
-      </li>
-    </ul>
-
-    <h2><a name="worksinprogress" id="worksinprogress">Works in Progress</a></h2>
-    <ul>
-      <li><i>Work in progress 1</i>
-	<ul>
-	  <li><i>Link to ptdoc</i></li>
-	  <li><i>Link to .xml model</i></li>
-	</ul>
-      </li>
-    </ul>
-
-    <h2><a name="bugs" id="bugs">Bug fixes</a></h2>
-    <p>For the current list of bugs, see <a href="http://chess.eecs.berkeley.edu/ptexternal/bugs.html#in_browser" target="_top">Ptolemy II Bugs</a><br>
-      and <a href="https://kepler-project.org/users/faq#section-UserFAQ-HowCanIReportBugs">Kepler Bugs</a>.</p>
-    <p>A few features and classes were removed outright.</p>
-    <dl>
-      <dt><code><i>Path to package that was removed</i></code></dt>
-      <dd><i>Why it was removed and what to use instead</i></dd>
-    </dl>
-  </body>
+</body>
 </html>
