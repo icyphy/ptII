@@ -331,8 +331,7 @@ public class ExportModelJUnitTest {
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
-                "gt/demo/BouncingBallX2/BouncingBallX2/index.html",
-
+                "gt/demo/BouncingBallX2/BouncingBallX2.xml", //Hangs during wrapup, probably a threading bug with Java3D/jogamp.
                 // If hlacerti models are hanging, see
                 // AutoTests.delayIfNecessary() and consider
                 // increasing the amount of delay time
