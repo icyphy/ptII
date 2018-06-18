@@ -248,6 +248,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _discoverObjectInstanceMap = new HashMap<Integer, String>();
 
         _rtia = null;
+        _certiRtig = null;
         _federateAmbassador = null;
 
         _hlaAttributesToPublish = new HashMap<String, Object[]>();
@@ -350,6 +351,10 @@ public class HlaManager extends AbstractInitializableAttribute
         new Parameter(hlaReportPath, "allowFiles", BooleanToken.FALSE);
         new Parameter(hlaReportPath, "allowDirectories", BooleanToken.TRUE);
         hlaReportPath.setExpression("testsResults");
+
+        // Local or distant simulation support.
+        _certiHost = null;
+        _distantSimulation = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -576,6 +581,10 @@ public class HlaManager extends AbstractInitializableAttribute
             throw new CloneNotSupportedException("Failed to get a token.");
         }
 
+        // Local or distant simulation support.
+        newObject._certiHost = _certiHost;
+        newObject._distantSimulation = _distantSimulation;
+
         return newObject;
     }
 
@@ -658,12 +667,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Create the Federation or raise a warning it the Federation already exits.
         try {
+            // Local or distant simulation support.
+            // Note: determine if we need to change JCERTI API to handle FED file name
+            //       instead of URL.
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
 
-            _hlaDebugSys("Federate: " + _federateName + "- Federation: "
-                    + _federationName + " - "
-                    + "createFederationExecution: FED file URL="
+            _hlaDebugSys("createFederationExecution: FED file URL="
                     + fedFile.asFile().toURI().toURL());
 
         } catch (FederationExecutionAlreadyExists e) {
@@ -674,9 +684,7 @@ public class HlaManager extends AbstractInitializableAttribute
         } catch (CouldNotOpenFED e) {
             // XXX: FIXME: only for debug purpose
             try {
-                _hlaDebugSys("Federate: " + _federateName
-                        + "- Federation: " + _federationName + " - "
-                        + "createFederationExecution: CouldNotOpenFED exception: FED file URL="
+                _hlaDebugSys("createFederationExecution: CouldNotOpenFED exception: FED file URL="
                         + fedFile.asFile().toURI().toURL());
             } catch (MalformedURLException e1) {
                 e1.printStackTrace();
@@ -753,25 +761,66 @@ public class HlaManager extends AbstractInitializableAttribute
         super.preinitialize();
         _startTime = System.nanoTime();
 
-        // Try to launch the HLA/CERTI RTIG subprocess.
-        _certiRtig = new CertiRtig(this, _debugging);
-        _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
-
-        _certiRtig.exec();
-        if (_debugging) {
-            _hlaDebug("Federate: " + _federateName + " - Federation: "
-                    + _federationName
-                    + "\npreinitialize() - Launch RTIG process");
+        // XXX: FIXME: remove after debug
+        if (System.getenv("CERTI_FOM_PATH") != null) {
+            _hlaDebugSys("preinitialize() - "
+                    + "CERTI_FOM_PATH = " + System.getenv("CERTI_FOM_PATH"));
         }
 
-        if (_certiRtig.isAlreadyLaunched()) {
-            _certiRtig.terminateProcess();
-            _certiRtig = null;
+        // Local or distant simulation support.
+        // Based on CERTI_HOST variable set and different to localhost
+        // or loopback address "127.0.0.1".
+        _certiHost = System.getenv("CERTI_HOST");
+        if (_certiHost != null) {
+            if (_certiHost.compareTo("localhost") == 0) {
+                _distantSimulation = false;
+            } else if (_certiHost.compareTo("127.0.0.1") == 0) {
+                _distantSimulation = false;
+            } else {
+                _distantSimulation = true;
+            }
 
             if (_debugging) {
                 _hlaDebug("preinitialize() - "
-                        + "Destroy RTIG process as another one is already "
-                        + "launched");
+                        + "CERTI_HOST = " + _certiHost
+                        + " _distantSimulation = " + _distantSimulation);
+            }
+
+            // XXX: FIXME: remove after debug
+            _hlaDebugSys("preinitialize() - "
+                    + "CERTI_HOST = " + _certiHost
+                    + " _distantSimulation = " + _distantSimulation);
+        } else {
+            // XXX: FIXME: remove after debug
+            _hlaDebugSys("preinitialize() - " + "CERTI_HOST = NULL");
+        }
+
+        // Try to launch the HLA/CERTI RTIG subprocess.
+        if (!_distantSimulation) {
+            _certiRtig = new CertiRtig(this, _debugging);
+            _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
+
+            _certiRtig.exec();
+            if (_debugging) {
+                _hlaDebug("preinitialize() - "
+                        + "Launch RTIG process");
+            }
+
+            if (_certiRtig.isAlreadyLaunched()) {
+                _certiRtig.terminateProcess();
+                _certiRtig = null;
+
+                if (_debugging) {
+                    _hlaDebug("preinitialize() - "
+                            + "Destroy RTIG process as another one is already "
+                            + "launched");
+                }
+            }
+        }
+        else {
+            if (_debugging) {
+                _hlaDebug("preinitialize() - "
+                        + "Distant simulation: CERTI_HOST variable detected, no RTIG launched");
             }
         }
     }
@@ -1173,9 +1222,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_debugging) {
             _hlaDebug("wrapup() - Resign Federation execution");
         }
-        _hlaDebugSys("Federate: " + _federateName + "- Federation: "
-                + _federationName + " - "
-                + "wrapup() - Resign Federation execution");
+        _hlaDebugSys("wrapup() - Resign Federation execution");
 
         boolean canDestroyRtig = false;
         while (!canDestroyRtig) {
@@ -1192,18 +1239,14 @@ public class HlaManager extends AbstractInitializableAttribute
                             + "Destroy Federation execution - no fail");
                 }
 
-                _hlaDebugSys("Federate: " + _federateName
-                        + "- Federation: " + _federationName + " - "
-                        + "wrapup() - Destroy Federation execution - canDestroyRtig="
+                _hlaDebugSys("wrapup() - Destroy Federation execution - canDestroyRtig="
                         + canDestroyRtig);
 
             } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
                     _hlaDebug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
-                _hlaDebugSys("Federate: " + _federateName
-                        + "- Federation: " + _federationName + " - "
-                        + "wrapup() - Exception: FederatesCurrentlyJoined");
+                _hlaDebugSys("wrapup() - Exception: FederatesCurrentlyJoined");
 
             } catch (FederationExecutionDoesNotExist e) {
                 // No more federation.
@@ -1212,9 +1255,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
                 canDestroyRtig = true;
 
-                _hlaDebugSys("Federate: " + _federateName
-                        + "- Federation: " + _federationName + " - "
-                        + "wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig="
+                _hlaDebugSys("wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig="
                         + canDestroyRtig);
 
             } catch (RTIinternalError e) {
@@ -1232,9 +1273,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 _hlaDebug("wrapup() - "
                         + "Try to destroy RTIG process (if authorized by the system)");
             }
-            _hlaDebugSys("Federate: " + _federateName + "- Federation: "
-                    + _federationName + " - " + "wrapup() - "
-                    + "Try to destroy RTIG process (if authorized by the system)");
+            _hlaDebugSys("Try to destroy RTIG process (if authorized by the system)");
             _certiRtig.terminateProcess();
 
         }
@@ -1923,6 +1962,15 @@ public class HlaManager extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** Content of the CERTI_HOST environment variable. */
+    private String _certiHost;
+
+    /** Indicates if the simulation is 'local' - i.e. federates and rtig on the
+     *  same computer - or if the simulation is 'distant' - i.e. on different computers.
+     *  This interpretation is based on the CERTI_HOST environement variable analysis.
+     */
+    private Boolean _distantSimulation;
 
     /** Name of the current Ptolemy federate ({@link HlaManager}). */
     private String _federateName;
