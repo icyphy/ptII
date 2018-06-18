@@ -661,20 +661,20 @@ public class HlaManager extends AbstractInitializableAttribute
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
 
-            System.out.println("Federate: " + _federateName + "- Federation: "
+            _hlaDebugSys("Federate: " + _federateName + "- Federation: "
                     + _federationName + " - "
                     + "createFederationExecution: FED file URL="
                     + fedFile.asFile().toURI().toURL());
 
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
-                _debug("initialize() - WARNING: FederationExecutionAlreadyExists");
+                _hlaDebug("initialize() - WARNING: FederationExecutionAlreadyExists");
             }
 
         } catch (CouldNotOpenFED e) {
             // XXX: FIXME: only for debug purpose
             try {
-                System.out.println("Federate: " + _federateName
+                _hlaDebugSys("Federate: " + _federateName
                         + "- Federation: " + _federationName + " - "
                         + "createFederationExecution: CouldNotOpenFED exception: FED file URL="
                         + fedFile.asFile().toURI().toURL());
@@ -706,7 +706,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     _federateAmbassador);
 
             if (_debugging) {
-                _debug("initialize() - federation joined");
+                _hlaDebug("initialize() - federation joined");
             }
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
@@ -759,7 +759,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         _certiRtig.exec();
         if (_debugging) {
-            _debug("Federate: " + _federateName + " - Federation: "
+            _hlaDebug("Federate: " + _federateName + " - Federation: "
                     + _federationName
                     + "\npreinitialize() - Launch RTIG process");
         }
@@ -769,7 +769,7 @@ public class HlaManager extends AbstractInitializableAttribute
             _certiRtig = null;
 
             if (_debugging) {
-                _debug("preinitialize() - "
+                _hlaDebug("preinitialize() - "
                         + "Destroy RTIG process as another one is already "
                         + "launched");
             }
@@ -804,13 +804,13 @@ public class HlaManager extends AbstractInitializableAttribute
         String strProposedTime = proposedTime.toString();
         if (_debugging) {
             if (_eventBased) {
-                _debug("   start proposeTime(t(lastFoundEvent)="
+                _hlaDebug("   start proposeTime(t(lastFoundEvent)="
                         + strProposedTime + ") " + "t_ptII = "
                         + currentTime.toString() + " doubleValue="
                         + currentTime.getDoubleValue() + "; t_hla = "
                         + _federateAmbassador.hlaLogicalTime);
             } else {
-                _debug("     starting proposeTime(" + strProposedTime + ") "
+                _hlaDebug("     starting proposeTime(" + strProposedTime + ") "
                         + "t_ptII = " + currentTime.toString() + " doubleValue="
                         + currentTime.getDoubleValue() + "; t_hla = "
                         + _federateAmbassador.hlaLogicalTime);
@@ -825,7 +825,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (proposedTime.compareTo(_stopTime) > 0) {
             // XXX: FIXME: clarify SKIP RTI
             if (_debugging) {
-                _debug("    proposeTime(" + strProposedTime + ") -"
+                _hlaDebug("    proposeTime(" + strProposedTime + ") -"
                         + " proposedTime > stopTime"
                         + " -> SKIP RTI -> returning stopTime");
             }
@@ -838,7 +838,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // shutdown before the last call of this method.
         if (_rtia == null) {
             if (_debugging) {
-                _debug("    proposeTime(" + strProposedTime
+                _hlaDebug("    proposeTime(" + strProposedTime
                         + ") - called but the _rtia is null "
                         + " -> SKIP RTI ->  returning proposedTime");
             }
@@ -855,7 +855,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // from the Federation in the Federate's priority timestamp queue,
             // so we tick() to get these events (if they exist).
             /*   if (_debugging) {
-                _debug("       proposeTime(" + strProposedTime
+                _hlaDebug("       proposeTime(" + strProposedTime
                        + "): currentTime t_ptII = proposedTime: tick() one time");  //-> returning currentTime");
             }
              */ //jc: for make the reading easier. If needed, we can go back to this print.
@@ -888,7 +888,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 try {
                     if (_eventBased) {
                         if (_debugging) {
-                            _debug("    proposeTime(t(lastFoudEvent)=("
+                            _hlaDebug("    proposeTime(t(lastFoudEvent)=("
                                     + strProposedTime
                                     + ") - calling _eventsBasedTimeAdvance("
                                     + strProposedTime + ")");
@@ -896,7 +896,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         return _eventsBasedTimeAdvance(proposedTime);
                     } else {
                         if (_debugging) {
-                            _debug("    proposeTime(" + strProposedTime
+                            _hlaDebug("    proposeTime(" + strProposedTime
                                     + ") - calling _timeSteppedBasedTimeAdvance("
                                     + strProposedTime + ")");
                         }
@@ -934,7 +934,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             "ConcurrentAccessAttempted: " + e.getMessage());
                 } catch (NoSuchElementException e) {
                     if (_debugging) {
-                        _debug("    proposeTime(" + strProposedTime + ") -"
+                        _hlaDebug("    proposeTime(" + strProposedTime + ") -"
                                 + " NoSuchElementException " + " for _rtia");
                     }
                     // FIXME: XXX: explain properly that we want to do here?
@@ -977,7 +977,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // Encode the value to be sent to the CERTI.
         byte[] bAttributeValue = MessageProcessing.encodeHlaValue(hp, in);
         if (_debugging) {
-            _debug("      start updateHlaAttribute() t_ptII = " + currentTime
+            _hlaDebug("      start updateHlaAttribute() t_ptII = " + currentTime
                     + "; t_hla = " + _federateAmbassador.hlaLogicalTime);
         }
         SuppliedAttributes suppAttributes = null;
@@ -1051,7 +1051,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         try {
             if (_debugging) {
-                _debug("      * UAV '" + hp.getAttributeName()
+                _hlaDebug("      * UAV '" + hp.getAttributeName()
                         + "', uavTimeStamp=" + uavTimeStamp.getTime()
                         + ", value=" + in.toString() + ", HlaPub="
                         + hp.getFullName());
@@ -1109,14 +1109,14 @@ public class HlaManager extends AbstractInitializableAttribute
     @Override
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
-            _debug("wrapup() - ... so termination");
+            _hlaDebug("wrapup() - ... so termination");
         }
 
         super.wrapup();
 
         if (_enableHlaReporter) {
             if (_debugging) {
-                _debug(_hlaReporter.displayAnalysisValues());
+                _hlaDebug(_hlaReporter.displayAnalysisValues());
             }
 
             _hlaReporter.calculateRuntime();
@@ -1136,7 +1136,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         "RTIexception: " + e.getMessage());
             }
             if (_debugging) {
-                _debug("wrapup() - unsubscribe "
+                _hlaDebug("wrapup() - unsubscribe "
                         + _getPortFromTab(obj).getContainer().getFullName()
                         + "(classHandle = " + _getClassHandleFromTab(obj)
                         + ")");
@@ -1152,7 +1152,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         "RTIexception: " + e.getMessage());
             }
             if (_debugging) {
-                _debug("wrapup() - unpublish "
+                _hlaDebug("wrapup() - unpublish "
                         + _getPortFromTab(obj).getContainer().getFullName()
                         + "(classHandle = " + _getClassHandleFromTab(obj)
                         + ")");
@@ -1171,9 +1171,9 @@ public class HlaManager extends AbstractInitializableAttribute
                     "RTIexception: " + e.getMessage());
         }
         if (_debugging) {
-            _debug("wrapup() - Resign Federation execution");
+            _hlaDebug("wrapup() - Resign Federation execution");
         }
-        System.out.println("Federate: " + _federateName + "- Federation: "
+        _hlaDebugSys("Federate: " + _federateName + "- Federation: "
                 + _federationName + " - "
                 + "wrapup() - Resign Federation execution");
 
@@ -1188,31 +1188,31 @@ public class HlaManager extends AbstractInitializableAttribute
                 canDestroyRtig = true;
 
                 if (_debugging) {
-                    _debug("wrapup() - "
+                    _hlaDebug("wrapup() - "
                             + "Destroy Federation execution - no fail");
                 }
 
-                System.out.println("Federate: " + _federateName
+                _hlaDebugSys("Federate: " + _federateName
                         + "- Federation: " + _federationName + " - "
                         + "wrapup() - Destroy Federation execution - canDestroyRtig="
                         + canDestroyRtig);
 
             } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
-                    _debug("wrapup() - WARNING: FederatesCurrentlyJoined");
+                    _hlaDebug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
-                System.out.println("Federate: " + _federateName
+                _hlaDebugSys("Federate: " + _federateName
                         + "- Federation: " + _federationName + " - "
                         + "wrapup() - Exception: FederatesCurrentlyJoined");
 
             } catch (FederationExecutionDoesNotExist e) {
                 // No more federation.
                 if (_debugging) {
-                    _debug("wrapup() - WARNING: FederationExecutionDoesNotExist");
+                    _hlaDebug("wrapup() - WARNING: FederationExecutionDoesNotExist");
                 }
                 canDestroyRtig = true;
 
-                System.out.println("Federate: " + _federateName
+                _hlaDebugSys("Federate: " + _federateName
                         + "- Federation: " + _federationName + " - "
                         + "wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig="
                         + canDestroyRtig);
@@ -1229,10 +1229,10 @@ public class HlaManager extends AbstractInitializableAttribute
         // Terminate RTIG subprocess.
         if (_certiRtig != null) {
             if (_debugging) {
-                _debug("wrapup() - "
+                _hlaDebug("wrapup() - "
                         + "Try to destroy RTIG process (if authorized by the system)");
             }
-            System.out.println("Federate: " + _federateName + "- Federation: "
+            _hlaDebugSys("Federate: " + _federateName + "- Federation: "
                     + _federationName + " - " + "wrapup() - "
                     + "Try to destroy RTIG process (if authorized by the system)");
             _certiRtig.terminateProcess();
@@ -1256,7 +1256,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _hlaReporter = null;
 
         if (_debugging) {
-            _debug("-----------------------");
+            _hlaDebug("-----------------------");
         }
     }
 
@@ -1338,7 +1338,7 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         if (_debugging) {
-            _debug("_eventsBasedTimeAdvance(): strProposedTime"
+            _hlaDebug("_eventsBasedTimeAdvance(): strProposedTime"
                     + " proposedTime=" + proposedTime.toString()
                     + " - calling CERTI NER()");
         }
@@ -1385,7 +1385,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // algo3: 3: while not granted do
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_debugging) {
-                    _debug("        proposeTime(t(lastFoundEvent)="
+                    _hlaDebug("        proposeTime(t(lastFoundEvent)="
                             + strProposedTime + ") - _eventsBasedTimeAdvance("
                             + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
                             + ") by calling tick2()");
@@ -1470,6 +1470,22 @@ public class HlaManager extends AbstractInitializableAttribute
         return hlaSubscribers;
     }
 
+    /** Customized debug message for {@link #HlaManager}.
+     *  @param reason The reason to print
+     */
+    private void _hlaDebug(String reason) {
+        String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
+        _hlaDebug(dbgHeader + reason);
+    }
+
+    /** Customized system debug message for {@link #HlaManager}.
+     *  @param reason The reason to print
+     */
+    private void _hlaDebugSys(String reason) {
+        String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
+        _hlaDebugSys(dbgHeader + reason);
+    }    
+
     /** RTI service for time-stepped federate TAR
      *  is used for proposing a time to advance to.
      *  @param proposedTime time stamp of last found event
@@ -1489,7 +1505,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 + proposedTime.toString() + "): ";
 
         if (_debugging) {
-            _debug("\n" + "start " + headMsg + " print proposedTime.toString="
+            _hlaDebug("\n" + "start " + headMsg + " print proposedTime.toString="
                     + proposedTime.toString());
         }
 
@@ -1521,7 +1537,7 @@ public class HlaManager extends AbstractInitializableAttribute
         //  no reset => while (certiProposedTime.isGreaterThanOrEqualTo(nextPointInTime)) {
 
         if (_debugging) {
-            _debug("Before While g(t') > h+TS; g(t')= "
+            _hlaDebug("Before While g(t') > h+TS; g(t')= "
                     + certiProposedTime.getTime() + "; h+TS= "
                     + nextPointInTime.getTime() + " @ " + headMsg);
         }
@@ -1547,7 +1563,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 if (_debugging) {
-                    _debug("  TAR(" + nextPointInTime.getTime() + ") in "
+                    _hlaDebug("  TAR(" + nextPointInTime.getTime() + ") in "
                             + headMsg);
                 }
             } catch (InvalidFederationTime | FederationTimeAlreadyPassed
@@ -1561,7 +1577,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // algo4: 3: while not granted do
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_debugging) {
-                    _debug("      waiting TAG(" // + nextPointInTime.getTime() //jc: no need
+                    _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() //jc: no need
                             + ") by calling tick2() in " + headMsg);
                 }
 
@@ -1598,7 +1614,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 if (newPtolemyTime.compareTo(proposedTime) < 0) {
                     // algo4: 10: t' <- t''
                     if (_debugging) {
-                        _debug("    newPtolemyTime= t'=t''=f(h)="
+                        _hlaDebug("    newPtolemyTime= t'=t''=f(h)="
                                 + newPtolemyTime.toString()
                                 + " @line 10 in algo 4 " + headMsg);
                     }
@@ -1613,7 +1629,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // algo4: 13: return t'
                 if (_debugging) {
-                    _debug("Returns proposedTime=" + proposedTime.toString()
+                    _hlaDebug("Returns proposedTime=" + proposedTime.toString()
                             + "    @line 13 algo 4 (hasReceivedRAV) " + headMsg
                             + "\n");
                 }
@@ -1629,7 +1645,7 @@ public class HlaManager extends AbstractInitializableAttribute
         } // algo4: 15: end while
 
         if (_debugging) {
-            _debug("returns proposedTime=" + proposedTime.toString() + "from "
+            _hlaDebug("returns proposedTime=" + proposedTime.toString() + "from "
                     + headMsg);
         }
 
@@ -1802,7 +1818,7 @@ public class HlaManager extends AbstractInitializableAttribute
             if (classInstanceOrJokerName.contains(_jokerFilter)) {
                 _usedJoker = true;
                 if (_debugging) {
-                    _debug("HLA actor " + hs.getFullName()
+                    _hlaDebug("HLA actor " + hs.getFullName()
                             + " uses joker wildcard = " + _jokerFilter);
                 }
             }
@@ -1835,7 +1851,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // in PtolemyFederateAmbassadorInner class).
 
         if (_debugging) {
-            _debug("       t_ptII = " + _director.getModelTime().toString()
+            _hlaDebug("       t_ptII = " + _director.getModelTime().toString()
                     + "; t_hla = " + _federateAmbassador.hlaLogicalTime
                     + " in _putReflectedAttributesOnHlaSubscribers("
                     + proposedTime.toString() + ")");
@@ -1879,7 +1895,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 hs.putReflectedHlaAttribute(ravEvent);
 
                 if (_debugging) {
-                    _debug("       _putRAVOnHlaSubs(" + proposedTime.toString()
+                    _hlaDebug("       _putRAVOnHlaSubs(" + proposedTime.toString()
                             + " ravEvent.timeStamp=" + ravEvent.timeStamp
                             + ") for '" + hs.getAttributeName()
                             //+ "',timestamp=" + ravEvent.timeStamp //jc: non need
@@ -1900,7 +1916,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _federateAmbassador.hasReceivedRAV = false;
 
         if (_debugging) {
-            _debug("        _putRAVOnHlaSubs(" + proposedTime.toString()
+            _hlaDebug("        _putRAVOnHlaSubs(" + proposedTime.toString()
                     + ") - no more RAVs to deal with");
         }
     }
@@ -2075,7 +2091,7 @@ public class HlaManager extends AbstractInitializableAttribute
         try {
             _rtia.synchronizationPointAchieved(_synchronizationPointName);
             if (_debugging) {
-                _debug("_doInitialSynchronization() - initialize() - Synchronisation point "
+                _hlaDebug("_doInitialSynchronization() - initialize() - Synchronisation point "
                         + _synchronizationPointName + " satisfied");
             }
         } catch (RTIexception e) {
@@ -2086,7 +2102,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // Wait federation synchronization.
         while (_federateAmbassador.inPause) {
             if (_debugging) {
-                _debug("_doInitialSynchronization() - initialize() - Waiting for simulation phase");
+                _hlaDebug("_doInitialSynchronization() - initialize() - Waiting for simulation phase");
             }
 
             try {
@@ -2179,7 +2195,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             if (_debugging) {
-                _debug("_initializeTimeAspects() - initialize() -"
+                _hlaDebug("_initializeTimeAspects() - initialize() -"
                         + " Time Management policies:" + " is Constrained = "
                         + _federateAmbassador.timeConstrained
                         + " and is Regulator = "
@@ -2364,7 +2380,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 _setupHlaPublishers(rtia);
             } else {
                 if (_debugging) {
-                    _debug("INNER initialize: _hlaAttributesToPublish is empty");
+                    _hlaDebug("INNER initialize: _hlaAttributesToPublish is empty");
                 }
             }
             // Configure HlaSubscriber actors from model */
@@ -2372,7 +2388,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 _setupHlaSubscribers(rtia);
             } else {
                 if (_debugging) {
-                    _debug("INNER initialize: _hlaAttributesToSubscribeTo is empty");
+                    _hlaDebug("INNER initialize: _hlaAttributesToSubscribeTo is empty");
                 }
             }
 
@@ -2397,7 +2413,7 @@ public class HlaManager extends AbstractInitializableAttribute
             effectiveLookAHead = new CertiLogicalTimeInterval(
                     lookAHead * _hlaTimeUnitValue);
             if (_debugging) {
-                _debug("initializeTimeValues() - Effective HLA lookahead is "
+                _hlaDebug("initializeTimeValues() - Effective HLA lookahead is "
                         + effectiveLookAHead.toString());
             }
             timeAdvanceGrant = false;
@@ -2418,7 +2434,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 FederateInternalError {
 
             if (_debugging) {
-                _debug("      t_ptII = " + _director.getModelTime()
+                _hlaDebug("      t_ptII = " + _director.getModelTime()
                         + "; t_hla = " + _federateAmbassador.hlaLogicalTime
                         + " start reflectAttributeValues(), INNER callback");
             }
@@ -2445,7 +2461,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             .getContainer();
 
                     /*
-                    System.out.println("INNER callback: reflectAttributeValues():"
+                    _hlaDebugSys("INNER callback: reflectAttributeValues():"
                             + " theObject=" + theObject
                             + " theAttributes" + theAttributes
                             + " userSuppliedTag=" + userSuppliedTag
@@ -2484,7 +2500,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             _fromFederationEvents.get(hs.getFullName()).add(te);
 
                             if (_debugging) {
-                                _debug("       *RAV '" + hs.getAttributeName()
+                                _hlaDebug("       *RAV '" + hs.getAttributeName()
                                         + "', timestamp="
                                         + te.timeStamp.toString() + ",value="
                                         + value.toString() + " @ "
@@ -2504,7 +2520,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         }
                     } catch (ArrayIndexOutOfBounds e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
-                        //System.out.println(
+                        //_hlaDebugSys(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds");
                         //e.printStackTrace();
 
@@ -2513,7 +2529,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                         + e.getMessage());
                     } catch (IllegalActionException e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
-                        //System.out.println(
+                        //_hlaDebugSys(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException");
                         //e.printStackTrace();
 
@@ -2550,7 +2566,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         jokerFilter = elt.getKey();
                         _usedJokerFilterMap.put(jokerFilter, true);
                         if (_debugging) {
-                            _debug("INNER callback: discoverObjectInstance: found a free joker, break with jokerFilter="
+                            _hlaDebug("INNER callback: discoverObjectInstance: found a free joker, break with jokerFilter="
                                     + jokerFilter);
                         }
                         break;
@@ -2559,7 +2575,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 if (jokerFilter == null) {
                     if (_debugging) {
-                        _debug("INNER callback: discoverObjectInstance: no more filter available.\n"
+                        _hlaDebug("INNER callback: discoverObjectInstance: no more filter available.\n"
                                 + " objectInstanceId=" + objectInstanceId
                                 + " classHandle=" + classHandle + " someName="
                                 + someName
@@ -2569,7 +2585,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     _discoverObjectInstanceMap.put(objectInstanceId,
                             jokerFilter);
                     if (_debugging) {
-                        _debug("INNER callback: discoverObjectInstance: objectInstanceId="
+                        _hlaDebug("INNER callback: discoverObjectInstance: objectInstanceId="
                                 + objectInstanceId + " jokerFilter="
                                 + jokerFilter + " matchingName="
                                 + matchingName);
@@ -2581,7 +2597,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 // Nominal case, class instance name usage.
                 if (_discoverObjectInstanceMap.containsKey(objectInstanceId)) {
                     if (_debugging) {
-                        _debug("INNER callback: discoverObjectInstance: found an instance class already registered: "
+                        _hlaDebug("INNER callback: discoverObjectInstance: found an instance class already registered: "
                                 + someName);
                     }
                     // Note: this case should not happen with the new implementation from CIELE. But as it is
@@ -2623,7 +2639,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             sub.setObjectInstanceId(objectInstanceId);
 
                             if (_debugging) {
-                                _debug("INNER callback: discoverObjectInstance: matchingName="
+                                _hlaDebug("INNER callback: discoverObjectInstance: matchingName="
                                         + matchingName + " hlaSub="
                                         + sub.getFullName());
                             }
@@ -2638,7 +2654,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             if (_debugging) {
-                _debug("INNER callback:"
+                _hlaDebug("INNER callback:"
                         + " discoverObjectInstance(): the object"
                         + " objectInstanceId=" + objectInstanceId
                         + " classHandle=" + classHandle
@@ -2657,7 +2673,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 FederateInternalError {
             timeRegulator = true;
             if (_debugging) {
-                _debug("INNER callback:"
+                _hlaDebug("INNER callback:"
                         + " timeRegulationEnabled(): timeRegulator = "
                         + timeRegulator);
             }
@@ -2672,7 +2688,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 EnableTimeConstrainedWasNotPending, FederateInternalError {
             timeConstrained = true;
             if (_debugging) {
-                _debug("INNER callback:"
+                _hlaDebug("INNER callback:"
                         + " timeConstrainedEnabled(): timeConstrained = "
                         + timeConstrained);
             }
@@ -2712,7 +2728,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             if (_debugging) {
-                _debug("  TAG(" + grantedHlaLogicalTime.toString()
+                _hlaDebug("  TAG(" + grantedHlaLogicalTime.toString()
                         + " * (HLA time unit=" + _hlaTimeUnitValue
                         + ")) received in INNER callback: timeAdvanceGrant()");
             }
@@ -2729,7 +2745,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 String synchronizationPointLabel) throws FederateInternalError {
             synchronizationFailed = true;
             if (_debugging) {
-                _debug("INNER callback: synchronizationPointRegistrationFailed(): "
+                _hlaDebug("INNER callback: synchronizationPointRegistrationFailed(): "
                         + "synchronizationFailed = " + synchronizationFailed);
             }
         }
@@ -2742,7 +2758,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 String synchronizationPointLabel) throws FederateInternalError {
             synchronizationSuccess = true;
             if (_debugging) {
-                _debug("INNER callback: synchronizationPointRegistrationSucceeded(): "
+                _hlaDebug("INNER callback: synchronizationPointRegistrationSucceeded(): "
                         + "synchronizationSuccess = " + synchronizationSuccess);
             }
         }
@@ -2756,7 +2772,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 throws FederateInternalError {
             inPause = true;
             if (_debugging) {
-                _debug("INNER callback: announceSynchronizationPoint(): inPause = "
+                _hlaDebug("INNER callback: announceSynchronizationPoint(): inPause = "
                         + inPause);
             }
         }
@@ -2770,7 +2786,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 throws FederateInternalError {
             inPause = false;
             if (_debugging) {
-                _debug("INNER callback: federationSynchronized(): inPause = "
+                _hlaDebug("INNER callback: federationSynchronized(): inPause = "
                         + inPause + "\n");
             }
         }
@@ -2815,7 +2831,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         .getContainer();
 
                 if (_debugging) {
-                    _debug("_setupHlaPublishers() - HlaPublisher: "
+                    _hlaDebug("_setupHlaPublishers() - HlaPublisher: "
                             + pub.getFullName());
                 }
 
@@ -2830,7 +2846,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             .getObjectClassHandle(pub.getClassObjectName());
 
                     if (_debugging) {
-                        _debug("_setupHlaPublishers() "
+                        _hlaDebug("_setupHlaPublishers() "
                                 + "objectClassName (in FOM) = "
                                 + pub.getClassObjectName() + " - classHandle = "
                                 + classHandle);
@@ -2848,7 +2864,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             pub.getAttributeName(), classHandle);
 
                     if (_debugging) {
-                        _debug("_setupHlaPublishers() " + " attributeHandle = "
+                        _hlaDebug("_setupHlaPublishers() " + " attributeHandle = "
                                 + attributeHandle);
                     }
                 } catch (NameNotFound e) {
@@ -2974,7 +2990,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     rtia.publishObjectClass(classHandle, _attributesLocal);
 
                     if (_debugging) {
-                        _debug("_setupHlaPublishers() - Publish Object Class: "
+                        _hlaDebug("_setupHlaPublishers() - Publish Object Class: "
                                 + " classHandle = " + classHandle
                                 + " _attributesLocal = "
                                 + _attributesLocal.toString());
@@ -3017,7 +3033,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 classHandle, classInstanceName);
 
                         if (_debugging) {
-                            _debug("_setupHlaPublishers() - Register Object Instance: "
+                            _hlaDebug("_setupHlaPublishers() - Register Object Instance: "
                                     + " classHandle = " + classHandle
                                     + " classIntanceName = " + classInstanceName
                                     + " objectInstanceId = "
@@ -3073,7 +3089,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         .getContainer();
 
                 if (_debugging) {
-                    _debug("_setupHlaSubscribers() - HlaSubscriber: "
+                    _hlaDebug("_setupHlaSubscribers() - HlaSubscriber: "
                             + sub.getFullName());
                 }
 
@@ -3088,7 +3104,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             _getClassObjectNameFromTab(tObj));
 
                     if (_debugging) {
-                        _debug("_setupHlaSubscribers() "
+                        _hlaDebug("_setupHlaSubscribers() "
                                 + "objectClassName (in FOM) = "
                                 + _getClassObjectNameFromTab(tObj)
                                 + " - classHandle = " + classHandle);
@@ -3106,7 +3122,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             sub.getAttributeName(), classHandle);
 
                     if (_debugging) {
-                        _debug("_setupHlaSubscribers() " + " attributeHandle = "
+                        _hlaDebug("_setupHlaSubscribers() " + " attributeHandle = "
                                 + attributeHandle);
                     }
                 } catch (NameNotFound e) {
@@ -3209,7 +3225,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 if (_debugging) {
-                    _debug("_setupHlaSubscribers() - Subscribe Object Class Attributes: "
+                    _hlaDebug("_setupHlaSubscribers() - Subscribe Object Class Attributes: "
                             + " classHandle = " + classHandle
                             + " _attributesLocal = "
                             + _attributesLocal.toString());
