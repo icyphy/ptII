@@ -459,6 +459,7 @@ public class ExportModelJUnitTest {
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
+                "WatchEmulator.tcl", // Fails periodically.                         
                 "WatchCommandUpdater.xml", // Audio device unavailable.
                 "Weather.xml", // Skip because it requires a key
                 "WebSocketChat.xml", // Has links to other models.
