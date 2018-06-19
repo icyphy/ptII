@@ -57,10 +57,20 @@
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
 #
+#
 # To sign using our key:
 #   make KEYSTORE2=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD2="-storepass xxx" KEYPASSWORD2="-keypass xxx" jnlp_dist
-
+#
 # To update the website:
+#   make jnlp_dist_update_real
+
+# To rebuild for SpaceCadet, see https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating#Updating_JNLP.2C_aka_WebStart
+#
+#   export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-10.0.1.jdk/Contents/Home
+#   export PATH=$JAVA_HOME/bin:${PATH}
+#   ./configure; ant clean; ant; ant jars
+# The key is stored in the ealprivi git repo, see https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/Accounts
+#   make KEYSTORE2=/users/ptII/adm/certs/ptkeystore KEYALIAS2=ptolemy STOREPASSWORD2="-storepass xxx" KEYPASSWORD2="-keypass xxx" TSA_ARGUMENTS=-tsa http://timestamp.comodoca.com/rfc3161 jnlp_dist
 #   make jnlp_dist_update_real
 
 # For details about Mac errors and SpaceCadet, see https://wiki.eecs.berkeley.edu/dopcenter/Main/Seating
@@ -1148,7 +1158,7 @@ vergilCapeCode.jnlp: vergilCapeCode.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1190,7 +1200,7 @@ vergilCyPhySim.jnlp: vergilCyPhySim.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1232,7 +1242,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(BCVTB_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1274,7 +1284,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(DSP_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1318,7 +1328,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1358,7 +1368,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1398,7 +1408,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_KEPLER_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1439,7 +1449,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1482,7 +1492,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(SPACE_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1525,7 +1535,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1569,7 +1579,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(FULL_MAIN_JAR)" "$(KEYALIAS)"
 	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 		sleep 15; \
 	fi
 
@@ -1602,7 +1612,7 @@ jnlp_sign1: $(SIGNED_DIR)  $(KEYSTORE) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST
 			$(TSA_ARGUMENTS) \
 			$(SIGNED_DIR)/$$jarfile $(KEYALIAS); \
 		if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
-			@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+			echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
 			sleep 15; \
 		fi; \
 	done;
