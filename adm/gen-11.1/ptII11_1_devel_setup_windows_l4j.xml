@@ -1,8 +1,8 @@
 <launch4jConfig>
   <headerType>gui</headerType>
   <dontWrapJar>false</dontWrapJar>
-  <jar>ptII11_0_1_setup_windows.jar</jar>
-  <outfile>ptII11_0_1_setup_windows.exe</outfile>
+  <jar>ptII11_1_devel_setup_windows.jar</jar>
+  <outfile>ptII11_1_devel_setup_windows.exe</outfile>
   <errTitle>ptIIsetup</errTitle>
   <chdir>.</chdir>
   <cmdLine></cmdLine>
@@ -14,12 +14,12 @@
     <minVersion>1.6.0</minVersion>
   </jre>
   <versionInfo>
-    <fileVersion>11.0.0.0</fileVersion>
-    <txtFileVersion>11.0.1</txtFileVersion>
+    <fileVersion>11.1.0.1</fileVersion>
+    <txtFileVersion>11.1.0.1</txtFileVersion>
     <fileDescription>Ptolemy II Installer</fileDescription>
     <copyright>Copyright (c) 1995-2018 The Regents of the University of California. All rights reserved. http://ptolemy.berkeley.edu/copyright.htm</copyright>
-    <productVersion>11.0.0.0</productVersion>
-    <txtProductVersion>11.0.1</txtProductVersion>
+    <productVersion>11.1.0.1</productVersion>
+    <txtProductVersion>11.1.0.1</txtProductVersion>
     <productName>Ptolemy II</productName>
     <companyName>Ptolemy Project, University of California, Berkeley</companyName>
     <internalName>ptIIsetup</internalName>

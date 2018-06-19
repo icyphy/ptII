@@ -235,15 +235,15 @@
   Delete the previous versions:
 <pre>
   cd $PTII/lib
-  svn delete --force vertx-*3.1.0.jar
-  svn delete --force netty-*4.0.31*.jar
+  git rm -f vertx-*3.1.0.jar
+  git rm -f netty-*4.0.31*.jar
 </pre>
 
 Between 3.1.0 and 3.2.0, the files below were not changed, but if they were, we would do:
 <pre>
-  svn delete --force jackson-annotations-2.6.0.jar
-  svn delete --force jackson-2.6.1*
-  svn delete --force hazelcast-3.5.2.jar 
+  git rm -f jackson-annotations-2.6.0.jar
+  git rm -f jackson-2.6.1*
+  git rm -f hazelcast-3.5.2.jar 
 </pre>
 Fix
 <pre>
@@ -290,7 +290,7 @@ run <code>autoconf</code></i>)</p>
 
 <p>Commit your changes.</p>
 <pre>
-  svn commit -m "Upgraded from vertx-3.1.0 to vertx-3.2.0." lib adm/gen-11.0/ptII11_0_devel_setup_windows.xml build.xml.default.xml
+  git commit -m "Upgraded from vertx-3.1.0 to vertx-3.2.0." lib adm/gen-11.1/ptII11_1_devel_setup_windows.xml build.xml.default.xml
 </pre>
 
 <p>Refresh your Eclipse project.</p>

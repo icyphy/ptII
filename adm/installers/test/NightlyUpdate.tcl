@@ -67,9 +67,9 @@ if {[string compare test [info procs nightlyMake]] == 1} then {
 
 # These variables match variables in the $PTII/adm/gen-$version/makefile
 set major_version 11.0
-set minor_version 1
+set minor_version devel
 set version $major_version.$minor_version
-set windows_version 11_0_1
+set windows_version 11_1_devel
 set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
@@ -104,7 +104,7 @@ test nightly-1.6 {updateDOPCenterImage, which updates the pdf} {
 #     # Check that the files are there.
 #     set results {}
 #     set date [exec date +%Y-%m-%d]
-#     set files [list ptII11.0.1-$date.src.tar.gz  ptII11.0.1.setup.mac-$date.app.tar.gz  ptII11_0_1_setup_windows-$date.exe  ptII11_0_1_setup_windows_64-$date.exe ]
+#     set files [list ptII11.1.devel-$date.src.tar.gz  ptII11.1.devel.setup.mac-$date.app.tar.gz  ptII11_1_devel_setup_windows-$date.exe  ptII11_1_devel_setup_windows_64-$date.exe ]
 #     foreach file $files {
 #     puts $file
 # 	set url [java::new java.net.URL http://chess.eecs.berkeley.edu/ptexternal/nightly/builds/$file]
