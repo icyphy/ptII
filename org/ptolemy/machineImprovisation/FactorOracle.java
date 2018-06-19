@@ -509,11 +509,15 @@ public class FactorOracle extends ModalController {
                 List chordTones = MusicSpecs.getChordPitches(chordName, true);
 
                 if (chordTones != null) {
-                    System.out.println("Chord: " + chordName + " Tones:"
+                    if (_debugging) {
+                        _debug("Chord: " + chordName + " Tones:"
                             + chordTones.toString() + " Note being tested: "
                             + noteToTest);
+                    }
                     if (chordTones.contains(pureNote)) {
-                        System.out.println("Accepted Note: " + noteToTest);
+                        if (_debugging) {
+                            _debug("Accepted Note: " + noteToTest);
+                        }
                         //okay to play
                         return BooleanToken.TRUE;
                     }
