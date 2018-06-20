@@ -12,20 +12,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 473, 1191, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={259, 214, 1191, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[957, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000013">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000015">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.5, 255.18164062499977}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.5000000000002, 255.18164062499983}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this model to work, you must first start an instance of&#10;a semantic repository (with data) named &quot;FirstRepo&quot; on localhost &#10;port 7200. For example, try graphDB http://graphdb.ontotext.com/&#10;with the sample dataset that comes with the download.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 250.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,7 +33,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Examples of the two types of SPARQL updates that&#10;modify data in a semantic repository. Note that an&#10;INSERT that inserts data already in the repository or&#10;a DELETE that removes data already absent from the &#10;repository is treated by the respository as a&#10;successful update.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -50.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -84,7 +84,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="StringConst5" class="ptolemy.actor.lib.StringConst">
+    <entity name="Insert" class="ptolemy.actor.lib.StringConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value="INSERT DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
@@ -96,10 +96,10 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 150.0]">
         </property>
     </entity>
-    <entity name="StringConst6" class="ptolemy.actor.lib.StringConst">
+    <entity name="Delete" class="ptolemy.actor.lib.StringConst">
         <property name="value" class="ptolemy.data.expr.Parameter" value="DELETE DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
@@ -111,7 +111,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 105.0]">
         </property>
     </entity>
     <entity name="SemanticRepositoryUpdate" class="org.terraswarm.accessor.JSAccessor">
@@ -180,45 +180,48 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="update" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
+    </entity>
+    <entity name="Delete Then Insert" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="DELETE DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}; INSERT DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[800.0, 105.0]">
+        </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation3"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
     <link port="TextDisplay.input" relation="relation2"/>
-    <link port="StringConst5.output" relation="relation"/>
-    <link port="StringConst5.trigger" relation="relation3"/>
+    <link port="Insert.output" relation="relation4"/>
+    <link port="Insert.trigger" relation="relation"/>
     <link port="SemanticRepositoryUpdate.response" relation="relation2"/>
-    <link port="SemanticRepositoryUpdate.update" relation="relation"/>
+    <link port="SemanticRepositoryUpdate.update" relation="relation4"/>
 </entity>
