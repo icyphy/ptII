@@ -7,6 +7,7 @@ The Ptolemy II documentation can be found in [$PTII/doc/index.htm](https://cdn.r
 
 * To develop Ptolemy II code, we recommend that you follow the
 [Ptolemy II Eclipse Instructions located in $PTII/doc/eclipse/index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm)
+** To build from the command line, see [$PTII/doc/install_index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/install_index.htm)
 * [Main Ptolemy II website](http://ptolemy.berkeley.edu/ptolemyII)
 * [Contributing](CONTRIBUTING.md)
 * [Downloads and Travis Logs](https://icyphy.github.io/ptII/)

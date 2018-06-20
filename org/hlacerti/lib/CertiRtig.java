@@ -194,8 +194,9 @@ public class CertiRtig extends NamedObj {
         // Matlab, so we need to be sure to include DYLD_LIBRARY_PATH,
         // LD_LIBRARY_PATH or PATH from the environment.
         String pathSeparator = System.getProperty("path.separator");
-        _environmentArray = new String[1];
         String osName = StringUtilities.getProperty("os.name");
+
+        _environmentArray = new String[2];
 
         // XXX: FIXME: remove debug print
         System.out.println("CertiRtig: the os.name property is: " + osName);
@@ -225,6 +226,15 @@ public class CertiRtig extends NamedObj {
             }
             _environmentArray[0] = ldLibraryPath;
         }
+
+        String certiFomPath = "";
+        if (System.getenv("CERTI_FOM_PATH") != null) {
+            String certiFomPathVariable = System.getenv("CERTI_FOM_PATH");
+            certiFomPath = "CERTI_FOM_PATH=" + certiFomPathVariable;
+        } else {
+            certiFomPath = "CERTI_FOM_PATH=" + certiHome + "/share/federations/";
+        }
+        _environmentArray[1] = certiFomPath;
 
         _directoryAsFile = new File(fedFileName.getParent());
         if (!_directoryAsFile.isDirectory()) {

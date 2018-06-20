@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2017 The Regents of the University of California.
+# Copyright (c) 1994-2018 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,15 +54,15 @@
 #  ptII/adm/bin/ptIInightly-mail
 #  ptII/adm/bin/ptIInightly
 #  buildmaster/web/adm/makefile
-MAJOR_VERSION = 	11.0
-MINOR_VERSION =		1
+MAJOR_VERSION = 	11.1
+MINOR_VERSION =		devel
 
 VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
-WINDOWS_VERSION =	11_0_1
+WINDOWS_VERSION =	11_1_devel
 
-CAPECODE_VERSION =	0.2.1
-CAPECODE_WINDOWS_VERSION =	0_2_1
+CAPECODE_VERSION =	0.3.devel
+CAPECODE_WINDOWS_VERSION =	0_3_devel
 
 # Even if you are building tar files from ptdesign, this should probably
 # still say ptolemy
@@ -99,13 +99,13 @@ PTII_FTP = /users/ptolemy/apache2/ptweb/ptolemyII/ptII$(MAJOR_VERSION)
 
 # 1.14 can be found at ftp://ftp.gnu.org/pub/gnu/tar
 # make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII COMPRESS=gzip TAR=tar clean all src.jar 
-# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.1 COMPRESS=gzip TAR=tar clean all src.jar 
+# make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.1.devel COMPRESS=gzip TAR=tar clean all src.jar 
 # make USER=cxh PTIIHOME=/cygdrive/d/tmp/ptII COMPRESS=gzip TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII3.1alpha PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar
 # make USER=cxh PTIIHOME=/home/eecs/cxh/ptII PTIIADM=/home/eecs/cxh/ptII/adm TAR=/usr/local/bin/tar clean all src.jar setup
 # make USER=cxh PTIIHOME=/export/home1/cxh/src/ptII PTIIADM=/export/home1/cxh/src/ptII/adm TAR=/usr/sfw/bin/gtar JAR=/usr/bin/jar clean all src.jar 
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar 
-#make USER=cxh PTIIHOME=/tmp/cxh/ptII11.0.1 PTIIADM=/tmp/cxh/ptII11.0.1/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
+#make USER=cxh PTIIHOME=/tmp/cxh/ptII11.1.devel PTIIADM=/tmp/cxh/ptII11.1.devel/adm TAR=/bin/tar JAR=/tmp/cxh/ibm-java2-i386-60/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/tmp/cxh/jdk1.5.0_09/bin/jar clean all src.jar fortytwo_test
 #make USER=cxh PTIIHOME=/tmp/cxh/ptII PTIIADM=/tmp/cxh/ptII/adm TAR=/bin/tar JAR=/usr/sww/bin/jar clean all src.jar viptos.jar
 #make USER=cxh PTIIHOME=/tmp/cxh/tmp/ptII PTIIADM=/tmp/cxh/tmp/ptII/adm TAR=/bin/tar JAR=/usr/local/j2sdk1.4.2_01/bin/jar src.jar
@@ -222,19 +222,19 @@ all: $(PTII_FULL) $(PTII_SRC) $(PTII_FULL_ZIP) $(CAPECODE_SRC_TAR) #$(PTII_DEVEL
 
 ####
 release_windows:
-	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.0.1 COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/cygdrive/c/cxh/ptII11.1.devel COMPRESS=gzip TAR=tar JAR=c:/Program\ Files/Java/jdk1.5.0_11/bin/jar clean all src.jar setup
 
 ####
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_capecode_mac_tar:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
 
 release_mac_update_ftp:
-	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar update_ftp
+	$(MAKE) USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar update_ftp
 
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
@@ -244,19 +244,19 @@ release_mac2:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
 release_mac_capecode_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac
 
 release_mac_test_capecode_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
 
 release_mac_capecode_linux:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_linux_jar
 
 release_mac_capecode_setup_64_jar:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.1 COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_64_jar
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_64_jar
 
 
 release_mac2_setup:
@@ -3347,11 +3347,11 @@ ptsetup_mac: $(PTSETUP_MAC).xml
 
 $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
-	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.1/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.1/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.1/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.1/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.1/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.1.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.1.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.1.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.1.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.1.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3360,7 +3360,7 @@ ptsetup_setup_linux: $(PTSETUP_LINUX).xml
 $(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.so@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.1/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.1.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@
@@ -3368,9 +3368,9 @@ $(PTSETUP_LINUX).xml: $(PTSETUP).xml linuxInclude.awk makefile
 capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
 $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP) #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
-	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.1/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.1/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.1/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
+	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.1.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.1.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.1.devel/vendors/node/node-v7.10.1-darwin-x64" targetdir="$$INSTALL_PATH/vendors/node" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
@@ -3381,7 +3381,7 @@ $(CAPECODE_SETUP_LINUX).xml: $(CAPECODE_SETUP).xml linuxInclude.awk makefile
 	awk -f linuxInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@ptmatlab.dll@libptmatlab.b@' \
 	    -e 's@condition="capeCodePackSelected" id="startApplicationPanelCapeCode"@id="startApplicationPanelConfigure"@' \
-	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.0.1/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
+	    -e 's@<!-- NodeDirectory -->@<file src="../dists/ptII11.1.devel/vendors/node/node-v7.10.1-linux-x64" targetdir="$$INSTALL_PATH/vendors/node" os="unix"/>@' \
 	    -e 's@os="windows"@os="unix"@' \
 	    -e 's@<panel classname="ShortcutPanel" condition="showShortCutPanel"/>@@' \
 	    > $@

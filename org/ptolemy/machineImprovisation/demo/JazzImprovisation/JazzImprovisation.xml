@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JazzImprovisation" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 877}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={23, 23, 1440, 877}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 767]">
     </property>
@@ -261,21 +261,21 @@ Then delete this annotation.</text>
             <entity name="stop" class="ptolemy.domains.modal.kernel.State">
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 225.0]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="runClock" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="runClock">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 230.0]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -354,7 +354,7 @@ Then delete this annotation.</text>
     <entity name="ReadTrainingMelody" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5125.0, -1640.0]">
         </property>
-        <property name="bars" class="ptolemy.data.expr.Parameter" value="47.25">
+        <property name="bars" class="ptolemy.data.expr.Parameter" value="47.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1161,7 +1161,7 @@ Then delete this annotation.</text>
             </property>
         </property>
         <doc>The inside model of this composite actor can be dynamically defined.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4650.0, -1705.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4645.0, -1705.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1226,16 +1226,6 @@ Then delete this annotation.</text>
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-4255.0, -1545.0]">
-        </property>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 42, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="title" class="ptolemy.data.expr.StringParameter" value="Improvised Sequence">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-4375.0, -1695.0]">
         </property>
     </entity>
     <entity name="Plots" class="ptolemy.actor.TypedCompositeActor">
@@ -1332,7 +1322,7 @@ Then delete this annotation.</text>
 <title>Music Envelope</title>
 <xLabel>beat</xLabel>
 <yLabel>note</yLabel>
-<xRange min="2.0" max="48.0"/>
+<xRange min="0.5" max="48.0"/>
 <yRange min="-0.01" max="81.0"/>
 <default connected="no" marks="dots"/>
 </plot>?>
@@ -1474,7 +1464,6 @@ Then delete this annotation.</text>
     <link port="MicrostepDelay2.input" relation="relation5"/>
     <link port="MicrostepDelay2.output" relation="relation15"/>
     <link port="SetVariable.input" relation="relation10"/>
-    <link port="Display.input" relation="relation7"/>
     <link port="Plots.original" relation="relation2_0"/>
     <link port="Plots.impro" relation="relation7"/>
 </entity>
