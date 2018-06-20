@@ -207,6 +207,8 @@ test StreamExec-3.0 {Test for pattern matching} {
     $commands add "echo first"
     $commands add "echo second"
     $commands add "echo Failed: 1 of 2"
+    # Sleep for two seconds to be sure the order of output is OK.
+    $commands add "sleep 2"
     $commands add "make notATarget"
 
     set streamExec [java::new ptolemy.util.StreamExec]
@@ -226,9 +228,10 @@ test StreamExec-3.0 {Test for pattern matching} {
     set result [$streamExec getPatternLog]
 
     regsub -all {make\[.*]} $result {make} result2
-    regsub -all {.  Stop.} $result2 {.} result3
-    list $result3
+    regsub -all {.notATarget.} $result2 {'notATarget'} result3
+    regsub -all {.  Stop.} $result3 {.} result4
+    list $result4
 } {{second
 Failed: 1 of 2
-make: *** No rule to make target `notATarget'.
+make: *** No rule to make target 'notATarget'.
 }}
