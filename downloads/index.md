@@ -41,7 +41,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11_0_1_setup_windows_64.exe">ptII11_0_1_setup_windows_64.exe</a>
   </td>
   <td> 
-       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11_1_devel_setup_windows_64.exe">ptII11_1_devel_setup_windows_64.exe"></a>
+       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11_1_devel_setup_windows_64.exe">ptII11_1_devel_setup_windows_64.exe</a>
   </td>
  </tr>
 
