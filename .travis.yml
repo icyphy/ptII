@@ -207,7 +207,7 @@ jobs:
 # See https://docs.travis-ci.com/user/caching
 cache:
   directories:
-    - $PTII/vendors/adm/gen-11.0/node
+    - $PTII/vendors/adm/gen-11.1/node
     - $CERTI_HOME_TRAVIS
     - $PTII/vendors/installer
     - $PTII/vendors/jai-1_1_2_01
@@ -251,14 +251,14 @@ deploy:
     api_key: $GITHUB_TOKEN
     file_glob: true
     file:
-      - $PTII/adm/gen-11.0/capecode0.2.1.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/capecode0_2_1_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/capecode0.2.1.tar.gz
-      - $PTII/adm/gen-11.0/ptII11.0.1.setup.mac.app.tar.gz
-      - $PTII/adm/gen-11.0/ptII11_0_1_setup_windows_64.exe
-      - $PTII/adm/gen-11.0/ptII11_0_1_setup_windows.exe
-      - $PTII/adm/gen-11.0/ptII11.0.1.src.tar
-      - $PTII/adm/gen-11.0/ptII11.0.1.src.zip
+      - $PTII/adm/gen-11.1/capecode0.3.devel.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.1/capecode0_3_devel_setup_windows_64.exe
+      - $PTII/adm/gen-11.1/capecode0.3.devel.tar.gz
+      - $PTII/adm/gen-11.1/ptII11.1.devel.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.1/ptII11_1_devel_setup_windows_64.exe
+      - $PTII/adm/gen-11.1/ptII11_1_devel_setup_windows.exe
+      - $PTII/adm/gen-11.1/ptII11.1.devel.src.tar
+      - $PTII/adm/gen-11.1/ptII11.1.devel.src.zip
     on:
       tags: true
       condition: $PT_TRAVIS_TEST_INSTALLERS = true
