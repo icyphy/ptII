@@ -13,7 +13,7 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
 
  <tr>
   <th> Platform </th>
-  <th> <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/">Ptolemy II 10.0.1</a>
+  <th> <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/">Ptolemy II 11.0.1</a>
                                                             <i>Production Quality</i>
   </th>
   <th> Most Recent <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis">Nightly Build</a> <i>Experimental, not tested by hand</i> </th>
@@ -27,35 +27,26 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
  <tr>
   <td> Mac OS X </td>
   <td>
-        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.setup.mac.dmg">ptII10.0.1.setup.mac.dmg</a>
+        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11.0.1.setup.mac.dmg">ptII11.0.1.setup.mac.dmg</a>
   </td>
   <td> 
-        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.1.setup.mac.app.tar.gz">ptII11.0.1.setup.mac.app.tar.gz</a>
-        <br/>(Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/mac.htm">Notes for macOS</a>.
+        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.1.devel.setup.mac.app.tar.gz">ptII11.1.devel.setup.mac.app.tar.gz</a>
+        <br/>(Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/mac.htm">Notes for macOS</a>.
   </td>
- </tr>
-
- <tr>
-  <td>Linux</td>
-  <td> NA </td>
-  <td>
-        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.1.setup.linux.tar.gz">ptII11.0.1.setup.linux.tar.gz</a>
-        <br/>(Untar, then invoke <code>java -jar ptII11.0.1.setup.jar</code> </td>
  </tr>
 
  <tr>
   <td> 32-bit Windows </td>
   <td> 
-       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows.exe">ptII10_0_1_setup_windows.exe</a>
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11_0_1_setup_windows.exe">ptII11_0_1_setup_windows.exe</a>
   </td>
   <td> NA </td>
  </tr>  
 
-
  <tr>
   <td> 64-bit Windows </td>
   <td> 
-       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10_0_1_setup_windows_64.exe">ptII10_0_1_setup_windows_64.exe</a>
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11_0_1_setup_windows_64.exe">ptII11_0_1_setup_windows_64.exe</a>
   </td>
   <td> 
        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11_0_1_setup_windows_64.exe">ptII11_0_1_setup_windows_64.exe</a>
@@ -65,10 +56,10 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
  <tr>
   <td> Sources: Windows line endings</td>
   <td>
-       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.zip">ptII10.0.1.src.zip</a>
+       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11.0.1.src.zip">ptII11.0.1.src.zip</a>
   </td>
   <td>
-       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.1.src.zip">ptII11.0.1.src.zip</a>
+       <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.1.devel.src.zip">ptII11.1.devel.src.zip</a>
        <br/>(<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
   </td>
  </tr>
@@ -76,21 +67,13 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
  <tr>
   <td> Sources: Unix line endings </td>
   <td>
-        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1.src.tar.gz">ptII10.0.1.src.tar.gz</a>
+        <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/ptII11.0.1.src.tar.gz">ptII11.0.1.src.tar.gz</a>
   </td>
   <td>
-        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.0.1.src.tar">ptII11.0.1.src.tar</a>
+        <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.1.devel.src.tar">ptII11.1.devel.src.tar</a>
         <br/>(<a href="https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm">Eclipse Instructions</a>)
   </td>
 
- </tr>
-
- <tr>
-  <td> Web Copy </td>
-  <td>
-       <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.1/doc/index.htm">index.htm</a>
-  </td>
-  <td> NA </td>
  </tr>
 
 </table>
