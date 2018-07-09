@@ -205,7 +205,11 @@ test StreamExec-2.5 {Run commands in another thread and call cancel} {
 test StreamExec-3.0 {Test for pattern matching} {
     set commands [java::new java.util.LinkedList]
     $commands add "echo first"
+    # Sleep for two seconds to be sure the order of output is OK.
+    $commands add "sleep 2"
     $commands add "echo second"
+    # Sleep for two seconds to be sure the order of output is OK.
+    $commands add "sleep 2"
     $commands add "echo Failed: 1 of 2"
     # Sleep for two seconds to be sure the order of output is OK.
     $commands add "sleep 2"
