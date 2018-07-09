@@ -16,9 +16,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[957, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000024">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000016">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.20139534883708, 190.19767441860452}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.41729651162825, 154.76417151162798}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -234,12 +234,12 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation4"/>
     <link port="TextDisplay.input" relation="relation2"/>
-    <link port="Insert.output" relation="relation4"/>
-    <link port="Insert.trigger" relation="relation"/>
+    <link port="Insert.output" relation="relation3"/>
+    <link port="Insert.trigger" relation="relation4"/>
     <link port="SemanticRepositoryUpdate.status" relation="relation2"/>
-    <link port="SemanticRepositoryUpdate.update" relation="relation4"/>
+    <link port="SemanticRepositoryUpdate.update" relation="relation3"/>
 </entity>
