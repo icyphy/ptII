@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Sensors" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.1">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -612,6 +612,16 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Errors2" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={867, 532, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="MQTT errors">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 250.0]">
+        </property>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -646,6 +656,8 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="WebSocketServer.toSend" relation="relation10"/>
     <link port="WebSocketServer.received" relation="relation12"/>
     <link port="WebSocketServer.connection" relation="relation9"/>
@@ -657,6 +669,7 @@
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.trigger" relation="relation7"/>
     <link port="Errors.input" relation="relation6"/>
+    <link port="MQTTSubscriber.error" relation="relation13"/>
     <link port="MQTTSubscriber.subscribe" relation="relation8"/>
     <link port="MQTTSubscriber.connection" relation="relation4"/>
     <link port="MQTTSubscriber.received" relation="relation2"/>
@@ -669,5 +682,6 @@
     <link port="JavaScript.IPAddress" relation="relation"/>
     <link port="JavaScript.tagID" relation="relation5"/>
     <link port="JavaScript.accessor" relation="relation7"/>
+    <link port="Errors2.input" relation="relation13"/>
     <link relation1="relation11" relation2="relation12"/>
 </entity>
