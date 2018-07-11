@@ -266,9 +266,10 @@ deploy:
     skip_cleanup: true    
     verbose: true
 
-notifications:
-  email:
-    recipients:
-      - cxh@eecs.berkeley.edu
-    on_success: always # default: change
-    on_failure: always # default: always
+# See https://docs.travis-ci.com/user/notifications/
+# notifications:
+#  email:
+#    recipients:
+#      - cxh@eecs.berkeley.edu
+#    on_success: always # default: change
+#    on_failure: always # default: always
