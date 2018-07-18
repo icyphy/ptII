@@ -1325,12 +1325,15 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
 }
 
 /** Return an object that contains the accessor's monitor object. Prior to this, the 
- *  total utilization is computed up to this point.
+ *  total utilization is computed up to this point.  If the accessor is monitoring
+ *  deeply, then include a property 'containedAccessors' whose value is an array of
+ *  the monitor objects of the contained accessors.
  *
  *  @return the accessor's monitor object.
  */
 Accessor.prototype.getMonitoring = function() {
     if (this.monitoring) {
+    	this.monitor.accessorName = this.accessorName;
         // Update utilizations given the currentMonitoringTime
         this.monitor.currentMonitoringTime = Date.now();
 
@@ -1354,6 +1357,15 @@ Accessor.prototype.getMonitoring = function() {
         this.monitor.utilization = this.monitor.initialize.utilization +
             this.monitor.react.utilization + 
             this.monitor.wrapup.utilization;
+        
+        if (this.monitoringDeeply) {
+        	this.monitor.containedAccessors = [];
+            if (this.containedAccessors && this.containedAccessors.length > 0) {
+                for (var i = 0; i < this.containedAccessors.length; i++) {
+                	this.monitor.containedAccessors.push(this.containedAccessors[i].getMonitoring());
+                }
+            }
+        }
     }
 
     return this.monitor;
@@ -2373,11 +2385,14 @@ Accessor.prototype.startMonitoring = function(deeply) {
 
     // If needed, start monitoring all contained accessors.
     if (deeply) {
+    	this.monitoringDeeply = true;
         if (this.containedAccessors && this.containedAccessors.length > 0) {
             for (var i = 0; i < this.containedAccessors.length; i++) {
                 this.containedAccessors[i].startMonitoring(deeply);
             }
         }
+    } else {
+    	this.monitoringDeeply = false;
     }
 
     if (this.monitoring) {
@@ -2450,6 +2465,7 @@ Accessor.prototype.stopMonitoring = function() {
     if (this.monitoring) {
         this.monitor.stopMonitoringTime = this.monitor.currentMonitoringTime;
         this.monitoring = false;
+        this.monitoringDeeply = false;
 
         // Remove listeners
         this.removeListener('initializeStart', _recordEventStart.bind(thiz, 'initialize'));
@@ -2560,6 +2576,9 @@ var _recordEventStart = function(event) {
         break;
     case 'wrapup':
         this.monitor.wrapup.latestStart = Date.now();
+        // Wrapup monitoring is reported in wrapup,
+        // not after, so we set the count to 1 here.
+        this.monitor.wrapup.count = 1;
     }
 }
 
