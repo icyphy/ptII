@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="QuarryEulerian" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1203, 730}, maximized=false}">
@@ -34,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 300.0]">
         </property>
     </property>
     <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
@@ -61,7 +61,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 320.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -69,7 +69,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: Microstep delays&#10;should not really be needed&#10;here. Inside the Throttle class,&#10;we need a way to declare no&#10;direct dependency between input&#10;and triggerOutput. Can use the&#10;actor object and set dependencies.&#10;&#10;Need a Merge actor.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 90.0]">
         </property>
     </property>
     <entity name="Arrivals" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -87,7 +87,7 @@
         </property>
         <property name="capacity" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="population" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <entity name="Throttle" class="Throttle">
             <entity name="Controller" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -100,13 +100,13 @@
         </entity>
     </entity>
     <entity name="Track2" class="Track">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[815.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[825.0, 345.0]">
         </property>
         <property name="speed" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <property name="length" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="population" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -138,7 +138,7 @@
         </entity>
     </entity>
     <entity name="Crossing" class="Crossing">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[730.0, 510.0]">
         </property>
         <property name="population" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -162,7 +162,7 @@
         </property>
         <property name="length" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="population" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="population" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -177,7 +177,7 @@
         </entity>
     </entity>
     <entity name="PrimaryCrusher" class="ptolemy.demo.Quarry.Task">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[875.0, 505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 510.0]">
         </property>
         <property name="occupied" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -196,7 +196,7 @@
         </entity>
     </entity>
     <entity name="WheelLoader" class="ptolemy.demo.Quarry.Task">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 555.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 560.0]">
         </property>
         <property name="occupied" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -233,12 +233,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 305.0]">
         </property>
     </entity>
-    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 460.0]">
-        </property>
-        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -248,7 +242,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{25.0, 460.0}">
+        <vertex name="vertex1" value="[20.0, 380.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -273,14 +267,16 @@
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
         <vertex name="vertex1" value="[395.0, 380.0]">
+        </vertex>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[955.0, 355.0]">
         </vertex>
     </relation>
     <link port="Arrivals.input" relation="relation20"/>
@@ -320,6 +316,5 @@
     <link port="Router.out2" relation="relation17"/>
     <link port="Router.pause2" relation="relation16"/>
     <link port="Arrivals2.input" relation="relation19"/>
-    <link port="MicrostepDelay2.input" relation="relation20"/>
-    <link port="MicrostepDelay2.output" relation="relation13"/>
+    <link relation1="relation13" relation2="relation20"/>
 </entity>
