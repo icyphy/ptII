@@ -77,6 +77,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -757,14 +758,16 @@ public class JavaScript extends AbstractPlaceableActor
         Time currentTime = director.getModelTime();
         return currentTime.getDoubleValue();
     }
-
-    /** Declare that any output that is marked as spontanous does does
-     *  not depend on the input in a firing.
+    
+    /** Declare that any output that is marked as spontaneous does does
+     *  not depend on the input in a firing. Also, declare dependencies
+     *  based on prior calls to declareIndependence().
      *  @exception IllegalActionException If the causality interface
      *  cannot be computed.
      */
     @Override
     public void declareDelayDependency() throws IllegalActionException {
+        System.out.println("FIXME1 ");
         for (IOPort output : outputPortList()) {
             SingletonParameter spontaneity = (SingletonParameter) output
                     .getAttribute(_SPONTANEOUS);
@@ -779,6 +782,30 @@ public class JavaScript extends AbstractPlaceableActor
                 }
             }
         }
+        if (_independentInputs != null) {
+            for(int i = 0; i < _independentInputs.size(); i++) {
+                Port input = getPort(_independentInputs.get(i));
+                Port output = getPort(_independentOutputs.get(i));
+                if (input instanceof IOPort && output instanceof IOPort) {
+                    System.out.println("FIXME: " + _independentOutputs.get(i) + ", " + _independentInputs.get(i));
+                    _declareDelayDependency((IOPort)input, (IOPort)output, 0.0);
+                }
+            }
+        }
+    }
+
+    /** Declare that the specified output does not depend on the specified input.
+     *  @param outputName The name of the output.
+     *  @param inputName The name of hte input.
+     */
+    public void declareIndependence(String outputName, String inputName) {
+        System.out.println("FIXME2: " + outputName + ", " + inputName);
+        if (_independentInputs == null) {
+            _independentInputs = new LinkedList<String>();
+            _independentOutputs = new LinkedList<String>();
+        }
+        _independentInputs.add(inputName);
+        _independentOutputs.add(outputName);
     }
 
     /** Specify a description to appear in the documentation for this actor.
@@ -2894,6 +2921,12 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** The director thread. This is set in initialize() and unset in wrapup. */
     private Thread _directorThread;
+    
+    /** Inputs that outputs do not depend on. */
+    private List<String> _independentInputs;
+    
+    /** Outputs that do not depend on inputs. */
+    private List<String> _independentOutputs;
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;

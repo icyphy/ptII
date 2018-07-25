@@ -89,6 +89,14 @@ public class RestrictedJavaScriptInterface {
         return _actor.currentTime();
     }
 
+    /** Declare that the specified output does not depend on the specified input.
+     *  @param outputName The name of the output.
+     *  @param inputName The name of hte input.
+     */
+    public void declareIndependence(String outputName, String inputName) {
+        _actor.declareIndependence(outputName, inputName);
+    }
+
     /** Specify a description to appear in the documentation for this actor.
      *  The recommended format for documentation is HTML or Markdown.
      *  @param description A description to appear in documentation.
