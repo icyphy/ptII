@@ -767,7 +767,6 @@ public class JavaScript extends AbstractPlaceableActor
      */
     @Override
     public void declareDelayDependency() throws IllegalActionException {
-        System.out.println("FIXME1 ");
         for (IOPort output : outputPortList()) {
             SingletonParameter spontaneity = (SingletonParameter) output
                     .getAttribute(_SPONTANEOUS);
@@ -787,7 +786,6 @@ public class JavaScript extends AbstractPlaceableActor
                 Port input = getPort(_independentInputs.get(i));
                 Port output = getPort(_independentOutputs.get(i));
                 if (input instanceof IOPort && output instanceof IOPort) {
-                    System.out.println("FIXME: " + _independentOutputs.get(i) + ", " + _independentInputs.get(i));
                     _declareDelayDependency((IOPort)input, (IOPort)output, 0.0);
                 }
             }
@@ -799,7 +797,6 @@ public class JavaScript extends AbstractPlaceableActor
      *  @param inputName The name of hte input.
      */
     public void declareIndependence(String outputName, String inputName) {
-        System.out.println("FIXME2: " + outputName + ", " + inputName);
         if (_independentInputs == null) {
             _independentInputs = new LinkedList<String>();
             _independentOutputs = new LinkedList<String>();
