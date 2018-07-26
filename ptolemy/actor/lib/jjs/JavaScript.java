@@ -970,7 +970,7 @@ public class JavaScript extends AbstractPlaceableActor
             try {
                 _engine.put("_topLevelCode", scriptValue);
                 _instance = ((Invocable) _engine).invokeFunction("evaluateCode",
-                        getName(), scriptValue);
+                        getName(), scriptValue, _accessorClass());
                 _exports = ((Map) _instance).get("exports");
             } catch (Throwable throwable) {
                 if (error.getWidth() > 0) {
@@ -1395,6 +1395,27 @@ public class JavaScript extends AbstractPlaceableActor
             throw new IllegalActionException(this, e,
                     "Failed to read URI: " + uri);
         }
+    }
+    
+    /** Provide access to the top-level accessors in this model.
+     *  @return An array of instances of the JavaScript Accessor class.
+     */
+    public Object[] getTopLevelAccessors() throws Exception {
+        if (_workspace.getVersion() != _topLevelAccessorsVersion) {
+            _topLevelAccessorsVersion = _workspace.getVersion();
+            ArrayList result = new ArrayList();
+            NamedObj toplevel = toplevel();
+            if (toplevel instanceof CompositeEntity) {
+                List entityList = ((CompositeEntity)toplevel).allAtomicEntityList();
+                for (Object entity : entityList) {
+                    if (entity instanceof JavaScript) {
+                        result.add(new AccessorProxy((JavaScript)entity));
+                    }
+                }
+            }
+            _topLevelAccessors = result.toArray(new Object[result.size()]);
+        }
+        return _topLevelAccessors;
     }
 
     /** Create a new JavaScript engine, load the default functions, and
@@ -2037,6 +2058,9 @@ public class JavaScript extends AbstractPlaceableActor
             _timeoutCount = 0;
 
             _createEngineAndEvaluateSetup();
+            // Since a new accessor object has been created, increment
+            // the workspace version.
+            _workspace.incrVersion();
         }
         _running = false;
     }
@@ -2180,6 +2204,14 @@ public class JavaScript extends AbstractPlaceableActor
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the name of the accessor class. In this base class, it
+     *  returns "JavaScript".
+     *  @return The string "JavaScript".
+     */
+    protected String _accessorClass() {
+        return "JavaScript";
+    }
+    
     /** Override the base class so that the name of any port added is shown.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
@@ -2235,23 +2267,25 @@ public class JavaScript extends AbstractPlaceableActor
      *  @param context The context.
      *  @param methodName The method name.
      *  @param args Arguments to pass to the function.
+     *  @return Whatever the function returns.
      *  @exception IllegalActionException If the method does not exist in either
      *   context, or if an error occurs invoking the method.
      */
-    protected void _invokeMethodInContext(Object context, String methodName,
+    protected Object _invokeMethodInContext(Object context, String methodName,
             Object... args) throws IllegalActionException {
         try {
-            ((Invocable) _engine).invokeMethod(context, methodName, args);
+            return ((Invocable) _engine).invokeMethod(context, methodName, args);
         } catch (NoSuchMethodException e) {
             // Attempt to invoke it in the top-level contenxt.
             try {
-                ((Invocable) _engine).invokeFunction(methodName, args);
+                return ((Invocable) _engine).invokeFunction(methodName, args);
             } catch (NoSuchMethodException e1) {
                 throw new IllegalActionException(this, e1,
                         "No function defined named " + methodName);
             } catch (ScriptException e1) {
                 if (error.getWidth() > 0) {
                     error.send(0, new StringToken(e1.getMessage()));
+                    return null;
                 } else {
                     throw new IllegalActionException(this, e1,
                             "Failure executing the " + methodName
@@ -2261,6 +2295,7 @@ public class JavaScript extends AbstractPlaceableActor
         } catch (ScriptException e) {
             if (error.getWidth() > 0) {
                 error.send(0, new StringToken(e.getMessage()));
+                return null;
             } else {
                 throw new IllegalActionException(this, e,
                         "Failure executing the " + methodName + " function: "
@@ -2269,6 +2304,7 @@ public class JavaScript extends AbstractPlaceableActor
         } catch (Throwable throwable) {
             if (error.getWidth() > 0) {
                 error.send(0, new StringToken(throwable.getMessage()));
+                return null;
             } else {
                 throw new IllegalActionException(this, throwable,
                         "Failure executing the " + methodName + " function: "
@@ -2451,7 +2487,7 @@ public class JavaScript extends AbstractPlaceableActor
         String scriptValue = script.getValueAsString();
         try {
             _instance = ((Invocable) _engine).invokeFunction("evaluateCode",
-                    getName(), scriptValue);
+                    getName(), scriptValue, _accessorClass());
             _exports = ((Map) _instance).get("exports");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
@@ -2958,9 +2994,44 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
+    
+    /** Cached list of top-level accessors. */
+    private Object[] _topLevelAccessors;
+    
+    /** Version of workspace for list of top-level accessors. */
+    private long _topLevelAccessorsVersion = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
+    
+    /** Proxy for an accessor for monitoring purposes.
+     *  This exposes methods that reveal information about the accessor
+     *  but do not change its state, except for stopMonitoring().
+     */
+    public class AccessorProxy {
+        public AccessorProxy(JavaScript actor) {
+            _actor = actor;
+        }
+        public Object getAccessorClass() throws IllegalActionException {
+            return _actor._invokeMethodInContext(_actor._instance, "getAccessorClass");
+        }
+        public Object getMonitoring() throws IllegalActionException {
+            return _actor._invokeMethodInContext(_actor._instance, "getMonitoring");
+        }
+        public Object getName() throws IllegalActionException {
+            return _actor._invokeMethodInContext(_actor._instance, "getName");
+        }
+        public Object isInitialized() throws IllegalActionException {
+            return _actor._invokeMethodInContext(_actor._instance, "isInitialized");
+        }
+        public void startMonitoring(boolean deep) throws IllegalActionException {
+            _actor._invokeMethodInContext(_actor._instance, "startMonitoring", deep);
+        }
+        public void stopMonitoring() throws IllegalActionException {
+            _actor._invokeMethodInContext(_actor._instance, "stopMonitoring");
+        }
+        private JavaScript _actor;
+    }
 
     /** Proxy for a port or parameter.
      *

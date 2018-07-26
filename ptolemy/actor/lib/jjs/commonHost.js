@@ -344,7 +344,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     this.code = code;
 
     this.bindings = bindings;
-
+    
     ///////////////////////////////////////////////////////////////////
     //// Override using specified bindings.
 
@@ -1275,6 +1275,13 @@ Accessor.prototype.get = function (name) {
     return value;
 };
 
+/** Return the class of the accessor.
+ *  @return The accessor's class.
+ */
+Accessor.prototype.getAccessorClass = function() {
+	return this.accessorClass;
+}
+
 /** Return the default function bindings to use when instantiating accessors.
  *  @param accessorClass The accessor class name, if there is one.
  *  @return An object with a property for each function that the accessor may invoke
@@ -1369,6 +1376,13 @@ Accessor.prototype.getMonitoring = function() {
     }
 
     return this.monitor;
+}
+
+/** Return the name of the accessor.
+ *  @return The accessor's name.
+ */
+Accessor.prototype.getName = function() {
+	return this.accessorName;
 }
 
 /** Default implementation of this.getParameter(), which reads the current value of the
@@ -1526,6 +1540,13 @@ Accessor.prototype.instantiateFromCode = function (instanceName, code, standAlon
     }
     return instance;
 };
+
+/** Return true if this accessor has been initialized.
+ *  @return True if this accessor has been initialized.
+ */
+Accessor.prototype.isInitialized = function() {
+	return this.initialized;
+}
 
 /** Return the latest value produced on this output, or null if no
  *  output has been produced.

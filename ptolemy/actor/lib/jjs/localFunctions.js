@@ -68,14 +68,16 @@ Object.setPrototypeOf(exports, {
 /** Evaluate the specified code in the current context.
  *  @param accessorName The name to give to the accessor.
  *  @param code The code to evaluate.
+ *  @param accessorClass The accessor class, if known.
  */
-function evaluateCode(accessorName, code) {
+function evaluateCode(accessorName, code, accessorClass) {
     var bindings = {
         'clearInterval': clearInterval,
         'clearTimeout': clearTimeout,
         'error': error,
         'getParameter': getParameter,
         'getResource': getResource,
+        'getTopLevelAccessors': getTopLevelAccessors,
         'httpRequest': httpRequest,
         'hostStackTrace': hostStackTrace,
         'input': input,
@@ -91,7 +93,13 @@ function evaluateCode(accessorName, code) {
         'stop': stop,
         'superSend': superSend
     };
-    return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
+    var accessor = new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
+    if (accessorClass) {
+    	accessor.accessorClass = accessorClass;
+    } else {
+    	accessor.accessorClass = 'unknown';
+    }
+    return accessor;
 }
 
 /** Get data from a parameter.
@@ -128,6 +136,13 @@ function getParameter(name) {
  */
 function getResource(uri, timeout) {
     return actor.getResource(uri, timeout);
+}
+
+/** Get the top-level accessors in the model containing this actor.
+ *  @return An array of instances of Accessor.
+ */
+function getTopLevelAccessors() {
+    return actor.getTopLevelAccessors();
 }
 
 /** Throw an error indicating that getTopLevelAccessors is not supported. 
