@@ -104,6 +104,12 @@ exports.debuglog = function (set) {
  */
 /* legacy: obj, showHidden, depth, colors*/
 function inspect(obj, opts) {
+	if (obj == null) {
+		return "null";
+	}
+	if (typeof obj == "undefined") {
+		return "undefined";
+	}
     try {
         // default options
         var ctx = {
@@ -128,8 +134,17 @@ function inspect(obj, opts) {
         if (ctx.colors) ctx.stylize = stylizeWithColor;
         return formatValue(ctx, obj, ctx.depth);
     } catch (e) {
+    	if (obj && Array.isArray(obj)) {
+    		var result = '[\n';
+    		for (var i = 0; i < obj.length; i++) {
+    			result += '    ' + inspect(obj[i], opts) + ',\n';
+    		}
+    		result += ']\n';
+    		return result;
+    	}
         // Use obj and not obj.toString() because obj.toString() may
         // fail here.
+    	// return "" + obj;
         return "$PTII/ptolemy/actor/lib/jjs/node/util.js: util.inspect("
                 + obj
                 + ") fails with: " + e;

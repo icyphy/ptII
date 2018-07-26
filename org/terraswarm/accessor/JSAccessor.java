@@ -918,6 +918,20 @@ public class JSAccessor extends JavaScript {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the name of the accessor class. In this base class, it
+     *  returns the value of the accessorSource parameter. If the
+     *  accessorSource parameter does not yet exist, then this returns
+     *  "Unknown".
+     *  @return The value of the accessorSource parameter.
+     */
+    protected String _accessorClass() {
+        if (accessorSource != null) {
+            return accessorSource.getExpression();
+        } else {
+            return "Unknown";
+        }
+    }
+
     /** For the given URL specification, attempt to find a local copy
      *  of the resource and return that if it exists. Otherwise,
      *  return the URL specified.  If updateRepository is true, or if

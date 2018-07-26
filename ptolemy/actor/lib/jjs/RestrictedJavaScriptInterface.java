@@ -155,6 +155,13 @@ public class RestrictedJavaScriptInterface {
         return _actor.getResource(uri, arguments);
     }
 
+    /** Provide access to the top-level accessors in this model.
+     *  @return An array of instances of the JavaScript Accessor class.
+     */
+    public Object[] getTopLevelAccessors() throws Exception {
+        return _actor.getTopLevelAccessors();
+    }
+
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.
