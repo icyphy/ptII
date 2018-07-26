@@ -267,9 +267,9 @@ deploy:
     verbose: true
 
 # See https://docs.travis-ci.com/user/notifications/
-# notifications:
-#  email:
-#    recipients:
-#      - cxh@eecs.berkeley.edu
-#    on_success: always # default: change
-#    on_failure: always # default: always
+notifications:
+  email:
+    recipients:
+     - eal@berkeley.edu
+    on_success: always # default: change
+    on_failure: always # default: always
