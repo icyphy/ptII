@@ -52,11 +52,11 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLangrangian">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLagrangian">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 95.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLangrangian.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLagrangian.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,11 +79,11 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLangrangianStopAndGo">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLagrangianStopAndGo">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 120.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLangrangianStopAndGo.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLagrangianStopAndGo.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -106,11 +106,11 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLangrangianRobot (unfinished)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="QuarryLagrangianRobot (unfinished)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 145.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLangrangianRobot.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="QuarryLagrangianRobot.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
