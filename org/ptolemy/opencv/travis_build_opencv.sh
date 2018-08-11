@@ -40,7 +40,7 @@ if [ ! -d $INSTALL_FLAG ]; then
     echo "$0: $INSTALL_FLAG does not exist or is not a directory."
     # Because set -e was invoked, ls will return non-zero if the
     # directory does not exist.  So we check that it exists first
-    if [ ! -d $OPENCV_PREFIX ]; then
+    if [ ! -d $INSTALL_PREFIX ]; then
         echo "$0: $INSTALL_PREFIX does not exist or is not a directory."
     else
         ls -R $INSTALL_PREFIX
