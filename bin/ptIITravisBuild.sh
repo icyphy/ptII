@@ -219,7 +219,7 @@ runTarget () {
             echo "######################################################"
             echo "$0: WARNING! `date`: wget $jar failed with a non-zero status of $status"
             echo "Below are the last $lastlines lines of the log file:"
-            echo tail -$lastlines $log
+            echo tail -$lastLines $log
         fi
         ls -l $PTII/doc/$jar
         (cd $PTII; jar -xf $PTII/doc/$jar)
@@ -257,14 +257,17 @@ runTarget () {
                 echo "######################################################"
             else
                 echo "$0: exiting with a value of $status"
+                echo "$0: Start of last $lastLines lines of $log"
+                tail -$lastLines $log
                 exit $status
             fi
         fi
     else
         echo "$0: `date`: ant build $target returned $status"
-        echo "$0: Start of last $lastLines lines of $log"
-        tail -$lastLines $log
     fi
+
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
 
     date
 
