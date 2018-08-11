@@ -112,7 +112,7 @@ case `uname -s` in
         status=$?
         if [ $status -eq 0 ]; then
             echo "timeout supports --kill-after"
-            # Use a -3 signal to get a stack trace, then 20 seconds later, use kill -9.
+            # Use a -3 signal to get a stack trace, then 20 seconds later, use kill, which will return 124.
             TIMEOUTCOMMAND='timeout -s 3 --kill-after=20'
         else
             echo "timeout does not support --kill-after, usage was: '$usage', use kill -9."
@@ -250,8 +250,15 @@ runTarget () {
             echo "See https://github.com/travis-ci/travis-ci/issues/4192"
             echo "######################################################"
         else
-            echo "$0: exiting with a value of $status"
-            exit $status
+            if [ $status = 124 ]; then
+                echo "######################################################"
+                echo "$0: WARNING! `date`: Ant probably times out because status = $status, which https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html says that the command timed out.  This probably occurred because we are using the Ubuntu timeout command, which sends a kill signal after 20 seconds and returns 124.  See http://manpages.ubuntu.com/manpages/trusty/man1/timeout.1.html.  A timeout can happen if the a cache, such as the OpenCV cache, failed to download and rebuilding the cache caused the ptII ant job to be killed by the timeout command.  Usually the cache will be rebuilt and the next run of the Travis job will succeed."
+                echo "See also https://github.com/travis-ci/travis-ci/issues/4192"
+                echo "######################################################"
+            else
+                echo "$0: exiting with a value of $status"
+                exit $status
+            fi
         fi
     else
         echo "$0: `date`: ant build $target returned $status"
