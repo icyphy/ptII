@@ -242,7 +242,7 @@ runTarget () {
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
-        echo "$0: `date`: At $SECONDS, ant build $target returned $status, which is non-zero. `date`"
+        echo "$0: `date`: At $SECONDS, ant build $target returned $status, which is non-zero."
         tail -$lastLines $log
         if [ $status = 137 ]; then
             echo "######################################################"
@@ -255,11 +255,6 @@ runTarget () {
                 echo "$0: WARNING! `date`: Ant probably times out because status = $status, which https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html says that the command timed out.  This probably occurred because we are using the Ubuntu timeout command, which sends a kill signal after 20 seconds and returns 124.  See http://manpages.ubuntu.com/manpages/trusty/man1/timeout.1.html.  A timeout can happen if the a cache, such as the OpenCV cache, failed to download and rebuilding the cache caused the ptII ant job to be killed by the timeout command.  Usually the cache will be rebuilt and the next run of the Travis job will succeed."
                 echo "See also https://github.com/travis-ci/travis-ci/issues/4192"
                 echo "######################################################"
-            else
-                echo "$0: exiting with a value of $status"
-                echo "$0: Start of last $lastLines lines of $log"
-                tail -$lastLines $log
-                exit $status
             fi
         fi
     else
@@ -277,6 +272,13 @@ runTarget () {
     ant clean
 
     updateGhPages $PTII/reports/junit reports/
+
+    if [ $status -ne 0 ]; then
+        echo "$0: `date`: 'ant build $target' returned $status, which is non-zero."
+        echo "Exit delayed so that the log can be added to the repository."
+        echo "Now exiting with a value of $status"
+        exit $status
+    fi
 }
 
 # Copy the file or directory named by
