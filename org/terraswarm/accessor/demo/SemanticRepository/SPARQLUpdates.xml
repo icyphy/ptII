@@ -9,31 +9,39 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, -10.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={57, 151, 1191, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[957, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000016">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000033">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{289.41729651162825, 154.76417151162798}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{238.7767441860467, 188.00232558139535}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this model to work, you must first start an instance of&#10;a semantic repository (with data) named &quot;FirstRepo&quot; on localhost &#10;port 7200. For example, try graphDB http://graphdb.ontotext.com/&#10;with the sample dataset that comes with the download.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 250.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, 245.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Examples of the two types of SPARQL updates that&#10;modify data in a semantic repository. Note that an&#10;INSERT that inserts data already in the repository or&#10;a DELETE that removes data already absent from the &#10;repository is treated by the respository as a&#10;successful update. A status code &quot;204&quot; indicates&#10;success.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Examples of three types of SPARQL updates that&#10;modify data in a semantic repository: INSERT DATA,&#10;DELETE DATA, and DELETE/INSERT. Note that an&#10;INSERT DATA that inserts data already in the repository or&#10;a DELETE DATA that removes data already absent from the &#10;repository is treated by the respository as a&#10;successful update. The same is true for DELETE/INSERT.&#10;A status code &quot;204&quot; indicates success.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, -50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, -155.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="INSERT DATA and DELETE DATA both operate on&#10;triples given inline in the request.&#10;A DELETE/INSERT command requires a mandatory&#10;&quot;WHERE {GroupGraphPattern}&quot; clause which is first&#10;matched against the repo as in&#10;&quot;SELECT * WHERE GroupGraphPattern&quot; and all the solution&#10;bindings are applied to the preceding DELETE and INSERT&#10;templates for defining the triples to be deleted from or inserted.&#10;Note WHERE {} is much faster than WHERE {?x  ?y ?z} if&#10;the bindings aren't used.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 220.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -75,7 +83,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[855.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 155.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -96,7 +104,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 150.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 115.0]">
         </property>
     </entity>
     <entity name="Delete" class="ptolemy.actor.lib.StringConst">
@@ -117,11 +125,11 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{245.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 75.0]">
         </property>
     </entity>
-    <entity name="Delete Then Insert" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="DELETE DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}; INSERT DATA {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .}">
+    <entity name="Atomic Delete Then Insert" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="DELETE {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .} INSERT {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .} WHERE {}">
         </property>
         <doc>Create a constant sequence with a string value.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -132,7 +140,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{800.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 30.0]">
         </property>
     </entity>
     <entity name="SemanticRepositoryUpdate" class="org.terraswarm.accessor.JSAccessor">
@@ -154,7 +162,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[660.0, 155.0]">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -232,14 +240,14 @@
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="SingleEvent.output" relation="relation"/>
     <link port="TextDisplay.input" relation="relation2"/>
-    <link port="Insert.output" relation="relation3"/>
-    <link port="Insert.trigger" relation="relation4"/>
+    <link port="Atomic Delete Then Insert.output" relation="relation3"/>
+    <link port="Atomic Delete Then Insert.trigger" relation="relation"/>
     <link port="SemanticRepositoryUpdate.status" relation="relation2"/>
     <link port="SemanticRepositoryUpdate.update" relation="relation3"/>
 </entity>
