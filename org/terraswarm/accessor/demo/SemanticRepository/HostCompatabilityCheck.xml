@@ -1,0 +1,293 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HostCompatabilityCheck" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 49, 934, 632}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For this model to work, you must first start an instance of&#10;a semantic repository (with data) named &quot;AccessorsAndHosts&quot; on localhost &#10;port 7200. This can be accomplished by creating a graphDB repo of that name&#10;and importing the files: accessor/accessors/ontology/OutputAccessors.ttl and&#10;accessor/accessors/ontology/OutputHosts.ttl. If these files are not&#10;up-to-date, consider rerunning the node scripts &quot;accessorOntologyBuilder.js&quot;&#10;and &quot;hostOntologyBuilder.js&quot; in the same directory.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 390.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of the HostCompatability accessor:&#10;a typical accessor in the accessors repo (net/XBee.js) is tested for &#10;module compatability with different hosts.&#10;&#10;Observe HostCompatability1 is given the Browser host as a parameter&#10;and HostCompatability2 is given the Nashorn host.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 60.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="net/XBee.js">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="Display1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 220.0]">
+        </property>
+    </entity>
+    <entity name="HostCompatability1" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Check Host Compatability of an accessor by performing &#10; *  a SPARQL query on a semantic repository such as GraphDB.&#10; * &#10; *  This accessor works by querying an Accessor and Host Ontology for the modules&#10; *  required by the accessor and the modules implemented by the given host.&#10; *&#10; *  See SemanticRepositoryQuery accessor documenation for additional documentation&#10; *  on SPARQL queries and setting up a semantic repository.&#10; *&#10; *  This accessor's image has a Creative Commons license and is from&#10; *  https://pixabay.com/en/puzzle-pieces-jigsaw-piece-concept-308908/&#10; *&#10; *  @accessor services/HostCompatability&#10; *  @author Matt Weber&#10; *  @version $$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$&#10; *  @input {string} accessorName The full name of the accessor (including the directory &#10; *  and .js at the end). Eg. Services/HostCompatability.js.&#10; *  @parameter {string} accessorHostName The name of the accessor host to be compared with accessorName.&#10; *  @parameter {string} host The URL for the semantic repository.&#10; *  @parameter {string} port The port for the semantic repository.&#10; *  @parameter {string} repositoryName The name of the particular repository on the host.&#10; *  @parameter {int} timeout The amount of time (in milliseconds) to wait for a response&#10; *   before triggering a null response and an error. This defaults to 20000.&#10; *  @output {boolean} compatible True if all the accessor's required modules are&#10; *   implemented by the given host. False otherwise.&#10; */&#10;&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, console, error, exports, extend, input, get, getParameter, getResource, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10; &#10; /** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('services/SemanticRepositoryQuery');&#10;    this.input('accessorName', {&#10;        'type': 'string',&#10;        'value': 'services/HostCompatability.js'&#10;    });&#10;&#10;    this.output('compatible', {&#10;        'type': 'boolean'&#10;    });&#10;&#10;    this.parameter('accessorHostName', {&#10;        'type': 'string',&#10;        'options': ['Browser', 'Cordova', 'Duktape', 'Nashorn', 'Node'],&#10;        'value': 'Browser'&#10;    });&#10;&#10;    //Overriding the response output and query input to be hidden&#10;    this.output('response', {&#10;        'visibility': 'expert'&#10;    });&#10;&#10;    this.input('query', {&#10;        'type': 'string',&#10;        'visibility': 'expert'&#10;    });&#10;&#10;};&#10;&#10;//Overriding SemanticRepositoryQuery&#10;exports.filterResponse = function(response){&#10;    var data = JSON.parse(response);&#10;    var hostModules = [];&#10;    var accessorModules = [];&#10;    if(data &amp;&amp; data.results &amp;&amp; data.results.bindings){&#10;        var dataArray = data.results.bindings;&#10;        dataArray.map(function(x){&#10;            if(x.host &amp;&amp; x.host.value){&#10;                hostModules.push(x.host.value);&#10;            }&#10;            if(x.acc &amp;&amp; x.acc.value){&#10;                accessorModules.push(x.acc.value);&#10;            }&#10;        });&#10;        hostModules.sort();&#10;        accessorModules.sort();&#10;&#10;        //Compare arrays to see if they match&#10;        var match = true;&#10;        if( accessorModules.length != hostModules.length) match = false;&#10;        for(var i = 0; i &lt; accessorModules.length; i++){&#10;            if(hostModules[i] != accessorModules[i]) {&#10;                match = false;&#10;                break;&#10;            }&#10;        }&#10;        this.send('compatible', match);&#10;    }&#10;&#10;    //The hidden response output still needs the raw json data to be returned.&#10;    return data;&#10;};&#10;&#10;//Overriding SemanticRepositoryQuery&#10;exports.initialize = function(){&#10;    exports.ssuper.initialize.call(this);&#10;    var thiz = this;&#10;&#10;    this.addInputHandler('accessorName', function(){&#10;        var accName = thiz.get('accessorName');&#10;        var accHostName = thiz.getParameter('accessorHostName');&#10;        &#10;        var constructedQuery = &quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;&quot; +&#10;                                &quot;PREFIX acc: &lt;http://ptolemy.berkeley.edu/accessors#&gt;&quot; +&#10;                                &quot;PREFIX host: &lt;http://ptolemy.berkeley.edu/hosts#&gt;&quot; +&#10;                                &quot;select distinct ?host ?acc where {&quot; +&#10;                                    &quot;{ {{host:Host.Common host:Implements ?host} UNION {host:Host.&quot; + accHostName + &quot; host:Implements ?host}}&quot; +  &#10;                                    &quot;{&lt;http://ptolemy.berkeley.edu/accessors/&quot; + accName + &quot;&gt; acc:Requires ?host} } UNION &quot; +&#10;                                    &quot;{&lt;http://ptolemy.berkeley.edu/accessors/&quot; + accName + &quot;&gt; acc:Requires ?acc}&quot; + &#10;                                &quot;}&quot;;&#10;        thiz.send('query', constructedQuery);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/HostCompatability.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 220.0]">
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="AccessorsAndHosts">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessorName" class="ptolemy.actor.parameters.PortParameter" value="services/HostCompatability.js">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessorHostName" class="ptolemy.data.expr.Parameter" value="Browser">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="accessorName" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="query" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="compatible" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="HostCompatability2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Check Host Compatability of an accessor by performing &#10; *  a SPARQL query on a semantic repository such as GraphDB.&#10; * &#10; *  This accessor works by querying an Accessor and Host Ontology for the modules&#10; *  required by the accessor and the modules implemented by the given host.&#10; *&#10; *  See SemanticRepositoryQuery accessor documenation for additional documentation&#10; *  on SPARQL queries and setting up a semantic repository.&#10; *&#10; *  This accessor's image has a Creative Commons license and is from&#10; *  https://pixabay.com/en/puzzle-pieces-jigsaw-piece-concept-308908/&#10; *&#10; *  @accessor services/HostCompatability&#10; *  @author Matt Weber&#10; *  @version $$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$&#10; *  @input {string} accessorName The full name of the accessor (including the directory &#10; *  and .js at the end). Eg. Services/HostCompatability.js.&#10; *  @parameter {string} accessorHostName The name of the accessor host to be compared with accessorName.&#10; *  @parameter {string} host The URL for the semantic repository.&#10; *  @parameter {string} port The port for the semantic repository.&#10; *  @parameter {string} repositoryName The name of the particular repository on the host.&#10; *  @parameter {int} timeout The amount of time (in milliseconds) to wait for a response&#10; *   before triggering a null response and an error. This defaults to 20000.&#10; *  @output {boolean} compatible True if all the accessor's required modules are&#10; *   implemented by the given host. False otherwise.&#10; */&#10;&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, console, error, exports, extend, input, get, getParameter, getResource, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10; &#10; /** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('services/SemanticRepositoryQuery');&#10;    this.input('accessorName', {&#10;        'type': 'string',&#10;        'value': 'services/HostCompatability.js'&#10;    });&#10;&#10;    this.output('compatible', {&#10;        'type': 'boolean'&#10;    });&#10;&#10;    this.parameter('accessorHostName', {&#10;        'type': 'string',&#10;        'options': ['Browser', 'Cordova', 'Duktape', 'Nashorn', 'Node'],&#10;        'value': 'Browser'&#10;    });&#10;&#10;    //Overriding the response output and query input to be hidden&#10;    this.output('response', {&#10;        'visibility': 'expert'&#10;    });&#10;&#10;    this.input('query', {&#10;        'type': 'string',&#10;        'visibility': 'expert'&#10;    });&#10;&#10;};&#10;&#10;//Overriding SemanticRepositoryQuery&#10;exports.filterResponse = function(response){&#10;    var data = JSON.parse(response);&#10;    var hostModules = [];&#10;    var accessorModules = [];&#10;    if(data &amp;&amp; data.results &amp;&amp; data.results.bindings){&#10;        var dataArray = data.results.bindings;&#10;        dataArray.map(function(x){&#10;            if(x.host &amp;&amp; x.host.value){&#10;                hostModules.push(x.host.value);&#10;            }&#10;            if(x.acc &amp;&amp; x.acc.value){&#10;                accessorModules.push(x.acc.value);&#10;            }&#10;        });&#10;        hostModules.sort();&#10;        accessorModules.sort();&#10;&#10;        //Compare arrays to see if they match&#10;        var match = true;&#10;        if( accessorModules.length != hostModules.length) match = false;&#10;        for(var i = 0; i &lt; accessorModules.length; i++){&#10;            if(hostModules[i] != accessorModules[i]) {&#10;                match = false;&#10;                break;&#10;            }&#10;        }&#10;        this.send('compatible', match);&#10;    }&#10;&#10;    //The hidden response output still needs the raw json data to be returned.&#10;    return data;&#10;};&#10;&#10;//Overriding SemanticRepositoryQuery&#10;exports.initialize = function(){&#10;    exports.ssuper.initialize.call(this);&#10;    var thiz = this;&#10;&#10;    this.addInputHandler('accessorName', function(){&#10;        var accName = thiz.get('accessorName');&#10;        var accHostName = thiz.getParameter('accessorHostName');&#10;        &#10;        var constructedQuery = &quot;PREFIX rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt;&quot; +&#10;                                &quot;PREFIX acc: &lt;http://ptolemy.berkeley.edu/accessors#&gt;&quot; +&#10;                                &quot;PREFIX host: &lt;http://ptolemy.berkeley.edu/hosts#&gt;&quot; +&#10;                                &quot;select distinct ?host ?acc where {&quot; +&#10;                                    &quot;{ {{host:Host.Common host:Implements ?host} UNION {host:Host.&quot; + accHostName + &quot; host:Implements ?host}}&quot; +  &#10;                                    &quot;{&lt;http://ptolemy.berkeley.edu/accessors/&quot; + accName + &quot;&gt; acc:Requires ?host} } UNION &quot; +&#10;                                    &quot;{&lt;http://ptolemy.berkeley.edu/accessors/&quot; + accName + &quot;&gt; acc:Requires ?acc}&quot; + &#10;                                &quot;}&quot;;&#10;        thiz.send('query', constructedQuery);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/HostCompatability.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 330.0]">
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="AccessorsAndHosts">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessorName" class="ptolemy.actor.parameters.PortParameter" value="services/HostCompatability.js">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessorHostName" class="ptolemy.data.expr.Parameter" value="Nashorn">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="accessorName" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="query" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="compatible" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 510, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[627.1893005371094, 329.93809509277344]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{360.0, 220.0}">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="StringConst.output" relation="relation3"/>
+    <link port="StringConst.trigger" relation="relation"/>
+    <link port="Display1.input" relation="relation2"/>
+    <link port="HostCompatability1.accessorName" relation="relation3"/>
+    <link port="HostCompatability1.compatible" relation="relation2"/>
+    <link port="HostCompatability2.accessorName" relation="relation3"/>
+    <link port="HostCompatability2.compatible" relation="relation4"/>
+    <link port="Display2.input" relation="relation4"/>
+</entity>
