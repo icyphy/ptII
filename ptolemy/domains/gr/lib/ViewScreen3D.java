@@ -520,13 +520,20 @@ public class ViewScreen3D extends GRActor3D
         }
 
         // Create a frame, if placeable was not called.
-        if (_container == null) {
-            _frame = new JFrame(title.stringValue());
-            _frame.setVisible(true);
-            _frame.validate();
-            _frame.setSize(horizontalDimension + 50, verticalDimension);
-            _container = _frame.getContentPane();
+        // FIXME: Java3D crashes if we do not create a new frame.
+        // As a workaround, we always create a new frame.
+        // First, close the old one.
+        if (_container != null && _frame != null) {
+            _frame.setVisible(false);
+            // FIXME: The following causes the JVM to crash.
+            // For now, we just put with the leak of leaving it hidden.
+            // _frame.dispose();
         }
+        _frame = new JFrame(title.stringValue());
+        _frame.setVisible(true);
+        _frame.validate();
+        _frame.setSize(horizontalDimension + 50, verticalDimension);
+        _container = _frame.getContentPane();
 
         // Set the frame to be visible.
         if (_frame != null) {
