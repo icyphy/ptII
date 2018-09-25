@@ -100,7 +100,8 @@ var _modulePath = [_moduleRoot + '/',
     _moduleRoot + '/node/',
     _moduleRoot + '/node_modules/',
     _accessorRoot + '/hosts/',
-    _accessorRoot + '/'
+    _accessorRoot + '/',
+    _accessorRoot + '/hosts/common/modules/'
 ];
 
 /** An array that gives the search path for modules to be required relative to the classpath. */
