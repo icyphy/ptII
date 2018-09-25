@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StickyMasses" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50.0">
@@ -88,7 +88,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 829, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={598, 23, 829, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[595, 524]">
     </property>
@@ -1011,7 +1011,7 @@ https://java3d.java.net/</text></svg></configure>
         <entity name="Positions" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="p1, p2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 22, 500, 216}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 23, 500, 216}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 172]">
             </property>
@@ -1095,7 +1095,7 @@ https://java3d.java.net/</text></svg></configure>
         </property>
         <property name="crossradius" class="ptolemy.data.expr.Parameter" value="0.02">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[757, 510]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[757, 522]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[30, 10]">
         </property>
@@ -1103,11 +1103,11 @@ https://java3d.java.net/</text></svg></configure>
         </property>
         <property name="sphereradius" class="ptolemy.data.expr.Parameter" value=".2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 116, 972, 628}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 116, 991, 632}, maximized=false}">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.5, 255.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.5, 261.0}">
         </property>
         <port name="displacement for red bob" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -1784,9 +1784,9 @@ https://java3d.java.net/</text></svg></configure>
             </property>
         </entity>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen3D">
-            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="300">
+            <property name="horizontalResolution" class="ptolemy.data.expr.Parameter" value="600">
             </property>
-            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="300">
+            <property name="verticalResolution" class="ptolemy.data.expr.Parameter" value="600">
             </property>
             <property name="rotatable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
