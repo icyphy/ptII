@@ -1,0 +1,459 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Authentication" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={353, 91, 1038, 727}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 617]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.40960000000000135">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{777.4130689044332, 730.1666316542515}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are 3 main steps in setting up authentication:&#10;1) Turning on GraphDB security&#10;2) Configuring GraphDB's REST server for HTTPS&#10;3) Managing the HTTPS certificate&#10;&#10;When these have been accomplished the model below should execute without error.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -5.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="1) Turning on graphDB security&#10;&#10;Log on to GraphDB's control panel and go to Setup/Users and Access.&#10;The security slider in the upper right hand corner defaults to &quot;off&quot;.&#10;Switch it to on, and log back in with the admin username/password&#10;(defaults to &quot;admin&quot; and &quot;root&quot;). For more information, check out&#10;http://graphdb.ontotext.com/documentation/8.5/free/access-rights-and-security.html.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2) Configuring GraphDB's REST server for HTTPS&#10;&#10;GraphDB's authentication modes are detailed at &#10;http://graphdb.ontotext.com/documentation/standard/authentication.html.&#10;These accessors use the Basic Authentication mode at the bottom of the page,&#10;where username and password are sent as a header. As such a header&#10;is sent in plain text over http, we must enable https (note other authentication modes&#10;also require https to avoid replay attacks). Note the documentation&#10;is incorrect. Username password combos are base64 encodings of strings of the&#10;form &lt;username&gt;:&lt;password&gt;, not of the form &lt;username&gt;/&lt;password&gt;.&#10;&#10;Steps for turning on encryption are given at&#10;http://graphdb.ontotext.com/documentation/standard/encryption.html.&#10;The key point is &quot;GraphDB runs on [sic] embedded Tomcat server&quot; which &#10;can be indirectly configured through a graphdb.properties file. &#10;Documentation on this properties file is at&#10;http://graphdb.ontotext.com/documentation/free/configuring-graphdb.html.&#10;Crucialy, properties of the relevant Tomcat Connector attribute can be set by&#10;setting a value for a graphDB attribute &quot;graphdb.connector.&quot; + the relevant &#10;Tomcat Connector attribute.&#10;&#10;The graphdb.properties file should have the name &quot;graphdb.properties&quot; and&#10;be located in the distribution under conf/graphdb.properties. On my Mac,&#10;the path is ~/Library/ApplicationSupport/GraphDB/conf/graphdb.properties.&#10;An example graphdb.properties is in this SemanticRepository demo directory. &#10;To use the example you will have to replace the section&#10;&lt;INSERT YOUR PATH TO KEYSTORE HERE!&gt; with the actual path to your keystore&#10;(more on this later)&#10;&#10;We now refer to the apache Tomcat documenation on how to set a Tomcat server's&#10;attributes for encryption. See&#10;https://tomcat.apache.org/tomcat-7.0-doc/ssl-howto.html#Edit_the_Tomcat_Configuration_File,&#10;but be warned in my experience variables like ${user.home} are not correctly passed&#10;through graphdb.connector. to the Tomcat configuration.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 550.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3) Managing the HTTPS certificate&#10;&#10;Finally, we must generate a certificate for GraphDB, link the certificate&#10;to the configuration in section (2), and inform the swarmlet host's keystore&#10;to trust the certificate if it is self-signed (as in these instructions).&#10;If a certificate is obtained from a certificate authority some of these instructions&#10;may likely be skipable.&#10;&#10;First, generate a self signed certificate. See&#10;https://www.sslshopper.com/article-most-common-java-keytool-keystore-commands.html.&#10;Run:&#10;&#10;$keytool -genkey -keyalg RSA -alias selfsigned -keystore keystore.jks -storepass changeit -validity 360 -keysize 2048&#10; &#10;to generate a keystore named &quot;keystore.jks&quot; with the password &quot;changeit&quot;.&#10;Note this password is consistent with the example graphdb.properties file and you'll&#10;have to change the file if you change the password.&#10;IMPORTANT! Be sure to correctly enter the server name&#10;&quot;localhost&quot; in response to keytool’s first prompt (assuming that is you are running&#10;on localhost) when it asks &quot;What is your first and last name?&quot; Otherwise this won't work.&#10;&#10;Next, you'll need to export the public key certificate from keystore.jks.&#10;See https://docs.oracle.com/javase/tutorial/security/toolsign/step5.html.&#10;Run:&#10;&#10;$keytool -export -keystore keystore.jks -alias selfsigned -file selfsigned.cer&#10;&#10;to generate the file selfsigned.cer. It is important to remember the alias &quot;selfsigned&quot;&#10;(incidentally the same name as the file, but it doesn't have to be) because we will use&#10;it to add or remove the certificate from our swarmlet host's keystore. If you are running&#10;on the Nashron host, as I am for these instructions, your keystore will be located at&#10;JAVA_HOME/JRE/lib/security/cacerts. If you don't know where JAVA_HOME is on your&#10;machine, run&#10;&#10;$/usr/libexec/java_home -v 1.8&#10;&#10;For me this is: /Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/security/cacerts.&#10;For more information see&#10;https://stackoverflow.com/questions/8980364/how-do-i-find-out-what-keystore-my-jvm-is-using.&#10;&#10;Finally, we add the self-signed certificate to the swarmlet host's keystore.&#10;See https://stackoverflow.com/questions/2893819/accept-servers-self-signed-ssl-certificate-in-java-client.&#10;Run:&#10;&#10;sudo keytool -import -v -trustcacerts -alias selfsigned -file selfsigned.cer -keystore &lt;INSERT PATH TO YOUR HOST KEYSTORE&gt; -keypass changeit -storepass changeit&#10;&#10;Again, for me I replace &lt;INSERT PATH TO YOUR HOST KEYSTORE&gt; with&#10;/Library/Java/JavaVirtualMachines/jdk1.8.0_121.jdk/Contents/Home/jre/lib/security/cacerts.&#10;&#10;That's it! Now your accessors should be able to connect to GraphDB over https.&#10;&#10;If something went wrong in this process and you want to remove a certificate from &#10;your host's keystore. See https://docs.oracle.com/cd/E19798-01/821-1751/ghleq/index.html&#10;Run:&#10;&#10;sudo keytool -delete -alias selfsigned -keystore &lt;INSERT PATH TO YOUR HOST KEYSTORE&gt; -storepass changeit&#10;&#10;This is where the alias is important. Be sure not to remove the wrong certificate!">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 400.0}">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="SELECT * WHERE {?s ?p ?o} LIMIT 10">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 175, 542, 676}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[542, 632]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        // The null argument is an undocumented feature indicating unbounded depth.&#10;        var text = util.inspect(inputValue, {depth: null});&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[765.0, 190.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="SemanticRepositoryQuery" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Perform a SPARQL query on a semantic repository such as GraphDB.&#10; * &#10; *  SPARQL is a W3C standard for querying semantic repositories,&#10; *  playing an analogous role to SQL with respect to relational&#10; *  databases. Semantic repositories fall within the domain of knowledge&#10; *  representation in AI and typically are implemented as a triplestore:&#10; *  entries in the repository have the form &quot;subject&quot;, &quot;predicate&quot;, &quot;object&quot;&#10; *  eg. &quot;An Apple&quot; &quot;IsA&quot; &quot;Fruit&quot;&#10; *  &#10; *  An example SPARQL query to get a list of up to 100 triples in the repository:&#10; *&#10; *  select * where { &#10; *      ?s ?p ?o .&#10; *  } limit 100&#10; *&#10; *  Documentation for SPARQL and the SPARQL Protocol can be found at&#10; *  https://www.w3.org/TR/rdf-sparql-query/&#10; *&#10; *  Information on GraphDB can be found at&#10; *  http://graphdb.ontotext.com/&#10; *  &#10; *  SPARQL is also a protocol for communicating with RDF databases&#10; *  Upon receiving a query input, this accessor performs an http GET&#10; *  to the specified server and port with the querystring &quot;query&quot; set to the&#10; *  query input. The JSON response from the semantic repository (if any) is &#10; *  sent to the response output. Depending on the query type, the &#10; *  response will be JSON &quot;sparql-results&quot; or &quot;rdf+json&quot;&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *query* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/SemanticRepositoryQuery&#10; *  @author Matt Weber&#10; *  @version $$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$&#10; *  @input {string} query The SPARQL query to be sent to the semantic repository.&#10; *   Types of queries yielding a response are: SELECT, CONSTRUCT, ASK, and DESCRIBE&#10; *  @parameter {string} protocol Either http or https.&#10; *  @parameter {string} host The URL for the semantic repository.&#10; *  @parameter {string} port The port for the semantic repository.&#10; *  @parameter {string} repositoryName The name of the particular repository on the host.&#10; *  @parameter {boolean} authenticate If true, enable authentication to an access controlled&#10; *   semantic repository by sending username and password with request. If false, username &#10; *   and password information will not be sent. An error will occur if the http protocol is&#10; *   selected with a true authenticate setting to avoid sending username/password information&#10; *   in plain text.&#10; *  @parameter {string} username A username for an access controlled semantic repository. &#10; *  @parameter {string} password A password for an access controlled semantic repository.&#10; *  @parameter {int} timeout The amount of time (in milliseconds) to wait for a response&#10; *   before triggering a null response and an error. This defaults to 20000.&#10; *  @output response An object containing the raw response from the service conforming&#10; *   to the SPARQL protocol. If the query type was SELECT or ASK the response will be&#10; *   JSON &quot;sparql-results&quot;. If the query type was CONSTRUCT or DESCRIBE the response&#10; *   will be &quot;rdf+json&quot;.&#10; */&#10;&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, console, error, exports, extend, input, get, getParameter, getResource, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10; &#10; /** Set up the accessor by defining the inputs and outputs.&#10; */&#10;&#10;var base64 = require('base64-js');&#10;&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('query', {&#10;        'type': 'string'&#10;    });&#10;&#10;    this.parameter('protocol', {&#10;        'type': 'string',&#10;        'value': 'http',&#10;        'options': ['http', 'https']&#10;    });&#10;&#10;    this.parameter('host', {&#10;        'type': 'string',&#10;        'value': 'localhost'&#10;    });&#10;&#10;    this.parameter('port', {&#10;        'type': 'int',&#10;        'value': 7200&#10;    });&#10;&#10;    this.parameter('repositoryName', {&#10;        'type': 'string',&#10;    });&#10;&#10;    this.parameter('authenticate', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;&#10;    this.parameter('username', {&#10;        'type': 'string',&#10;        'value': 'admin'&#10;    });&#10;&#10;    this.parameter('password', {&#10;        'type': 'string',&#10;        'value': 'root'&#10;    });&#10;&#10;    //Overriding inherited default timeout value of 5000ms to allow for longer queries by default&#10;    this.parameter('timeout', {&#10;        'type': 'int',&#10;        'value': 20000&#10;    });&#10;&#10;    //Use the response output from the REST accessor&#10;&#10;&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('status', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponseOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;//Overriding REST&#10;exports.filterResponse = function(response){&#10;    return JSON.parse(response);&#10;};&#10;&#10;//Overriding REST&#10;//Connections to the SemanticRepository should be closed once data has been received.&#10;exports.handleResponse = function(message){&#10;     exports.ssuper.handleResponse.call(this, message);&#10;     exports.ssuper.wrapup();&#10;};&#10;&#10;exports.initialize = function(){&#10;    exports.ssuper.initialize.call(this);&#10;    &#10;    //Check for bad authentication and protocol settings at initialization.&#10;    if(this.getParameter('protocol') == 'http' &amp;&amp; this.getParameter('authenticate') ){&#10;        error(&quot;Semantic Repository authentication setting incompatible with protocol setting. This accessor will not send username and password information in plain text over http. Change to https or dissable authentication.&quot;);&#10;    }&#10;&#10;    var thiz = this;&#10;&#10;    this.addInputHandler('query', function(){&#10;&#10;        //Check for bad authentication and protocol settings when preparing to send.&#10;        if(thiz.getParameter('protocol') == 'http' &amp;&amp; thiz.getParameter('authenticate') ){&#10;            error(&quot;Semantic Repository authentication setting incompatible with protocol setting. This accessor will not send username and password information in plain text over http. Change to https or dissable authentication.&quot;);&#10;        }&#10;&#10;        var queryInput = thiz.get('query');&#10;        var host = thiz.getParameter('host');&#10;        var port = thiz.getParameter('port');&#10;        var repositoryName = thiz.getParameter('repositoryName');&#10;        var authenticate = thiz.getParameter('authenticate');&#10;        var protocol = thiz.getParameter('protocol');&#10;&#10;        var options = {&#10;            'headers' : {'Accept':'application/sparql-results+json, application/rdf+json'},&#10;            'method'  : 'GET',&#10;            'url'     : {'host'  : host,&#10;                        'port'   : port,&#10;                        'protocol' : protocol&#10;                        }&#10;        };&#10;&#10;        //If authenticating, add base64 encoded username and password to headers.&#10;        //See basic authentication under http://graphdb.ontotext.com/documentation/standard/authentication.html&#10;        if(authenticate &amp;&amp; protocol == 'https'){&#10;            var username = thiz.getParameter('username');&#10;            var password = thiz.getParameter('password');&#10;&#10;            //Note, contrary to the graphDB documentation, the separator between&#10;            //username and password is a colon, not a forward slash.&#10;            var login = username +&quot;:&quot; + password;&#10;            var loginArray = login.split(&quot;&quot;);&#10;            var loginNumeric = loginArray.map(function(x){ return x.charCodeAt(0)});&#10;            var loginUint = new Uint8Array(loginNumeric);&#10;            var login64 = base64.fromByteArray(loginUint);&#10;            options.headers.Authorization =  'Basic ' + login64;&#10;        }&#10;&#10;        var command = 'repositories/' + repositoryName;&#10;        var args = {'query' : queryInput} ;&#10;&#10;        thiz.send('options', options);&#10;        thiz.send('command', command);&#10;        thiz.send('arguments', args);&#10;        thiz.send('trigger', true);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/SemanticRepositoryQuery.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Perform a SPARQL query on a semantic repository such as GraphDB.&lt;/p&gt;&#10;&lt;p&gt; SPARQL is a W3C standard for querying semantic repositories,&#10; playing an analogous role to SQL with respect to relational&#10; databases. Semantic repositories fall within the domain of knowledge&#10; representation in AI and typically are implemented as a triplestore:&#10; entries in the repository have the form &amp;quot;subject&amp;quot;, &amp;quot;predicate&amp;quot;, &amp;quot;object&amp;quot;&#10; eg. &amp;quot;An Apple&amp;quot; &amp;quot;IsA&amp;quot; &amp;quot;Fruit&amp;quot;&lt;/p&gt;&#10;&lt;p&gt; An example SPARQL query to get a list of up to 100 triples in the repository:&lt;/p&gt;&#10;&lt;p&gt; select * where { &#10;     ?s ?p ?o .&#10; } limit 100&lt;/p&gt;&#10;&lt;p&gt; Documentation for SPARQL and the SPARQL Protocol can be found at&#10; https://&lt;a href=&quot;http://www.w3.org/TR/rdf-sparql-query/&quot;&gt;www.w3.org/TR/rdf-sparql-query/&lt;/a&gt;&lt;/p&gt;&#10;&lt;p&gt; Information on GraphDB can be found at&#10; http://graphdb.ontotext.com/&lt;/p&gt;&#10;&lt;p&gt; SPARQL is also a protocol for communicating with RDF databases&#10; Upon receiving a query input, this accessor performs an http GET&#10; to the specified server and port with the querystring &amp;quot;query&amp;quot; set to the&#10; query input. The JSON response from the semantic repository (if any) is &#10; sent to the response output. Depending on the query type, the &#10; response will be JSON &amp;quot;sparql-results&amp;quot; or &amp;quot;rdf+json&amp;quot;&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;query&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Matt Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$">
+            </property>
+            <property name="query (port)" class="ptolemy.kernel.util.StringAttribute" value="The SPARQL query to be sent to the semantic repository.&#10;  Types of queries yielding a response are: SELECT, CONSTRUCT, ASK, and DESCRIBE">
+            </property>
+            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing the raw response from the service conforming&#10;  to the SPARQL protocol. If the query type was SELECT or ASK the response will be&#10;  JSON &quot;sparql-results&quot;. If the query type was CONSTRUCT or DESCRIBE the response&#10;  will be &quot;rdf+json&quot;.">
+            </property>
+            <property name="protocol (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Either http or https.">
+            </property>
+            <property name="host (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The URL for the semantic repository.">
+            </property>
+            <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port for the semantic repository.">
+            </property>
+            <property name="repositoryName (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the particular repository on the host.">
+            </property>
+            <property name="authenticate (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, enable authentication to an access controlled&#10;  semantic repository by sending username and password with request. If false, username &#10;  and password information will not be sent. An error will occur if the http protocol is&#10;  selected with a true authenticate setting to avoid sending username/password information&#10;  in plain text.">
+            </property>
+            <property name="username (parameter)" class="ptolemy.kernel.util.StringAttribute" value="A username for an access controlled semantic repository.">
+            </property>
+            <property name="password (parameter)" class="ptolemy.kernel.util.StringAttribute" value="A password for an access controlled semantic repository.">
+            </property>
+            <property name="timeout (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The amount of time (in milliseconds) to wait for a response&#10;  before triggering a null response and an error. This defaults to 20000.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="protocol" class="ptolemy.data.expr.Parameter" value="https">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="FirstRepo">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="username" class="ptolemy.data.expr.Parameter" value="admin">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="password" class="ptolemy.data.expr.Parameter" value="root">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 190.0]">
+        </property>
+        <property name="authenticate" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="query" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="TextDisplay2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={765, 212, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display text.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data using util.inspect() to render a more human-readable form.&#10; *  Any data accepted by util.inspect() can be displayed.&#10; *  The title may be used by the host to label the output in some way, either&#10; *  by labeling a display window or prepending the printed text with the title.&#10; *  The resulting text is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens or the model&#10; *  wishes to use the rendered text in some way.&#10; *&#10; *  @accessor utilities/TextDisplay&#10; *  @input input The text to display.&#10; *  @output output The text to display.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var textDisplay = require('@accessors-modules/text-display');&#10;var util = require('util');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('title', {&#10;        'type':'string',&#10;        'value':'TextDisplay'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    if (display === null) {&#10;        display = new textDisplay.TextDisplay(this.getParameter('title'));&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = self.get('input');&#10;        // The null argument is an undocumented feature indicating unbounded depth.&#10;        var text = util.inspect(inputValue, {depth: null});&#10;        display.appendText(text);&#10;        this.send('output', text);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/TextDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data using util.inspect() to render a more human-readable form.&#10; Any data accepted by util.inspect() can be displayed.&#10; The title may be used by the host to label the output in some way, either&#10; by labeling a display window or prepending the printed text with the title.&#10; The resulting text is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens or the model&#10; wishes to use the rendered text in some way.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The text to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="title" class="ptolemy.data.expr.Parameter" value="TextDisplay">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1095.0, 325.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Atomic Delete Then Insert" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="DELETE {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .} INSERT {  &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt;  &lt;http://ptolemy.berkeley.edu/c&gt; .} WHERE {}">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="SemanticRepositoryUpdate" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Perform a SPARQL update on a semantic repository such as GraphDB.&#10; * &#10; *  SPARQL is a W3C standard for querying semantic repositories,&#10; *  playing an analogous role to SQL with respect to relational&#10; *  databases. Semantic repositories fall within the domain of knowledge&#10; *  representation in AI and typically are implemented as a triplestore:&#10; *  entries in the repository have the form &quot;subject&quot;, &quot;predicate&quot;, &quot;object&quot;&#10; *  eg. &quot;An Apple&quot; &quot;IsA&quot; &quot;Fruit&quot;&#10; *  &#10; *  An example SPARQL update to add a triple to the repository:&#10; *&#10; *  INSERT DATA {&#10; *      &lt;http://ptolemy.berkeley.edu/a&gt; &lt;http://ptolemy.berkeley.edu/b&gt; &lt;http://ptolemy.berkeley.edu/c&gt; .&#10; *  }&#10; *&#10; *  Documentation for SPARQL and the SPARQL Protocol 1.1 introducing updates can be found at&#10; *  https://www.w3.org/TR/sparql11-query/&#10; *&#10; *  Information on GraphDB can be found at&#10; *  http://graphdb.ontotext.com/&#10; *  &#10; *  SPARQL is also a protocol for communicating with RDF databases&#10; *  Upon receiving an update input, this accessor performs an http POST&#10; *  to the specified server and port with the body set to the&#10; *  update input. The http status code is produced on the output with&#10; *  a 204 response from the server indicating success.&#10; *  If a different status code is received, this accessor throws an error. &#10; *  Note that an INSERT that inserts data already in the repository or&#10; *  a DELETE that removes data already absent from the &#10; *  repository is treated by the respository as a&#10; *  successful update.&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *update* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/SemanticRepositoryUpdate&#10; *  @author Matt Weber&#10; *  @version $$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$&#10; *  @input {string} update The update to be sent to the semantic repository.&#10; *   Types of SPARQL updates are: INSERT and DELETE, but raw ontology data is accepted too with appropriate format.&#10; *  @parameter {string} format The format of data sent to the ontology. Currently only supports data types from&#10; *   http://docs.rdf4j.org/rest-api/#_content_types.&#10; *  @parameter {string} host The URL for the semantic repository.&#10; *  @parameter {string} port The port for the semantic repository.&#10; *  @parameter {string} repositoryName The name of the particular repository on the host.&#10; *  @parameter {boolean} authenticate If true, enable authentication to an access controlled&#10; *   semantic repository by sending username and password with request. If false, username &#10; *   and password information will not be sent. An error will occur if the http protocol is&#10; *   selected with a true authenticate setting to avoid sending username/password information&#10; *   in plain text.&#10; *  @parameter {string} username A username for an access controlled semantic repository. &#10; *  @parameter {string} password A password for an access controlled semantic repository.&#10; *  @parameter {int} timeout The amount of time (in milliseconds) to wait for a response&#10; *   before triggering a null response and an error. This defaults to 20000.&#10; *  @output {string} status The status code of the http POST to the Semantic Repository.&#10; *   A 204 code indicates success.&#10; */&#10;&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, console, error, exports, extend, input, get, getParameter, getResource, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;var base64 = require('base64-js');&#10; /** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('update', {&#10;        'type': 'string'&#10;    });&#10;&#10;    this.parameter('protocol', {&#10;        'type': 'string',&#10;        'value': 'http',&#10;        'options': ['http', 'https']&#10;    });&#10;&#10;    this.parameter('host', {&#10;        'type': 'string',&#10;        'value': 'localhost'&#10;    });&#10;&#10;    this.parameter('port', {&#10;        'type': 'int',&#10;        'value': 7200&#10;    });&#10;&#10;    this.parameter('repositoryName', {&#10;        'type': 'string',&#10;    });&#10;&#10;    this.parameter('authenticate', {&#10;        'type': 'boolean',&#10;        'value': false&#10;    });&#10;&#10;    this.parameter('username', {&#10;        'type': 'string',&#10;        'value': 'admin'&#10;    });&#10;&#10;    this.parameter('password', {&#10;        'type': 'string',&#10;        'value': 'root'&#10;    });&#10;&#10;    //Overriding inherited default timeout value of 5000ms to allow for longer queries by default&#10;    this.parameter('timeout', {&#10;        'type': 'int',&#10;        'value': 20000&#10;    });&#10;&#10;    this.parameter('format', {&#10;        'type': 'string',&#10;        'value': 'SPARQL',&#10;        'options': [ 'SPARQL', 'RDF/XML', 'N-Triples', 'Turtle', 'N3', 'N-Quads', &#10;            'JSON-LD', 'RDF/JSON', 'TriX', 'TriG', 'Sesame Binary RDF'&#10;        ]&#10;    });&#10;&#10;    //Use the response output from the REST accessor&#10;&#10;&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('response', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponseOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;//Overriding REST&#10;exports.filterResponse = function(response){&#10;    return JSON.parse(response);&#10;};&#10;&#10;//Overriding REST&#10;//Connections to the SemanticRepository should be closed once data has been received.&#10;exports.handleResponse = function(message){&#10;    this.send('status', message.statusCode);&#10;    exports.ssuper.wrapup();&#10;    if(message.statusCode != 204){&#10;        error('Received a ' + message.statusCode + ' status code from the Semantic Repository. 204 indicates success.');&#10;    }&#10;};&#10;&#10;exports.initialize = function(){&#10;    exports.ssuper.initialize.call(this);&#10;&#10;    //Check for bad authentication and protocol settings at initialization.&#10;    if(this.getParameter('protocol') == 'http' &amp;&amp; this.getParameter('authenticate') ){&#10;        error(&quot;Semantic Repository authentication setting incompatible with protocol setting. This accessor will not send username and password information in plain text over http. Change to https or dissable authentication.&quot;);&#10;    }&#10;&#10;    var thiz = this;&#10;&#10;    this.addInputHandler('update', function(){&#10;&#10;        //Check for bad authentication and protocol settings when preparing to send.&#10;        if(thiz.getParameter('protocol') == 'http' &amp;&amp; thiz.getParameter('authenticate') ){&#10;            error(&quot;Semantic Repository authentication setting incompatible with protocol setting. This accessor will not send username and password information in plain text over http. Change to https or dissable authentication.&quot;);&#10;        }&#10;&#10;        var updateInput = thiz.get('update');&#10;        var host = thiz.getParameter('host');&#10;        var port = thiz.getParameter('port');&#10;        var repositoryName = thiz.getParameter('repositoryName');&#10;        var format = thiz.getParameter('format');&#10;        var authenticate = thiz.getParameter('authenticate');&#10;        var protocol = thiz.getParameter('protocol');&#10;&#10;        //The Semantic Repository GraphDB uses the RDF4j Server Rest API for these updates.&#10;        //This table of content types to MIME types is taken (with the adddition of 'SPARQL') from &#10;        //http://docs.rdf4j.org/rest-api/#_content_types&#10;        var formatToMIME = { 'SPARQL' : 'application/sparql-update',&#10;                            'RDF/XML' : 'application/rdf+xml',&#10;                            'N-Triples' : 'text/plain',&#10;                            'Turtle' : 'text/turtle',&#10;                            'N3' : 'text/rdf+n3',&#10;                            'N-Quads' : 'text/x-nquads',&#10;                            'JSON-LD' : 'application/ld+json',&#10;                            'RDF/JSON' : 'application/rdf+json',&#10;                            'TriX' : 'application/trix',&#10;                            'TriG' : 'application/x-trig',&#10;                            'Sesame Binary RDF' : 'application/x-binary-rdf'&#10;                             };&#10;&#10;        if(formatToMIME[format] === undefined){&#10;            error('The format parameter is set to ' + format + '. This is not a supported format.');&#10;        }&#10;&#10;        var options = {&#10;            'headers' : {'Content-Type': formatToMIME[format]},&#10;            'method'  : 'POST',&#10;            'url'     : {'host'  : host,&#10;                        'port'   : port,&#10;                        'protocol' : protocol&#10;                        }&#10;        };&#10;&#10;        //If authenticating, add base64 encoded username and password to headers.&#10;        //See basic authentication under http://graphdb.ontotext.com/documentation/standard/authentication.html&#10;        if(authenticate &amp;&amp; protocol == 'https'){&#10;            var username = thiz.getParameter('username');&#10;            var password = thiz.getParameter('password');&#10;&#10;            //Note, contrary to the graphDB documentation, the separator between&#10;            //username and password is a colon, not a forward slash.&#10;            var login = username +&quot;:&quot; + password;&#10;            var loginArray = login.split(&quot;&quot;);&#10;            var loginNumeric = loginArray.map(function(x){ return x.charCodeAt(0)});&#10;            var loginUint = new Uint8Array(loginNumeric);&#10;            var login64 = base64.fromByteArray(loginUint);&#10;            options.headers.Authorization =  'Basic ' + login64;&#10;        }&#10;&#10;        var command = 'repositories/' + repositoryName + '/statements';&#10;&#10;        var body = updateInput;&#10;&#10;        thiz.send('options', options);&#10;        thiz.send('command', command);&#10;        thiz.send('body', body);&#10;        thiz.send('trigger', true);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/SemanticRepositoryUpdate.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Perform a SPARQL update on a semantic repository such as GraphDB.&lt;/p&gt;&#10;&lt;p&gt; SPARQL is a W3C standard for querying semantic repositories,&#10; playing an analogous role to SQL with respect to relational&#10; databases. Semantic repositories fall within the domain of knowledge&#10; representation in AI and typically are implemented as a triplestore:&#10; entries in the repository have the form &amp;quot;subject&amp;quot;, &amp;quot;predicate&amp;quot;, &amp;quot;object&amp;quot;&#10; eg. &amp;quot;An Apple&amp;quot; &amp;quot;IsA&amp;quot; &amp;quot;Fruit&amp;quot;&lt;/p&gt;&#10;&lt;p&gt; An example SPARQL update to add a triple to the repository:&lt;/p&gt;&#10;&lt;p&gt; INSERT DATA {&#10;     &lt;a href=&quot;http://ptolemy.berkeley.edu/a&quot;&gt;http://ptolemy.berkeley.edu/a&lt;/a&gt; &lt;a href=&quot;http://ptolemy.berkeley.edu/b&quot;&gt;http://ptolemy.berkeley.edu/b&lt;/a&gt; &lt;a href=&quot;http://ptolemy.berkeley.edu/c&quot;&gt;http://ptolemy.berkeley.edu/c&lt;/a&gt; .&#10; }&lt;/p&gt;&#10;&lt;p&gt; Documentation for SPARQL and the SPARQL Protocol 1.1 introducing updates can be found at&#10; https://&lt;a href=&quot;http://www.w3.org/TR/sparql11-query/&quot;&gt;www.w3.org/TR/sparql11-query/&lt;/a&gt;&lt;/p&gt;&#10;&lt;p&gt; Information on GraphDB can be found at&#10; http://graphdb.ontotext.com/&lt;/p&gt;&#10;&lt;p&gt; SPARQL is also a protocol for communicating with RDF databases&#10; Upon receiving an update input, this accessor performs an http POST&#10; to the specified server and port with the body set to the&#10; update input. The http status code is produced on the output with&#10; a 204 response from the server indicating success.&#10; If a different status code is received, this accessor throws an error. &#10; Note that an INSERT that inserts data already in the repository or&#10; a DELETE that removes data already absent from the &#10; repository is treated by the respository as a&#10; successful update.&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;update&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Matt Weber">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: SemanticRepository.js 1725 2017-05-19 22:59:11Z cxh $$">
+            </property>
+            <property name="update (port)" class="ptolemy.kernel.util.StringAttribute" value="The update to be sent to the semantic repository.&#10;  Types of SPARQL updates are: INSERT and DELETE, but raw ontology data is accepted too with appropriate format.">
+            </property>
+            <property name="status (port)" class="ptolemy.kernel.util.StringAttribute" value="The status code of the http POST to the Semantic Repository.&#10;  A 204 code indicates success.">
+            </property>
+            <property name="format (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The format of data sent to the ontology. Currently only supports data types from&#10;  http://docs.rdf4j.org/rest-api/#_content_types.">
+            </property>
+            <property name="host (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The URL for the semantic repository.">
+            </property>
+            <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port for the semantic repository.">
+            </property>
+            <property name="repositoryName (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the particular repository on the host.">
+            </property>
+            <property name="authenticate (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, enable authentication to an access controlled&#10;  semantic repository by sending username and password with request. If false, username &#10;  and password information will not be sent. An error will occur if the http protocol is&#10;  selected with a true authenticate setting to avoid sending username/password information&#10;  in plain text.">
+            </property>
+            <property name="username (parameter)" class="ptolemy.kernel.util.StringAttribute" value="A username for an access controlled semantic repository.">
+            </property>
+            <property name="password (parameter)" class="ptolemy.kernel.util.StringAttribute" value="A password for an access controlled semantic repository.">
+            </property>
+            <property name="timeout (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The amount of time (in milliseconds) to wait for a response&#10;  before triggering a null response and an error. This defaults to 20000.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="protocol" class="ptolemy.data.expr.Parameter" value="https">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="FirstRepo">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="username" class="ptolemy.data.expr.Parameter" value="admin">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="password" class="ptolemy.data.expr.Parameter" value="root">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="format" class="ptolemy.data.expr.Parameter" value="SPARQL">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[895.0, 325.0]">
+        </property>
+        <property name="authenticate" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="update" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="StringConst.output" relation="relation2"/>
+    <link port="StringConst.trigger" relation="relation"/>
+    <link port="TextDisplay.input" relation="relation3"/>
+    <link port="SemanticRepositoryQuery.response" relation="relation3"/>
+    <link port="SemanticRepositoryQuery.query" relation="relation2"/>
+    <link port="SingleEvent2.output" relation="relation5"/>
+    <link port="TextDisplay2.input" relation="relation6"/>
+    <link port="Atomic Delete Then Insert.output" relation="relation4"/>
+    <link port="Atomic Delete Then Insert.trigger" relation="relation5"/>
+    <link port="SemanticRepositoryUpdate.status" relation="relation6"/>
+    <link port="SemanticRepositoryUpdate.update" relation="relation4"/>
+</entity>
