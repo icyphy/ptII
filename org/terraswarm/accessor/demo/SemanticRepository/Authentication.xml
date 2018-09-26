@@ -18,12 +18,12 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.40960000000000135">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{777.4130689044332, 730.1666316542515}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{876.6046057412792, 724.561773255814}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are 3 main steps in setting up authentication:&#10;1) Turning on GraphDB security&#10;2) Configuring GraphDB's REST server for HTTPS&#10;3) Managing the HTTPS certificate&#10;&#10;When these have been accomplished the model below should execute without error.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="There are 3 main steps in setting up authentication:&#10;1) Turning on GraphDB security&#10;2) Configuring GraphDB's REST server for HTTPS&#10;3) Managing the HTTPS certificate&#10;4) Select appropriate accessor parameters: protocol = https and authenticate = true&#10;&#10;When these have been accomplished the model below should execute without error.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -5.0]">
         </property>
