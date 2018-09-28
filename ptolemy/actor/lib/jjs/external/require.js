@@ -172,9 +172,11 @@
      *  'foo.js', './foo/bar.js' and '../foo.js' should all work.
      *  @param the parent directory, which is of type java.io.File.
      *  @param modulePaths An array of fully qualified directories to search
+     *  @param convertHyphenToCamel A boolean variable signifying whether
+     *   to convert hyphenated module names to camelcase.
      *  @return the file that corresponds with the module.
      */
-    var resolveModuleToFile = function (moduleName, parentDir, modulePaths) {
+    var resolveModuleToFile = function (moduleName, parentDir, modulePaths, convertHyphenToCamel) {
         // print('require.js: moduleName: ' + moduleName + " parentDir: " + parentDir);
 
         // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
@@ -190,7 +192,7 @@
 
             // Convert names like http-client to httpClient because Java does
             // not support package names with hyphens.
-            if (moduleName.indexOf('-') != -1) {
+            if (convertHyphenToCamel && moduleName.indexOf('-') != -1) {
                 var newModuleName = "";
                 var lastSlashIndex = moduleName.length;
                 // Don't replace hypens in filenames.
@@ -279,7 +281,7 @@
                         // because we end up not keeping track of the parentDir because we are
                         // copying files from the jar file to a temporary location.
                         moduleName = moduleName.substr(startIndex);
-                        return resolveModuleToFile(moduleName, parentDir, modulePaths);
+                        return resolveModuleToFile(moduleName, parentDir, modulePaths, convertHyphenToCamel);
                     }
                 }
             }
@@ -356,7 +358,13 @@
             tail = '})',
             line = null;
 
-        file = resolveModuleToFile(path, parentFile, modulePaths);
+        //--- Modified from original by matt.weber@berkeley.edu:
+        //First try loading module with hyphens in the name. If that fails, convert
+        //hyphens to camelcase and try again.
+        file = resolveModuleToFile(path, parentFile, modulePaths, false);
+        if(!file){
+            file = resolveModuleToFile(path, parentFile, modulePaths, true);
+        }
         if (!file) {
             // Use parentFile.absolutePath instead of parentFile.canonicalFile
             // because parentFile.canonicalFile will fail under certain circumstances.
