@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 828}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 2048, 1080}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 718]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1814, 970]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.000000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{654.6672601744183, 397.86434411337194}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{665.4658611918604, 335.44659338662797}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -56,7 +56,7 @@
         </property>
     </entity>
     <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={227, 451, 874, 449}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={207, 532, 874, 449}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[874, 405]">
         </property>
@@ -170,7 +170,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="Parking Lot">
+        <property name="repositoryName" class="ptolemy.data.expr.Parameter" value="ParkingLot">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -183,6 +183,8 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 275.0]">
+        </property>
+        <property name="authenticate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
