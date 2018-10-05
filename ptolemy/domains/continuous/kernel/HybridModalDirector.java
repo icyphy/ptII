@@ -90,6 +90,7 @@ public class HybridModalDirector extends FSMDirector
     public HybridModalDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        // _verbose = true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -192,6 +193,7 @@ public class HybridModalDirector extends FSMDirector
     public boolean isStepSizeAccurate() {
         _lastDistanceToBoundary = 0.0;
         _distanceToBoundary = 0.0;
+        boolean foundActor = false;
 
         // Double iterator over two lists.
         Iterator actors = null;
@@ -202,6 +204,7 @@ public class HybridModalDirector extends FSMDirector
         }
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
+            foundActor = true;
             if (actor instanceof ContinuousStepSizeController) {
                 if (!((ContinuousStepSizeController) actor)
                         .isStepSizeAccurate()) {
@@ -366,9 +369,13 @@ public class HybridModalDirector extends FSMDirector
                 }
 
                 if (_debugging && _verbose) {
-                    _debug("The guard " + enabledTransition.getGuardExpression()
-                            + " has the biggest difference to boundary as "
-                            + _distanceToBoundary);
+                    if (enabledTransition != null) {
+                        _debug("The guard " + enabledTransition.getGuardExpression()
+                                + " has the biggest difference to boundary as "
+                                + _distanceToBoundary);
+                    } else {
+                        _debug("No enabled transition.");
+                    }
                 }
 
                 // If we are close enough, then the flipping of the guard is OK.
@@ -378,6 +385,10 @@ public class HybridModalDirector extends FSMDirector
                     _lastDistanceToBoundary = 0.0;
                     return true;
                 } else {
+                    // Return false only if there is a refinement.
+                    if (!foundActor) {
+                        return true;
+                    }
                     return false;
                 }
             }
