@@ -779,7 +779,7 @@ public class ContinuousDirector extends FixedPointDirector
             boolean thisAccurate = actor.isStepSizeAccurate();
             if (_debugging) {
                 _debug("---- Checking output step size control actor: "
-                        + ((NamedObj) actor).getName() + ", which returns "
+                        + ((NamedObj) actor).getFullName() + ", which returns "
                         + thisAccurate);
             }
             accurate = accurate && thisAccurate;
