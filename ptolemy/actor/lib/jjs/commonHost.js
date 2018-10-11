@@ -675,7 +675,7 @@ clearTimeout',
             }
             // If mutable, should unreify
             if (this.isMutable) {
-            	this.unreify();
+                this.unreify();
             }
             if (typeof this.exports.wrapup === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
@@ -1279,7 +1279,7 @@ Accessor.prototype.get = function (name) {
  *  @return The accessor's class.
  */
 Accessor.prototype.getAccessorClass = function() {
-	return this.accessorClass;
+    return this.accessorClass;
 }
 
 /** Return the default function bindings to use when instantiating accessors.
@@ -1340,7 +1340,7 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
  */
 Accessor.prototype.getMonitoring = function() {
     if (this.monitoring) {
-    	this.monitor.accessorName = this.accessorName;
+        this.monitor.accessorName = this.accessorName;
         // Update utilizations given the currentMonitoringTime
         this.monitor.currentMonitoringTime = Date.now();
 
@@ -1366,10 +1366,10 @@ Accessor.prototype.getMonitoring = function() {
             this.monitor.wrapup.utilization;
         
         if (this.monitoringDeeply) {
-        	this.monitor.containedAccessors = [];
+            this.monitor.containedAccessors = [];
             if (this.containedAccessors && this.containedAccessors.length > 0) {
                 for (var i = 0; i < this.containedAccessors.length; i++) {
-                	this.monitor.containedAccessors.push(this.containedAccessors[i].getMonitoring());
+                    this.monitor.containedAccessors.push(this.containedAccessors[i].getMonitoring());
                 }
             }
         }
@@ -1382,7 +1382,7 @@ Accessor.prototype.getMonitoring = function() {
  *  @return The accessor's name.
  */
 Accessor.prototype.getName = function() {
-	return this.accessorName;
+    return this.accessorName;
 }
 
 /** Default implementation of this.getParameter(), which reads the current value of the
@@ -1497,9 +1497,9 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass, standAlo
     var instance = instantiateAccessor(
         instanceName, accessorClass, this.getAccessorCode, insideBindings);
     if (!standAlone) {
-    	allAccessors.push(instance);
-    	instance.container = this;
-    	this.containedAccessors.push(instance);
+        allAccessors.push(instance);
+        instance.container = this;
+        this.containedAccessors.push(instance);
     }
     return instance;
 };
@@ -1534,9 +1534,9 @@ Accessor.prototype.instantiateFromCode = function (instanceName, code, standAlon
     var instance = new Accessor(
         instanceName, code, getAccessorCode, bindings, null, null);
     if (!standAlone) {
-    	allAccessors.push(instance);
-    	instance.container = this;
-    	this.containedAccessors.push(instance);
+        allAccessors.push(instance);
+        instance.container = this;
+        this.containedAccessors.push(instance);
     }
     return instance;
 };
@@ -1545,7 +1545,7 @@ Accessor.prototype.instantiateFromCode = function (instanceName, code, standAlon
  *  @return True if this accessor has been initialized.
  */
 Accessor.prototype.isInitialized = function() {
-	return this.initialized;
+    return this.initialized;
 }
 
 /** Return the latest value produced on this output, or null if no
@@ -1581,10 +1581,10 @@ Accessor.prototype.module = {
  *  @param value The value, which should be 'true' in case this a mutable
  */
 Accessor.prototype.mutable = function (value) {
-	// Here, we have to use this.root because of the prototype chain.
-	var thiz = this.root;
+    // Here, we have to use this.root because of the prototype chain.
+    var thiz = this.root;
     if (value) {
-    	thiz.isMutable = true;
+        thiz.isMutable = true;
         thiz.state = 'unreified';
         
         // Mapping objects to be used for mapping ports.
@@ -1846,7 +1846,7 @@ Accessor.prototype.readURL = function () {
  *  @return true if the reification was achieved successfully, false otherwise.
  */
 Accessor.prototype.reify = function (accessor) {
-	// Here, we have to use this.root because of the prototype chain.
+    // Here, we have to use this.root because of the prototype chain.
     var thiz = this.root;
      
     // Check that this is a mutable accessor
@@ -1883,7 +1883,7 @@ Accessor.prototype.reify = function (accessor) {
             accessorInstance = thiz.instantiate(instanceName, accessorClass, true);
         } catch(e) {
             try {
-            	// Check to see if the parameter is accessor code.
+                // Check to see if the parameter is accessor code.
                 var accessorCode = accessor;
                 accessorInstance = thiz.instantiateFromCode(instanceName, accessorCode, true);
             } catch(ee) {
@@ -1896,7 +1896,7 @@ Accessor.prototype.reify = function (accessor) {
     }
 
     // Remove previous reification, if any
-	thiz.unreify();
+    thiz.unreify();
     
     // Add the accessor to the list of all accessors if it is a new one
     // FIXME: Do we really need this?
@@ -1921,16 +1921,16 @@ Accessor.prototype.reify = function (accessor) {
 
         // Check the input name
         if (myInputInList) {
-        	if (accInput.type && myInput.type) {
-        		if (accInput.type === myInput.type) {
-        			// FIXME: type checking should be augmented by sub-typing checking
-        			thiz.inputsMap[myInputInList] = accInputInList;
-        		} else {
-        			// If the types do not match, then no mapping
-        		};
-        	} else {	
-        		thiz.inputsMap[myInputInList] = accInputInList;
-        	};
+            if (accInput.type && myInput.type) {
+                if (accInput.type === myInput.type) {
+                    // FIXME: type checking should be augmented by sub-typing checking
+                    thiz.inputsMap[myInputInList] = accInputInList;
+                } else {
+                    // If the types do not match, then no mapping
+                };
+            } else {    
+                thiz.inputsMap[myInputInList] = accInputInList;
+            };
         };
     };
     
@@ -1946,19 +1946,19 @@ Accessor.prototype.reify = function (accessor) {
 
         // Check the output name
         if (accOutputInList) {
-        	if (accOutput.type && myOutput.type) {
-        		if (accOutput.type === myOutput.type) {
-        			// FIXME: type checking should be augmented by sub-typing checking
-        			thiz.outputsMap[accOutputInList] = myOutputInList;
-        		} else {
-        			// If the types do not match, then no mapping
-        		    thiz.error('Output name for reifying accessor matches, but not the type: '
-        		            + accOutputInList);
-        		    outputsMatch = false;
-        		};
-        	} else {	
-        		thiz.outputsMap[accOutputInList] = myOutputInList;
-        	};
+            if (accOutput.type && myOutput.type) {
+                if (accOutput.type === myOutput.type) {
+                    // FIXME: type checking should be augmented by sub-typing checking
+                    thiz.outputsMap[accOutputInList] = myOutputInList;
+                } else {
+                    // If the types do not match, then no mapping
+                    thiz.error('Output name for reifying accessor matches, but not the type: '
+                            + accOutputInList);
+                    outputsMatch = false;
+                };
+            } else {    
+                thiz.outputsMap[accOutputInList] = myOutputInList;
+            };
         };
     };
 
@@ -2406,14 +2406,14 @@ Accessor.prototype.startMonitoring = function(deeply) {
 
     // If needed, start monitoring all contained accessors.
     if (deeply) {
-    	this.monitoringDeeply = true;
+        this.monitoringDeeply = true;
         if (this.containedAccessors && this.containedAccessors.length > 0) {
             for (var i = 0; i < this.containedAccessors.length; i++) {
                 this.containedAccessors[i].startMonitoring(deeply);
             }
         }
     } else {
-    	this.monitoringDeeply = false;
+        this.monitoringDeeply = false;
     }
 
     if (this.monitoring) {
@@ -2725,6 +2725,17 @@ function getTopLevelAccessorsNotSupported() {
                     ' by getDefaultlInsideBindings().'
                    );
 }
+
+/** Return the name of this host.
+ *
+ *  Hosts are expected to override this function and return their own name.
+ *
+ *  @return In commonHost.js, throw error.
+ *   In other hosts, return the name of the host.
+ */ 
+function getHostName() {
+    throw new Error('getHostName is not supported by this swarmlet host.');
+};
 
 /** Instantiate an accessor given its fully qualified class name, a function to retrieve
  *  the code, and bindings that include at least a require function to retrieve modules.
@@ -3203,6 +3214,7 @@ exports.Accessor = Accessor;
 exports.allowTrustedAccessors = allowTrustedAccessors;
 exports.instantiateAccessor = instantiateAccessor;
 exports.isReifiableBy = isReifiableBy;
+exports.getHostName = getHostName;
 exports.getTopLevelAccessors = getTopLevelAccessors;
 exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;
