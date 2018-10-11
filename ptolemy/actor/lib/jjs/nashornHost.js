@@ -386,6 +386,16 @@ function getAccessorCode(name) {
     return code;
 }
 
+/** Return the name of this host.
+ *
+ *  Return the string "Nashorn".
+ *
+ *  @return In nashornHost.js, return "Nashorn".
+ */ 
+function getHostName() {
+    return "Nashorn";
+};
+
 /** Instantiate and return an accessor. If there is no 'actor' variable in scope,
  *  then this method assumes there is nothing in charge of execution of this accessor
  *  and therefore creates an orchestrator for it and starts an event loop.
