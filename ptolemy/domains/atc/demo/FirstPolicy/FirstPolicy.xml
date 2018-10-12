@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6994471604148581">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{711.1171875, 308.2327027591973}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{711.1171875000001, 308.2327027591973}">
     </property>
     <property name="isStormy" class="ptolemy.data.expr.Parameter" value="{false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true, false, false, false, false, false, false, false, false, false, false}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -624,7 +624,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6459375867194, 0.5309307936616, 0.2949388892749, 1.0}">
                 </property>
             </property>
         </property>
@@ -738,7 +738,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1045850263332, 0.0245860732034, 0.7895663883385, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0, 1.0}">
                 </property>
             </property>
         </property>
@@ -1004,7 +1004,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6499932473889, 0.4223754664391, 0.2493318618708, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1865472065396, 0.108771118522, 0.6978868388943, 1.0}">
                 </property>
             </property>
         </property>
@@ -1023,7 +1023,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0667158303621, 0.9722870543704, 0.7457257736618, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0517697745873, 0.4044289154074, 0.4321245416375, 1.0}">
                 </property>
             </property>
         </property>
@@ -1080,7 +1080,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6368389248747, 0.43664124347, 0.6142103631328, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.1577675622717, 0.6403754308364, 0.7530871567417, 1.0}">
                 </property>
             </property>
         </property>
@@ -1118,7 +1118,7 @@
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_trackShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
-                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8077221566322, 0.7450651439228, 0.2460274616081, 1.0}">
+                <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.3527797125884, 0.9627680850585, 0.5883742182221, 1.0}">
                 </property>
             </property>
         </property>
@@ -1471,18 +1471,26 @@
     <relation name="relation100" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation67" class="ptolemy.actor.TypedIORelation">
     </relation>
