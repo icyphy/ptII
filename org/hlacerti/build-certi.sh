@@ -26,7 +26,9 @@ fi
     
 CERTI_SRC=$SRC/certi-4.0.0
 if [ ! -f $CERTI_SRC ]; then
-    git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
+    # No longer need this branch (as of Oct. 2018).
+    # git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
+    git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
 
     echo "Patching $CERTI_SRC/CMakeLists.txt by moving a double quote and avoiding \"clang: error: no such file or directory: ';-flat_namespace'\" "
     echo "See https://savannah.nongnu.org/bugs/index.php?53964"
