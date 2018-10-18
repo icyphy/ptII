@@ -39,6 +39,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -644,17 +651,37 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         // Get a link to the RTI.
-        RtiFactory factory = null;
+        final RtiFactory factory;
         try {
             factory = RtiFactoryFactory.getRtiFactory();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e,
                     "RTIinternalError: " + e.getMessage());
         }
-
+        // Set a timeout because creating the ambassador can hang, sadly.
+        // We wait 15 seconds and then interrupt the current thread.        
         try {
-            _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
-        } catch (RTIinternalError e) {
+            _rtia = _callWithTimeout(new Callable<CertiRtiAmbassador>() {
+                public CertiRtiAmbassador call() throws Exception {
+                    _hlaDebugSys("Creating RTI Ambassador");
+                    return (CertiRtiAmbassador) factory.createRtiAmbassador();
+                };
+            }, 20, TimeUnit.SECONDS);
+            _hlaDebugSys("RTI Ambassador created.");
+        } catch (TimeoutException e) {
+            // The above timed out.
+            throw new IllegalActionException(this, e,
+                    "Timed out attempting to start the RTI ambassador.\n"
+                    + "This can happen under MacOS (at least) if the dynamically "
+                    + "linked libraries cannot be found.  To fix the problem, as "
+                    + "root, you have to create a symbolic link in /usr/local/lib "
+                    + "to the files in ~/pthla/certi-tools/lib/. To do this:\n"
+                    + "sudo -i\n"
+                    + "cd /usr/local/lib\n\n"
+                    + "ln -s /Users/YOURUSERNAME/pthla/certi-tools/lib/* .\n"
+                    + "exit\n"
+                    );
+        } catch (Exception e) {
             throw new IllegalActionException(this, e, "RTIinternalError. "
                     + "If the error is \"Connection to RTIA failed\", "
                     + "then the problem is likely that the rtig "
@@ -670,6 +697,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // Local or distant simulation support.
             // Note: determine if we need to change JCERTI API to handle FED file name
             //       instead of URL.
+            _hlaDebugSys("Creating Federation execution.");
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
 
@@ -691,7 +719,8 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             throw new IllegalActionException(this, e,
-                    "CouldNotOpenFED: " + e.getMessage());
+                    "CouldNotOpenFED: .fed file is missing: " + fedFile.asFile() + "\n"
+                            + e.getMessage());
         } catch (ErrorReadingFED e) {
             throw new IllegalActionException(this, e,
                     "ErrorReadingFED: " + e.getMessage());
@@ -710,6 +739,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Join the Federation.
         try {
+            _hlaDebugSys("Joining the federation.");
             _rtia.joinFederationExecution(_federateName, _federationName,
                     _federateAmbassador);
 
@@ -723,6 +753,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Initialize the Federate Ambassador.
         try {
+            _hlaDebugSys("Initializing the RTI Ambassador");
             _federateAmbassador.initialize(_rtia);
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
@@ -1330,6 +1361,40 @@ public class HlaManager extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Call a function, but don't let it run more than the specified amount of
+     *  time.
+     * @param callable The function to call.
+     * @param timeout The timeout.
+     * @param timeUnit The time units
+     * @return Whatever the function returns.
+     * @throws Exception
+     */
+    private static <T> T _callWithTimeout(Callable<T> callable, long timeout, TimeUnit timeUnit) throws Exception {
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<T> future = executor.submit(callable);
+        executor.shutdown(); // This does not cancel the already-scheduled task.
+        try {
+            return future.get(timeout, timeUnit);
+        }
+        catch (TimeoutException e) {
+            //remove this if you do not want to cancel the job in progress
+            //or set the argument to 'false' if you do not want to interrupt the thread
+            future.cancel(true);
+            throw e;
+        }
+        catch (ExecutionException e) {
+            //unwrap the root cause
+            Throwable t = e.getCause();
+            if (t instanceof Error) {
+                throw (Error) t;
+            } else if (t instanceof Exception) {
+                throw (Exception) t;
+            } else {
+                throw new IllegalStateException(t);
+            }
+        }
+    }
 
     /** Convert Ptolemy time to CERTI logical time.
      * @param pt The Ptolemy time.
