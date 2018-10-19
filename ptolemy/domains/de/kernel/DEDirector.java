@@ -1291,7 +1291,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void preinitialize() throws IllegalActionException {
         if (_eventQueue != null) {
             // This execution may be overlapped with the previous.
-            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/NotifyAll
             synchronized (_eventQueueLock) {
                 _isInitializing = true;
                 // Initialize an event queue.

@@ -718,7 +718,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         super.preinitialize();
         if (_eventQueue != null) {
             // This execution may be overlapped with the previous.
-            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/NotifyAll
             synchronized (_eventQueueLock) {
                 _eventQueue = new PtidesListEventQueue();
             }

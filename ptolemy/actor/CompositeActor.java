@@ -2131,7 +2131,7 @@ public class CompositeActor extends CompositeEntity
         // memory here.  So, our solution is to modify Manager so that
         // _container is a WeakReference.
 
-        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#containerInCompositeActor
+        // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks#containerInCompositeActor
         super.setContainer(container);
 
         Director director = getDirector();

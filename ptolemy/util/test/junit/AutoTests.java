@@ -189,7 +189,7 @@ public class AutoTests extends ModelTests {
             // If a model is in various directories, including
             // org/terraswarm/accessors/test, the delay before
             // reloading.  See
-            // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
+            // https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/WebSocketDeadlock#Starvation
             AutoTests.delayIfNecessary(fullPath);
 
             System.out.println("----------------- Instantiating " + fullPath);

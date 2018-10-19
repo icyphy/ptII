@@ -487,7 +487,7 @@ public class HTMLAbout {
             System.err.println(
                     "Because of issues with webcam-capture hanging during discovery "
                             + "it is best if HTMLAbout is invoked with DISPLAY=\"\".  "
-                            + "See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers.");
+                            + "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/Finalizers.");
         }
         if (args.length > 2) {
             System.err.println("Usage: [demoFileName [outputFilename]\n"
