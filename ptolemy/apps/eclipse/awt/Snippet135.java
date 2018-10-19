@@ -1,5 +1,5 @@
 // From http://dev.eclipse.org/viewcvs/index.cgi/org.eclipse.swt.snippets/src/org/eclipse/swt/snippets/Snippet135.java?view=co
-// See also http://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/EclipseAndAWT
+// See also https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/EclipseAndAWT
 
 /*******************************************************************************
  * Copyright (c) 2000, 2004 IBM Corporation and others.
