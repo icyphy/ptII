@@ -1644,7 +1644,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // $CLASSPATH/ptolemy/demo/Robot/RandomWalkIntruder.xml
         // and then running cd $PTII/ptolemy/vergil/basic/export/test/junit; make long_test
         // resulted in the second model failing to find Ptolemy classes from within Nashorn
-        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSClassLoaderProblem
+        // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/JSClassLoaderProblem
         if (Thread.currentThread().getContextClassLoader() == null) {
             Thread.currentThread()
                     .setContextClassLoader(ClassLoader.getSystemClassLoader());
@@ -7915,7 +7915,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     // Under Mac OS X, skip backtrack.xml.  See
-    // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and
+    // https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/Mac2008 and
     // follow the 'Problems with Eclipse and Ptolemy on the Mac' link.
     static {
         if (System.getProperty("os.name").equals("Mac OS X")) {
