@@ -880,7 +880,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements Printable,
             _treeView.setModel(null);
             _treeView.setUI(null);
             _treeView = null;
-            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#ManagerAgain_treeViewModel
+            // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks#ManagerAgain_treeViewModel
             _treeViewModel = null;
         }
 
