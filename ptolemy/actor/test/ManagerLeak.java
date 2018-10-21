@@ -37,7 +37,7 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 
 /** Simple test for leaks in Manager.
  *
- *  See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks
+ *  See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks
  *
  *  See https://projects.ecoinformatics.org/ecoinfo/issues/7190
  *

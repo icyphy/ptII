@@ -90,7 +90,7 @@ public class FMULog {
         }
 
         // First time through, try to find the JNA variadic extensions
-        // methods. See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNAVarargs
+        // methods. See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/JNA#JNAVarargs
         if (_useVariadicExtensions && _pointerClass == null) {
             try {
                 _initialize();
@@ -133,7 +133,7 @@ public class FMULog {
                                     + " In addition, this can happen if the the jna jar file has the "
                                     + "Java side of the variadic extensions, but the C side of the variadic extensions "
                                     + "have not been compiled for your platform.  To compile them, see "
-                                    + "http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
+                                    + "https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/JNA#PatchJNAToWorkWithVarargsCallBacks");
                 }
                 FMULog._nonVariadicLog(modelDescription,
                         fmiComponentOrEnvironment, instanceName, status,

@@ -131,7 +131,7 @@ import ptolemy.vergil.basic.export.web.WebExporter;
  * {@link ptolemy.vergil.basic.export.ExportModel} can be called with these
  * properties set to create Ptolemy website specific web pages.</p>
  *
- * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport#in_browser" target="_top">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
+ * <p> See <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/HTMLExport#in_browser" target="_top">https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/HTMLExport</a>
  * for detailed instructions about how to create web pages on the
  * Ptolemy website for models.</p>
  *
