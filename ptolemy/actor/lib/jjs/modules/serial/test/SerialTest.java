@@ -43,7 +43,7 @@ import ptolemy.util.StringUtilities;
 
  <p>Based on <a href="https://github.com/NeuronRobotics/nrjavaserial#in_browser" target="_top">https://github.com/NeuronRobotics/nrjavaserial</a>.</p>
 
- <p>See <a href="https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/RxTxHanging#in_browser" target="_top">https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/RxTxHanging</a>.</p>
+ <p>See <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/RxTxHanging#in_browser" target="_top">https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/RxTxHanging</a>.</p>
 
  @author Christopher Brooks, based on https://github.com/NeuronRobotics/nrjavaserial
  @version $Id$

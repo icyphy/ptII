@@ -492,7 +492,7 @@ public class FMIModelDescription {
             if (osName.startsWith("linux")) {
                 // Call dlopen() with RTLD_LAZY and not with RTLD_GLOBAL, which is the
                 // default.
-                // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/FMU#LinuxSymbolProblems
+                // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/FMU#LinuxSymbolProblems
                 // See https://github.com/twall/jna/issues/44
                 // One symptom of this failing is that if we run different values fmus,
                 // then "fmiSetString: Illegal call sequence." may appear.
@@ -543,7 +543,7 @@ public class FMIModelDescription {
                     + sharedLibrary + "\" shared library.  "
                     + "To debug loading errors, "
                     + "Restart Java with \"-Djna.debug_load=true\".  "
-                    + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JNA#JNADebugging."
+                    + "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/JNA#JNADebugging."
                     + "On thing to try under any platform, downloading fmuCheck from "
                     + "https://svn.fmi-standard.org/fmi/branches/public/Test_FMUs/Compliance-Checker/, "
                     + "then run fmuCheck on the .fmu file.\n"
