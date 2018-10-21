@@ -142,7 +142,7 @@ public class VergilApplication extends MoMLApplication {
             //         at com.sun.pdfview.PDFParser.iterate(PDFParser.java:656)
             //         at com.sun.pdfview.BaseWatchable.run(BaseWatchable.java:101)
             //         at java.lang.Thread.run(Thread.java:745)
-            // See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/PDF-renderer
+            // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/PDF-renderer
             // and https://stackoverflow.com/questions/26535842/multithreaded-jpeg-image-processing-in-java
 
             // This code was in ptolemy/vergil/pdfrenderer/PDFIcon.java, but the problem persisted
@@ -159,7 +159,7 @@ public class VergilApplication extends MoMLApplication {
         } catch (Throwable throwable) {
             new IllegalActionException(null, throwable,
                     "Could not instantiate a Java2d class?"
-                            + "See http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/PDF-renderer")
+                            + "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/PDF-renderer")
                                     .printStackTrace();
         }
     }

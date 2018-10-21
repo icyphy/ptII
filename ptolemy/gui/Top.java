@@ -338,7 +338,7 @@ public abstract class Top extends JFrame
         focusManager.downFocusCycle();
 
         // Avoid a leak under RHEL and Java 1.8.0_55
-        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#LinuxBltSubRegion
+        // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks#LinuxBltSubRegion
         // http://oracle.developer-works.com/article/5359339/How+to+realy+unregister+listeners+%28or+how+%22great%22+swing+leaks+memory%29
         focusManager.setGlobalCurrentFocusCycleRoot(null);
 
@@ -393,7 +393,7 @@ public abstract class Top extends JFrame
         // This code is left commented out because it is Mac-specific and
         // accessing ComponentPeer produces a warning.
 
-        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#CPlatformWindow
+        // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks#CPlatformWindow
         // See http://stackoverflow.com/questions/19781877/mac-os-java-7-jdialog-dispose-memory-leak
 
         // java.awt.peer.ComponentPeer peer = getPeer();

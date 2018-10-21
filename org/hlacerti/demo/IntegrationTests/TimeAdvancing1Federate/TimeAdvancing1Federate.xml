@@ -34,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 95.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 784, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 784, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 522]">
     </property>
@@ -47,7 +47,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a trivial federation named f1.&#10;There are no federates, so it doesn't do anything&#10;except advance time to the stopTime and terminate.&#10;&#10;To observe how the time advances, right-click on&#10;HlaManager and choose Listen To Attribute before&#10;running the model.&#10;&#10;By default, the parameter &quot;TimeManagement Service&quot;&#10;in HlaManager is NER (Next Event Request), which causes&#10;the model to skip directly from time 0.0 to the stopTime,&#10;since stopping the model is only event request.&#10;&#10;On the other hand, if you change the parameter&#10;&quot;TimeManagement Service&quot; in HlaManager to TAR&#10;(Time Advance Request), then time will advance by&#10;the value given by the time step parameter (which&#10;defaults to 1.0).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a trivial federation named TestTimeAdvance.&#10;It has only a federate (this Ptolemy model) named f1.&#10;This federate doesn't do anything except advance &#10;time to the stopTime and terminate.&#10;&#10;To check the parameters of this federate and the&#10;name of the federation, click on the HlaManager icon.&#10;&#10;To observe how the time advances, right-click on&#10;HlaManager and choose Listen To Attribute before&#10;running the model.&#10;&#10;By default, the parameter &quot;TimeManagement Service&quot;&#10;in HlaManager is NER (Next Event Request), which causes&#10;the model to skip directly from time 0.0 to the stopTime,&#10;since stopping the model is only event request.&#10;&#10;On the other hand, if you change the parameter&#10;&quot;TimeManagement Service&quot; in HlaManager to TAR&#10;(Time Advance Request), then time will advance by&#10;the value given by the time step parameter (which&#10;defaults to 1.0).">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 140.0}">
         </property>

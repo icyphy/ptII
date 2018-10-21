@@ -525,7 +525,7 @@ public class PlotFrame extends JFrame
         // http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4775862
 
         // For more notes, see
-        // http://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/PrintingFromJava
+        // https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/PrintingFromJava
 
         // Build a set of attributes
         PrinterJob job = PrinterJob.getPrinterJob();
