@@ -1396,7 +1396,7 @@ Accessor.prototype.getParameter = function (name) {
         throw new Error('getParameter(name): No parameter named ' + name);
     }
     // If this.setParameter() has been called, return that value.
-    if (parameter.currentValue) {
+    if (typeof parameter.currentValue !== 'undefined' && parameter.currentValue !== null) {
         return parameter.currentValue;
     }
     // If necessary, convert the value to the match the type.
