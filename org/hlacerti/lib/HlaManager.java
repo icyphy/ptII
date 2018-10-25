@@ -661,13 +661,21 @@ public class HlaManager extends AbstractInitializableAttribute
         // Set a timeout because creating the ambassador can hang, sadly.
         // We wait 15 seconds and then interrupt the current thread.        
         try {
+            /* Timeout here is not correct because the code may stall
+             * waiting for a synchronization point.
+             *
             _rtia = _callWithTimeout(new Callable<CertiRtiAmbassador>() {
                 public CertiRtiAmbassador call() throws Exception {
                     _hlaDebugSys("Creating RTI Ambassador");
                     return (CertiRtiAmbassador) factory.createRtiAmbassador();
                 };
             }, 20, TimeUnit.SECONDS);
+            */
+            _hlaDebugSys("Creating RTI Ambassador");
+            _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
+
             _hlaDebugSys("RTI Ambassador created.");
+        /*
         } catch (TimeoutException e) {
             // The above timed out.
             throw new IllegalActionException(this, e,
@@ -681,6 +689,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     + "ln -s /Users/YOURUSERNAME/pthla/certi-tools/lib/* .\n"
                     + "exit\n"
                     );
+        */
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "RTIinternalError. "
                     + "If the error is \"Connection to RTIA failed\", "
