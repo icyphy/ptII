@@ -2,10 +2,16 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Diva
 Bundle-SymbolicName: diva
-Bundle-Version: 11.0.0.qualifier
+Bundle-Version: 11.0.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: com.microstar.xml;version="11.0.0",
+ javax.imageio,
+ javax.swing,
+ javax.swing.border,
+ javax.swing.event,
+ javax.swing.tree,
+ javax.swing.undo,
  org.w3c.dom.svg;version="1.1.0"
 Export-Package: diva.canvas;version="11.0.0",
  diva.canvas.connector;version="11.0.0",

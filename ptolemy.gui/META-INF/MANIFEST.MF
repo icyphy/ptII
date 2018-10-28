@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Gui support
 Bundle-SymbolicName: ptolemy.gui
-Bundle-Version: 11.1.0.qualifier
+Bundle-Version: 11.1.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BuddyPolicy: registered
@@ -16,6 +16,18 @@ Import-Package: com.microstar.xml;version="11.0.0",
  diva.gui.toolbox;version="11.0.0",
  diva.util.java2d;version="11.0.0",
  diva.util.xml;version="11.0.0",
+ javax.print,
+ javax.print.attribute,
+ javax.print.attribute.standard,
+ javax.swing,
+ javax.swing.border,
+ javax.swing.event,
+ javax.swing.filechooser,
+ javax.swing.plaf.basic,
+ javax.swing.table,
+ javax.swing.text,
+ javax.swing.text.html,
+ javax.swing.undo,
  org.osgi.framework;version="1.8.0",
  org.ptolemy.classloading;version="11.1.0",
  org.ptolemy.classloading.osgi;version="11.0.0",
