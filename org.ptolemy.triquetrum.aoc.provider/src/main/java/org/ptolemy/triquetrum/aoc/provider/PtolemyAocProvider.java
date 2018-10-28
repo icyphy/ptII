@@ -89,6 +89,8 @@ public class PtolemyAocProvider implements ActorOrientedClassProvider {
       } else {
         throw new ClassNotFoundException(className);
       }
+    } catch (ClassNotFoundException e) {
+      throw e;
     } catch (Exception e) {
       LOGGER.error("Internal error ", e);
       throw new ClassNotFoundException(className);
