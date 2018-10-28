@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Core
 Bundle-SymbolicName: ptolemy.core
-Bundle-Version: 11.1.0.qualifier
+Bundle-Version: 11.1.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -27,7 +27,8 @@ Export-Package: org.ptolemy.classloading;version="11.1.0",
  ptolemy.kernel.util;version="11.1.0",
  ptolemy.math;version="11.0.0",
  ptolemy.util;version="11.1.0"
-Import-Package: org.osgi.framework;version="1.3.0",
+Import-Package: javax.xml.parsers,
+ org.osgi.framework;version="1.3.0",
  org.osgi.util.tracker;version="1.5.1",
  org.ptolemy.commons;version="11.0.0"
 Bundle-Activator: ptolemy.kernel.activator.Activator
