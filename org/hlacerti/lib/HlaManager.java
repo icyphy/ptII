@@ -129,55 +129,61 @@ import ptolemy.kernel.util.Workspace;
 //// HlaManager
 
 /**
- * This class implements a HLA Manager which allows a Ptolemy model to
- * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
- * simulation as Federate of a Federation.
- *
- * <p>The High Level Architecture (HLA) [1][2] is a standard for distributed
- * discrete-event simulation. A complex simulation in HLA is called a HLA
- * Federation. A Federation is a collection of Federates (e.g. simpler simulators),
- * each performing a sequence of computations, interconnected by a Run
- * Time Infrastructure (RTI).</p>
- *
- * <p>CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
+ * This class implements a HLA Manager, which allows a Ptolemy model to
+ * participate in an HLA/CERTI Federation. The main goal is to allow a Ptolemy
+ * simulation to act as Federate in a Federation.
+ * <p>
+ * The High Level Architecture (HLA) [1][2] is a standard for distributed
+ * discrete-event simulation. A simulation in HLA is called an HLA
+ * Federation. A Federation is a collection of Federates, typically modeling
+ * components in a system, interconnected by a Run Time Infrastructure (RTI).
+ * </p><p>
+ * CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
  * manages every part of federation. It also ensures a real-time behavior of
  * a federation execution. CERTI is implemented in C++ and bindings are
  * provided as JCERTI for Java and PyHLA for Python. For more information see:
- * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
- *
- * <p>The {@link HlaManager} attribute handles the time synchronization between
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>.
+ * </p><p>
+ * The {@link HlaManager} attribute handles the time synchronization between
  * Ptolemy model time and HLA logical time by implementing the {@link TimeRegulator}
  * interface. It also manages objects that implement interfaces provided by
- * JCERTI relatives to Federation, Declaration, Object and Time management
- * areas in HLA (each management areas provides a set of services).
- * </p>
- * To develop a HLA Federation it is required to specify a Federate Object
- * Model (FOM) which describes the architecture of the Federation (HLA version,
- * name of Federates which belong to, shared HLA attributes) and the interaction
- * between Federates and shared attributes. Data exchanged in a HLA Federation
- * are called HLA attributes and their interaction mechanism is based on the
- * publish/subscribe paradigm. The FOM is specified in a .fed file used by
- * the RTI (e.g. by the RTIG process when using CERTI). More information in [3].
- * <p> <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
- * <p> To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
- * deployed and configured (by double-clicking on the attribute).
- * Parameters <i>federateName</i>, <i>federationName</i> have to match the
- * declaration in the FOM (.fed file). <i>fedFile</i> specifies the FOM file and
- * its path.</p>
- *
- * <p>Parameters <i>useNextEventRequest</i>, <i>UseTimeAdvanceRequest</i>,
- * <i>isTimeConstrained</i> and <i>isTimeRegulator</i> are
- * used to configure the HLA time management services of the Federate. A
- * Federate can only specify the use of the <i>nextEventRequest()
- * service</i> or the <i>timeAdvanceRequest()</i> service at a time.
+ * JCERTI related to the Federation, Declaration, Object, and Time management
+ * areas in HLA (each management area provides a set of services).
+ * </p><p>
+ * Every HLA Federation has a Federation Object Model (FOM) defined in a .fed file.
+ * The FOM names the Federation and defines a set of classes that are used to
+ * communicate between federates. An {@link HlaPublisher} actor, given an input token,
+ * updates an attribute in an instance of such a class. An {@link HlaSubscriber} actor
+ * subcribes to such updates and produces the new value on its output port each time
+ * the specified attribute is updated. The FOM is specified in a .fed file used by
+ * the RTI (e.g. by the RTIG process when using CERTI). More information is in [3] and:
+ * </p><p>
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>
+ * </p><p>
+ * To enable a Ptolemy model to be a Federate, it must contain an {@link HlaManager}.
+ * The parameters of this manager specify the name of the federate (this Ptolemy model),
+ * the FOM file (a file with a .fed extension), and various parameters that control
+ * the style of communication.
+ * </p><p>
+ * The parameter <i>timeManagementService</i> specifies one of Next Event Request (NER)
+ * or Time Advance Request (TAR), determining which of two available styles are used
+ * for time management.
+ * <b>FIXME: Describe these.</b>
+ * If TAR is selected, then parameter <i>hlaTimeStep</i> (displayed as
+ * "Time Step for TAR") specifies the time step taken by each time advance.
+ * </p><p>
+ * <b>FIXME: What do <i>isTimeConstrained</i> and <i>isTimeRegulator</i> mean?
+ * The following description tells me nothing. It just turns their names into sentences:</b>
+ * </p><p>
  * <i>istimeConstrained</i> is used to specify time-constrained Federate and
  * <i>istimeRegulator</i> to specify time-regulator Federate. The combination of
- * both parameters is possible and is recommended.</p>
- *
- * <p>Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
- * are used to specify Hla Timing attributes of a Federate.</p>
- *
- * <p>Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
+ * both parameters is possible and is recommended.
+ * </p><p>
+ * The parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
+ * are used to specify HLA Timing attributes of a Federate.
+ * <b>FIXME: Meaning what?</b>
+ * </p><p>
+ * The parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
  * This mechanism is usually used to synchronize the Federates, during their
  * initialization, to avoid that Federates that only consume some HLA
@@ -271,31 +277,31 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // HLA Federation management parameters.
         federateName = new Parameter(this, "federateName");
-        federateName.setDisplayName("Federate's name");
+        federateName.setDisplayName("Federate name");
         federateName.setTypeEquals(BaseType.STRING);
         federateName.setExpression("\"HlaManager\"");
         attributeChanged(federateName);
 
         federationName = new Parameter(this, "federationName");
-        federationName.setDisplayName("Federation's name");
+        federationName.setDisplayName("Federation name");
         federationName.setTypeEquals(BaseType.STRING);
         federationName.setExpression("\"HLAFederation\"");
         attributeChanged(federationName);
 
         fedFile = new FileParameter(this, "fedFile");
-        fedFile.setDisplayName("Federate Object Model (.fed) file path");
+        fedFile.setDisplayName("Federation Object Model (FOM) file");
         new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
         new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
-        fedFile.setExpression("$CWD/HLAFederation.fed");
+        fedFile.setExpression("HLAFederation.fed");
 
         // HLA Time management parameters.
         timeManagementService = new ChoiceParameter(this,
                 "timeManagementService", ETimeManagementService.class);
-        timeManagementService.setDisplayName("Time Management Service");
+        timeManagementService.setDisplayName("Time management service");
         attributeChanged(timeManagementService);
 
         hlaTimeStep = new Parameter(this, "hlaTimeStep");
-        hlaTimeStep.setDisplayName("*** If TAR is used, time step (s)");
+        hlaTimeStep.setDisplayName("Time Step for TAR");
         hlaTimeStep.setExpression("0.0");
         hlaTimeStep.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaTimeStep);
@@ -374,13 +380,13 @@ public class HlaManager extends AbstractInitializableAttribute
     /** Name of the federation. This parameter must contain an StringToken. */
     public Parameter federationName;
 
-    /** Path and name of the Federate Object Model (FOM) file. This parameter
-     *  must contain an StringToken. */
+    /** Path and name of the Federation Object Model (FOM) file (which should have
+     *  extension .fed).
+     */
     public FileParameter fedFile;
 
-    /**
-     * Double value for representing how much is a unit of time in the simulation.
-     * Has an impact on TAR/NER/RAV/UAV.
+    /** Double value for representing how much is a unit of time in the simulation.
+     *  Has an impact on TAR/NER/RAV/UAV.
      */
     public Parameter hlaTimeUnit;
 
