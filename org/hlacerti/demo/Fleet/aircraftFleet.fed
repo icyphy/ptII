@@ -1,0 +1,16 @@
+;;FOM with 1 object class and 1 attribute.
+(Fed
+  (Federation Fleet)
+  (FedVersion v1.3)
+  (Spaces)
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+      (Class Aircraft
+        (Attribute speed reliable timestamp)
+      )
+    )
+  )
+  (Interactions)
+)

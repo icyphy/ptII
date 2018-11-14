@@ -37,7 +37,7 @@ import java.io.File;
  *   javac -classpath /opt/local/share/OpenCV/java/opencv-320.jar OpenCVTest.java
  *   java -classpath /opt/local/share/OpenCV/java/opencv-320.jar:. OpenCVTest
  *  </pre>
- *  <p>See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/OpenCV</p>
+ *  <p>See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/OpenCV</p>
  *
  *  @author Christopher Brooks
  *  @version $Id$

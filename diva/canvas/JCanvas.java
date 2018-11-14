@@ -504,7 +504,7 @@ public class JCanvas extends JComponent implements Printable {
         // your view of what you were requesting... "
 
         // The fix is to always call super.processMouseEvent(e)
-        // See https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/ToolTips
+        // See https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/ToolTips
 
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
