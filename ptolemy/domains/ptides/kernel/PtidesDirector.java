@@ -122,8 +122,8 @@ import ptolemy.kernel.util.Workspace;
  *  actors, which means this director cannot be used inside of an
  *  actor that performs fix point iteration, which includes (currently),
  *  Continuous, CT and SR. For more details, please refer
- *  to Edward A. Lee, Haiyang Zheng. <a
- *  href="http://chess.eecs.berkeley.edu/pubs/430.html">Leveraging
+ *  to Edward A. Lee, Haiyang Zheng. 
+ *  <a href="https://ptolemy.berkeley.edu/projects/chess/pubs/430.html#in_browser" target="_top">Leveraging
  *  Synchronous Language Principles for Heterogeneous Modeling
  *  and Design of Embedded Systems</a>, Proceedings of the
  *  7th ACM &amp; IEEE international conference on Embedded
@@ -159,8 +159,8 @@ import ptolemy.kernel.util.Workspace;
  *
  *  <p> The implementation is based on the operational semantics
  *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward
- *  A. Lee, Thomas Huining Feng, Patricia Derler.  <a
- *  href="http://chess.eecs.berkeley.edu/pubs/529.html">Execution
+ *  A. Lee, Thomas Huining Feng, Patricia Derler. 
+ *  <a href="https://ptolemy.berkeley.edu/projects/chess/pubs/529.html#in_browser" target="_top">Execution
  *  Strategies for Ptides, a Programming Model for Distributed
  *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
  *  and Applications Symposium, 2009, IEEE Computer Society, 77-86,
@@ -718,7 +718,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
         super.preinitialize();
         if (_eventQueue != null) {
             // This execution may be overlapped with the previous.
-            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/NotifyAll
             synchronized (_eventQueueLock) {
                 _eventQueue = new PtidesListEventQueue();
             }

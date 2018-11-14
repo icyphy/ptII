@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="testTimeAdvancingF1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -34,7 +34,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 401, 684, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 268, 684, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 522]">
     </property>
@@ -43,7 +43,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.71411799863384, 262.4671597506831}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federation f1 participating to HlaFederation; it&#10;must be the last one to be launched since it &#10;registers the synchronization point.&#10;&#10;For observing how the time advances in each&#10;federate, do a right-click on HlaManager icone&#10;and choose Listen To Attribute.&#10;&#10;Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federation f1 participating in an HlaFederation; it&#10;must be the last one to be launched since it &#10;registers the synchronization point.&#10;&#10;To observe how time advances in each&#10;federate, right-click on HlaManager&#10;and choose Listen To Attribute.&#10;&#10;Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
@@ -74,7 +76,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clement Michel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 370.0]">
         </property>
     </property>
     <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="1">

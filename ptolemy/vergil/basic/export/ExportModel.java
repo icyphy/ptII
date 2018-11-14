@@ -77,7 +77,7 @@ import ptolemy.vergil.basic.export.web.WebExportParameters;
  * <p>The default is to export a .gif file with the same name as the model.
  * See {@link #main(String[])} for usage.</p>
  *
- * <p> See <a href="http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport">http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/HTMLExport</a>
+ * <p> See <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/HTMLExport">https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/HTMLExport</a>
  * for detailed instructions about how to create web pages on the
  * Ptolemy website for models.</p>
  *

@@ -39,6 +39,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -122,55 +129,61 @@ import ptolemy.kernel.util.Workspace;
 //// HlaManager
 
 /**
- * This class implements a HLA Manager which allows a Ptolemy model to
- * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
- * simulation as Federate of a Federation.
- *
- * <p>The High Level Architecture (HLA) [1][2] is a standard for distributed
- * discrete-event simulation. A complex simulation in HLA is called a HLA
- * Federation. A Federation is a collection of Federates (e.g. simpler simulators),
- * each performing a sequence of computations, interconnected by a Run
- * Time Infrastructure (RTI).</p>
- *
- * <p>CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
+ * This class implements a HLA Manager, which allows a Ptolemy model to
+ * participate in an HLA/CERTI Federation. The main goal is to allow a Ptolemy
+ * simulation to act as Federate in a Federation.
+ * <p>
+ * The High Level Architecture (HLA) [1][2] is a standard for distributed
+ * discrete-event simulation. A simulation in HLA is called an HLA
+ * Federation. A Federation is a collection of Federates, typically modeling
+ * components in a system, interconnected by a Run Time Infrastructure (RTI).
+ * </p><p>
+ * CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
  * manages every part of federation. It also ensures a real-time behavior of
  * a federation execution. CERTI is implemented in C++ and bindings are
  * provided as JCERTI for Java and PyHLA for Python. For more information see:
- * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
- *
- * <p>The {@link HlaManager} attribute handles the time synchronization between
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>.
+ * </p><p>
+ * The {@link HlaManager} attribute handles the time synchronization between
  * Ptolemy model time and HLA logical time by implementing the {@link TimeRegulator}
  * interface. It also manages objects that implement interfaces provided by
- * JCERTI relatives to Federation, Declaration, Object and Time management
- * areas in HLA (each management areas provides a set of services).
- * </p>
- * To develop a HLA Federation it is required to specify a Federate Object
- * Model (FOM) which describes the architecture of the Federation (HLA version,
- * name of Federates which belong to, shared HLA attributes) and the interaction
- * between Federates and shared attributes. Data exchanged in a HLA Federation
- * are called HLA attributes and their interaction mechanism is based on the
- * publish/subscribe paradigm. The FOM is specified in a .fed file used by
- * the RTI (e.g. by the RTIG process when using CERTI). More information in [3].
- * <p> <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
- * <p> To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
- * deployed and configured (by double-clicking on the attribute).
- * Parameters <i>federateName</i>, <i>federationName</i> have to match the
- * declaration in the FOM (.fed file). <i>fedFile</i> specifies the FOM file and
- * its path.</p>
- *
- * <p>Parameters <i>useNextEventRequest</i>, <i>UseTimeAdvanceRequest</i>,
- * <i>isTimeConstrained</i> and <i>isTimeRegulator</i> are
- * used to configure the HLA time management services of the Federate. A
- * Federate can only specify the use of the <i>nextEventRequest()
- * service</i> or the <i>timeAdvanceRequest()</i> service at a time.
+ * JCERTI related to the Federation, Declaration, Object, and Time management
+ * areas in HLA (each management area provides a set of services).
+ * </p><p>
+ * Every HLA Federation has a Federation Object Model (FOM) defined in a .fed file.
+ * The FOM names the Federation and defines a set of classes that are used to
+ * communicate between federates. An {@link HlaPublisher} actor, given an input token,
+ * updates an attribute in an instance of such a class. An {@link HlaSubscriber} actor
+ * subcribes to such updates and produces the new value on its output port each time
+ * the specified attribute is updated. The FOM is specified in a .fed file used by
+ * the RTI (e.g. by the RTIG process when using CERTI). More information is in [3] and:
+ * </p><p>
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>
+ * </p><p>
+ * To enable a Ptolemy model to be a Federate, it must contain an {@link HlaManager}.
+ * The parameters of this manager specify the name of the federate (this Ptolemy model),
+ * the FOM file (a file with a .fed extension), and various parameters that control
+ * the style of communication.
+ * </p><p>
+ * The parameter <i>timeManagementService</i> specifies one of Next Event Request (NER)
+ * or Time Advance Request (TAR), determining which of two available styles are used
+ * for time management.
+ * <b>FIXME: Describe these.</b>
+ * If TAR is selected, then parameter <i>hlaTimeStep</i> (displayed as
+ * "Time Step for TAR") specifies the time step taken by each time advance.
+ * </p><p>
+ * <b>FIXME: What do <i>isTimeConstrained</i> and <i>isTimeRegulator</i> mean?
+ * The following description tells me nothing. It just turns their names into sentences:</b>
+ * </p><p>
  * <i>istimeConstrained</i> is used to specify time-constrained Federate and
  * <i>istimeRegulator</i> to specify time-regulator Federate. The combination of
- * both parameters is possible and is recommended.</p>
- *
- * <p>Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
- * are used to specify Hla Timing attributes of a Federate.</p>
- *
- * <p>Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
+ * both parameters is possible and is recommended.
+ * </p><p>
+ * The parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
+ * are used to specify HLA Timing attributes of a Federate.
+ * <b>FIXME: Meaning what?</b>
+ * </p><p>
+ * The parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
  * This mechanism is usually used to synchronize the Federates, during their
  * initialization, to avoid that Federates that only consume some HLA
@@ -264,31 +277,31 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // HLA Federation management parameters.
         federateName = new Parameter(this, "federateName");
-        federateName.setDisplayName("Federate's name");
+        federateName.setDisplayName("Federate name");
         federateName.setTypeEquals(BaseType.STRING);
         federateName.setExpression("\"HlaManager\"");
         attributeChanged(federateName);
 
         federationName = new Parameter(this, "federationName");
-        federationName.setDisplayName("Federation's name");
+        federationName.setDisplayName("Federation name");
         federationName.setTypeEquals(BaseType.STRING);
         federationName.setExpression("\"HLAFederation\"");
         attributeChanged(federationName);
 
         fedFile = new FileParameter(this, "fedFile");
-        fedFile.setDisplayName("Federate Object Model (.fed) file path");
+        fedFile.setDisplayName("Federation Object Model (FOM) file");
         new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
         new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
-        fedFile.setExpression("$CWD/HLAFederation.fed");
+        fedFile.setExpression("HLAFederation.fed");
 
         // HLA Time management parameters.
         timeManagementService = new ChoiceParameter(this,
                 "timeManagementService", ETimeManagementService.class);
-        timeManagementService.setDisplayName("Time Management Service");
+        timeManagementService.setDisplayName("Time management service");
         attributeChanged(timeManagementService);
 
         hlaTimeStep = new Parameter(this, "hlaTimeStep");
-        hlaTimeStep.setDisplayName("*** If TAR is used, time step (s)");
+        hlaTimeStep.setDisplayName("Time Step for TAR");
         hlaTimeStep.setExpression("0.0");
         hlaTimeStep.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaTimeStep);
@@ -367,13 +380,13 @@ public class HlaManager extends AbstractInitializableAttribute
     /** Name of the federation. This parameter must contain an StringToken. */
     public Parameter federationName;
 
-    /** Path and name of the Federate Object Model (FOM) file. This parameter
-     *  must contain an StringToken. */
+    /** Path and name of the Federation Object Model (FOM) file (which should have
+     *  extension .fed).
+     */
     public FileParameter fedFile;
 
-    /**
-     * Double value for representing how much is a unit of time in the simulation.
-     * Has an impact on TAR/NER/RAV/UAV.
+    /** Double value for representing how much is a unit of time in the simulation.
+     *  Has an impact on TAR/NER/RAV/UAV.
      */
     public Parameter hlaTimeUnit;
 
@@ -644,17 +657,46 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         // Get a link to the RTI.
-        RtiFactory factory = null;
+        final RtiFactory factory;
         try {
             factory = RtiFactoryFactory.getRtiFactory();
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e,
                     "RTIinternalError: " + e.getMessage());
         }
-
+        // Set a timeout because creating the ambassador can hang, sadly.
+        // We wait 15 seconds and then interrupt the current thread.        
         try {
+            /* Timeout here is not correct because the code may stall
+             * waiting for a synchronization point.
+             *
+            _rtia = _callWithTimeout(new Callable<CertiRtiAmbassador>() {
+                public CertiRtiAmbassador call() throws Exception {
+                    _hlaDebugSys("Creating RTI Ambassador");
+                    return (CertiRtiAmbassador) factory.createRtiAmbassador();
+                };
+            }, 20, TimeUnit.SECONDS);
+            */
+            _hlaDebugSys("Creating RTI Ambassador");
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
-        } catch (RTIinternalError e) {
+
+            _hlaDebugSys("RTI Ambassador created.");
+        /*
+        } catch (TimeoutException e) {
+            // The above timed out.
+            throw new IllegalActionException(this, e,
+                    "Timed out attempting to start the RTI ambassador.\n"
+                    + "This can happen under MacOS (at least) if the dynamically "
+                    + "linked libraries cannot be found.  To fix the problem, as "
+                    + "root, you have to create a symbolic link in /usr/local/lib "
+                    + "to the files in ~/pthla/certi-tools/lib/. To do this:\n"
+                    + "sudo -i\n"
+                    + "cd /usr/local/lib\n\n"
+                    + "ln -s /Users/YOURUSERNAME/pthla/certi-tools/lib/* .\n"
+                    + "exit\n"
+                    );
+        */
+        } catch (Exception e) {
             throw new IllegalActionException(this, e, "RTIinternalError. "
                     + "If the error is \"Connection to RTIA failed\", "
                     + "then the problem is likely that the rtig "
@@ -670,6 +712,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // Local or distant simulation support.
             // Note: determine if we need to change JCERTI API to handle FED file name
             //       instead of URL.
+            _hlaDebugSys("Creating Federation execution.");
             _rtia.createFederationExecution(_federationName,
                     fedFile.asFile().toURI().toURL());
 
@@ -691,7 +734,8 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             throw new IllegalActionException(this, e,
-                    "CouldNotOpenFED: " + e.getMessage());
+                    "CouldNotOpenFED: .fed file is missing: " + fedFile.asFile() + "\n"
+                            + e.getMessage());
         } catch (ErrorReadingFED e) {
             throw new IllegalActionException(this, e,
                     "ErrorReadingFED: " + e.getMessage());
@@ -710,6 +754,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Join the Federation.
         try {
+            _hlaDebugSys("Joining the federation.");
             _rtia.joinFederationExecution(_federateName, _federationName,
                     _federateAmbassador);
 
@@ -723,6 +768,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Initialize the Federate Ambassador.
         try {
+            _hlaDebugSys("Initializing the RTI Ambassador");
             _federateAmbassador.initialize(_rtia);
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
@@ -1330,6 +1376,40 @@ public class HlaManager extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Call a function, but don't let it run more than the specified amount of
+     *  time.
+     * @param callable The function to call.
+     * @param timeout The timeout.
+     * @param timeUnit The time units
+     * @return Whatever the function returns.
+     * @throws Exception
+     */
+    private static <T> T _callWithTimeout(Callable<T> callable, long timeout, TimeUnit timeUnit) throws Exception {
+        final ExecutorService executor = Executors.newSingleThreadExecutor();
+        final Future<T> future = executor.submit(callable);
+        executor.shutdown(); // This does not cancel the already-scheduled task.
+        try {
+            return future.get(timeout, timeUnit);
+        }
+        catch (TimeoutException e) {
+            //remove this if you do not want to cancel the job in progress
+            //or set the argument to 'false' if you do not want to interrupt the thread
+            future.cancel(true);
+            throw e;
+        }
+        catch (ExecutionException e) {
+            //unwrap the root cause
+            Throwable t = e.getCause();
+            if (t instanceof Error) {
+                throw (Error) t;
+            } else if (t instanceof Exception) {
+                throw (Exception) t;
+            } else {
+                throw new IllegalStateException(t);
+            }
+        }
+    }
 
     /** Convert Ptolemy time to CERTI logical time.
      * @param pt The Ptolemy time.

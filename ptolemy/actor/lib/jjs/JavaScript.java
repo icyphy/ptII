@@ -3131,7 +3131,7 @@ public class JavaScript extends AbstractPlaceableActor
             // get the lock because a Vertx thread might be trying to
             // send while the actor has already obtained the lock in
             // wrapup() and may be calling WebSocketHelper.close(). See
-            // https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/Deadlock
+            // https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/Deadlock
             //
             // FIXME: The above NOTE appears to be wrong.
             // WebSocketHelper is holding a lock on _actor

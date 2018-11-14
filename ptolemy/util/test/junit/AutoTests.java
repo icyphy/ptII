@@ -122,11 +122,8 @@ public class AutoTests extends ModelTests {
     /**
      * Execute a model and time out after 900000 ms.
      *
-     * <p>To check the time, go to the list of tests for AutoTest, for example
-     * <a href="http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/724/testReport/ptolemy.util.test.junit/AutoTests/"><code>http://sisyphus.eecs.berkeley.edu:8079/hudson/job/ptII/724/testReport/ptolemy.util.test.junit/AutoTests/</code></a>,
-     * where 724 is a recent run of the build.  Look for thhe longest
-     * passing test, typically Trilateration, and round up by a factor
-     * of 1.5.</p>
+     * For information about how this class is used in the Travis build,
+     * see <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#in_browser target="_top">https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis</a>.
      *
      * @param fullPath
      *            The full path to the model file to be executed. If the
@@ -189,7 +186,7 @@ public class AutoTests extends ModelTests {
             // If a model is in various directories, including
             // org/terraswarm/accessors/test, the delay before
             // reloading.  See
-            // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
+            // https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/WebSocketDeadlock#Starvation
             AutoTests.delayIfNecessary(fullPath);
 
             System.out.println("----------------- Instantiating " + fullPath);
