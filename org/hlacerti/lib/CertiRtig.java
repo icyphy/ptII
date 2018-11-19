@@ -63,11 +63,15 @@ import ptolemy.util.StringUtilities;
  * simulation and needs to contain the Federate Object Management file (.fed).
  * This directory is provided by the specification of the .fed file path during
  * the configuration of the {@link HlaManager} attribute.
+ * FIXMEjc: check last changes concerning JCERTI and the way to give the .fed file
+ * address.
  * </p><p>
  * For a correct execution, the <i>CERTI_HOME</i> environment variable has to be
  * set. It could be set in the shell (by running one of the scripts provided by
  * CERTI) where Vergil is executed, or as a parameter of the Ptolemy model or as
  * a parameter of the {@link HlaManager}:
+ * FIXMEjc: As for today, certi_home is not set in Ptolemy model neither is a
+ * parameter in hlaManager. Only in the shel, or in .bashrc ou .bash_profile.
  * </p><pre>
  * CERTI_HOME="/absolute/path/to/certi/"
  * </pre><p>
@@ -79,6 +83,7 @@ import ptolemy.util.StringUtilities;
  * Federate that has launched the RTIG could shutdown the subprocess at the
  * end of the simulation before the other Federates have left the Federation.
  * Then an exception is throwed.
+ * FIXMEjc: the above limitation was present in Oct 2013. Check if it is still true.
  *
  * @author Gilles Lasnier, Christopher Brooks
  * @version $Id: CertiRtig.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -141,6 +146,8 @@ public class CertiRtig extends NamedObj {
     /** Initialize command, arguments and environment variables to
      *  invoke the subprocess.
      *  @param directory The current path where the simulation is executed.
+     * FIXMEjc: check if is where the simulation is executed, or where the
+     * fed file is.
      *  @exception IllegalActionException If the directory to launch the
      *  RTIG process doesn't exit.
      */
@@ -156,6 +163,8 @@ public class CertiRtig extends NamedObj {
         // shell environment. If not look if there is a CERTI_HOME attribute
         // set for the model. If not look if there is a CERTI_HOME attribute
         // set for the associated HlaManager. If not, throws an exception.
+        // FIXMEjc: as for June, 2018, the plan was to add certi_home in the
+        // Ptolemy model or in the HlaManager interface. Is it a good idea?
         if (System.getenv("CERTI_HOME") != null) {
             certiHome = System.getenv("CERTI_HOME");
         } else if (_hlaManager.getContainer()
@@ -193,6 +202,8 @@ public class CertiRtig extends NamedObj {
         // Under RHEL, rtig is possibly linked with libraries in
         // Matlab, so we need to be sure to include DYLD_LIBRARY_PATH,
         // LD_LIBRARY_PATH or PATH from the environment.
+        // FIXMEjc: Under MacOS (since El Capitan) there is an issue
+        // with dynamic libraires: they must be in /usr/local/lib
         String pathSeparator = System.getProperty("path.separator");
         String osName = StringUtilities.getProperty("os.name");
 
@@ -203,6 +214,9 @@ public class CertiRtig extends NamedObj {
 
         // Only set the environment variable that is appropriate for
         // the platform.
+        // Under MacOS since El Capitain, is not enough to have the dynamic
+        // libraries set as below:  /usr/local/lib must have a symbolic link
+        // to $CERTI_HOME/lib.
         if (osName.startsWith("Mac OS X")) {
             String dyldLibraryPath = "DYLD_LIBRARY_PATH=" + certiHome + "/lib";
             String dyldVariable = System.getenv("DYLD_LIBRARY_PATH");
@@ -226,7 +240,7 @@ public class CertiRtig extends NamedObj {
             }
             _environmentArray[0] = ldLibraryPath;
         }
-
+        // FIXMEjc: check ISAE tickets for writting the comments.
         String certiFomPath = "";
         if (System.getenv("CERTI_FOM_PATH") != null) {
             String certiFomPathVariable = System.getenv("CERTI_FOM_PATH");
@@ -267,6 +281,12 @@ public class CertiRtig extends NamedObj {
      *  @exception IllegalActionException If the closing stdin of the subprocess
      *  threw an IOException.
      */
+    //FIXMEjc: terminateProcess is called in two situations:
+    // 1. By CertiRtig.java itself: When a federate is launched and there
+    //    is already a rtig process running (because a first federate launched it,
+    //    or because it was run by hand);
+    // 2. By HlaManager.java, when all federates in a Federation have resigned,
+    //    and the Federation was destroyed (see While (!canDestroyRtig) {}).
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
             System.out.println("CertiRtig: " + _hlaManager.getFullName()
@@ -283,7 +303,32 @@ public class CertiRtig extends NamedObj {
                                 + "Closing stdin of the subprocess threw an IOException.");
             }
             if (_process != null) {
+                System.out.println("CertiRtig " + _hlaManager.getFullName()
+                                   + " before destroy: _process.isAlive is "
+                                   + _process.isAlive());
+                if (_debugging) {
+                    _debug("CertiRtig " + _hlaManager.getFullName()
+                           + " before destroy: _process.isAlive is "
+                              + _process.isAlive());
+                }
+                // FIXMEjc: The rtig process is still running after .destroy;
+                // tested with MacOS 10.12 and also a VM CentOS 7.
+                // After running the same federation several times, e.g, 10 times,
+                // (whitout kill the rtig before a new lauching), an exception
+                // appears in the last federate to be launched, after a
+                // correct execution of the federation:
+                // java.lang.NullPointerException
+                // at org.hlacerti.lib.CertiRtig.terminateProcess(CertiRtig.java:310)
+                // at org.hlacerti.lib.HlaManager.wrapup(HlaManager.java:1323)
                 _process.destroy();
+                System.out.println("CertiRtig " + _hlaManager.getFullName()
+                                   + " after destroy: _process.isAlive is "
+                                   + _process.isAlive());
+                if (_debugging) {
+                    _debug("CertiRtig " + _hlaManager.getFullName()
+                           + " after destroy: _process.isAlive is "
+                              + _process.isAlive());
+                }
                 _process = null;
             }
         }
@@ -389,7 +434,9 @@ public class CertiRtig extends NamedObj {
                 _isAlreadyLaunched = true;
 
                 // If another is running, we don't need this subprocess anymore,
-                // so destroy it.
+                // so destroy it. This can happen if a first Ptolemy federate
+                // already lauched the rtig, or if it was lauched in the shell
+                // before lauching any Ptolemy federate.
                 try {
                     terminateProcess();
                 } catch (IllegalActionException e) {
