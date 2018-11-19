@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={315, 187, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 87, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000016">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000024">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{512.5243055555557, 259.69900173611114}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{512.5243055555557, 259.69900173611137}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -41,7 +41,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SPARQL queries example">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 195.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SPARQLQueries.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -234,5 +234,87 @@
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="`6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authentication and https for queries and updates">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 280.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="Authentication.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instructions and example for setting up&#10;authentication over https.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 235.0]">
+        </property>
+    </property>
+    <property name="`7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Semantic Yelp Sensor update example">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 375.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SemanticYelpSensorUpdateExample.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_blank">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{340, 390}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demo of an ontology producing accessor&#10;updating a semantic repository with semantic&#10;observations.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 315.0]">
+        </property>
     </property>
 </entity>

@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 2048, 1080}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 831}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1814, 970]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 721]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{912.0, 479.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{608.0, 354.681640625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
