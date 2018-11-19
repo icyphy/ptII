@@ -363,7 +363,7 @@ public class HlaManager extends AbstractInitializableAttribute
         hlaReportPath.setDisplayName("HLA report folder path");
         new Parameter(hlaReportPath, "allowFiles", BooleanToken.FALSE);
         new Parameter(hlaReportPath, "allowDirectories", BooleanToken.TRUE);
-        hlaReportPath.setExpression("testsResults");
+        hlaReportPath.setExpression("$HOME/HLATestResults");
 
         // Local or distant simulation support.
         _certiHost = null;
