@@ -1,4 +1,5 @@
-/* This actor implements a publisher in a HLA/CERTI federation.
+/* This actor provides information to publish, register and update values in a
+ * HLA/CERTI federation.
 
 @Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
@@ -50,17 +51,50 @@ import ptolemy.kernel.util.Workspace;
 //// HlaPublisher
 
 /**
- * <p>This actor implements a publisher in a HLA/CERTI federation. This
- * publisher is associated to one HLA attribute. Ptolemy's tokens, received in
- * the input port of this actor, are interpreted as an updated value of the
- * HLA attribute. The updated value is published to the whole HLA Federation
- * by the {@link HlaManager} attribute, deployed in a Ptolemy model.
+ * <p>This actor provides the name of the class <i>C</i>, the name of the
+ * attribute <i>attr</i> and the name of the instance <i>i</i> (C.attr.i) that
+ * are used by the {@link HlaManager} attribute (deployed in the same model)
+ * with two goals:
+ * - During initialization phase, the {@link HlaManager} calls the HLA services for 
+ * publishing all the attributes <i>attr</i of a class  <i>C</i> and registering
+ * an instance <i>i</i> of a class for this federate:
+ * rtia.publishObjectClass(classHandle, _attributesLocal) and 
+ * rtia.registerObjectInstance(classHandle, classInstanceName).
+ * The parameter _attributesLocal is the set of all attributes <i>attr</i of a
+ * class  <i>C</i> in this Ptolemy federate  model (obtained from all
+ * HlaPublisher actors).
+ * - During the simulation loop phase, the {@link HlaManager} call the UAV service
+ * for updating the value of an attribute of a class instance:
+ * _rtia.updateAttributeValues(objectInstanceId, suppAttributes, tag, uavTimeStamp).
+ * The UAV service is send after a cycle in the {@link HlaManager} that starts
+ * with an event e(t) received at the input port of the HlaPublisher actor, and
+ * when the federate eventually has advanced its time to uavTimeStamp=t'. The
+ * value of t' depends on the time management (NER or TAR), see {@link
+ * HlaManager} code.
  * </p><p>
- * The name of this actor is mapped to the name of the HLA attribute in the
- * federation and need to match the Federate Object Model (FOM) specified for
- * the Federation. The data type of the input port has to be the same type of
- * the HLA attribute. The parameter <i>classObjectHandle</i> needs to match the
- * attribute object class describes in the FOM.
+ * Parameters <i>classObjectName</i> and <i>attributeName</i> need to match the
+ * name of the class and the attribute defined in the Federate Object Model
+ * (FOM) specified for the Federation and indicated in the FED file.
+ * The data type of the input port of this actor must have the same type of the
+ * HLA attribute (defined in the FOM). 
+ * </p><p>
+ * The parameter <i>classInstanceName</i> is provided by the user. Each
+ * federate has the ownership of the attributes of an instance of object that it
+ * publishes. Suppose the FOM of a federation has a class C with 3 attributes
+ * attr2, attr2 and attr3. The federation has 2 federates, F1 and F1. If F1
+ * publishes C.attr1 and C.attr3 and F2 publishes
+ * C.attr2, then the name of the instance of class C must be different in both
+ * federates. Federate F1 has 2 HlaPublisher actors: C.attr1.i1 and C.attr3.i1
+ * (it publishes two attributes of a same class instance); Federate F2 has one
+ * HlaPublisher actor: C.attr3.i2 (it publishes one attribute of a class
+ * instance, whose name is different from the the one published by F1).
+ * </p><p>
+ * The parameter <i>useCertiMessageBuffer</i> is chosen by the user. It 
+ * indicates if the event is wrapped in a CERTI message buffer,
+ * certi.communication.MessageBuffer, see {@link MessageProcessing}. All
+ * HlaSubscriber actors with parameters <i>C.attr.i</i> must have the same
+ * choice for this parameter.
+ * </p><p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaPublisher.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -87,7 +121,7 @@ public class HlaPublisher extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
 
-        // HLA attribute name.
+        // HLA attribute name in FOM.
         attributeName = new Parameter(this, "attributeName");
         attributeName.setDisplayName("Name of the attribute to publish");
         attributeName.setTypeEquals(BaseType.STRING);
@@ -101,14 +135,14 @@ public class HlaPublisher extends TypedAtomicActor {
         classObjectName.setExpression("\"HLAobjectClass\"");
         attributeChanged(classObjectName);
 
-        // HLA class instance name.
+        // HLA class instance name given by the user.
         classInstanceName = new Parameter(this, "classInstanceName");
         classInstanceName.setDisplayName("Name of the HLA class instance");
         classInstanceName.setTypeEquals(BaseType.STRING);
         classInstanceName.setExpression("\"HLAclassInstanceName\"");
         attributeChanged(classInstanceName);
 
-        // CERTI message buffer encapsulation.
+        // CERTI message buffer encapsulation
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
         useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
         useCertiMessageBuffer.setExpression("false");
@@ -142,7 +176,7 @@ public class HlaPublisher extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Call the attributeChanged method of the parent. Check if the
-     *  user as set all information relative to HLA to publish.
+     *  user has set all information related to HLA to publish.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If one of the parameters is
      *  empty.
@@ -195,8 +229,9 @@ public class HlaPublisher extends TypedAtomicActor {
 
     /** Retrieve and check if there is one and only one {@link HlaManager}
      *  deployed in the Ptolemy model. The {@link HlaManager} provides the
-     *  method to publish an updated value of a HLA attribute to the HLA/CERTI
-     *  Federation.
+     *  method to publish the attributes of a class, register an instance of a
+     *  class and update the value of a HLA attribute of a class instance to
+     *  the HLA/CERTI Federation.
      *  @exception IllegalActionException If there is zero or more than one
      *  {@link HlaManager} per Ptolemy model.
      */
@@ -205,6 +240,7 @@ public class HlaPublisher extends TypedAtomicActor {
         super.initialize();
         // Find the HlaManager by looking into container
         // (recursively if needed).
+        // FIXMEjc: it really looks recursively?
         CompositeActor ca = (CompositeActor) this.getContainer();
 
         List<HlaManager> hlaManagers = ca.attributeList(HlaManager.class);
@@ -275,8 +311,8 @@ public class HlaPublisher extends TypedAtomicActor {
         return parameter;
     }
 
-    /** Return the HLA class object name (in FOM) of the HLA attribute handled
-     *  by the HlaPublisher.
+    /** Return the HLA class object name (in the FED file) of the HLA attribute
+     * handled by the HlaPublisher.
      *  @return the HLA object class name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
