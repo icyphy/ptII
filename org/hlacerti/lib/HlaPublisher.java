@@ -1,5 +1,5 @@
-/* This actor provides information to publish, register and update values in a
- * HLA/CERTI federation.
+/* This actor provides information to publish, register and update values in
+ * the Ptolemy-HLA/CERTI framework.
 
 @Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  * name <i>attr</i> and an instance name <i>i</i>. To each HlaPublisher actor
  * correspond a unique HlaSubscriber actor in each other federate that wants
  * to receive the updates for the attribute <i>attr</i> of instance named <i>i</i>.
- * Let us introduce some terms:
+ * Let us recall some terms:
  * - FOM: Federation Object Model
  * - FED: Federation Execution Data, contains classes and attributes defined
  *   in the FOM and, for each attribute, if it is timestamped and its QoS 
@@ -151,14 +151,14 @@ public class HlaPublisher extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
 
-        // HLA attribute name in the FOM.
+        // HLA attribute name as defined in the FOM.
         attributeName = new Parameter(this, "attributeName");
         attributeName.setDisplayName("Name of the attribute to publish");
         attributeName.setTypeEquals(BaseType.STRING);
         attributeName.setExpression("\"HLAattributName\"");
         attributeChanged(attributeName);
 
-        // HLA object class in the FOM.
+        // HLA object class as defined in the FOM.
         classObjectName = new Parameter(this, "classObjectName");
         classObjectName.setDisplayName("Object class in FOM");
         classObjectName.setTypeEquals(BaseType.STRING);
