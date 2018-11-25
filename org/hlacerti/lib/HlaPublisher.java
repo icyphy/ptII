@@ -51,48 +51,78 @@ import ptolemy.kernel.util.Workspace;
 //// HlaPublisher
 
 /**
- * <p>This actor provides the name of the class <i>C</i>, the name of the
- * attribute <i>attr</i> and the name of the instance <i>i</i> (C.attr.i) that
- * are used by the {@link HlaManager} attribute (deployed in the same model)
- * with two goals:
- * - During initialization phase, the {@link HlaManager} calls the HLA services for 
- * publishing all the attributes <i>attr</i of a class  <i>C</i> and registering
- * an instance <i>i</i> of a class for this federate:
- * rtia.publishObjectClass(classHandle, _attributesLocal) and 
- * rtia.registerObjectInstance(classHandle, classInstanceName).
- * The parameter _attributesLocal is the set of all attributes <i>attr</i of a
- * class  <i>C</i> in this Ptolemy federate  model (obtained from all
- * HlaPublisher actors).
- * - During the simulation loop phase, the {@link HlaManager} call the UAV service
- * for updating the value of an attribute of a class instance:
+ * <p>This actor provides 3 information: a class name <i>C</i>, an attribute
+ * name <i>attr</i> and an instance name <i>i</i>. To each HlaPublisher actor
+ * correspond a unique HlaSubscriber actor in each other federate that wants
+ * to receive the updates for the attribute <i>attr</i> of instance named <i>i</i>.
+ * Let us introduce some terms:
+ * - FOM: Federation Object Model
+ * - FED: Federation Execution Data, contains classes and attributes defined
+ *   in the FOM and, for each attribute, if it is timestamped and its QoS 
+ * - RTI: Run-Time Infrastructure. The RTI has a Central RTI Component (CRC)
+ *   and one or more Local RTI Components (LRC). The LRC has a numerical 
+ *   representation (handle) for all object classes and object class attributes
+ *   contained in the FED file.
+ * - RTIa: RTI Ambassador interface; Federates can communicate with the RTI
+ *   (LRC) through the RTIa.
+ * 
+ * The information supplied in this actor by the user is used in the following
+ * way by the {@link HlaManager} attribute (deployed in the same model):
+ * 
+ * 1. During the initialization phase, the {@link HlaManager} calls the HLA
+ * services for:
+ *  - Publishing all the <i>j</i attributes <i>attr-j</i of a class  <i>C</i>
+ *    (gathered from <i>j</i HlaPublisher actors) by calling
+ *    rtia.publishObjectClass(classHandle, _attributesLocal), where <i>classHandle</i
+ *    is provided by calling the service rtia.getObjectClassHandle() for  <i>C</i>;
+ *    _attributesLocal is the set constructed by calling rtia.getAttributeHandle()
+ *    for each <i>attr-j</i in this Ptolemy federate  model (the set is obtained
+ *    from all HlaPublisher actors); 
+ *  - Registering an instance of class <i>C</i> named <i>i</i> for this federate, 
+ *    informing the LRC that a new object instance exists:
+ *    rtia.registerObjectInstance(classHandle, classInstanceName), with 
+ *    classInstanceName = <i>i</i>.
+ *
+ * 2. During the simulation loop phase, the {@link HlaManager} calls the UAV service
+ * for updating the value of an attribute of a class instance. Each HlaPublisher
+ * actor is related to one UAV call:
  * _rtia.updateAttributeValues(objectInstanceId, suppAttributes, tag, uavTimeStamp).
  * The UAV service is send after a cycle in the {@link HlaManager} that starts
  * with an event e(t) received at the input port of the HlaPublisher actor, and
- * when the federate eventually has advanced its time to uavTimeStamp=t'. The
- * value of t' depends on the time management (NER or TAR), see {@link
+ * when the federate eventually has advanced its time to <i>uavTimeStamp<\i>=t'.
+ * The value of t' depends on the time management (NER or TAR), see {@link
  * HlaManager} code.
+ * The optional parameter <i>tag</i> is not used in the current implementation.
  * </p><p>
  * Parameters <i>classObjectName</i> and <i>attributeName</i> need to match the
  * name of the class and the attribute defined in the Federate Object Model
  * (FOM) specified for the Federation and indicated in the FED file.
  * The data type of the input port of this actor must have the same type of the
- * HLA attribute (defined in the FOM). 
+ * HLA attribute (defined in the FOM, not present in the FED file). 
  * </p><p>
- * The parameter <i>classInstanceName</i> is provided by the user. Each
- * federate has the ownership of the attributes of an instance of object that it
- * publishes. Suppose the FOM of a federation has a class C with 3 attributes
- * attr2, attr2 and attr3. The federation has 2 federates, F1 and F1. If F1
- * publishes C.attr1 and C.attr3 and F2 publishes
- * C.attr2, then the name of the instance of class C must be different in both
- * federates. Federate F1 has 2 HlaPublisher actors: C.attr1.i1 and C.attr3.i1
+ * The parameter <i>classInstanceName</i> is chosen by the user. Each
+ * federate has the ownership of the attributes of an instance of object that
+ * it publishes. 
+ * </p><p> How to define a FOM? The design of a FOM needs a careful attention.
+ * One of the criteria is the reusability of the FOM and federates. A good 
+ * and simple choice is design a FOM with a hierarchy such that all 
+ * attributes of a (sub-)class are published by a same federate. But this is
+ * not mandatory. For example, consider a FOM of a federation with a class C
+ * with 3 attributes attr2, attr2 and attr3. The federation has 2 federates, F1
+ * and F2. If F1 publishes C.attr1 and C.attr3 and F2 publishes C.attr2, then
+ * the name of the instance of class C must be different in both federates. 
+ * Federate F1 has 2 HlaPublisher actors: C.attr1.i1 and C.attr3.i1
  * (it publishes two attributes of a same class instance); Federate F2 has one
  * HlaPublisher actor: C.attr3.i2 (it publishes one attribute of a class
  * instance, whose name is different from the the one published by F1).
  * </p><p>
+ * See two different federations using the same FOM and simulating the same
+ * system: 2 billard balls of class Bille sending their position in a viewer.
+ *  </p><p>
  * The parameter <i>useCertiMessageBuffer</i> is chosen by the user. It 
  * indicates if the event is wrapped in a CERTI message buffer,
  * certi.communication.MessageBuffer, see {@link MessageProcessing}. All
- * HlaSubscriber actors with parameters <i>C.attr.i</i> must have the same
+ * HlaSubscriber actors with parameters <i>{C, attr, i}</i> must have the same
  * choice for this parameter.
  * </p><p>
  *
@@ -117,18 +147,18 @@ public class HlaPublisher extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // The single output port of the actor.
+        // The single input port of the actor.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
 
-        // HLA attribute name in FOM.
+        // HLA attribute name in the FOM.
         attributeName = new Parameter(this, "attributeName");
         attributeName.setDisplayName("Name of the attribute to publish");
         attributeName.setTypeEquals(BaseType.STRING);
         attributeName.setExpression("\"HLAattributName\"");
         attributeChanged(attributeName);
 
-        // HLA object class in FOM.
+        // HLA object class in the FOM.
         classObjectName = new Parameter(this, "classObjectName");
         classObjectName.setDisplayName("Object class in FOM");
         classObjectName.setTypeEquals(BaseType.STRING);
@@ -240,7 +270,8 @@ public class HlaPublisher extends TypedAtomicActor {
         super.initialize();
         // Find the HlaManager by looking into container
         // (recursively if needed).
-        // FIXMEjc: it really looks recursively?
+        // FIXMEjc: it really looks recursively? The HlaManager must be in a DE
+        // top level model.
         CompositeActor ca = (CompositeActor) this.getContainer();
 
         List<HlaManager> hlaManagers = ca.attributeList(HlaManager.class);
@@ -257,7 +288,7 @@ public class HlaPublisher extends TypedAtomicActor {
         _hlaManager = hlaManagers.get(0);
     }
 
-    /** Each tokens, received in the input port, are transmitted to the
+    /** All tokens, received in the input port, are transmitted to the
      *  {@link HlaManager} for a publication to the HLA/CERTI Federation.
      */
     @Override
@@ -280,7 +311,9 @@ public class HlaPublisher extends TypedAtomicActor {
         }
     }
 
-    /** Return the HLA attribute name handled by the HlaPublisher.
+    /** Return the HLA attribute name indicated in the HlaPublisher actor
+     * that will be used by HLA services (publish and update). The attribute
+     * must be defined in the FED file. It belongs to the class classObjectName.
      *  @return the HLA Attribute name.
      *  @exception IllegalActionException if a bad token string value is provided
      */
@@ -295,7 +328,9 @@ public class HlaPublisher extends TypedAtomicActor {
         return parameter;
     }
 
-    /** Return the name of the HLA class instance this HlaPublisher belongs to.
+    /** Return the name of the HLA class instance indicated in the HlaPublisher
+     *  actor that will be used by HLA services (register and update). It is
+     *  chosen by the user.
      *  @return the HLA class instance name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
@@ -311,8 +346,9 @@ public class HlaPublisher extends TypedAtomicActor {
         return parameter;
     }
 
-    /** Return the HLA class object name (in the FED file) of the HLA attribute
-     * handled by the HlaPublisher.
+    /** Return the HLA class object name indicated in the HlaPublisher actor.
+     * The class must be defined in the FED file and has the attribute
+     * attributeName.
      *  @return the HLA object class name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
