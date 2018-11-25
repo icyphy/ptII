@@ -1,5 +1,6 @@
-/* This actor implements a subscriber in a HLA/CERTI federation.
-
+/* This actor provides information to subscribe, discover and reflect updated
+ * values in the Ptolemy-HLA/CERTI framework.
+ 
 @Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
@@ -64,22 +65,70 @@ import ptolemy.kernel.util.Workspace;
 //// HlaSubscriber
 
 /**
- * This actor implements a subscriber in a HLA/CERTI federation.
+ * This actor provides information to subscribe, discover and reflect (i.e.,
+ * receive) updated values in the Ptolemy-HLA/CERTI framework.
  *
- * <p> This subscriber is associated to one HLA attribute. Reflected
- * values of the HLA attribute are received from the HLA/CERTI
- * Federation by the {@link HlaManager} attribute. The {@link
- * HlaManager} invokes the putReflectedAttribute() to put the received
- * value in the subscriber tokens queue and to program its next firing
- * times, using the _fireAt() method.</p>
- *
- * <p>The parameter <i>attributeName</i> of this actor is mapped to
- * the name of the HLA attribute of an HLA object class in the federation.
- * This parameter needs to match the Federate Object Model (FOM) specified
- * for this federation. The data type of the output port has to be the same
- * type of the HLA attribute. The parameter <i>classObjectName</i> needs to
- * match the object class describes in the FOM.
- *
+ * <p> This actor is associated with a unique HLA attribute of a given object 
+ * instance. Reflected values of this HLA attribute are received from the HLA
+ * Federation by the {@link HlaManager} attribute deployed in the same model. 
+ * The {@link HlaManager} invokes the putReflectedAttribute() to put the 
+ * received value in the HlaSubscriber actor token queue and to program its 
+ * firing time, using the _fireAt() method.
+ * 
+ *  </p><p>
+ * Parameters <i>classObjectName</i> and <i>attributeName</i> need to match the
+ * name of the class and the name of the attribute defined in the Federate 
+ * Object Model (FOM) specified for the Federation and indicated in the FED file.
+ * The data type of the output port of this actor must have the same type of the
+ * HLA attribute (defined in the FOM, not present in the FED file). 
+ * </p><p>
+ * The parameter <i>classInstanceName</i> is chosen by the user. 
+ * 
+ * </p><p>
+ * Entering in more details:
+ * This actor provides 3 information: a class name <i>C</i>, an attribute
+ * name <i>attr</i> and an instance name <i>i</i>. To each HlaSubscriber actor
+ * in a Ptolemy model (federate) corresponds a unique {@link HlaPublisher}
+ * actor in a (unique) federate with the same information.
+ * Let us recall some terms:
+ * - FOM: Federation Object Model
+ * - FED: Federation Execution Data, contains classes and attributes defined
+ *   in the FOM and, for each attribute, if it is timestamped and its QoS 
+ * - RTI: Run-Time Infrastructure. The RTI has a Central RTI Component (CRC)
+ *   and one or more Local RTI Components (LRC). The LRC has a numerical 
+ *   representation (handle) for all object classes and object class attributes
+ *   contained in the FED file.
+ * 
+ * The information supplied in this actor by the user is used in the following
+ * way by the {@link HlaManager} attribute (deployed in the same model):
+ * 
+ * 1. During the initialization phase, the {@link HlaManager}: 
+ *  - Subscribes to all the <i>k</i attributes <i>attr-k</i of a class  <i>C</i>
+ *    (gathered from <i>k</i HlaSubscriber actors) by calling
+ *    _rtia.subscribeObjectClassAttributes(classHandle, _attributesLocal), 
+ *    where <i>classHandle</i is obtained by calling the HLA service 
+ *    rtia.getObjectClassHandle() for  <i>C</i>;
+ *    _attributesLocal is the set constructed by calling rtia.getAttributeHandle()
+ *    for each <i>attr</i in this Ptolemy federate  model (the set is obtained
+ *    from all HlaSubscriber actors that has the same class  <i>C</i>); 
+ *    - Receives the HLA callback informing the discovering of an instance of
+ *    class <i>C</i> named <i>i</i>:
+ *    rtia.discoverObjectInstance(objectInstanceId, classHandle, someName), with 
+ *    someName = <i>i</i>; objectInstanceId and classHandle are handles provided
+ *    by the RTI.
+ *    
+ * 2. During the simulation loop phase, the {@link HlaManager} receives the RAV
+ * callback from the RTI with the new value of an attribute of a class instance. Each 
+ * HlaSubscriber  actor is related to one RAV callback:
+ * rtia.reflectAttributeValues(objectInstanceId, suppAttributes, tag, ravTimeStamp).
+ * The RAV callback, with a timestamp t'=<i>ravTimeStamp<\i> is received at the
+ * input port of the HlaPublisher actor, during the advance time phase that
+ * starts when the federate wants to advanced its time to <i>t<\i> (using NER or
+ * TAR time management, see {@link HlaManager} code).
+ * The optional parameter <i>tag</i> is not used in the current implementation.
+ * </p><p>
+ * 
+ * 
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaSubscriber.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
@@ -186,7 +235,8 @@ public class HlaSubscriber extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Call the attributeChanged method of the parent. Check if the
-     *  user as set all information relative to HLA to subscribe to.
+     *  user as set all information relative to HLA to subscribe to, for
+     *  discovering instances and receive (reflect) updated values.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If one of the parameters
      *  is empty.
@@ -221,6 +271,11 @@ public class HlaSubscriber extends TypedAtomicActor {
 
             // FIXME: XXX: uncomment or remove when proposal to name HLA actors
             // has been accepted or rejected
+            // FIXMEjc: since commit f0b2eef7811f539 the HlaSubscriber actor is
+            // named anymore with the (HLA) attribute name. Is this test related
+            // to that, or with the general case where 2 Ptolemy actors must
+            // have different names?
+            
             /*
             // Update the name and the displayName of the actor.
             try {
@@ -288,6 +343,8 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         // Find the HlaManager by looking into container
         // (recursively if needed).
+        //FIXMEjc: the HlaManager must be in the top level model with a DE
+        //director.
         CompositeActor ca = (CompositeActor) this.getContainer();
         List<HlaManager> hlaManagers = null;
 
@@ -313,8 +370,10 @@ public class HlaSubscriber extends TypedAtomicActor {
 
     }
 
-    /** Send each update value of the HLA attribute (mapped to this actor) as
-     *  token when its time.
+    /** Put in the Ptolemy queue the token (with time-stamp t) corresponding to
+     *  the RAV (with time-stamp t'=<i>ravTimeStamp<\i> related to the HLA
+     *  attribute of an instance (mapped to this actor). The value of t depends
+     *  on t' and the time management used (NER or TAR, see {@link HlaManager} code).
      *  @exception IllegalActionException Not thrown here.
      */
     @Override
@@ -422,10 +481,10 @@ public class HlaSubscriber extends TypedAtomicActor {
     }
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
-     *  the tokens queue. Then, program the next firing time of this actor to
+     *  the token queue. Then, program the next firing time of this actor to
      *  send the token at its expected time. This method is called by the
      *  {@link HlaManager} attribute.
-     *  @param event The event containing the updated value of the HLA
+     *  @param event The event containing the new value of the HLA
      *  attribute and its time-stamp.
      *  @exception IllegalActionException Not thrown here.
      */
@@ -456,7 +515,8 @@ public class HlaSubscriber extends TypedAtomicActor {
         return _useCertiMessageBuffer;
     }
 
-    /** Return the HLA attribute name mapped to this HlaSubscriber.
+    /** Return the HLA attribute name provided by this HlaSubscriber actor.
+     * It must match the attribute name defined in the FOM for a class classObjectName.
      *  @return the HLA attribute name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
@@ -471,7 +531,7 @@ public class HlaSubscriber extends TypedAtomicActor {
         return name;
     }
 
-    /** Return HLA class instance name this HlaSubscriber belongs to.
+    /** Return HLA class instance name provided by this HlaSubscriber actor.
      * @return The HLA class instance name.
      * @exception IllegalActionException if a bad token string value is provided.
      */
@@ -486,8 +546,9 @@ public class HlaSubscriber extends TypedAtomicActor {
         return name;
     }
 
-    /** Return the HLA class object name (in FOM) of the HLA attribute handled
-     *  by the HlaSubscriber.
+    /** Return the HLA class object name provided by this HlaSubscriber actor.
+     * It must match the class name defined in the FOM (that has the attribute
+     * attributeName of this actor).
      *  @return The HLA class object name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
@@ -518,7 +579,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Build the corresponding typed token from the contents of a
+    /** Build the corresponding typed token from the contents of 
      *  {@link TimedEvent}s stored in the reflectedAttributeValues queue. The
      *  structure of the contents is an array object <i>obj</i> where:
      *  obj[0] is the expected data type and; obj[1] is the object buffer
@@ -528,6 +589,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      * @exception IllegalActionException If the expected data type is not handled
      * Due to previous check this case .
      */
+    //FIXMEjc: the last sentence above is incomplete.
     private Token _buildToken(Object[] obj) throws IllegalActionException {
         Token value = null;
 
@@ -558,7 +620,10 @@ public class HlaSubscriber extends TypedAtomicActor {
             value = new StringToken((String) obj[1]);
         } else {
             throw new IllegalActionException(this,
-                    "The current type is not supported by this implementation");
+                    "The current type is not supported by this implementation or JCERTI");
+            // FIXME: as defined in jcerti.src.hla.rti.jlc.EncodingHelpers.java used in
+            // {@link MessageProcessing} ?
+            
         }
 
         return value;
@@ -570,7 +635,7 @@ public class HlaSubscriber extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** List of updated values for the HLA attribute. */
+    /** List of new values for the HLA attribute. */
     private LinkedList<HlaTimedEvent> _reflectedAttributeValues;
 
     /** A reference to the associated {@link HlaManager}. */
