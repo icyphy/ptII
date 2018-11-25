@@ -165,7 +165,8 @@ import ptolemy.kernel.util.Workspace;
  * Ptolemy model time and HLA logical time by implementing the {@link TimeRegulator}
  * interface. It also manages objects that implement interfaces provided by
  * JCERTI related to the Federation, Declaration, Object, and Time management
- * areas in HLA (each management area provides a set of services).
+ * areas in HLA (each management area provides a set of services). Ownership
+ * management is not provided in the Ptolemy-HLA framework.
  * </p><p>
  * The {@link HlaManager} of a federate is responsible for the different phases
  * of execution: 
@@ -178,53 +179,42 @@ import ptolemy.kernel.util.Workspace;
  *  - Enable time constrain and time regulation: in the Ptolemy-HLA framework, 
  *    all federates are time-constrained and time-regulating, and all data are
  *    time-stamped;
- *  - Publish and subscribe to object classes defined in the FOM
- *  - Register initial instances
+ *  - Publish and subscribe to attributes of object classes defined in the FOM
+ *  - Register initial class instances and discover class instances
  *  The class name, the attribute name and the instance name are indicated
- *  in actors HlaPublisher and HlaSubscriber. These actors provides information
- *  for publish/subscribe attributes and register/discover instances using the
- *  HLA services.
+ *  in actors {@link HlaPublisher} and {@link HlaSubscriber}. 
  *   </p><p> 
- *  An {@link HlaPublisher} actor updates an attribute in an instance of such a class. 
- *  An {@link HlaSubscriber} actor subscribes to such updates. More information in [3] and:
- * </p><p>
- * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>
- * </p><p>
  * When entering in the simulation loop, the federate advances its logical time
- * according to the events in its calendar queue. These events can be internal or
- * external (coming from other federates). When the simulation ends, the federate
- * resigns from the federation. When all federates have resigned, the last 
- * federate destroys the federation.
+ * according to the time management chosen by the user:
+ *  - Next Event Request (NER) used for Event-Driven Simulation or 
+ *  - Time Advance Request (TAR) used for Timed-Step Simulation.
+ * When using NER, the logical time is advanced to the earliest event in the queue.
+ * When using TAR, the logical time is advanced in equal steps.
+ * The events in the calendar queue can be internal or external (coming from
+ * other federates). 
+ * </p><p> When the simulation ends, the federate resigns from the federation.
+ * When all federates have resigned, the last federate destroys the federation.
  *  </p><p>
  * To enable a Ptolemy model to be a Federate, it must contain an {@link HlaManager}.
  * The parameters of this manager specify the name of the federate (this Ptolemy model),
  * the FED file (a file with a .fed extension), and the following other parameters:
  * </p><p>
  * The parameter <i>timeManagementService</i> specifies which time management 
- * the federate will use: 
- * - Next Event Request (NER) used for Event-Driven Simulation or 
- * - Time Advance Request (TAR) used for Timed-Step Simulation.
- * When using NER, the logical time is advanced to the earliest event in the queue.
- * When using TAR, the logical time is advanced in equal steps. 
- * <b>FIXME: Describe these.</b>
- * If TAR is selected, then parameter <i>hlaTimeStep</i> (displayed as
- * "Time Step for TAR") specifies the time step taken by each time advance.
- * </p><p>
- * <b>FIXME: What do <i>isTimeConstrained</i> and <i>isTimeRegulator</i> mean?
- * The following description tells me nothing. It just turns their names into sentences:</b>
+ * the federate will use: NER or TAR.
+ * If TAR is selected, the parameter <i>hlaTimeStep</i> (displayed as
+ * "Time Step for TAR") must specify the time step taken by each time advance.
  * </p><p>
  * A federate can only advance its time if it is granted by the RTI. When this federate
- * is constrained, this grant is computed by the RTI with the knowledge of the time
- * advancements of the regulator federates, so that the conservative property of the
+ * is <i>constrained</i>, this grant is computed by the RTI with the knowledge of the time
+ * advancements of the <i>regulating</i> federates, so that the conservative property of the
  * distributed simulation is guaranteed between regulator and constrained federates.
- * <i>istimeConstrained</i> is used to specify time-constrained Federate and
- * <i>istimeRegulator</i> to specify time-regulator Federate. In the current version
- * a Ptolemy federate is both time-constrained and time-regulating.
+ * <i>istimeConstrained</i> is set to specify the federate is time-constrained Federate and
+ * <i>istimeRegulator</i> is set to specify time-regulating Federate. In the current version
+ * a Ptolemy federate is both time-constrained and time-regulating. See [7], section 3.
  * </p><p>
- * The parameter <i>hlaLookAHead</i> is used for avoid deadlock [Fujimoto 1999].
+ * The parameter <i>hlaLookAHead</i> is used for avoiding deadlock [Fujimoto 1998].
  * A time-regulating federate at logical time t with lookahead lah cannot send any
  * event with a time-stamp t' < t+lah.
- * <b>FIXME: Meaning what?</b>
  * </p><p>
  * The parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
@@ -233,13 +223,13 @@ import ptolemy.kernel.util.Workspace;
  * attributes finished their simulation before the other federates have started.
  * <i>isCreatorSyncPt</i> indicates if the Federate is the register of the
  * synchronization point. Only one Federate can register the named synchronization
- * point for the whole HLA Federation.</p>
+ * point for the whole HLA Federation. In the Ptolemy-HLA framework the federate
+ * that register the synchronization point must be the last one to be launched. </p>
  *
- * <p>{@link HlaPublisher} and {@link HlaSubscriber} actors are used to
- * respectively publish and subscribe to HLA attributes. The name of those
- * actors and their <i>classObjectHandle</i> parameter have to match the
- * identifier of the shared HLA attributes and their object class that they
- * belong to, specified in the FOM (and indicated in the .fed file).</p>
+ * <p>{@link HlaPublisher} and {@link HlaSubscriber} actors provide the
+ * <i>classObjectName</i> and <i>attributeName</i> (as specified in the FOM and
+ * indicated in the FED file) and the <i>classInstanceName</i> chosen by the user.
+ * This information is used by HLA services and callbacks. </p>
  * 
  * <p>For a correct execution, the <i>CERTI_HOME</i> environment variable has to
  * be set. It could be set in the shell (by running one of the scripts provided
@@ -256,8 +246,11 @@ import ptolemy.kernel.util.Workspace;
  *
  * <p>NOTE: For speeding up the simulation CERTI can be compiled with the option
  * "CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL"
+ * </p><b>
+ * Although the rtig can be launched in a terminal before launching any Ptolemy
+ * federate, .... see {@link CertiRtig}. 
+ * <b>FIXME: explain why the choice of launch the rtig by the federate was made? </b>
  * </p>
- *
  * <p><b>References</b>:</p>
  *
  * <p>[1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
@@ -274,8 +267,9 @@ import ptolemy.kernel.util.Workspace;
  * <p>[6] J. Cardoso, and P. Siron, "Ptolemy-HLA: a Cyber-Physical System Distributed
  *     Simulation Framework", Festschrift Lee, Internal DISC report, 2017. </p>
  * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure 
- *     Programmer’s Guide RTI 1.3 Version 6 March 1999</p>
- *  <p>   [Fujimoto 1999] </p>
+ *     Programmer’s Guide RTI 1.3 Version 6, March 1999</p>
+ * <p> [Fujimoto 1998] R. Fujimoto, "Time Management in The High Level Architecture",
+ *     https://doi.org/10.1177/003754979807100604</p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id: HlaManager.java 214 2018-04-01 13:32:02Z j.cardoso $
