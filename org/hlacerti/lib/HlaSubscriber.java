@@ -245,50 +245,27 @@ public class HlaSubscriber extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == attributeName || attribute == classInstanceName
-                || attribute == classObjectName) {
-
+        if (attribute == attributeName) {
             String sAttributeName = ((StringToken) attributeName.getToken())
                     .stringValue();
             if (sAttributeName.compareTo("") == 0) {
                 throw new IllegalActionException(this,
-                        "Cannot have empty name !");
+                        "Cannot have empty attributeName!");
             }
-
+        } else if (attribute == classInstanceName) {
             String sClassInstanceName = ((StringToken) classInstanceName
                     .getToken()).stringValue();
             if (sClassInstanceName.compareTo("") == 0) {
                 throw new IllegalActionException(this,
-                        "Cannot have empty name !");
+                        "Cannot have empty classInstanceName!");
             }
-
+        } else if (attribute == classObjectName) {
             String sClassObjectName = ((StringToken) classObjectName.getToken())
                     .stringValue();
             if (sClassObjectName.compareTo("") == 0) {
                 throw new IllegalActionException(this,
-                        "Cannot have empty name !");
+                        "Cannot have empty classObjectName!");
             }
-
-            // FIXME: XXX: uncomment or remove when proposal to name HLA actors
-            // has been accepted or rejected
-            // FIXMEjc: since commit f0b2eef7811f539 the HlaSubscriber actor is
-            // named anymore with the (HLA) attribute name. Is this test related
-            // to that, or with the general case where 2 Ptolemy actors must
-            // have different names?
-            
-            /*
-            // Update the name and the displayName of the actor.
-            try {
-                this.setName(sClassObjectName
-                        + "." + sAttributeName + "." + sClassInstanceName);
-                this.setDisplayName(sClassObjectName
-                        + "." + sAttributeName + "." + sClassInstanceName);
-            } catch (NameDuplicationException e) {
-                throw new IllegalActionException(this,
-                "An actor has already the same name, please check your HLA specification");
-            }
-            */
-
         } else if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
