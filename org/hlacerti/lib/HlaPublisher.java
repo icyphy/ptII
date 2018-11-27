@@ -51,6 +51,29 @@ import ptolemy.kernel.util.Workspace;
 //// HlaPublisher
 
 /**
+ * This actor provides updates to shared objects in an HLA (High Level Architecture)
+ * federation. The shared objects are are instances of classes defined in a
+ * FED file (Federation Execution Data). Each class has attributes, and this
+ * actor sends updates to an attribute of an instance of a class when it
+ * receives data on its input.  If there are instances of {@link HlaSubscriber}
+ * that refer to the same attribute of the same instance, then those will be
+ * notified of the update.
+ * 
+ * This actor requires that there be an instance of {@link HlaManager} in the
+ * same model. That instance references the FED file that is required to
+ * define the class referred to in this HlaPublisher, and that class is
+ * required to have an attribute with a name matching the name given here.
+ * 
+ * The name of the instance is arbitrary. If an instance with the specified
+ * name does not already exist, it will be created during initialization of
+ * the model. If two instances of this HlaPublisher actor refer to the
+ * same instance name, then they will send updates to the same HLA instance,
+ * but they are required to update distinct attributes of that instance.
+ * 
+ * During initialization, the HlaManager will notify the RTI (Run Time
+ * Infrastructure) of the intent to update this particular attribute
+ * of this particular instance of the class.
+ * 
  * <p>This actor provides 3 information: a class name <i>C</i>, an attribute
  * name <i>attr</i> and an instance name <i>i</i>. To each HlaPublisher actor
  * correspond a unique HlaSubscriber actor in each other federate that wants
