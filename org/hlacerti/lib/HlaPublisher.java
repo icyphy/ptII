@@ -73,7 +73,11 @@ import ptolemy.kernel.util.Workspace;
  * During initialization, the HlaManager will notify the RTI (Run Time
  * Infrastructure) of the intent to update this particular attribute
  * of this particular instance of the class.
- * 
+ *
+ * This actor throws an exception if the attribute name or the class name or
+ * the instance name is empty. An exception is also thrown if the class name
+ * or the attribute name is not defined in the FED file.
+ *
  * <p>This actor provides 3 information: a class name <i>C</i>, an attribute
  * name <i>attr</i> and an instance name <i>i</i>. To each HlaPublisher actor
  * correspond a unique HlaSubscriber actor in each other federate that wants
