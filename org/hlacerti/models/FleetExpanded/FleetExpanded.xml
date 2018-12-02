@@ -41,13 +41,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={776, 213, 907, 714}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={394, 135, 907, 714}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 604]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1091451862368544">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.8788159688313, 341.7737808227539}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{307.8788159688313, 341.77378082275396}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -91,13 +91,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Example 2: A Federation that simulates two aircraft (AC1 and AC2) &#10;using  4 federates:&#10;F1 simulates AC1 speed, F3 simulates AC2 speed; F2 simulates AC1&#10;yaw and roll, and F4 simulates AC2 yaw and roll.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 260.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A1Expanded.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 320.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="A1Expanded.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -122,7 +122,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A2Expanded.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 380.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="A2Expanded.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -147,7 +147,7 @@
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F3.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 340.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="F3.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -172,7 +172,7 @@
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="F4.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 360.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="F4.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -201,7 +201,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Other federations could be created using this basic models, or with small&#10;changes. For example, a federation named NewFederation with only 2&#10;federates: F5 that calculates the speed for AC1 and AC2, and F6 that calculates&#10;the roll and yaw for both aircrafts. Don't forget to change the name of the&#10;federates and the federation is you are starting from a copy of these models.&#10;&#10;You can also see the Billard demos that present different ways to do the same&#10;simulation with different federates.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 405.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: Do not run Example 1 and Example 2 together since the&#10;Federation name is the same in both examples.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 225.0]">
         </property>
     </property>
 </entity>
