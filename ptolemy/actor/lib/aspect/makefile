@@ -72,6 +72,7 @@ JSRCS = \
 	CommunicationResponsePort.java \
 	CompositeCommunicationAspect.java \
 	CompositeExecutionAspect.java \
+	DecorationAttributes.java \
 	DynamicCoreAssignmentScheduler.java \
 	EDFScheduler.java \
 	ExecutionRequestPort.java \
