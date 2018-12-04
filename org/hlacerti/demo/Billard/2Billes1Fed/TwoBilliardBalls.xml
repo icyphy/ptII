@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TwoBilliardBalls" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={143, 22, 813, 699}, maximized=false}">
     </property>
@@ -31,7 +31,7 @@
         <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Require synchronization ?"/>
         </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
+        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init2&quot;">
             <display name="Synchronization point name"/>
         </property>
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">

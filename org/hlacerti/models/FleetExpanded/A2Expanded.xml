@@ -28,17 +28,20 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7830244363121237">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.5390625, 172.5762711864407}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{237.53906250000003, 172.5762711864407}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F2&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Fleet&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;FleetE&quot;">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
             <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingE&quot;">
+            <display name="Synchronization point name"/>
         </property>
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point register ?"/>
