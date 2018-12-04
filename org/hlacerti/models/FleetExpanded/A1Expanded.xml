@@ -8,23 +8,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={840, 48, 830, 404}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={610, 48, 830, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 294]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[596, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4422749792944747">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{115.15127434529047, 145.63720703125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{115.15127434529047, 224.67899977992957}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F1&quot;">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Fleet&quot;">
+        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;FleetE&quot;">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
             <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingE&quot;">
+            <display name="Synchronization point name"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 85.0]">
         </property>
