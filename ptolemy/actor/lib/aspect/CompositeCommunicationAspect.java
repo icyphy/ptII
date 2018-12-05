@@ -74,6 +74,8 @@ import ptolemy.kernel.util.Workspace;
  *  communication aspect, the original receiver and the token are encoded in a
  *  RecordToken. When such a token arrives at an output port, the original token
  *  is extracted and sent to the original receiver.
+ *  
+ *  FIXME: Add description of use of DecorationParameters.
  *
  *  @author Patricia Derler
  *  @version $Id$
@@ -571,6 +573,7 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
 
         /** Add names of available CommunicationRequestPort in CompositeQM as
          *  choices to inputPort.
+         *  FIXME: Add description of use of DecorationParameters.
          *  @exception InternalErrorException Thrown if CompositeQM
          *    cannot be accessed.
          */
@@ -587,6 +590,25 @@ public class CompositeCommunicationAspect extends TypedCompositeActor
                         String name = ((CommunicationRequestPort) communicationRequestPort)
                                 .getName();
                         inputPort.addChoice(name);
+                    }
+                }
+                if (_decorator instanceof NamedObj) {
+                    List<DecorationParameters> decorationAttributes
+                            = ((NamedObj)_decorator).attributeList(DecorationParameters.class);
+                    for(DecorationParameters params : decorationAttributes) {
+                        List<Attribute> attributes = params.attributeList();
+                        for (Attribute attribute : attributes) {
+                            if (getAttribute(attribute.getName()) == null) {
+                                Attribute cloneOfAttribute;
+                                try {
+                                    cloneOfAttribute = (Attribute) attribute.clone(workspace());
+                                    cloneOfAttribute.setContainer(this);
+                                } catch (CloneNotSupportedException | NameDuplicationException e) {
+                                    throw new InternalErrorException(this, e,
+                                            "Cloning decorating attribute failed.");
+                                }
+                            }
+                        }
                     }
                 }
             } catch (IllegalActionException e) {
