@@ -1,0 +1,530 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="LocationAwareDiscovery" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 25, 1853, 1055}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1639, 936]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2500000000000016">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{626.3896967821781, 354.78295173267327}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates indoor location aware discovery of available  &#10;accessors. For this:&#10;&#10; */ 'MvmtEmulator' accessor emulates a moving object in an area. The &#10;positions (x/y coordinates) are hard coded in an array and the move &#10;from position to another is triggered by the 'Clock' ticks. &#10;&#10; */ The upper part of the design ('ImageReader' actor, 'ImageAnnotate' &#10;accessor and 'MapVisualizer' actor are responsible of rendering the&#10;moving object in a map.&#10;&#10;*/ 'CoordiantesToLabelledLocationMapping' accessor maps the x/y &#10;coordinates into a labeled location. For now, mapping rules are hard &#10;coded. But it is possible to use a semantic repository instead.&#10;&#10;*/ 'LocationChangeNotifier' outputs the room label only if it has changed &#10;compared to the previous iteration.&#10;&#10;*/ 'LocationToAccessors' accessor provides the list of the available &#10;accessors for the location given as input, together with their metadata. &#10;Again, these information are hard coded, but can be later refactored &#10;using a server or a semantic repository. For every room, a list of the &#10;available devices (sensors and/or actuators), together with the acccessor &#10;URL, the parameters values and the schema (for html rendering) are &#10;provided.&#10;&#10;*/ 'ParallelMutable' should enable the reification of an arbitrary number  &#10;of accessors in parallel, and given some external constrains such as host&#10;compatibility.&#10;&#10;*/ The user interface is more than basic for now.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6431373,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Next steps:&#10;*/ Use GraphDB for locationToAccessors features&#10;*/ Develop ParallelMutable&#10;*/ Include devices control from ParallelMutable&#10;through the UserInterface accessor.&#10;&#10;Might be interesting to explore:&#10;*/ Location ontologies mapping for coordinates to &#10;labeled location mapping.&#10;*/ Include both: indoor and outdoor localization &#10;systems, so that we detect the move from one to&#10;another  (if interesting!).&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 480.0]">
+        </property>
+    </property>
+    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="TestMap.gif">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="MvmtEmulator" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// On each trigger input, if the tags input is a non-empty array of tags,&#10;// this script outputs an id for the tag with the least numerical id.&#10;// Whenever it receives an empty *next* input, then upon the next trigger&#10;// input, it advances to the next least id for a visible tag, wrapping&#10;// around to the overal smallest visible id one when it has scrolled&#10;// through the tags. Whenever the tag changes, it outputs 'new' on reset.&#10;// When it  receives an empty tags input for more than countForReset triggers,&#10;// then it outputs 'none' on reset.&#10;&#10;var positions = [[ 20,260],[ 50,260],[ 80,260],[110,260], // Move right in the hall&#10;                 [110,230],[110,200],[110,150],[ 50,110], // Enter Room A&#10;                 [ 50,110],[ 50,110],[ 50,110],           // Stay in Room A&#10;                 [110,170],[110,200],[110,230],[150,260], // Step out of Room A&#10;                 [200,260],[250,260],[300,260],[350,260], // Move towards Room E&#10;                 [400,260],[450,260],[500,260],[550,260],[620,230], // Enter Room E&#10;                 [630,220],[640,240],[630,250] 			  // Stay in Room E&#10;                 ];&#10;&#10;exports.setup = function() {&#10;	this.input('trigger');&#10;    this.output('xyPosition');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var indexInPositions = 0;&#10;    &#10;    this.addInputHandler('trigger', function() {&#10;        var xyPosition = positions[indexInPositions]; &#10;        indexInPositions++;&#10;        if (indexInPositions &gt;= positions.length) {&#10;        	indexInPositions = 0;&#10;        }&#10;        thiz.send('xyPosition', xyPosition);&#10;    });   &#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 175.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="xyPosition" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="UserInterface" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that provides a user interface based on HTML5 on the local host.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that provides a user interface based on HTML5 on the local host.&#10; *  The initial content on the page may be specified using the *content*&#10; *  parameter and HTML header content may be specified using *header*.&#10; *  &#10; *  Whatever text is received on the *html* input port will replace the content&#10; *  of the web page. Normally, this will be HTML text without any DOCTYPE or&#10; *  header and without a body tag. Each time new text is received, the content&#10; *  of the page will be replaced.&#10; *  &#10; *  The page will be opened upon initialize if *content* is not empty.&#10; *  Otherwise, it will be opened when the first *html* input is received.&#10; *  &#10; *  The *resources* input can be used to provide resources, such as images,&#10; *  that will be used by the HTML content provided on the *html* input.&#10; *  Note that you probably will also have to provide an *update* input (see below)&#10; *  to force the user interface to update the page using the specified resource.&#10; *  &#10; *  The *update* input can be used to instruct the user interface to replace content&#10; *  within the page, vs. the *html* input which replaces the entire page.&#10; *  The value of an *update* input is expected to be an object with three properties,&#10; *  *id*, *property*, and *content*.&#10; *  &#10; *  The *id* property refers to a the ID of&#10; *  a DOM element in the content of the page, where the content has been provided&#10; *  either via the *content* parameter or the *html* input. For example, your&#10; *  page may include:&#10; *  &lt;pre&gt;&#10; *     &amp;lt;div id=&quot;foo&quot;&amp;gt;&amp;lt;/div&amp;gt;&#10; *  &lt;/pre&gt;&#10; *  or&#10; *  &lt;pre&gt;&#10; *     &amp;lt;img id=&quot;bar&quot; src=&quot;image.jpg&quot;/&amp;gt;&#10; *  &lt;/pre&gt;&#10; *   *  @param id The ID.&#10; *  The *property* field specifies what property of the DOM element with the&#10; *  specified ID is to be updated. If *property* is &quot;html&quot;, then the&#10; *  DOM object is updated by invoking the jQuery html() function&#10; *  with the specified *content* as an argument. For example, if *id* is &quot;foo&quot;,&#10; *  *property* is &quot;html&quot;, and *content* is &quot;Hello World!&quot;, then the above div&#10; *  will be populated with the text &quot;Hello World!&quot; on the web page.&#10; *  The *content* can include any HTML markup or even scripts, which will be executed.&#10; *  &#10; *  If *property* is anything other than 'html', then the DOM element's *property*&#10; *  attribute will be assigned the value of *content*.&#10; *  A *property* value of 'src', however, is treated specially.&#10; *  A *property* value of 'src' can be used, for example, to replace the image in the above img tag.&#10; *  Just send the updated image to the *resources* input and send this to the&#10; *  *update* input:&#10; *  &lt;pre&gt;&#10; *     {'id':'bar', 'property':'src', 'content':'image.jpg'}&#10; *  &lt;/pre&gt;&#10; *  &#10; *  Note that to get the user interface to actually replace the image, we may have to play some tricks.&#10; *  If the user interface is implemented by a browser, then the browser&#10; *  normally caches an image that it has previously retrieved&#10; *  and it will use the cached version of the image rather than obtaining the new image&#10; *  from the server.  To force the user interface to refresh the image, this accessor&#10; *  treats a *property* value of 'src' specially.&#10; *  Specifically, it appends to the *content* a suffix of the form '?count=*n*',&#10; *  where *n* is a unique number. This forces the user interface to retrieve the image&#10; *  from the server rather than use its cached version because the URI is&#10; *  different from that of the cached version. The server, on the other hand, ignores&#10; *  the parameter 'count' that has been appended to this URI and simply returns the&#10; *  updated image.&#10; *&#10; *  The way this accessor works on most hosts is that it starts a web server on localhost&#10; *  at the specified port that serves the specified web page and then instructs&#10; *  the system default browser to load the default page from that server.&#10; *  The page served by the server includes a script that listens for websocket&#10; *  connections that are used to provide HTML content and udpates to display on the page.&#10; *  Some hosts, however, such as the cordova and browser hosts, natively use&#10; *  a browser as part of the host, so in these cases, no web server nor socket&#10; *  connection is needed and the *port* parameter will be ignored.&#10; *  &#10; *  @accessor utilities/UserInterface.js&#10; *  @input {string} html HTML content to render in the body of the page displayed&#10; *   by the user interface.&#10; *  @input resources An object where each named property is an object containing&#10; *   two properties, 'data' and 'contentType'. The name of the named property is&#10; *   the path to be used to access the resource. The 'data' property is the resource&#10; *   itself, an arbitrary collection of bytes. The 'contentType' is the MIME&#10; *   type of the data.&#10; *  @input update An object with three properties, 'id', 'property', and 'content',&#10; *   that specifies an update to a DOM element on the page.&#10; *  @parameter {string} header HTML content to include in the header part of the web page.&#10; *   This is a good place to script definitions.&#10; *  @parameter {string} content HTML content to include in the main body of the page.&#10; *   If this is non-empty, then the page is opened upon initialize.&#10; *   Otherwise, the page is opened when the first *html* input is received.&#10; *  @parameter {int} port The port to use, if needed, for websocket communication between this&#10; *   accessor (which updates the HTML content of the web page) and the user interface.&#10; *   The web page will listen on this socket for content and display whatever arrives&#10; *   on that port. This is ignored on hosts that do not need to invoke an external browser.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global error, exports, require, util */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var UserInterface = require('@accessors-modules/user-interface');&#10;var userInterface = null;&#10;&#10;exports.setup = function () {&#10;    this.parameter('header', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.parameter('content', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('html', {&#10;        'type': 'string'&#10;    });&#10;    this.input('resources');&#10;    this.input('update', {&#10;        'type': 'JSON'&#10;    });&#10;    this.output('post', {&#10;        'type': 'JSON',&#10;        'spontaneous': true&#10;    });&#10;    // Use port 8089 because port 8080 is occupied on terra.eecs.berkeley.edu&#10;    this.parameter('port', {&#10;        'type': 'int',&#10;        'value': 8089&#10;    });&#10;};&#10;&#10;/** Display the HTML contents retrieved from the *html* input in the main body&#10; *  of the user interface page replacing whatever was there before.&#10; *  Before doing this, check for any *resources* input and add those resources&#10; *  to the user interface in case the HTML references them. &#10; */&#10;function display() {&#10;    // Check for any new resources.&#10;    var resources = this.get('resources');&#10;    if (resources) {&#10;        for (var name in resources) {&#10;            userInterface.addResource(name, resources[name].data, resources[name].contentType);&#10;        }&#10;    }&#10;&#10;    var toDisplay = this.get('html');&#10;    userInterface.display(toDisplay);&#10;}&#10;&#10;/** Update the specified property of the DOM element of the current page,&#10; *  if it exists, with the specified content.&#10; *  @param id The ID.&#10; *  @param property The type of the update. If this is &quot;html&quot;, then the&#10; *   DOM object is updated by invoking the jQuery html() function it&#10; *   with the specified content as an argument. Otherwise, the property&#10; *   with name *property* is assigned the value of the content.&#10; *   If *property* is 'src', then in addition, the content is augmented&#10; *   with a suffix of the form '?count=*n*', where *n* is a unique number.&#10; *   This is so that the user interface will be forced to reload the src rather than&#10; *   using any cached version it may have. This can be used, for example,&#10; *   to force an update to an img tag where a new image has been provided&#10; *   using addResource().&#10; *  @param content The content of the update, typically HTML to insert or&#10; *   a property value like src to set.&#10; */&#10;function update() {&#10;    var updateValue = this.get('update');&#10;    if (!updateValue.id || !updateValue.property) {&#10;        error('Malformed update input. Expected an object with id, property, and content properties.'&#10;                + 'Got instead: ' + util.inspect(updateValue));&#10;        return;&#10;    }&#10;    // Ensure that updateValue.content exists.&#10;    if (!updateValue.content) {&#10;        updateValue.content = '';&#10;    }&#10;    userInterface.update(updateValue.id, updateValue.property, updateValue.content);&#10;}&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    &#10;    userInterface = new UserInterface.UserInterface(&#10;            {'port': self.getParameter('port')},&#10;            self.getParameter('header'),&#10;            self.getParameter('content')&#10;    );&#10;    // Listen for any POST to the server.&#10;    userInterface.addListener('/', function(data) {&#10;        self.send('post', JSON.parse(data));&#10;    });&#10;&#10;    this.addInputHandler('html', display.bind(this));&#10;&#10;    this.addInputHandler('update', update.bind(this));&#10;&#10;    this.addInputHandler('resources', function() {&#10;        var resources = this.get('resources');&#10;        for (var name in resources) {&#10;            userInterface.addResource(name, resources[name].data, resources[name].contentType);&#10;        }&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (userInterface) {&#10;        userInterface.stop();&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/UserInterface.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that provides a user interface based on HTML5 on the local host.&#10; The initial content on the page may be specified using the &lt;em&gt;content&lt;/em&gt;&#10; parameter and HTML header content may be specified using &lt;em&gt;header&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whatever text is received on the &lt;em&gt;html&lt;/em&gt; input port will replace the content&#10; of the web page. Normally, this will be HTML text without any DOCTYPE or&#10; header and without a body tag. Each time new text is received, the content&#10; of the page will be replaced.&lt;/p&gt;&#10;&lt;p&gt; The page will be opened upon initialize if &lt;em&gt;content&lt;/em&gt; is not empty.&#10; Otherwise, it will be opened when the first &lt;em&gt;html&lt;/em&gt; input is received.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;resources&lt;/em&gt; input can be used to provide resources, such as images,&#10; that will be used by the HTML content provided on the &lt;em&gt;html&lt;/em&gt; input.&#10; Note that you probably will also have to provide an &lt;em&gt;update&lt;/em&gt; input (see below)&#10; to force the user interface to update the page using the specified resource.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;update&lt;/em&gt; input can be used to instruct the user interface to replace content&#10; within the page, vs. the &lt;em&gt;html&lt;/em&gt; input which replaces the entire page.&#10; The value of an &lt;em&gt;update&lt;/em&gt; input is expected to be an object with three properties,&#10; &lt;em&gt;id&lt;/em&gt;, &lt;em&gt;property&lt;/em&gt;, and &lt;em&gt;content&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;id&lt;/em&gt; property refers to a the ID of&#10; a DOM element in the content of the page, where the content has been provided&#10; either via the &lt;em&gt;content&lt;/em&gt; parameter or the &lt;em&gt;html&lt;/em&gt; input. For example, your&#10; page may include:&#10; &lt;pre&gt;&#10;    &amp;lt;div id=&amp;quot;foo&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&#10; &lt;/pre&gt;&#10; or&#10; &lt;pre&gt;&#10;    &amp;lt;img id=&amp;quot;bar&amp;quot; src=&amp;quot;image.jpg&amp;quot;/&amp;gt;&#10; &lt;/pre&gt;&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;p&gt;@param id The ID.&#10;The &lt;em&gt;property&lt;/em&gt; field specifies what property of the DOM element with the&#10;specified ID is to be updated. If &lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, then the&#10;DOM object is updated by invoking the jQuery html() function&#10;with the specified &lt;em&gt;content&lt;/em&gt; as an argument. For example, if &lt;em&gt;id&lt;/em&gt; is &amp;quot;foo&amp;quot;,&#10;&lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, and &lt;em&gt;content&lt;/em&gt; is &amp;quot;Hello World!&amp;quot;, then the above div&#10;will be populated with the text &amp;quot;Hello World!&amp;quot; on the web page.&#10;The &lt;em&gt;content&lt;/em&gt; can include any HTML markup or even scripts, which will be executed.&lt;/p&gt;&#10;&lt;p&gt;If &lt;em&gt;property&lt;/em&gt; is anything other than 'html', then the DOM element's &lt;em&gt;property&lt;/em&gt;&#10;attribute will be assigned the value of &lt;em&gt;content&lt;/em&gt;.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src', however, is treated specially.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src' can be used, for example, to replace the image in the above img tag.&#10;Just send the updated image to the &lt;em&gt;resources&lt;/em&gt; input and send this to the&#10;&lt;em&gt;update&lt;/em&gt; input:&lt;/p&gt;&#10;&lt;pre&gt;&#10;{'id':'bar', 'property':'src', 'content':'image.jpg'}&#10;&lt;/pre&gt;&#10;&#10;&lt;p&gt;Note that to get the user interface to actually replace the image, we may have to play some tricks.&#10;If the user interface is implemented by a browser, then the browser&#10;normally caches an image that it has previously retrieved&#10;and it will use the cached version of the image rather than obtaining the new image&#10;from the server.  To force the user interface to refresh the image, this accessor&#10;treats a &lt;em&gt;property&lt;/em&gt; value of 'src' specially.&#10;Specifically, it appends to the &lt;em&gt;content&lt;/em&gt; a suffix of the form '?count=&lt;em&gt;n&lt;/em&gt;',&#10;where &lt;em&gt;n&lt;/em&gt; is a unique number. This forces the user interface to retrieve the image&#10;from the server rather than use its cached version because the URI is&#10;different from that of the cached version. The server, on the other hand, ignores&#10;the parameter 'count' that has been appended to this URI and simply returns the&#10;updated image.&lt;/p&gt;&#10;&lt;p&gt;The way this accessor works on most hosts is that it starts a web server on localhost&#10;at the specified port that serves the specified web page and then instructs&#10;the system default browser to load the default page from that server.&#10;The page served by the server includes a script that listens for websocket&#10;connections that are used to provide HTML content and udpates to display on the page.&#10;Some hosts, however, such as the cordova and browser hosts, natively use&#10;a browser as part of the host, so in these cases, no web server nor socket&#10;connection is needed and the &lt;em&gt;port&lt;/em&gt; parameter will be ignored.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="html (port)" class="ptolemy.kernel.util.StringAttribute" value="HTML content to render in the body of the page displayed&#10;  by the user interface.">
+            </property>
+            <property name="resources (port)" class="ptolemy.kernel.util.StringAttribute" value="An object where each named property is an object containing&#10;  two properties, 'data' and 'contentType'. The name of the named property is&#10;  the path to be used to access the resource. The 'data' property is the resource&#10;  itself, an arbitrary collection of bytes. The 'contentType' is the MIME&#10;  type of the data.">
+            </property>
+            <property name="header (parameter)" class="ptolemy.kernel.util.StringAttribute" value="HTML content to include in the header part of the web page.&#10;  This is a good place to script definitions.">
+            </property>
+            <property name="content (parameter)" class="ptolemy.kernel.util.StringAttribute" value="HTML content to include in the main body of the page.&#10;  If this is non-empty, then the page is opened upon initialize.&#10;  Otherwise, the page is opened when the first *html* input is received.">
+            </property>
+            <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to use, if needed, for websocket communication between this&#10;  accessor (which updates the HTML content of the web page) and the user interface.&#10;  The web page will listen on this socket for content and display whatever arrives&#10;  on that port. This is ignored on hosts that do not need to invoke an external browser.">
+            </property>
+            <property name="update (port)" class="ptolemy.kernel.util.StringAttribute" value="An object with three properties, 'id', 'property', and 'content',&#10;  that specifies an update to a DOM element on the page.">
+            </property>
+            <property name="post (port)" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 580.0]">
+        </property>
+        <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&#10;&lt;style&gt;&#10;body {&#10;  background:black;&#10;}&#10;#next {&#10;  width:700px;&#10;}&#10;#container {&#10;  position: relative;&#10;  background: black;&#10;  width: 1000px;&#10;  height: 700px;&#10;}&#10;#image {&#10;  display: block;&#10;}&#10;#overlay {&#10;  position: absolute;&#10;  background-color: rgba(255,255,255,0.85);&#10;  color: black;&#10;  font-size: 12px;&#10;  font-family: sans-serif;&#10;  padding: 6px 6px;&#10;}&#10;table, th, td {&#10;  border: 1px solid black;&#10;  border-collapse: collapse;&#10;  padding: 2px;&#10;}&#10;&lt;/style&gt;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="content" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="html" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="resources" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="post" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="update" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="Clock" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor utilities/Clock&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('interval', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.output('output', {&#10;        'type': 'number'&#10;    });&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function () {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;&#10;    // Send an output and then call setInterval&#10;    thiz.send('output', count);&#10;    count += 1;&#10;    &#10;    handle = setInterval(function () {&#10;        thiz.send('output', count);&#10;        count += 1;&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Clock.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 100.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MapVisualizer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display an image on the console.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display an image on the console.&#10; *  The image is passed through to the output in case a model wishes to ensure&#10; *  that the image has been displayed before something else happens.&#10; *&#10; *  @accessor image/ImageDisplay&#10; *  @input input The image to display.&#10; *  @output output The image to display.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var imageDisplay = require('@accessors-modules/image-display');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    if (display === null) {&#10;        display = new imageDisplay.ImageDisplay();&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        display.displayImage(inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ImageDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display an image on the console.&#10; The image is passed through to the output in case a model wishes to ensure&#10; that the image has been displayed before something else happens.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The image to display.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The image to display.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 100.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ImageAnnotate" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** This accessor annotates an image provided at the _image_ input&#10; *  by rendering an SVG graphic overlaid on the image.&#10; *&#10; *  The _graphic_ input, if provided, gives an SVG specification of the graphic.&#10; *  Alternatively, if a _graphic_ input is not provided, or the _graphic_ input&#10; *  is empty, the _graphicURI_ input can provide a resource identifier for the graphic.&#10; *  This can be a URL or a local resource (a file) available on the host.&#10; *  Note that most hosts will restrict locations from which files can be read.&#10; *  Usually they will allow to read files in the directory where the swarmlet is located&#10; *  on the file system, or in a subdirectory of that directory.&#10; *  To read such a file, give a path relative to the location of the swarmlet.&#10; *&#10; *  The _translate_&#10; *  input can be used to shift the graphic in the X and Y directions,&#10; *  and the _rotate_ input can used to rotate the graphic.&#10; *&#10; *  The _options_ input can have the following fields:&#10; *  * __XOffset__: The horizontal offset for the graphic. If this is specified&#10; *    and a _translate_ input is also provided, the both offsets are applied.&#10; *  * __YOffset__: The vertical offset for the graphic. If this is specified&#10; *    and a _translate_ input is also provided, the both offsets are applied.&#10; *&#10; *  @accessor image/ImageAnnotate&#10; *  @input image The image to annotate.&#10; *  @input graphic The location of an SVG graphic to overlay on the image.&#10; *  @input translate An offset to apply to the graphic, as two element array specifying&#10; *   horizontal and vertical offsets in pixels.&#10; *  @input options A JSON object specifying options.&#10; *  @output output The filtered image.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getResource, input, output, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var imageFilters = require('imageFilters');&#10;&#10;exports.setup = function () {&#10;    this.input('image');&#10;    this.input('graphic', {&#10;        'value': '',&#10;        'type': 'string'&#10;    });&#10;    this.input('graphicURI', {&#10;        'value': '',&#10;        'type': 'string'&#10;    });&#10;    this.input('scale', {&#10;        'value': 1.0,&#10;        'type': 'number'&#10;    });&#10;    this.input('rotation', {&#10;        'value': 0.0,&#10;        'type': 'number'&#10;    });&#10;    this.input('translate');&#10;    this.input('options', {&#10;        'value': '',&#10;        'type': 'JSON'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('image', function () {&#10;        var image = this.get('image');&#10;        var options = this.get('options');&#10;        if (!options) {&#10;            options = {};&#10;        }&#10;&#10;        var scale = this.get('scale');&#10;        if (scale !== null) {&#10;            // Combine with scale options, if specified.&#10;            if (options.Scale) {&#10;                scale *= options.Scale;&#10;            }&#10;            options.Scale = scale;&#10;        }&#10;&#10;        var rotation = this.get('rotation');&#10;        if (rotation !== null) {&#10;            // Combine with rotation options, if specified.&#10;            if (options.Rotation) {&#10;                rotation += options.Rotation;&#10;            }&#10;            options.Rotation = rotation;&#10;        }&#10;&#10;        var translate = this.get('translate');&#10;        if (translate !== null &amp;&amp; translate[0] !== null &amp;&amp; translate[1] !== null) {&#10;            // Combine with offset options, if specified.&#10;            var xOffset = translate[0];&#10;            if (options.XOffset) {&#10;                xOffset += options.XOffset;&#10;            }&#10;            options.XOffset = xOffset;&#10;&#10;            var yOffset = translate[1];&#10;            if (options.YOffset) {&#10;                yOffset += options.YOffset;&#10;            }&#10;            options.YOffset = yOffset;&#10;        }&#10;        var graphic = this.get('graphic');&#10;        if (graphic) {&#10;            options.Graphic = graphic;&#10;        } else {&#10;            var graphicURI = this.get('graphicURI');&#10;            if (graphicURI) {&#10;                // Second argument is a timeout.&#10;                options.Graphic = this.getResource(graphicURI, 3000);&#10;            }&#10;        }&#10;        var result = imageFilters.filter(image, 'Annotate', options);&#10;        this.send('output', result);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ImageAnnotate.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor annotates an image provided at the &lt;em&gt;image&lt;/em&gt; input&#10; by rendering an SVG graphic overlaid on the image.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;graphic&lt;/em&gt; input, if provided, gives an SVG specification of the graphic.&#10; Alternatively, if a &lt;em&gt;graphic&lt;/em&gt; input is not provided, or the &lt;em&gt;graphic&lt;/em&gt; input&#10; is empty, the &lt;em&gt;graphicURI&lt;/em&gt; input can provide a resource identifier for the graphic.&#10; This can be a URL or a local resource (a file) available on the host.&#10; Note that most hosts will restrict locations from which files can be read.&#10; Usually they will allow to read files in the directory where the swarmlet is located&#10; on the file system, or in a subdirectory of that directory.&#10; To read such a file, give a path relative to the location of the swarmlet.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;translate&lt;/em&gt;&#10; input can be used to shift the graphic in the X and Y directions,&#10; and the &lt;em&gt;rotate&lt;/em&gt; input can used to rotate the graphic.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;options&lt;/em&gt; input can have the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;XOffset&lt;/strong&gt;: The horizontal offset for the graphic. If this is specified&#10;and a &lt;em&gt;translate&lt;/em&gt; input is also provided, the both offsets are applied.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;YOffset&lt;/strong&gt;: The vertical offset for the graphic. If this is specified&#10;and a &lt;em&gt;translate&lt;/em&gt; input is also provided, the both offsets are applied.&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="image (port)" class="ptolemy.kernel.util.StringAttribute" value="The image to annotate.">
+            </property>
+            <property name="graphic (port)" class="ptolemy.kernel.util.StringAttribute" value="The location of an SVG graphic to overlay on the image.">
+            </property>
+            <property name="translate (port)" class="ptolemy.kernel.util.StringAttribute" value="An offset to apply to the graphic, as two element array specifying&#10;  horizontal and vertical offsets in pixels.">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="A JSON object specifying options.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The filtered image.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="graphicURI" class="ptolemy.actor.parameters.PortParameter" value="Circle.svg">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 100.0]">
+        </property>
+        <port name="graphic" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="graphicURI" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="image" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="scale" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="rotation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="translate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="LocationToAccessors" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;&#10;var roomDevices = &#10;	{'RoomA': &#10;		[	{ 	'device': 'lightInRoomA',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			},&#10;			{	'device': 'TemperatureSensorInRoomA',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			},&#10;			{	'device': 'airConditionnerInRoomA',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			}&#10;    	],&#10;    'RoomB': &#10;		[	{ 	'device': 'lightInRoomB',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			}&#10;    	],&#10;    'Hall': &#10;		[	{ 	'device': 'lightInHall',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			}&#10;    	],&#10;    'RoomE': &#10;		[	{ 	'device': 'lightInRoomE',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			},&#10;			{	'device': 'musicPlayer',&#10;    			'schema': '',&#10;    			'accessorURL':'...',&#10;    			'parametersValue': [{'param1':'val1'}, {'param2':'val2'}]&#10;			}&#10;    	]&#10;    };&#10;    	&#10;    	&#10;exports.setup = function () {&#10;	this.input('roomLabel');&#10;    this.output('metaData');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;    var indexInDevices = 0;&#10;    &#10;  &#10;    this.addInputHandler('roomLabel', function() {&#10;    	var roomLabel = this.get('roomLabel');&#10;		self.send('metaData', roomDevices[roomLabel]);&#10;    });&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 460.0]">
+        </property>
+        <port name="metaData" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="roomLabel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="CoordinatesToLabeledLocationMapping" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Maps an XY position into a room label location, can be based on semantic repository query.&#10; * &#10; *  This accessor takes as input an xyPosition and provides as output a labeled&#10; *  location. The location mapper (from one system to another) can be hard coded,&#10; *  provided as a service, or available in a location semantic repo that you can&#10; *  query.&#10; *  &#10; *  In this version, we are using hard coded values. The map shape is a rectangle  &#10; *  as well as the rooms. Each room is represented by the &#10; *   * left and right 'x' coordiantes,&#10; *   * and the up and down 'y' coordinates&#10; *  of the corner points of the rectangle (XLeft, XRight, YUp, YDown). &#10; *  A given couple of coordiantes (x,y) is within a room r if:&#10; *   * x is between XRight(r) and XLeft(r)&#10; *   * and y is between YUp(r) and YDown(r)&#10; *   &#10; *  The mapping feature can be developed further to support different shapes. &#10; *  Computational geometry can be used for this, together with a GraphDB with the&#10; *  support of GEOSPARQL enabled.&#10; */&#10;&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, console, error, exports, extend, input, get, getParameter, getResource, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;//  Hard coded mapping&#10;var hardCodedLocationMapping = {&#10;    &quot;RoomA&quot; : {&quot;XLeft&quot; : 0, &quot;XRight&quot; : 130, &quot;YUp&quot; : 0, &quot;YDown&quot; : 170},&#10;    &quot;RoomB&quot; : {&quot;XLeft&quot; : 130, &quot;XRight&quot; : 260, &quot;YUp&quot; : 0, &quot;YDown&quot; : 170}, &#10;    &quot;RoomC&quot; : {&quot;XLeft&quot; : 260, &quot;XRight&quot; : 390, &quot;YUp&quot; : 0, &quot;YDown&quot; : 170}, &#10;    &quot;RoomD&quot; : {&quot;XLeft&quot; : 390, &quot;XRight&quot; : 420, &quot;YUp&quot; : 0, &quot;YDown&quot; : 170},&#10;&#10;    &quot;Hall&quot;  : {&quot;XLeft&quot; : 0, &quot;XRight&quot; : 390, &quot;YUp&quot; : 170, &quot;YDown&quot; : 340},&#10;    &quot;RoomE&quot; : {&quot;XLeft&quot; : 390, &quot;XRight&quot; : 420, &quot;YUp&quot; : 170, &quot;YDown&quot; : 340}, &#10;&#10;    &quot;RoomI&quot; : {&quot;XLeft&quot; : 0, &quot;XRight&quot; : 130, &quot;YUp&quot; : 340, &quot;YDown&quot; : 510},&#10;    &quot;RoomH&quot; : {&quot;XLeft&quot; : 130, &quot;XRight&quot; : 260, &quot;YUp&quot; : 340, &quot;YDown&quot; : 510}, &#10;    &quot;RoomG&quot; : {&quot;XLeft&quot; : 260, &quot;XRight&quot; : 390, &quot;YUp&quot; : 340, &quot;YDown&quot; : 510}, &#10;    &quot;RoomF&quot; : {&quot;XLeft&quot; : 390, &quot;XRight&quot; : 420, &quot;YUp&quot; : 340, &quot;YDown&quot; : 510} &#10;};&#10;&#10;exports.setup = function() {&#10;    this.input('xyPosition');&#10;    this.output('roomLabel', {&#10;        'type': 'string'&#10;    });&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('xyPosition', function() {&#10;    	var xyPosition = this.get('xyPosition');&#10;    	var x = xyPosition[0];&#10;    	var y = xyPosition[1];&#10;    	var roomLabel = '';&#10;    	// Loop over hardCodedLocationMapping to find the room label&#10;    	for (var key in hardCodedLocationMapping) {&#10;    		var room = hardCodedLocationMapping[key];&#10;    		if (x &gt;= room[&quot;XLeft&quot;] &amp;&amp; &#10;    				x &lt;= room[&quot;XRight&quot;] &amp;&amp;&#10;    				y &gt;= room[&quot;YUp&quot;] &amp;&amp;&#10;    				y &lt;= room[&quot;YDown&quot;]) {&#10;    			roomLabel = key;&#10;    		}&#10;    	}&#10;        thiz.send('roomLabel', roomLabel);&#10;    });   &#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 265.0]">
+        </property>
+        <port name="xyPosition" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="roomLabel" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ParallelMutable" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;var containedMxControls  = [];&#10;var containedMutables = [];&#10;&#10;exports.setup = function () {&#10;    this.implement('ControllableDevice');&#10;    this.input('metaData');&#10;    this.output('html', {&#10;        'type': 'string'&#10;    });&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    var indexInDevices = 0;&#10;    &#10;  &#10;    this.addInputHandler('metaData', function() {&#10;        var devices = this.get('metaData');&#10;        &#10;        var html = '&lt;h1&gt;Location Aware Discovery Demo&lt;/h1&gt;\n';&#10;&#10;        // Based of the metaData, every discovered accessor will be reified.        &#10;        for each (dev in devices) {&#10;            //console.log('rrr '+ util.inspect(dev));&#10;            html += '&lt;form action=&quot;/&quot; method=&quot;post&quot; target=&quot;blankIframe&quot;&gt;\n\&#10;                &lt;input type=&quot;submit&quot; value=&quot;'+dev['device']+'&quot; name=&quot;next&quot; id='+dev['device']+'/&gt;\n\&#10;            &lt;/form&gt;\n\n';&#10;            &#10;            var destinationName = dev['device'];&#10;            var _containedMxControl = thiz.instantiate('ContainedMxCtrl_'+destinationName, 'MxControl');&#10;            _containedMxControl.setParameter('destinationName', destinationName);&#10;&#10;            var _containedMutable = thiz.instantiate('ContainedMutable_'+destinationName, 'ControllableDevice');&#10;			&#10;            // Push and then connect&#10;            containedMxControls.push(_containedMxControl);&#10;            containedMutables.push(_containedMutable);&#10;&#10;            thiz.connect('control', _containedMxControl, 'controlIn');&#10;            thiz.connect(_containedMxControl, 'controlOut', _containedMutable, 'control');&#10;            thiz.connect(_containedMutable, 'schema', 'html');&#10;            &#10;            &#10;        }&#10;        &#10;        // Firefox insists on displaying the response to the post,&#10;        // so we direct the response to a small iframe.&#10;        html += '&lt;iframe name=&quot;blankIframe&quot; id=&quot;blankIframe&quot; height=0 width=0/&gt;';&#10;        console.log('containedMx '+ containedMxControls);&#10;        console.log('containedMutables '+ containedMutables);        &#10;&#10;        thiz.send('html', html);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 580.0]">
+        </property>
+        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="control" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="metaData" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="html" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="schema" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="DisplayLocationLabel" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={869, 337, 535, 187}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 136]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="LocationChangeNotifier" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;// This accessor checks if the previous location if different from the&#10;// one given as input. If different, the new value is provided as output&#10;&#10;exports.setup = function() {&#10;    this.input('roomLabel', {&#10;        'type': 'string'&#10;    });&#10;    this.output('newRoomLabel', {&#10;        'type': 'string'&#10;    });&#10;};&#10;&#10;var currentRoomLabel = '';&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('roomLabel', function() {&#10;		var roomLabel = thiz.get('roomLabel');&#10;		if (roomLabel != currentRoomLabel) {&#10;			currentRoomLabel = roomLabel;&#10;			thiz.send('newRoomLabel', currentRoomLabel);&#10;		}&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 360.0]">
+        </property>
+        <port name="roomLabel" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="newRoomLabel" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DisplayUpdatedLocation" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={869, 528, 535, 223}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 360.0]">
+        </property>
+    </entity>
+    <entity name="DisDiscoveredAccMetaData" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={870, 755, 535, 223}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 460.0]">
+        </property>
+    </entity>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[100.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[310.0, 175.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[380.0, 265.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[440.0, 360.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[465.0, 460.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ImageReader.output" relation="relation8"/>
+    <link port="ImageReader.trigger" relation="relation6"/>
+    <link port="MvmtEmulator.trigger" relation="relation6"/>
+    <link port="MvmtEmulator.xyPosition" relation="relation7"/>
+    <link port="UserInterface.html" relation="relation"/>
+    <link port="Clock.output" relation="relation6"/>
+    <link port="MapVisualizer.input" relation="relation9"/>
+    <link port="ImageAnnotate.image" relation="relation8"/>
+    <link port="ImageAnnotate.translate" relation="relation7"/>
+    <link port="ImageAnnotate.output" relation="relation9"/>
+    <link port="LocationToAccessors.metaData" relation="relation2"/>
+    <link port="LocationToAccessors.roomLabel" relation="relation3"/>
+    <link port="CoordinatesToLabeledLocationMapping.xyPosition" relation="relation7"/>
+    <link port="CoordinatesToLabeledLocationMapping.roomLabel" relation="relation4"/>
+    <link port="ParallelMutable.metaData" relation="relation2"/>
+    <link port="ParallelMutable.html" relation="relation"/>
+    <link port="DisplayLocationLabel.input" relation="relation4"/>
+    <link port="LocationChangeNotifier.roomLabel" relation="relation4"/>
+    <link port="LocationChangeNotifier.newRoomLabel" relation="relation3"/>
+    <link port="DisplayUpdatedLocation.input" relation="relation3"/>
+    <link port="DisDiscoveredAccMetaData.input" relation="relation2"/>
+</entity>
