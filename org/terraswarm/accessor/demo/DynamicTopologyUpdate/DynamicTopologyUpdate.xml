@@ -1,0 +1,240 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DynamicTopologyUpdate" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 27, 1280, 1053}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1066, 934]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000007">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.5299350247526, 409.78875309405936}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates dynamically changing topologies of accessors. &#10;&#10;DynaTop is a container accessor that accepts in his 'topology'  input a topology description.&#10;&#10;The topology description is a given as JSON object providing the accessors list and the set &#10;of connections. Each accessor description in the list includes the name (considered as id), &#10;the url (fully qualified accessor name/path) and the list of parameters values. The list of &#10;connections follows the connect() function prototype.&#10;&#10;DynaTop reacts to 'topology' input by:&#10;1/ instantiating the accessors and initializing the parameters&#10;2/ creating the connections&#10;3/ Assigning priorities&#10;4/ And finally initializing the contained accessors.&#10;&#10;For now, JavaScript2 actor includes the description of a serial connection of a TestAdder &#10;and TestGain accessors. The description id hard coded as follows:  &#10;&#10;'accessorsList':[&#10;        {'name':'TestAdder', 'url':'test/TestAdder', 'parametersValues':[]},&#10;        {'name':'TestGain', 'url':'test/TestGain', 'parametersValues':[{'parameter':'gain', 'value':4}]},&#10;    ],&#10;    'connections':[{'a':'this', 'b':'input2', 'c':'TestAdder', 'd':'inputLeft'},&#10;        {'a':'this', 'b':'input1', 'c':'TestAdder', 'd':'inputRight'},&#10;        {'a':'TestAdder', 'b':'sum', 'c':'TestGain', 'd':'input'},&#10;        {'a':'TestGain', 'b':'scaled', 'c':'this', 'd':'output1'}&#10;    ]&#10;}&#10;&#10;JavaScript actor provides 3 sets of outputs.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 315.0]">
+        </property>
+    </property>
+    <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;var topology=[{&#10;    'accessorsList':[&#10;        {'name':'TestAdder', 'url':'test/TestAdder', 'parametersValues':[]},&#10;        {'name':'TestGain', 'url':'test/TestGain', 'parametersValues':[{'parameter':'gain', 'value':4}]},&#10;    ],&#10;    'connections':[{'a':'this', 'b':'input2', 'c':'TestAdder', 'd':'inputLeft'},&#10;        {'a':'this', 'b':'input1', 'c':'TestAdder', 'd':'inputRight'},&#10;        {'a':'TestAdder', 'b':'sum', 'c':'TestGain', 'd':'input'},&#10;        {'a':'TestGain', 'b':'scaled', 'c':'this', 'd':'output1'}&#10;    ]&#10;}];&#10;&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('topology', {&#10;        'type': 'JSON',&#10;        'value':{}&#10;    });&#10;};&#10;&#10;var i=0;&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('trigger', function() {&#10;        thiz.send('topology', topology[i]);&#10;    });&#10;};&#10;    ">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[196.77093505859375, 149.68780517578125]">
+        </property>
+        <property name="destinationName" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="deviceName" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="topology" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter delay The delay in milliseconds before the value is outputk.&#10; *  @parameter value The value to be output after the delay.&#10; *  @output output The output port&#10; *  @author Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, require, setTimeout */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('delay', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.parameter('value', {&#10;        'value': true&#10;    }); &#10;    this.output('output');&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;&#10;exports.initialize = function () {&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function () {&#10;        thiz.send('output', thiz.getParameter('value'));&#10;    }, this.getParameter('delay'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearTimeout(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneousOnce.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks and Edward A. Lee. Based on TestSpontaneous by Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output port">
+            </property>
+            <property name="delay (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The delay in milliseconds before the value is outputk.">
+            </property>
+            <property name="value (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value to be output after the delay.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 150.0]">
+        </property>
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={944, 375, 535, 223}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 172]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;exports.setup = function () {&#10;    this.output('num1', {&#10;        'type': 'number',&#10;        'value':5&#10;    });&#10;    this.output('num2', {&#10;        'type': 'number',&#10;        'value':5&#10;    });&#10;};&#10;&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    setTimeout(function() {&#10;    	thiz.send('num1', 5);&#10;    	thiz.send('num2', 10);&#10;    }, 1000);&#10;	setTimeout(function() {&#10;    	thiz.send('num1', 50);&#10;    	thiz.send('num2', 20);&#10;    }, 2000);&#10;    setTimeout(function() {&#10;    	thiz.send('num1', 500);&#10;    	thiz.send('num2', 9);&#10;    }, 3000);&#10;};&#10;    ">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 250.0]">
+        </property>
+        <property name="destinationName" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="deviceName" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="num1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="num2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DynaTop" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;exports.setup = function() {&#10;	this.input('topology', {&#10;		'type': 'JSON',&#10;		'value':{}&#10;	});&#10;    this.input('input2', {&#10;        'type': 'number',&#10;        'value': 1&#10;    });&#10;    this.input('input1', {&#10;        'type': 'number',&#10;        'value': 0&#10;    });&#10;    this.output('output1', {&#10;        'type': 'number',&#10;        'value': 0&#10;    });&#10;    this.output('output2', {&#10;        'type': 'number',&#10;        'value':0&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('topology', function() {&#10;        var topology = thiz.get('topology');&#10;        &#10;        // Parse the new topology to instantiate the accessors&#10;        var accessorsList = topology.accessorsList;&#10;        accessorsList.forEach(function(accessor) {&#10;        	var acc = thiz.instantiate(accessor.name, accessor.url);&#10;        	acc.topologyName = accessor.name;&#10;        	// Set the parameters, if any&#10;        	if (accessor.parametersValues !== []) {&#10;        		accessor.parametersValues.forEach(function(parameter) {&#10;        			acc.setParameter(parameter.parameter, parameter.value);&#10;        		});&#10;        	}	&#10;        });&#10;        &#10;        // Parse the new topology to connect the instantiated contained accessors&#10;        var connections = topology.connections;&#10;        connections.forEach(function(connection) {&#10;        	var a = connection.a;&#10;        	var b = connection.b;&#10;        	var c = connection.c;&#10;        	var d = connection.d;&#10;        	if (a !== 'this' &amp;&amp; c !== 'this') {&#10;        		a = thiz.containedAccessors[getAccessorByName.call(thiz, a)];&#10;	        	c = thiz.containedAccessors[getAccessorByName.call(thiz, c)];&#10;        	   	thiz.connect(a, b, c, d);&#10;        	   	&#10;        	} else if (a === 'this' &amp;&amp; c !== 'this') {&#10;        		c = thiz.containedAccessors[getAccessorByName.call(thiz, c)];&#10;        	   	thiz.connect(b, c, d);&#10;        	   	&#10;        	} else if (a !== 'this' &amp;&amp; c === 'this') {&#10;        		a = thiz.containedAccessors[getAccessorByName.call(thiz, a)];&#10;        	   	thiz.connect(a, b, d);&#10;        	} else {&#10;        	   	thiz.connect(b, d);&#10;        	}&#10;        });&#10;&#10;        // Assign priorities&#10;        thiz.assignPriorities();&#10;        &#10;        // And initialize contained accessors&#10;        thiz.containedAccessors.forEach(function(contAcc) {&#10;        	contAcc.initialize();&#10;		});&#10;        &#10;    });&#10;}&#10;&#10;/** Returns the contained accessor whose name have been given as a parameter.&#10; *  If the value of the parameter name is 'this', then return this.&#10; *  @param name Name of the contained accessor to return&#10; *  @return return the index of the contained accessor, or null &#10; */&#10;function getAccessorByName (name) {&#10;	var i = 0;&#10;	for (i = 0 ; i &lt; this.containedAccessors.length ; i++) {&#10;		var contAcc = this.containedAccessors[i];&#10;		if (contAcc.topologyName === name) {&#10;			return i;&#10;		}&#10;	};&#10;	return null;&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 160.0]">
+        </property>
+        <property name="deviceName" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="topology" class="ptolemy.actor.parameters.PortParameter" value="{}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="input2" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="input1" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <port name="topology" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="input2" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="input1" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output1" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="output2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={944, 624, 954, 201}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[954, 150]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 50.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[335.0, 50.0]">
+        </vertex>
+    </relation>
+    <link port="JavaScript2.trigger" relation="relation5"/>
+    <link port="JavaScript2.topology" relation="relation3"/>
+    <link port="TestSpontaneousOnce.output" relation="relation5"/>
+    <link port="Display.input" relation="relation7"/>
+    <link port="JavaScript.num1" relation="relation"/>
+    <link port="JavaScript.num2" relation="relation2"/>
+    <link port="DynaTop.topology" relation="relation3"/>
+    <link port="DynaTop.input2" relation="relation"/>
+    <link port="DynaTop.input1" relation="relation2"/>
+    <link port="DynaTop.output1" relation="relation7"/>
+    <link port="Display2.input" relation="relation3"/>
+</entity>
