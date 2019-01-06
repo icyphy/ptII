@@ -34,6 +34,7 @@ $Id$
     <module>org.ptolemy.actor.gui.test</module>
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
+    <module>org.ptolemy.core.test.command</module>
     <module>org.ptolemy.testsupport</module>
 
 
