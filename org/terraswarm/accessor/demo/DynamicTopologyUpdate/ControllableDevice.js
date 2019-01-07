@@ -1,9 +1,11 @@
 exports.setup = function() {
 	this.input('control', {
-		'type': 'JSON'
+		'type': 'JSON',
+		'value': {}
 	});
 	this.output('data', {
-		'type': 'JSON'
+		'type': 'JSON',
+		'value': {}
 	});
 	this.output('whatIsGoingOn', {
 		'type': 'string',
@@ -15,9 +17,9 @@ exports.initialize = function() {
 	var thiz = this;
 
 	setInterval(function() {
-		thiz.send('whatIsGoingOn', 'I am the reified accessor ' + thiz.accessorName + ' and I send with a period of 300');
+		var whatIsGoingOn = 'I am the reified accessor ' + thiz.accessorName + ' and I send with a period of 300'
+		thiz.send('whatIsGoingOn', whatIsGoingOn);
+		console.log(whatIsGoingOn);
 	}, 300);
-
-	this.addInputHandler('control', function() {
-	});
 };
+
