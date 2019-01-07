@@ -12,13 +12,37 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 27, 905, 1053}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 27, 898, 918}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[691, 934]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[684, 799]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.000000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.50000000000006, 460.70312500000017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{314.9438428217822, 371.20188737623766}">
+    </property>
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates the ability to update -- on runtime -- the interface of an accessor.&#10;&#10;Two different accessors (ControllableDevice.js and AnotherControllableDevice.js, which&#10;are in the same folder) are fed to MutableInterface through 'accessorPath' input.&#10;The input handler of this latter does the following:&#10;1-/ First, unreify MutableInterface&#10;2-/ Then reset the interface to the original one. This is done by removing all inputs and &#10;      outputs, except those originally given. For the moment, original interface inputs&#10;      and outputs are given explicitly (to be improved).&#10;3-/ After that, the received accessor is instantiated and its interface is setup within &#10;      MutableInterface.&#10;4-/ Finally, reify!&#10;The interface is rendered in TextDisplay as well as the outputs of the reified accessor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 275.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.70980394,0.12941177,0.03529412,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this demo under CapeCode, it will work only the third time, after all inputs are &#10;added to the actor of  MutableInterface accessor. &#10;&#10;To run it under nodeHost (using AccessorCodeGenerator), make sure you copy &#10;ControllableDevice.js and AnotherControllableDevice.js to the location where the &#10;generated accessor is. Besides, you need to remove from MutableInterface actor all&#10;extra inputs and outputs (and keep only accessorPath and whatIsGoingOn).&#10;&#10;I believe that the nodeHost describes the right behavior, while the GUI of CapeCode &#10;(and possibly DE Director) adds the awkward need of 3 executions to get it running.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 515.0]">
+        </property>
     </property>
     <entity name="Clock" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -51,7 +75,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 170.0]">
+        </property>
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="1100.0">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -62,7 +92,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;exports.setup = function() {&#10;	this.mutable(true);&#10;	this.input('trigger', {&#10;		'type': 'number',&#10;		'value': 0&#10;	});&#10;	this.output('whatIsGoingOn', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;};&#10;&#10;var i = 0;&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	this.addInputHandler('trigger', function() {&#10;		thiz.unreify();&#10;		&#10;		//&#10;		resetInterface(thiz);&#10;		&#10;		if (i % 2 === 0) {&#10;			var acc = thiz.instantiate('acc0', 'ControllableDevice', true);&#10;			acc.exports.setup.call(thiz);&#10;			thiz.reify(acc);&#10;		} else {&#10;			var acc = thiz.instantiate('acc1', 'AnotherControllableDevice', true);&#10;			acc.exports.setup.call(thiz);&#10;			thiz.reify(acc);&#10;		}&#10;		i++;&#10;		var whatIsGoingOn = 'Now, the list of inputs is: ' +&#10;				thiz.inputList + &#10;				' and the list of outputs is: ' +&#10;				thiz.outputList;&#10;		thiz.send('whatIsGoingOn', whatIsGoingOn);&#10;	});&#10;};&#10;&#10;/** Function that resets the original interface, given in the setup.&#10; * &#10; */&#10;var resetInterface = function(thiz) {&#10;	// Remove all inputs&#10;	while(thiz.inputList.length) {&#10;    	thiz.inputList.pop();&#10;	}&#10;	thiz.inputs = {};&#10;	&#10;	// Remove all outputs	&#10;	while(thiz.outputList.length) {&#10;    	thiz.outputList.pop();&#10;	}&#10;	thiz.outputs = {};&#10;	&#10;	// Reset the original interface by calling exports.setup() function&#10;	thiz.exports.setup.call(thiz);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;exports.setup = function() {&#10;    this.mutable(true); &#10;    &#10;    this.input('accessorPath', {&#10;    	'type': 'string',&#10;    	'value': ''&#10;    });&#10;    &#10;    this.output('whatIsGoingOn', {&#10;         'type': 'string',&#10;         'value': ''&#10;    });&#10;};&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('accessorPath', function() {&#10;    	var accessorPath = thiz.get('accessorPath');&#10;    	&#10;    	// First, unreify&#10;     	thiz.unreify();&#10;&#10;		// Then, reset the interface&#10;		resetInterface(thiz);&#10;    	&#10;    	// Then set the new interface (inputs and outputs of the accessor)&#10;	    var acc = thiz.instantiate('acc', accessorPath, true);&#10;	    acc.exports.setup.call(thiz);&#10;       	&#10;       	// Finally, reify&#10;       	thiz.reify(acc);//getAccessorCode(accessorPath));&#10;	&#10;		// And share information about what is going on&#10;	    var whatIsGoingOn = 'Now, the list of inputs is: ' + thiz.inputList +&#10;	    		' and the list of outputs is: ' + thiz.outputList;&#10;	    thiz.send('whatIsGoingOn', whatIsGoingOn);&#10;	    console.log(whatIsGoingOn);&#10;    });&#10;};&#10;&#10;/** Resets the interface to the original one, by removing any input and output, &#10; *  except 'accessorPath' and 'whatIsGoingOn' respectively.&#10; *  &#10; *  @param thiz reference to the current object&#10; */&#10;var resetInterface = function(thiz) {	&#10;     var j;&#10;     	&#10;     // Remove all inputs from inputList and inputs objects,&#10;     // except 'accessorPath' input&#10;     for(j=0 ; j &lt; thiz.inputList.length ; j++) {&#10;	   	if (thiz.inputList[j] != 'accessorPath') {&#10;	       	delete(thiz.inputs[thiz.inputList[j]]);&#10;	       	thiz.inputList.splice(j, 1);&#10;	       	j--;&#10;	   	}&#10;	 };&#10;	    &#10;	 // Remove all outputs from outputList and outputs objects,&#10;     // except 'whatIsGoingOn' and 'error' outputs&#10;	 for(j=0 ; j &lt; thiz.outputList.length ; j++) {&#10;	 	if ((thiz.outputList[j] != 'whatIsGoingOn') &amp;&amp; (thiz.outputList[j] != 'error')) {&#10;	       	delete(thiz.outputs[thiz.outputList[j]]);&#10;	       	thiz.outputList.splice(j, 1);&#10;	       	j--;&#10;	   	}&#10;	 };&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -74,21 +104,27 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[360.0, 180.0]">
         </property>
-        <property name="trigger" class="ptolemy.actor.parameters.PortParameter" value="0">
+        <property name="accessorPath" class="ptolemy.actor.parameters.PortParameter" value="0">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
-        <port name="trigger" class="ptolemy.actor.parameters.ParameterPort">
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="whatIsGoingOn" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="accessorPath" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
-        <port name="whatIsGoingOn" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={171, 615, 863, 223}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 689, 863, 223}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[863, 172]">
         </property>
@@ -122,7 +158,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 180.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -131,16 +171,50 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="{0.0, 0.0}">
-        </vertex>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    <entity name="AccessorUpdate" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// See: https://wiki.eecs.berkeley.edu/accessors/Version1/AccessorSpecification&#10;&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    &#10;    this.output('accessorPath', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;};&#10;&#10;var accessorPathList = ['ControllableDevice', 'AnotherControllableDevice'];&#10;var i = 0;&#10;&#10;exports.initialize = function() {&#10;    var thiz = this;&#10;    &#10;    this.addInputHandler('trigger', function() {&#10;        thiz.send('accessorPath', accessorPathList[i]);&#10;        i++;&#10;        if (i === accessorPathList.length) {&#10;            i = 0;&#10;        };&#10;    });&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 55}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="accessorPath" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Clock.output" relation="relation5"/>
-    <link port="MutableInterface.trigger" relation="relation5"/>
-    <link port="MutableInterface.whatIsGoingOn" relation="relation2"/>
-    <link port="TextDisplay.input" relation="relation2"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Clock.output" relation="relation2"/>
+    <link port="MutableInterface.whatIsGoingOn" relation="relation"/>
+    <link port="MutableInterface.accessorPath" relation="relation3"/>
+    <link port="TextDisplay.input" relation="relation"/>
+    <link port="AccessorUpdate.trigger" relation="relation2"/>
+    <link port="AccessorUpdate.accessorPath" relation="relation3"/>
 </entity>
