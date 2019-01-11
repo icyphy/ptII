@@ -129,6 +129,10 @@ import ptolemy.kernel.util.Workspace;
 //// HlaManager
 
 /**
+ *  FIXME: Make sure that this explains how the time stamp at the output of
+ *  the HlaSubscriber relates to the time stamp at the input of the corresponding
+ *  HlaPublisher.
+ *  
  * The Ptolemy-HLA co-simulation framework leverages two open source tools: 
  * Ptolemy II and HLA/CERTI. It must comply with both, Ptolemy and rules, 
  * in particular when dealing with data exchange and time advance.
