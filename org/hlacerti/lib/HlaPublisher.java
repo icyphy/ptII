@@ -57,7 +57,9 @@ import ptolemy.kernel.util.Workspace;
  * actor sends updates to an attribute of an instance of a class when it
  * receives data on its input.  If there are instances of {@link HlaSubscriber}
  * that refer to the same attribute of the same instance, then those will be
- * notified of the update.
+ * notified of the update. The HlaSubscriber will produce an output event with
+ * the same data and a time stamp that depends on the time management parameters
+ * of the {@link HlaManager}.
  * 
  * This actor requires that there be an instance of {@link HlaManager} in the
  * same model. That instance references the FED file that is required to
