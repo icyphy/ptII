@@ -1832,17 +1832,26 @@ Accessor.prototype.readURL = function () {
     throw new Error('This swarmlet host does not support readURL().');
 };
 
-/** Reifies the accessor given as parameter. The parameter can be an object instance 
- *  of accessor, a string describing a fully qualified accessor class or path, or a 
- *  string with the accessor code.
+/** Reifies the accessor given as an argument. The argument can be an object instance 
+ *  of accessor, a string describing a fully qualified accessor class or path, a 
+ *  string with the accessor code, or an object with the properties "accessor", 
+ *  "parameterMap", and "inputMap".
+ *  
+ *  In the last case, the value of the accessor property should be any
+ *  of the previous accessor formats and parameterMap/inputMap should be an object mapping
+ *  parameters/default input of the accessor to values.
+ *
  *  If instantiating the accessor succeeds, then reification will consist of:
  *  ** removing previous reification, if any,
  *  ** establishing containment,
- *  ** connecting the port of the reifying accessor, and
+ *  ** connecting the port of the reifying accessor,
+ *  ** setting parameters and default inputs of the reifying accessor according
+ *   to the parameterMap and inputMap (if provided) and,
  *  ** initializing the reifying accessor.
  *
- *  @param accessor This parameter can be either an accessor instance, a fully 
- *   qualified accessor class or an accessor code
+ *  @param accessor This argument can be either an accessor instance, a fully 
+ *   qualified accessor class, an accessor code, or an object with "accessor",
+ *   "parameterMap", and "inputMap" properties.
  *  @return true if the reification was achieved successfully, false otherwise.
  */
 Accessor.prototype.reify = function (accessor) {
@@ -1860,8 +1869,23 @@ Accessor.prototype.reify = function (accessor) {
     var instanceName = this.accessorName + '.' + "tempAccessorName";
     instanceName = uniqueName(instanceName, this);
 
-    // Check the accessor parameter type
-    if (!accessor) {
+    // If given an object input, extract the accessor argument and parameterMap
+    var accessorArg;
+    var parameterMap = null;
+    var inputMap = null;
+
+    // Note in javascript (typeof null === 'object') and this is a different case
+    if(typeof accessor === 'object' && accessor !== null &&
+            accessor.accessor && accessor.parameterMap && accessor.inputMap){
+        accessorArg = accessor.accessor;
+        parameterMap = accessor.parameterMap;
+        inputMap = accessor.inputMap;
+    } else {
+        accessorArg = accessor;
+    }
+
+    // Check the accessorArg argument type.
+    if (!accessorArg) {
         // No accessor specified.
         // Remove previous reification, if any.
         thiz.unreify();
@@ -1871,28 +1895,28 @@ Accessor.prototype.reify = function (accessor) {
         thiz.ssuper.initialize();
         
         return false;
-    } else if (accessor.accessorName) {
+    } else if (accessorArg.accessorName) {
         // An accessor object is provided.
-        accessorInstance = accessor;
+        accessorInstance = accessorArg;
         isNewAccessor = false;
-    } else if (typeof accessor === 'string') {
+    } else if (typeof accessorArg === 'string') {
         // Attempt to instantiate the accessor
         try {
-            // Check to see if the parameter is a class name.  
-            var accessorClass = accessor;
+            // Check to see if the argument is a class name.  
+            var accessorClass = accessorArg;
             accessorInstance = thiz.instantiate(instanceName, accessorClass, true);
         } catch(e) {
             try {
-                // Check to see if the parameter is accessor code.
-                var accessorCode = accessor;
+                // Check to see if the argument is accessor code.
+                var accessorCode = accessorArg;
                 accessorInstance = thiz.instantiateFromCode(instanceName, accessorCode, true);
             } catch(ee) {
-                thiz.error('Reify parameter is not a valid accessor object, accessor class, or accessor code: ' + ee);
+                thiz.error('Reify argument is not a valid accessor object, accessor class, or accessor code: ' + ee);
                 return false;
             };
         };
     } else {
-        thiz.error("Argument is not an accessor: " + accessor);
+        thiz.error("Argument is not an accessor: " + accessorArg);
     }
 
     // Remove previous reification, if any
@@ -1978,6 +2002,25 @@ Accessor.prototype.reify = function (accessor) {
     // Now that we have a new contained accessor, we need to recalculate
     // priorities.
     this.assignPriorities();
+
+    // Set accessor parameters according to parameterMap (if provided)
+    if(parameterMap){
+        for(var param in parameterMap){
+            if(parameterMap.hasOwnProperty(param)){
+                accessorInstance.setParameter(param, parameterMap[param]);
+            }
+        }
+    }
+
+    // Set accessor default input values according to inputMap (if provided)
+    if(inputMap){
+        for(var defaultInput in inputMap){
+            if(inputMap.hasOwnProperty(defaultInput)){
+                accessorInstance.setDefault(defaultInput, inputMap[defaultInput]);
+            }
+        }
+    }
+
     // Initialize the instance
     accessorInstance.initialize();
 
