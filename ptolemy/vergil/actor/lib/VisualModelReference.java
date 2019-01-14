@@ -204,23 +204,48 @@ public class VisualModelReference extends ModelReference {
         if (attribute == modelFileOrURL) {
             super.attributeChanged(attribute);
             // If there was previously an effigy or tableau
-            // associated with this model, then delete it.
-            if (_effigy != null) {
+            // associated with this model, then delete them.
+            // In order to avoid deleting a newly created one,
+            // we use the very dangerous invokeAndWait().
+            if (_effigy != null || _tableau != null) {
+                // NOTE: The closing must occur in the event thread.
+                Runnable doClose = new Runnable() {
+                    @Override
+                    public void run() {
+                        // Have to repeat the test to be safe.
+                        if (_effigy != null) {
+                            try {
+                                _effigy.setContainer(null);
+                            } catch (NameDuplicationException | IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                            }
+                            _effigy = null;
+                        }
+                        if (_tableau != null) {
+                            _tableau.close();
+                            try {
+                                _tableau.setContainer(null);
+                            } catch (NameDuplicationException | IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                            }
+                            _tableau = null;
+                        }
+                    }
+                };
+
                 try {
-                    _effigy.setContainer(null);
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
+                    if (!SwingUtilities.isEventDispatchThread()) {
+                        SwingUtilities.invokeAndWait(doClose);
+                    } else {
+                        // Exporting HTML for ptolemy/actor/lib/hoc/demo/ModelReference/ModelReference.xml
+                        // ends up running this in the Swing event dispatch thread.
+                        doClose.run();
+                    }
+
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, null, ex,
+                            "Open failed.");
                 }
-                _effigy = null;
-            }
-            if (_tableau != null) {
-                _tableau.close();
-                try {
-                    _tableau.setContainer(null);
-                } catch (NameDuplicationException e) {
-                    throw new InternalErrorException(e);
-                }
-                _tableau = null;
             }
         } else {
             super.attributeChanged(attribute);
