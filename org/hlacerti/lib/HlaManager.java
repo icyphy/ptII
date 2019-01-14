@@ -1179,13 +1179,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
         } catch (ObjectNotKnown e) {
             throw new IllegalActionException(this, e,
-                    "ObjectNotKnown: " + e.getMessage());
+                    "ObjectNotKnown: " + hp.getClassInstanceName() + ": "+ e.getMessage());
         } catch (AttributeNotDefined e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotDefined: " + e.getMessage());
+                    "AttributeNotDefined: " + hp.getAttributeName() + ": " + e.getMessage());
         } catch (AttributeNotOwned e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotOwned: " + e.getMessage());
+                    "AttributeNotOwned: " + hp.getAttributeName() + ": " + e.getMessage());
         } catch (InvalidFederationTime e) {
             throw new IllegalActionException(this, e, "InvalidFederationTime: "
                     + e.getMessage() + "    updateHlaAttribute() - sending UAV("
