@@ -711,39 +711,10 @@ public class HlaManager extends AbstractInitializableAttribute
             throw new IllegalActionException(this, e,
                     "RTIinternalError: " + e.getMessage());
         }
-        // Set a timeout because creating the ambassador can hang, sadly.
-        // We wait 15 seconds and then interrupt the current thread.        
         try {
-            /* Timeout here is not correct because the code may stall
-             * waiting for a synchronization point.
-             * FIXME: Why? We haven't specified a synchronization point!
-             *
-            _rtia = _callWithTimeout(new Callable<CertiRtiAmbassador>() {
-                public CertiRtiAmbassador call() throws Exception {
-                    _hlaDebugSys("Creating RTI Ambassador");
-                    return (CertiRtiAmbassador) factory.createRtiAmbassador();
-                };
-            }, 20, TimeUnit.SECONDS);
-            */
             _hlaDebugSys("Creating RTI Ambassador");
             _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
-
             _hlaDebugSys("RTI Ambassador created.");
-        /*
-        } catch (TimeoutException e) {
-            // The above timed out.
-            throw new IllegalActionException(this, e,
-                    "Timed out attempting to start the RTI ambassador.\n"
-                    + "This can happen under MacOS (at least) if the dynamically "
-                    + "linked libraries cannot be found.  To fix the problem, as "
-                    + "root, you have to create a symbolic link in /usr/local/lib "
-                    + "to the files in ~/pthla/certi-tools/lib/. To do this:\n"
-                    + "sudo -i\n"
-                    + "cd /usr/local/lib\n\n"
-                    + "ln -s /Users/YOURUSERNAME/pthla/certi-tools/lib/* .\n"
-                    + "exit\n"
-                    );
-        */
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "RTIinternalError. "
                     + "If the error is \"Connection to RTIA failed\", "
@@ -1267,112 +1238,111 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
             }
         } finally {
+            // Resign HLA/CERTI Federation execution.
             try {
-                // Resign HLA/CERTI Federation execution.
-                try {
-                    // _rtia can be null if we are exporting to JNLP.
-                    if (_rtia != null) {
-                        _rtia.resignFederationExecution(
-                                ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
-                    }
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e,
-                            "RTIexception: " + e.getMessage());
+                // _rtia can be null if we are exporting to JNLP.
+                if (_rtia != null) {
+                    _rtia.resignFederationExecution(
+                            ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
                 }
                 if (_debugging) {
-                    _hlaDebug("wrapup() - Resign Federation execution");
+                    _hlaDebug("wrapup() - Resigned Federation execution");
                 }
-                _hlaDebugSys("wrapup() - Resign Federation execution");
+                _hlaDebugSys("wrapup() - Resigned Federation execution");
+            } catch (RTIexception e) {
+                throw new IllegalActionException(this, e,
+                        "RTIexception: " + e.getMessage());
             } finally {
                 // Destroy the federation execution if this was the federate
                 // that created it. This will wait
                 // until all federates have resigned the federation
                 // or until the model execution is stopped.
                 boolean federationIsActive = true;
-                while (federationIsActive && _isFederationCreator) {
+                try {
+                    while (federationIsActive && _isFederationCreator) {
 
-                    // Destroy federation execution.
-                    try {
-                        _rtia.destroyFederationExecution(_federationName);
-
-                        federationIsActive = false;
-
-                        if (_debugging) {
-                            _hlaDebug("wrapup() - Federation destroyed by this federate.");
-                        }
-                        _hlaDebugSys("wrapup() - Federation destroyed by this federate.");
-
-                    } catch (FederatesCurrentlyJoined e) {
-                        if (_debugging) {
-                            _hlaDebug("wrapup() - Federates are still joined to the federation."
-                                    + " Wait some time and try again to destroy the federation.");
-                        }
-                        _hlaDebugSys("wrapup() - Federates are still joined to the federation."
-                                + " Wait some time and try again to destroy the federation.");
-
-                        if (_director.isStopRequested()) {
-                            if (_debugging) {
-                                _hlaDebug("wrapup() - Federate was stopped by the user.");
-                            }
-                            _hlaDebugSys("wrapup() - Federate was stopped by the user.");
-                            break;
-                        }
+                        // Destroy federation execution.
                         try {
-                            // Give the other federates a chance to finish.
-                            Thread.sleep(200l);
-                        } catch (InterruptedException e1) {
-                            // Ignore.
-                        }
-                    } catch (FederationExecutionDoesNotExist e) {
-                        // No more federation. Some other federate must have
-                        // succeeded in destroying it.
-                        if (_debugging) {
-                            _hlaDebug("wrapup() - Federation was destroyed by some other federate.");
-                        }
-                        _hlaDebugSys("wrapup() - Federation was destroyed by some other federate.");
+                            _rtia.destroyFederationExecution(_federationName);
 
-                        federationIsActive = false;
+                            federationIsActive = false;
 
-                    } catch (RTIinternalError e) {
-                        throw new IllegalActionException(this, e,
-                                "RTIinternalError: " + e.getMessage());
-                    } catch (ConcurrentAccessAttempted e) {
-                        throw new IllegalActionException(this, e,
-                                "ConcurrentAccessAttempted: " + e.getMessage());
-                    } finally {
-                        // Clean HLA attribute tables.
-                        _hlaAttributesToPublish.clear();
-                        _hlaAttributesToSubscribeTo.clear();
-                        _fromFederationEvents.clear();
-                        _objectIdToClassHandle.clear();
-
-                        // Clean HLA object instance id maps.
-                        _registerObjectInstanceMap.clear();
-                        _discoverObjectInstanceMap.clear();
-
-                        // Joker wildcard support.
-                        _usedJokerFilterMap.clear();
-
-                        // HLA Reporter support.
-                        _hlaReporter = null;
-
-                        // Terminate RTIG subprocess.
-                        if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
                             if (_debugging) {
-                                _hlaDebug("wrapup() - "
-                                        + "Killing the RTIG process (if authorized by the system)");
+                                _hlaDebug("wrapup() - Federation destroyed by this federate.");
                             }
-                            _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
-                            System.out.println("*********** Sending kill message to RTIG.");
-                            _certiRtig.terminateProcess();
+                            _hlaDebugSys("wrapup() - Federation destroyed by this federate.");
+
+                        } catch (FederatesCurrentlyJoined e) {
+                            if (_debugging) {
+                                _hlaDebug("wrapup() - Federates are still joined to the federation."
+                                        + " Wait some time and try again to destroy the federation.");
+                            }
+                            _hlaDebugSys("wrapup() - Federates are still joined to the federation."
+                                    + " Wait some time and try again to destroy the federation.");
+
+                            if (_director.isStopRequested()) {
+                                if (_debugging) {
+                                    _hlaDebug("wrapup() - Federate was stopped by the user.");
+                                }
+                                _hlaDebugSys("wrapup() - Federate was stopped by the user.");
+                                break;
+                            }
+                            try {
+                                // Give the other federates a chance to finish.
+                                Thread.sleep(200l);
+                            } catch (InterruptedException e1) {
+                                // Ignore.
+                            }
+                        } catch (FederationExecutionDoesNotExist e) {
+                            // No more federation. Some other federate must have
+                            // succeeded in destroying it.
+                            if (_debugging) {
+                                _hlaDebug("wrapup() - Federation was destroyed by some other federate.");
+                            }
+                            _hlaDebugSys("wrapup() - Federation was destroyed by some other federate.");
+
+                            federationIsActive = false;
+
+                        } catch (RTIinternalError e) {
+                            throw new IllegalActionException(this, e,
+                                    "RTIinternalError: " + e.getMessage());
+                        } catch (ConcurrentAccessAttempted e) {
+                            throw new IllegalActionException(this, e,
+                                    "ConcurrentAccessAttempted: " + e.getMessage());
                         }
+                    }
+                } finally {
+                    // Clean HLA attribute tables.
+                    _hlaAttributesToPublish.clear();
+                    _hlaAttributesToSubscribeTo.clear();
+                    _fromFederationEvents.clear();
+                    _objectIdToClassHandle.clear();
+
+                    // Clean HLA object instance id maps.
+                    _registerObjectInstanceMap.clear();
+                    _discoverObjectInstanceMap.clear();
+
+                    // Joker wildcard support.
+                    _usedJokerFilterMap.clear();
+
+                    // HLA Reporter support.
+                    _hlaReporter = null;
+
+                    // Terminate RTIG subprocess.
+                    if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
+                        if (_debugging) {
+                            _hlaDebug("wrapup() - "
+                                    + "Killing the RTIG process (if authorized by the system)");
+                        }
+                        _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
+                        System.out.println("*********** Sending kill message to RTIG.");
+                        _certiRtig.terminateProcess();
+                    }
+                    if (_debugging) {
+                        _hlaDebug("-----------------------");
                     }
                 }
             }
-        }
-
-        if (_debugging) {
-            _hlaDebug("-----------------------");
         }
     }
 
@@ -2174,8 +2144,8 @@ public class HlaManager extends AbstractInitializableAttribute
                         synchronizationPointName, rfspTag);
 
                 // Wait for synchronization point callback.
-                // FIXME: This hangs the model if no federate has registered
-                // a synchronization point!
+                // This used to hang the model if no federate has registered
+                // a synchronization point. Now it uses tick() instead of tick2().
                 while (!(_federateAmbassador.synchronizationSuccess)
                         && !(_federateAmbassador.synchronizationFailed)) {
                     _rtia.tick();
