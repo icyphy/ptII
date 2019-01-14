@@ -1176,6 +1176,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             _plotImage = newPlotImage;
 
             Graphics2D offScreenGraphics = newPlotImage.createGraphics();
+            offScreenGraphics.addRenderingHints(_defaultImageRenderingHints());
             super.paintComponent(offScreenGraphics);
             _drawPlot(offScreenGraphics, true);
         }
