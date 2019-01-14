@@ -8,29 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 85.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={568, 268, 646, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={349, 23, 646, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[412, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7391304347826086">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{182.57500000000005, 204.381640625}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Fleet&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleet.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingF&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 95.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{182.57500000000005, 204.38164062499996}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -40,6 +24,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using NER time management, an event&#10;e(t) corresponds to an UAV(t+lookahead) &#10;sent throught the RTI.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="F1">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Fleet">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleet.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 95.0]">
         </property>
     </property>
     <entity name="A1" class="ptolemy.actor.TypedCompositeActor">

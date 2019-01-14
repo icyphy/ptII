@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package org.hlacerti.lib;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -113,6 +112,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -220,6 +220,7 @@ import ptolemy.kernel.util.Workspace;
  * A time-regulating federate at logical time t with lookahead lah cannot send any
  * event with a time-stamp t' < t+lah.
  * </p><p>
+ * FIXME: Update documentation:
  * The parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
  * This mechanism is usually used to synchronize the Federates, during their
@@ -316,155 +317,164 @@ public class HlaManager extends AbstractInitializableAttribute
         // Joker wildcard support.
         _usedJokerFilterMap = new HashMap<String, Boolean>();
 
-        _hlaTimeStep = null;
-        _hlaLookAHead = null;
-
         // HLA Federation management parameters.
-        federateName = new Parameter(this, "federateName");
-        federateName.setDisplayName("Federate name");
-        federateName.setTypeEquals(BaseType.STRING);
-        federateName.setExpression("\"HlaManager\"");
+        federateName = new StringParameter(this, "federateName");
+        federateName.setExpression("Federate");
         attributeChanged(federateName);
 
-        federationName = new Parameter(this, "federationName");
-        federationName.setDisplayName("Federation name");
-        federationName.setTypeEquals(BaseType.STRING);
-        federationName.setExpression("\"HLAFederation\"");
+        federationName = new StringParameter(this, "federationName");
+        federationName.setExpression("HLAFederation");
         attributeChanged(federationName);
 
         fedFile = new FileParameter(this, "fedFile");
-        fedFile.setDisplayName("Federation Object Model (FOM) file");
         new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
         new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
         fedFile.setExpression("HLAFederation.fed");
+        
+        fedFileOnRTIG = new StringParameter(this, "fedFileOnRTIG");
+        fedFileOnRTIG.setExpression("$fedFile");
 
         // HLA Time management parameters.
         timeManagementService = new ChoiceParameter(this,
                 "timeManagementService", ETimeManagementService.class);
-        timeManagementService.setDisplayName("Time management service");
         attributeChanged(timeManagementService);
 
         hlaTimeStep = new Parameter(this, "hlaTimeStep");
-        hlaTimeStep.setDisplayName("Time Step for TAR");
-        hlaTimeStep.setExpression("0.0");
+        hlaTimeStep.setExpression("0.01");
         hlaTimeStep.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaTimeStep);
 
         isTimeConstrained = new Parameter(this, "isTimeConstrained");
         isTimeConstrained.setTypeEquals(BaseType.BOOLEAN);
         isTimeConstrained.setExpression("true");
-        isTimeConstrained.setDisplayName("isTimeConstrained ?");
         isTimeConstrained.setVisibility(Settable.NOT_EDITABLE);
         attributeChanged(isTimeConstrained);
 
         isTimeRegulator = new Parameter(this, "isTimeRegulator");
         isTimeRegulator.setTypeEquals(BaseType.BOOLEAN);
         isTimeRegulator.setExpression("true");
-        isTimeRegulator.setDisplayName("isTimeRegulator ?");
         isTimeRegulator.setVisibility(Settable.NOT_EDITABLE);
         attributeChanged(isTimeRegulator);
 
         hlaLookAHead = new Parameter(this, "hlaLookAHead");
-        hlaLookAHead.setDisplayName("lookahead (s)");
         hlaLookAHead.setExpression("0.1");
         hlaLookAHead.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaLookAHead);
 
         // HLA Synchronization parameters.
-        requireSynchronization = new Parameter(this, "requireSynchronization");
-        requireSynchronization.setTypeEquals(BaseType.BOOLEAN);
-        requireSynchronization.setExpression("true");
-        requireSynchronization.setDisplayName("Require synchronization ?");
-        attributeChanged(requireSynchronization);
-
-        synchronizationPointName = new Parameter(this,
-                "synchronizationPointName");
-        synchronizationPointName.setDisplayName("Synchronization point name");
-        synchronizationPointName.setTypeEquals(BaseType.STRING);
-        synchronizationPointName.setExpression("\"Simulating\"");
-        attributeChanged(synchronizationPointName);
-
-        isCreator = new Parameter(this, "isCreator");
-        isCreator.setTypeEquals(BaseType.BOOLEAN);
-        isCreator.setExpression("false");
-        isCreator.setDisplayName("Is synchronization point register ?");
-        attributeChanged(isCreator);
+        synchronizeStartTo = new StringParameter(this, "synchronizeStartTo");
 
         hlaTimeUnit = new Parameter(this, "hlaTimeUnit");
         hlaTimeUnit.setTypeEquals(BaseType.DOUBLE);
         hlaTimeUnit.setExpression("1.0");
-        hlaTimeUnit.setDisplayName("HLA time unit");
         attributeChanged(hlaTimeUnit);
 
         // HLA Reporter support.
         enableHlaReporter = new Parameter(this, "enableHlaReporter");
         enableHlaReporter.setTypeEquals(BaseType.BOOLEAN);
         enableHlaReporter.setExpression("false");
-        enableHlaReporter.setDisplayName("Generate HLA reports ?");
         attributeChanged(enableHlaReporter);
 
         hlaReportPath = new FileParameter(this, "hlaReportPath");
-        hlaReportPath.setDisplayName("HLA report folder path");
         new Parameter(hlaReportPath, "allowFiles", BooleanToken.FALSE);
         new Parameter(hlaReportPath, "allowDirectories", BooleanToken.TRUE);
         hlaReportPath.setExpression("$HOME/HLATestResults");
-
-        // Local or distant simulation support.
-        _certiHost = null;
-        _distantSimulation = false;
+        
+        launchRTIG = new Parameter(this, "launchRTIG");
+        launchRTIG.setTypeEquals(BaseType.BOOLEAN);
+        launchRTIG.setExpression("false");
+        
+        killRTIG = new Parameter(this, "killRTIG");
+        killRTIG.setTypeEquals(BaseType.BOOLEAN);
+        killRTIG.setExpression("launchRTIG");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** Name of the Ptolemy Federate. This parameter must contain an
-     *  StringToken. */
-    public Parameter federateName;
+    /** Name of the Ptolemy Federate. This is a string that defaults
+     *  to "Federate". Note that it is required that every federate in
+     *  a federation has to have a unique name.
+     */
+    public StringParameter federateName;
 
-    /** Name of the federation. This parameter must contain an StringToken. */
-    public Parameter federationName;
+    /** Name of the federation. This is a string that default to
+     *  "HLAFederation".
+     */
+    public StringParameter federationName;
 
-    /** Path and name of the Federation Object Model (FOM) file (which should have
-     *  extension .fed).
+    /** Path and name of the Federation Execution Data (FED) file (which should have
+     *  extension .fed) on the local machine. This is not necessarily the file that
+     *  is used by the RTIG because the RTIG may not be running on the local machine.
+     *  It is expected that if these two files are on different machines, they are
+     *  nevertheless the same.
+     *  @see fedFileOnRTIG
      */
     public FileParameter fedFile;
+    
+    /** Name or path and name of the FED file on the machine that is running the
+     *  RTIG. Unfortunately, that file may not be the same as the FED file
+     *  on the local machine, pointed to by the fedFile parameter. By
+     *  default, this string is set to "$fedFile", indicating that the default
+     *  value should match the value of the fedFile parameter. But note that
+     *  if the RTIG is running on a remote machine, this may need to be different
+     *  from the value of fedFile. Note also that the remote FED file and the
+     *  local FED file need to be the same, but there is no way to enforce that.
+     *  @see fedFile
+     */
+    public StringParameter fedFileOnRTIG;
 
-    /** Double value for representing how much is a unit of time in the simulation.
-     *  Has an impact on TAR/NER/RAV/UAV.
+    /** Double value representing how many HLA time units there are in one
+     *  second. An HLA federation runs in arbitrary time units, where each
+     *  unit can represent any amount of time. This parameter gives an interpretation
+     *  of those time units and has units of HLA time units per second.
+     *  For example, if the HLA time unit is 1 millisecond, then the value of
+     *  this parameter should be 1,000. Ptolemy uses units of seconds, so
+     *  the value of this parameter affects the mapping from HLA time units to
+     *  time stamps in Ptolemy.
      */
     public Parameter hlaTimeUnit;
 
-    /** Boolean value, 'true' if the Federate is the creator of the
-     *  synchronization point 'false' if not. This parameter must contain
-     *  an BooleanToken. */
-    public Parameter isCreator;
-
-    /** Boolean value, 'true' if the Federate is declared time constrained
-     *  'false' if not. This parameter must contain an BooleanToken. */
+    /** A boolean indicating that time advance in this federate is regulated
+     *  by other federates in the federation. This defaults to true.
+     */
     public Parameter isTimeConstrained;
 
-    /** Boolean value, 'true' if the Federate is declared time regulator
-     *  'false' if not. This parameter must contain an BooleanToken. */
+    /** A boolean indicating that this federate regulates the time advance of
+     *  other federates in the federation. This defaults to true.
+     */
     public Parameter isTimeRegulator;
 
-    /** Value of the time step of the Federate. This parameter must contain
-     *  an DoubleToken. */
+    /** Value of the time step of this Federate. This is a double that
+     *  defaults to 0.01. This is used only if you select TAR in the
+     *  timeManagementService parameter. The units here are HLA logical
+     *  time, not seconds. See the hlaTimeUnit parameter.
+     */
     public Parameter hlaTimeStep;
 
-    /** Value of the lookahead of the HLA ptII federate. This parameter
-     *  must contain an DoubleToken. */
+    /** Value of the lookahead of this federate. This is a double that
+     *  default to 0.1. The units here are HLA logical logical
+     *  time, not seconds. See the hlaTimeUnit parameter.
+     */
     public Parameter hlaLookAHead;
-
-    /** Boolean value, 'true' if the Federate is synchronised with other
-     *  Federates using a HLA synchronization point, 'false' if not. This
-     *  parameter must contain an BooleanToken. */
-    public Parameter requireSynchronization;
-
-    /** Name of the synchronization point (if required). This parameter must
-     *  contain an StringToken. */
-    public Parameter synchronizationPointName;
-
-    /** Choice of time advancement service (NER or exclusive TAR). */
+    
+    /** If true, kill the HLA runtime infrastructure gateway (RTIG)
+     *  in wrapup that was created in preinitialize. If no RTIG was created
+     *  in preinitialize, then ignore this.  This is a boolean that
+     *  defaults to the value of launchRTIG.
+     */
+    public Parameter killRTIG;
+    
+    /** If true, launch an HLA runtime infrastructure gateway (RTIG) in preinitialize.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter launchRTIG;
+    
+    /** Choice of time advancement service. This is a string that is one of
+     *  "Next Event Request (NER)" or "Time Advancement Request (TAR)".
+     *  If TAR is selected, then you need to also provide a time step
+     *  in the hlaTimeStep parameter.
+     */
     public ChoiceParameter timeManagementService;
 
     /** Enumeration which represents both time advancement services NER or TAR. */
@@ -490,13 +500,36 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     };
 
-    /** Boolean value, 'true' if the generation of HLA reports is enabled
-     *  'false' if not. This parameter must contain an BooleanToken. */
+    /** A boolean indicating whether a log file should be written to the
+     *  location defined by the hlaReportPath parameter. This defaults to
+     *  false.
+     */
     public Parameter enableHlaReporter;
 
-    /** Path and name of the HLA folder to store reports. This parameter
-     *  must contain a String. */
+    /** Path and name of the folder to store log files that are generated
+     *  if the enableHlaReporter parameter is true. This is a string that
+     *  defaults to "$HOME/HLATestResults".
+     */
     public FileParameter hlaReportPath;
+    
+    /** The name of a synchronization point to which this federate should
+     *  synchronize its start. If the name given here is the name of this
+     *  federate, then this federate registers itself as a
+     *  synchronization point to which other federates can synchronize
+     *  their start. The name of this federate will be the name of the
+     *  synchronization point, and this federate needs to be the last one
+     *  launched. If this parameter contains an empty string,
+     *  then this federate starts right away without waiting for any other
+     *  federate.  This parameter defaults to an empty string, indicating
+     *  that there is no synchronization.
+     *  
+     *  NOTE: All federates in a federation must use the same name here.
+     *  If two federates use two different names, then both will block
+     *  on initialization. If any one federate uses a blank here, then it
+     *  will block the execution of all other federates until it resigns
+     *  the federation after completing its execution.
+     */
+    public StringParameter synchronizeStartTo;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -546,35 +579,20 @@ public class HlaManager extends AbstractInitializableAttribute
                     .booleanValue();
 
         } else if (attribute == hlaTimeStep) {
-            Double value = ((DoubleToken) hlaTimeStep.getToken()).doubleValue();
-            if (value < 0) {
+            double value = ((DoubleToken) hlaTimeStep.getToken()).doubleValue();
+            if (value <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot have negative value !");
+                        "hlaTimeStep is required to be strictly positive.");
             }
             _hlaTimeStep = value;
         } else if (attribute == hlaLookAHead) {
-            Double value = ((DoubleToken) hlaLookAHead.getToken())
+            double value = ((DoubleToken) hlaLookAHead.getToken())
                     .doubleValue();
             if (value < 0) {
                 throw new IllegalActionException(this,
                         "Cannot have negative value !");
             }
             _hlaLookAHead = value;
-        } else if (attribute == requireSynchronization) {
-            _requireSynchronization = ((BooleanToken) requireSynchronization
-                    .getToken()).booleanValue();
-
-        } else if (attribute == synchronizationPointName) {
-            String value = ((StringToken) synchronizationPointName.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty name !");
-            }
-            _synchronizationPointName = value;
-        } else if (attribute == isCreator) {
-            _isCreator = ((BooleanToken) isCreator.getToken()).booleanValue();
-
         } else if (attribute == hlaTimeUnit) {
             _hlaTimeUnitValue = ((DoubleToken) hlaTimeUnit.getToken())
                     .doubleValue();
@@ -600,20 +618,7 @@ public class HlaManager extends AbstractInitializableAttribute
         newObject._hlaAttributesToSubscribeTo = new HashMap<String, Object[]>();
 
         newObject._rtia = null;
-
         newObject._federateAmbassador = null;
-        newObject._federateName = _federateName;
-        newObject._federationName = _federationName;
-
-        newObject._isTimeConstrained = _isTimeConstrained;
-        newObject._isTimeRegulator = _isTimeRegulator;
-
-        newObject._requireSynchronization = _requireSynchronization;
-        newObject._synchronizationPointName = _synchronizationPointName;
-        newObject._isCreator = _isCreator;
-
-        newObject._eventBased = _eventBased;
-        newObject._timeStepped = _timeStepped;
 
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
 
@@ -621,26 +626,10 @@ public class HlaManager extends AbstractInitializableAttribute
         newObject._registerObjectInstanceMap = new HashMap<String, Integer>();
         newObject._discoverObjectInstanceMap = new HashMap<Integer, String>();
 
-        newObject._hlaTimeUnitValue = _hlaTimeUnitValue;
-
         newObject._usedJokerFilterMap = new HashMap<String, Boolean>();
         newObject._usedJoker = false;
 
         newObject._hlaReporter = null;
-        newObject._enableHlaReporter = _enableHlaReporter;
-
-        try {
-            newObject._hlaTimeStep = ((DoubleToken) hlaTimeStep.getToken())
-                    .doubleValue();
-            newObject._hlaLookAHead = ((DoubleToken) hlaLookAHead.getToken())
-                    .doubleValue();
-        } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException("Failed to get a token.");
-        }
-
-        // Local or distant simulation support.
-        newObject._certiHost = _certiHost;
-        newObject._distantSimulation = _distantSimulation;
 
         return newObject;
     }
@@ -676,11 +665,21 @@ public class HlaManager extends AbstractInitializableAttribute
         // Initialize HLA attribute tables for publication/subscription.
         _populateHlaAttributeTables();
 
+        // Check whether this federate registers a synchronization point
+        // to synchronize with the start of other federates.
+        _isSynchronizationPointRegister = false;
+        boolean needsToSynchronize = true;
+        String synchronizationPointName = synchronizeStartTo.stringValue().trim();
+        if (synchronizationPointName.equals(_federateName)) {
+            _isSynchronizationPointRegister = true;
+        } else if (synchronizationPointName.equals("")) {
+            needsToSynchronize = false;
+        }
+
         // HLA Reporter support.
         if (_enableHlaReporter) {
             // Get model filename.
-            String modelName = _director.getFullName().substring(1,
-                    _director.getFullName().lastIndexOf('.'));
+            String modelName = getContainer().getFullName();
             try {
                 // Directory to store reports is created at the root folder of the user.
                 _hlaReporter = new HlaReporter(hlaReportPath.getValueAsString(),
@@ -693,7 +692,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             _hlaReporter.initializeReportVariables(_hlaLookAHead, _hlaTimeStep,
                     _hlaTimeUnitValue, _startTime, _director.getModelStopTime(),
-                    _federateName, fedFile.asFile().getPath(), _isCreator,
+                    _federateName, fedFile.asFile().getPath(), _isSynchronizationPointRegister,
                     _timeStepped, _eventBased);
 
             _hlaReporter.initializeAttributesToPublishVariables(
@@ -713,6 +712,7 @@ public class HlaManager extends AbstractInitializableAttribute
         try {
             /* Timeout here is not correct because the code may stall
              * waiting for a synchronization point.
+             * FIXME: Why? We haven't specified a synchronization point!
              *
             _rtia = _callWithTimeout(new Callable<CertiRtiAmbassador>() {
                 public CertiRtiAmbassador call() throws Exception {
@@ -743,55 +743,42 @@ public class HlaManager extends AbstractInitializableAttribute
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "RTIinternalError. "
                     + "If the error is \"Connection to RTIA failed\", "
-                    + "then the problem is likely that the rtig "
-                    + "binary could not be started by CertiRtig. "
-                    + "One way to debug this is to set the various "
-                    + "environment variables by sourcing certi/share/scripts/myCERTI_env.sh, "
-                    + "then invoking rtig on the .fed file "
-                    + "then (re)running the model.");
+                    + "then the problem is likely that the RTIG "
+                    + "is not running. You could try setting launchRTIG to true. "
+                    + "Note that the RTIG relies on a number of environment "
+                    + "variables defined in $CERTI_HOME/share/scripts/myCERTI_env.sh.");
         }
 
-        // Create the Federation or raise a warning it the Federation already exits.
+        // Create the Federation if one does not already exist.
+        _isFederationCreator = false;
         try {
-            // Local or distant simulation support.
-            // Note: determine if we need to change JCERTI API to handle FED file name
-            //       instead of URL.
             _hlaDebugSys("Creating Federation execution.");
+            // Second argument is the location of the FED file on the machine
+            // running the RTIG, which is not necessarily the same as the machine
+            // running this federate.
             _rtia.createFederationExecution(_federationName,
-                    fedFile.asFile().toURI().toURL());
-
-            _hlaDebugSys("createFederationExecution: FED file URL="
-                    + fedFile.asFile().toURI().toURL());
-
+                    fedFileOnRTIG.stringValue());
+            _isFederationCreator = true;
+            _hlaDebugSys("createFederationExecution: FED file on RTIG machine = "
+                    + fedFileOnRTIG.stringValue());
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
-                _hlaDebug("initialize() - WARNING: FederationExecutionAlreadyExists");
+                _hlaDebug("initialize() - Federation execution already exists. No need to create one.");
             }
-
         } catch (CouldNotOpenFED e) {
-            // XXX: FIXME: only for debug purpose
-            try {
-                _hlaDebugSys("createFederationExecution: CouldNotOpenFED exception: FED file URL="
-                        + fedFile.asFile().toURI().toURL());
-            } catch (MalformedURLException e1) {
-                e1.printStackTrace();
-            }
-
+            _hlaDebugSys("createFederationExecution: RTIG failed to open FED file: "
+                        + fedFileOnRTIG.stringValue());
             throw new IllegalActionException(this, e,
-                    "CouldNotOpenFED: .fed file is missing: " + fedFile.asFile() + "\n"
-                            + e.getMessage());
+                    "RTIG could not open FED file: " + fedFileOnRTIG.stringValue());
         } catch (ErrorReadingFED e) {
             throw new IllegalActionException(this, e,
-                    "ErrorReadingFED: " + e.getMessage());
+                    "Error reading FED file.");
         } catch (RTIinternalError e) {
             throw new IllegalActionException(this, e,
-                    "RTIinternalError: " + e.getMessage());
+                    "RTI internal error.");
         } catch (ConcurrentAccessAttempted e) {
             throw new IllegalActionException(this, e,
-                    "ConcurrentAccessAttempted: " + e.getMessage());
-        } catch (MalformedURLException e) {
-            throw new IllegalActionException(this, e,
-                    "MalformedURLException: " + e.getMessage());
+                    "Concurrent access error.");
         }
 
         _federateAmbassador = new PtolemyFederateAmbassadorInner();
@@ -824,7 +811,9 @@ public class HlaManager extends AbstractInitializableAttribute
         _initializeTimeAspects();
 
         // Set initial synchronization point.
-        _doInitialSynchronization();
+        if (needsToSynchronize) {
+            _doInitialSynchronization();
+        }
     }
 
     /** Return always true.
@@ -841,8 +830,8 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Launch the HLA/CERTI RTIG process as subprocess. The RTIG has to be
      *  launched before the initialization of a Federate.
-     *  NOTE: if another HlaManager (e.g. Federate) has already launched a RTIG,
-     *  the subprocess creates here is no longer required, then we destroy it.
+     *  NOTE: if another HlaManager (e.g. Federate) has already launched an RTIG,
+     *  the subprocess created here is no longer required, so we destroy it.
      *  @exception IllegalActionException If the initialization of the
      *  CertiRtig or the execution of the RTIG as subprocess has failed.
      */
@@ -857,60 +846,41 @@ public class HlaManager extends AbstractInitializableAttribute
                     + "CERTI_FOM_PATH = " + System.getenv("CERTI_FOM_PATH"));
         }
 
-        // Local or distant simulation support.
-        // Based on CERTI_HOST variable set and different to localhost
-        // or loopback address "127.0.0.1".
-        _certiHost = System.getenv("CERTI_HOST");
-        if (_certiHost != null) {
-            if (_certiHost.compareTo("localhost") == 0) {
-                _distantSimulation = false;
-            } else if (_certiHost.compareTo("127.0.0.1") == 0) {
-                _distantSimulation = false;
-            } else {
-                _distantSimulation = true;
+        if (((BooleanToken)launchRTIG.getToken()).booleanValue()) {
+            // Request to launch a local RTI.
+            // Check for a compatible CERTI_HOST environment variable.
+            String certiHost = System.getenv("CERTI_HOST");
+            if (certiHost != null
+                    && !certiHost.equals("localhost")
+                    && !certiHost.equals("127.0.0.1")) {
+                throw new IllegalActionException(this,
+                        "The environment variable CERTI_HOST, which has value: "
+                        + certiHost
+                        + ", is neither localhost nor 127.0.0.1."
+                        + " We cannot launch an RTI at that address. "
+                        + "You may want to set launchRTIG to false.");
             }
-
+            if (certiHost == null) {
+                certiHost = "localhost";
+            }
             if (_debugging) {
-                _hlaDebug("preinitialize() - "
-                        + "CERTI_HOST = " + _certiHost
-                        + " _distantSimulation = " + _distantSimulation);
+                _hlaDebug("preinitialize() - Launching CERTI RTI on "
+                        + "CERTI_HOST = " + certiHost);
             }
-
-            // XXX: FIXME: remove after debug
-            _hlaDebugSys("preinitialize() - "
-                    + "CERTI_HOST = " + _certiHost
-                    + " _distantSimulation = " + _distantSimulation);
-        } else {
-            // XXX: FIXME: remove after debug
-            _hlaDebugSys("preinitialize() - " + "CERTI_HOST = NULL");
-        }
-
-        // Try to launch the HLA/CERTI RTIG subprocess.
-        if (!_distantSimulation) {
+            // Try to launch the HLA/CERTI RTIG subprocess.
             _certiRtig = new CertiRtig(this, _debugging);
             _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
-
             _certiRtig.exec();
-            if (_debugging) {
-                _hlaDebug("preinitialize() - "
-                        + "Launch RTIG process");
-            }
 
             if (_certiRtig.isAlreadyLaunched()) {
-                _certiRtig.terminateProcess();
+                // certiRtig should already have terminated the process.
+                // _certiRtig.terminateProcess();
                 _certiRtig = null;
 
                 if (_debugging) {
                     _hlaDebug("preinitialize() - "
-                            + "Destroy RTIG process as another one is already "
-                            + "launched");
+                            + "Did not launch RTIG because another one is running.");
                 }
-            }
-        }
-        else {
-            if (_debugging) {
-                _hlaDebug("preinitialize() - "
-                        + "Distant simulation: CERTI_HOST variable detected, no RTIG launched");
             }
         }
     }
@@ -1142,13 +1112,17 @@ public class HlaManager extends AbstractInitializableAttribute
         // Table 2: UAV timestamp sent by a HlaPublisher
         CertiLogicalTime uavTimeStamp = null;
 
+        // g(t)
+        CertiLogicalTime ptIICurrentTime = _convertToCertiLogicalTime(
+                currentTime);
+
         // NER (_eventBased case)
         if (_eventBased) {
             // In the NER case, we have the equality currentTime = hlaCurrentTime.
             // So, we chose tau <- currentTime + lookahead and we respect the condition
             // above.
             uavTimeStamp = new CertiLogicalTime(
-                    currentTime.getDoubleValue() + _hlaLookAHead);
+                    ptIICurrentTime.getTime() + _hlaLookAHead);
         } else {
             // TAR (_timeStepped case)
 
@@ -1159,10 +1133,6 @@ public class HlaManager extends AbstractInitializableAttribute
 
             // h => hlaCurrentTime => HLA logical time => _federateAmbassador.logicalTimeHLA
             CertiLogicalTime hlaCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
-
-            // g(t)
-            CertiLogicalTime ptIICurrentTime = _convertToCertiLogicalTime(
-                    currentTime);
 
             // h + lah => minimal next UAV time
             CertiLogicalTime minimalNextUAVTime = new CertiLogicalTime(
@@ -1247,17 +1217,11 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     @Override
     public void wrapup() throws IllegalActionException {
-        if (_debugging) {
-            _hlaDebug("wrapup() - ... so termination");
-        }
-
         super.wrapup();
-
         if (_enableHlaReporter) {
             if (_debugging) {
                 _hlaDebug(_hlaReporter.displayAnalysisValues());
             }
-
             _hlaReporter.calculateRuntime();
             _hlaReporter.writeNumberOfHLACalls();
             _hlaReporter.writeDelays();
@@ -1266,123 +1230,142 @@ public class HlaManager extends AbstractInitializableAttribute
             _hlaReporter.writeTimes();
         }
 
-        // Unsubscribe to HLA attributes.
-        for (Object[] obj : _hlaAttributesToSubscribeTo.values()) {
-            try {
-                _rtia.unsubscribeObjectClass(_getClassHandleFromTab(obj));
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e,
-                        "RTIexception: " + e.getMessage());
-            }
-            if (_debugging) {
-                _hlaDebug("wrapup() - unsubscribe "
-                        + _getPortFromTab(obj).getContainer().getFullName()
-                        + "(classHandle = " + _getClassHandleFromTab(obj)
-                        + ")");
-            }
-        }
-
-        // Unpublish HLA attributes.
-        for (Object[] obj : _hlaAttributesToPublish.values()) {
-            try {
-                _rtia.unpublishObjectClass(_getClassHandleFromTab(obj));
-            } catch (RTIexception e) {
-                throw new IllegalActionException(this, e,
-                        "RTIexception: " + e.getMessage());
-            }
-            if (_debugging) {
-                _hlaDebug("wrapup() - unpublish "
-                        + _getPortFromTab(obj).getContainer().getFullName()
-                        + "(classHandle = " + _getClassHandleFromTab(obj)
-                        + ")");
-            }
-        }
-
-        // Resign HLA/CERTI Federation execution.
         try {
-            // _rtia can be null if we are exporting to JNLP.
-            if (_rtia != null) {
-                _rtia.resignFederationExecution(
-                        ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
+            // Unsubscribe to HLA attributes.
+            for (Object[] obj : _hlaAttributesToSubscribeTo.values()) {
+                try {
+                    _rtia.unsubscribeObjectClass(_getClassHandleFromTab(obj));
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e,
+                            "RTIexception: " + e.getMessage());
+                }
+                if (_debugging) {
+                    _hlaDebug("wrapup() - unsubscribe "
+                            + _getPortFromTab(obj).getContainer().getFullName()
+                            + "(classHandle = " + _getClassHandleFromTab(obj)
+                            + ")");
+                }
             }
-        } catch (RTIexception e) {
-            throw new IllegalActionException(this, e,
-                    "RTIexception: " + e.getMessage());
-        }
-        if (_debugging) {
-            _hlaDebug("wrapup() - Resign Federation execution");
-        }
-        _hlaDebugSys("wrapup() - Resign Federation execution");
 
-        boolean canDestroyRtig = false;
-        while (!canDestroyRtig) {
-
-            // Destroy federation execution - nofail.
+            // Unpublish HLA attributes.
+            for (Object[] obj : _hlaAttributesToPublish.values()) {
+                try {
+                    _rtia.unpublishObjectClass(_getClassHandleFromTab(obj));
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e,
+                            "RTIexception: " + e.getMessage());
+                }
+                if (_debugging) {
+                    _hlaDebug("wrapup() - unpublish "
+                            + _getPortFromTab(obj).getContainer().getFullName()
+                            + "(classHandle = " + _getClassHandleFromTab(obj)
+                            + ")");
+                }
+            }
+        } finally {
             try {
-                _rtia.destroyFederationExecution(_federationName);
-
-                // If the federation has been destroyed then we can authorize to kill the rtig.
-                canDestroyRtig = true;
-
-                if (_debugging) {
-                    _hlaDebug("wrapup() - "
-                            + "Destroy Federation execution - no fail");
+                // Resign HLA/CERTI Federation execution.
+                try {
+                    // _rtia can be null if we are exporting to JNLP.
+                    if (_rtia != null) {
+                        _rtia.resignFederationExecution(
+                                ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
+                    }
+                } catch (RTIexception e) {
+                    throw new IllegalActionException(this, e,
+                            "RTIexception: " + e.getMessage());
                 }
-
-                _hlaDebugSys("wrapup() - Destroy Federation execution - canDestroyRtig="
-                        + canDestroyRtig);
-
-            } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
-                    _hlaDebug("wrapup() - WARNING: FederatesCurrentlyJoined");
+                    _hlaDebug("wrapup() - Resign Federation execution");
                 }
-                _hlaDebugSys("wrapup() - Exception: FederatesCurrentlyJoined");
+                _hlaDebugSys("wrapup() - Resign Federation execution");
+            } finally {
+                // Destroy the federation execution if this was the federate
+                // that created it. This will wait
+                // until all federates have resigned the federation
+                // or until the model execution is stopped.
+                boolean federationIsActive = true;
+                while (federationIsActive && _isFederationCreator) {
 
-            } catch (FederationExecutionDoesNotExist e) {
-                // No more federation.
-                if (_debugging) {
-                    _hlaDebug("wrapup() - WARNING: FederationExecutionDoesNotExist");
+                    // Destroy federation execution.
+                    try {
+                        _rtia.destroyFederationExecution(_federationName);
+
+                        federationIsActive = false;
+
+                        if (_debugging) {
+                            _hlaDebug("wrapup() - Federation destroyed by this federate.");
+                        }
+                        _hlaDebugSys("wrapup() - Federation destroyed by this federate.");
+
+                    } catch (FederatesCurrentlyJoined e) {
+                        if (_debugging) {
+                            _hlaDebug("wrapup() - Federates are still joined to the federation."
+                                    + " Wait some time and try again to destroy the federation.");
+                        }
+                        _hlaDebugSys("wrapup() - Federates are still joined to the federation."
+                                + " Wait some time and try again to destroy the federation.");
+
+                        if (_director.isStopRequested()) {
+                            if (_debugging) {
+                                _hlaDebug("wrapup() - Federate was stopped by the user.");
+                            }
+                            _hlaDebugSys("wrapup() - Federate was stopped by the user.");
+                            break;
+                        }
+                        try {
+                            // Give the other federates a chance to finish.
+                            Thread.sleep(200l);
+                        } catch (InterruptedException e1) {
+                            // Ignore.
+                        }
+                    } catch (FederationExecutionDoesNotExist e) {
+                        // No more federation. Some other federate must have
+                        // succeeded in destroying it.
+                        if (_debugging) {
+                            _hlaDebug("wrapup() - Federation was destroyed by some other federate.");
+                        }
+                        _hlaDebugSys("wrapup() - Federation was destroyed by some other federate.");
+
+                        federationIsActive = false;
+
+                    } catch (RTIinternalError e) {
+                        throw new IllegalActionException(this, e,
+                                "RTIinternalError: " + e.getMessage());
+                    } catch (ConcurrentAccessAttempted e) {
+                        throw new IllegalActionException(this, e,
+                                "ConcurrentAccessAttempted: " + e.getMessage());
+                    } finally {
+                        // Clean HLA attribute tables.
+                        _hlaAttributesToPublish.clear();
+                        _hlaAttributesToSubscribeTo.clear();
+                        _fromFederationEvents.clear();
+                        _objectIdToClassHandle.clear();
+
+                        // Clean HLA object instance id maps.
+                        _registerObjectInstanceMap.clear();
+                        _discoverObjectInstanceMap.clear();
+
+                        // Joker wildcard support.
+                        _usedJokerFilterMap.clear();
+
+                        // HLA Reporter support.
+                        _hlaReporter = null;
+
+                        // Terminate RTIG subprocess.
+                        if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
+                            if (_debugging) {
+                                _hlaDebug("wrapup() - "
+                                        + "Killing the RTIG process (if authorized by the system)");
+                            }
+                            _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
+                            System.out.println("*********** Sending kill message to RTIG.");
+                            _certiRtig.terminateProcess();
+                        }
+                    }
                 }
-                canDestroyRtig = true;
-
-                _hlaDebugSys("wrapup() - Exception: FederationExecutionDoesNotExist - canDestroyRtig="
-                        + canDestroyRtig);
-
-            } catch (RTIinternalError e) {
-                throw new IllegalActionException(this, e,
-                        "RTIinternalError: " + e.getMessage());
-            } catch (ConcurrentAccessAttempted e) {
-                throw new IllegalActionException(this, e,
-                        "ConcurrentAccessAttempted: " + e.getMessage());
             }
         }
-
-        // Terminate RTIG subprocess.
-        if (_certiRtig != null) {
-            if (_debugging) {
-                _hlaDebug("wrapup() - "
-                        + "Try to destroy RTIG process (if authorized by the system)");
-            }
-            _hlaDebugSys("Try to destroy RTIG process (if authorized by the system)");
-            _certiRtig.terminateProcess();
-
-        }
-
-        // Clean HLA attribute tables.
-        _hlaAttributesToPublish.clear();
-        _hlaAttributesToSubscribeTo.clear();
-        _fromFederationEvents.clear();
-        _objectIdToClassHandle.clear();
-
-        // Clean HLA object instance id maps.
-        _registerObjectInstanceMap.clear();
-        _discoverObjectInstanceMap.clear();
-
-        // Joker wildcard support.
-        _usedJokerFilterMap.clear();
-
-        // HLA Reporter support.
-        _hlaReporter = null;
 
         if (_debugging) {
             _hlaDebug("-----------------------");
@@ -1455,9 +1438,9 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** Convert Ptolemy time to CERTI logical time.
-     * @param pt The Ptolemy time.
-     * @return the time converted to CERTI (HLA) logical time.
+    /** Convert Ptolemy time, which has units of seconds, to HLA logical time units.
+     *  @param pt The Ptolemy time.
+     *  @return The time in units of HLA logical time.
      */
     private CertiLogicalTime _convertToCertiLogicalTime(Time pt) {
         return new CertiLogicalTime(pt.getDoubleValue() * _hlaTimeUnitValue);
@@ -1603,7 +1586,8 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** Get the current time in HLA which is advanced after a TAG callback.
-     *  @return the HLA current time converted as Ptolemy time.
+     *  @return the HLA current time converted to a Ptolemy time, which is in
+     *   units of seconds.
      */
     private Time _getHlaCurrentTime() throws IllegalActionException {
         CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
@@ -2087,15 +2071,6 @@ public class HlaManager extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Content of the CERTI_HOST environment variable. */
-    private String _certiHost;
-
-    /** Indicates if the simulation is 'local' - i.e. federates and rtig on the
-     *  same computer - or if the simulation is 'distant' - i.e. on different computers.
-     *  This interpretation is based on the CERTI_HOST environement variable analysis.
-     */
-    private Boolean _distantSimulation;
-
     /** Name of the current Ptolemy federate ({@link HlaManager}). */
     private String _federateName;
 
@@ -2109,32 +2084,29 @@ public class HlaManager extends AbstractInitializableAttribute
     private CertiRtiAmbassador _rtia;
 
     /** Indicates the use of the nextEventRequest() service. */
-    private Boolean _eventBased;
+    private boolean _eventBased;
 
     /** Indicates the use of the timeAdvanceRequest() service. */
-    private Boolean _timeStepped;
+    private boolean _timeStepped;
 
-    /** The lookahead value of the Ptolemy Federate. */
-    private Double _hlaLookAHead;
+    /** The lookahead value of the federate in HLA logical time units. */
+    private double _hlaLookAHead;
 
-    /** Time step of the Ptolemy Federate. */
-    private Double _hlaTimeStep;
+    /** Time step in units of HLA logical time. */
+    private double _hlaTimeStep;
+    
+    /** Marker that this federate is the one that created the federation. */
+    private boolean _isFederationCreator = false;
 
     /** Indicates the use of the enableTimeConstrained() service. */
-    private Boolean _isTimeConstrained;
+    private boolean _isTimeConstrained;
 
     /** Indicates the use of the enableTimeRegulation() service. */
-    private Boolean _isTimeRegulator;
-
-    /** Indicates if the Ptolemy Federate will use a synchronization point. */
-    private Boolean _requireSynchronization;
-
-    /** Name of the synchronization point to create or to reach. */
-    private String _synchronizationPointName;
+    private boolean _isTimeRegulator;
 
     /** Indicates if the Ptolemy Federate is the creator of the synchronization
      *  point. */
-    private Boolean _isCreator;
+    private boolean _isSynchronizationPointRegister;
 
     /** The simulation stop time. */
     private Time _stopTime;
@@ -2176,126 +2148,96 @@ public class HlaManager extends AbstractInitializableAttribute
     private HlaReporter _hlaReporter;
 
     /** Indicates if the HLA reporter is enabled or not. */
-    private Boolean _enableHlaReporter;
+    private boolean _enableHlaReporter;
 
     ///////////////////////////////////////////////////////////////////
     ////                    private  methods                       ////
 
-    /** This method does the initial synchronization loop among the
-     *  federate and register the synchronization point if the federate
-     *  is the synchronization point creator.
-     *  @exception IllegalActionException If the RTI throws it.
+    /** This method does the initial synchronization among the
+     *  federates and registers the synchronization point if this federate's
+     *  name matches the synchronizeStartTo parameter.
+     *  @exception IllegalActionException If the RTI throws an exception.
      */
     private void _doInitialSynchronization() throws IllegalActionException {
-        if (!_requireSynchronization) {
-            return;
-        }
-        // If the current Federate is the creator then create the
+        String synchronizationPointName = synchronizeStartTo.stringValue().trim();
+        // If the current Federate registers a synchronization point, then register the
         // synchronization point.
-        if (_isCreator) {
+        if (_isSynchronizationPointRegister) {
             try {
                 byte[] rfspTag = EncodingHelpers
-                        .encodeString(_synchronizationPointName);
+                        .encodeString(synchronizationPointName);
                 _rtia.registerFederationSynchronizationPoint(
-                        _synchronizationPointName, rfspTag);
+                        synchronizationPointName, rfspTag);
+
+                // Wait for synchronization point callback.
+                // FIXME: This hangs the model if no federate has registered
+                // a synchronization point!
+                while (!(_federateAmbassador.synchronizationSuccess)
+                        && !(_federateAmbassador.synchronizationFailed)) {
+                    _rtia.tick();
+                    _logOtherTicks();
+                    if (_director.isStopRequested()) {
+                        // Return to finish initialization so that we proceed to wrapup
+                        // and resign the federation.
+                        return;
+                    }
+                }
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
-            }
-
-            // Wait synchronization point callbacks.
-            while (!(_federateAmbassador.synchronizationSuccess)
-                    && !(_federateAmbassador.synchronizationFailed)) {
-                try {
-                    _rtia.tick2();
-
-                    // HLA Reporter support.
-                    if (_enableHlaReporter) {
-                        _hlaReporter._numberOfTicks2++;
-                        if (_hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
-                            _hlaReporter._numberOfTicks
-                                    .set(_hlaReporter._numberOfTAGs,
-                                            _hlaReporter._numberOfTicks.get(
-                                                    _hlaReporter._numberOfTAGs)
-                                                    + 1);
-                        } else {
-                            _hlaReporter._numberOfOtherTicks++;
-                        }
-                    }
-                } catch (RTIexception e) {
-                    throw new IllegalActionException(this, e,
-                            "RTIexception: " + e.getMessage());
-                }
             }
 
             if (_federateAmbassador.synchronizationFailed) {
                 throw new IllegalActionException(this,
-                        "CERTI: Synchronization error ! ");
+                        "CERTI: Synchronization failed! ");
             }
         } // End block for synchronization point creation case.
 
-        // Wait synchronization point announcement.
+        // Wait for synchronization point announcement.
         while (!(_federateAmbassador.inPause)) {
             try {
-                _rtia.tick2();
-
-                // HLA Reporter support.
-                if (_enableHlaReporter) {
-                    _hlaReporter._numberOfTicks2++;
-                    if (_hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
-                        _hlaReporter._numberOfTicks
-                                .set(_hlaReporter._numberOfTAGs,
-                                        _hlaReporter._numberOfTicks
-                                                .get(_hlaReporter._numberOfTAGs)
-                                                + 1);
-                    } else {
-                        _hlaReporter._numberOfOtherTicks++;
-                    }
-                }
-
+                _rtia.tick();
+                _logOtherTicks();
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
+            }
+            if (_director.isStopRequested()) {
+                // Return to finish initialization so that we proceed to wrapup
+                // and resign the federation.
+                return;
             }
         }
 
         // Satisfied synchronization point.
         try {
-            _rtia.synchronizationPointAchieved(_synchronizationPointName);
+            _rtia.synchronizationPointAchieved(synchronizationPointName);
             if (_debugging) {
                 _hlaDebug("_doInitialSynchronization() - initialize() - Synchronisation point "
-                        + _synchronizationPointName + " satisfied");
+                        + synchronizationPointName + " satisfied");
             }
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
                     "RTIexception: " + e.getMessage());
         }
 
-        // Wait federation synchronization.
+        // Wait for federation synchronization.
         while (_federateAmbassador.inPause) {
             if (_debugging) {
                 _hlaDebug("_doInitialSynchronization() - initialize() - Waiting for simulation phase");
             }
 
             try {
-                _rtia.tick2();
-
-                // HLA Reporter support.
-                if (_enableHlaReporter) {
-                    _hlaReporter._numberOfTicks2++;
-                    if (_hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
-                        _hlaReporter._numberOfTicks
-                                .set(_hlaReporter._numberOfTAGs,
-                                        _hlaReporter._numberOfTicks
-                                                .get(_hlaReporter._numberOfTAGs)
-                                                + 1);
-                    } else {
-                        _hlaReporter._numberOfOtherTicks++;
-                    }
-                }
+                _rtia.tick();
+                _logOtherTicks();
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
+            }
+            if (_director.isStopRequested()) {
+                // Return to finish initialization so that we proceed to wrapup
+                // and resign the federation.
+                return;
             }
         }
     }
@@ -2320,7 +2262,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
 
-        // Declare the Federate time regulator (if true).
+        // Declare the Federate to be a time regulator (if true).
         if (_isTimeRegulator) {
             try {
                 _rtia.enableTimeRegulation(_federateAmbassador.hlaLogicalTime,
@@ -2333,12 +2275,11 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Wait the response of the RTI towards Federate time policies that has
         // been declared. The only way to get a response is to invoke the tick()
-        // method to receive callbacks from the RTI. We use here the tick2()
-        // method which is blocking and saves more CPU than the tick() method.
+        // method to receive callbacks from the RTI.
         if (_isTimeRegulator && _isTimeConstrained) {
             while (!(_federateAmbassador.timeConstrained)) {
                 try {
-                    _rtia.tick2();
+                    _rtia.tick();
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2349,11 +2290,16 @@ public class HlaManager extends AbstractInitializableAttribute
                     throw new IllegalActionException(this, e,
                             "RTIexception: " + e.getMessage());
                 }
+                if (_director.isStopRequested()) {
+                    // Return to finish initialization so that we proceed to wrapup
+                    // and resign the federation.
+                    return;
+                }
             }
 
             while (!(_federateAmbassador.timeRegulator)) {
                 try {
-                    _rtia.tick2();
+                    _rtia.tick();
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2363,6 +2309,11 @@ public class HlaManager extends AbstractInitializableAttribute
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e,
                             "RTIexception: " + e.getMessage());
+                }
+                if (_director.isStopRequested()) {
+                    // Return to finish initialization so that we proceed to wrapup
+                    // and resign the federation.
+                    return;
                 }
             }
 
@@ -2387,6 +2338,33 @@ public class HlaManager extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                    private static methods                 ////
+
+    /** Check that the specified label matches the synchronization point
+     *  name given in the synchronizeStartTo parameter.
+     *  @param synchronizationPointLabel The label.
+     *  @return False if the names don't match.
+     */
+    private boolean _checkSynchronizationPointNameMatch(String synchronizationPointLabel) {
+        try {
+            String mySynchronizationPoint = synchronizeStartTo.stringValue();
+            if(!synchronizationPointLabel.equals(mySynchronizationPoint)) {
+                // The synchronization point does not match.
+                // Having mismatched synchronization point names can cause the model
+                // to deadlock, so we print a warning.
+                System.err.println("WARNING: Mismatch between synchronization point name "
+                        + synchronizationPointLabel
+                        + " and the value of the synchronizeStartTo parameter: "
+                        + mySynchronizationPoint
+                        + ". This can cause a federation to deadlock!");
+                return false;
+            }
+        } catch (IllegalActionException e) {
+            // There is something wrong with my synchronization point specification.
+            // This will be caught during initialization, so we can safely ignore here.
+            return false;
+        }
+        return true;
+    }
 
     /* Getter functions to ease access to information stored in an object
      * array about HLA attributes to publish or to subscribe to. */
@@ -2445,6 +2423,24 @@ public class HlaManager extends AbstractInitializableAttribute
         return (Integer) array[5];
     }
 
+    /** Use the HLA reporter class to log an "other tick".
+     */
+    private void _logOtherTicks() {
+        // HLA Reporter support.
+        if (_enableHlaReporter) {
+            _hlaReporter._numberOfTicks2++;
+            if (_hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
+                _hlaReporter._numberOfTicks
+                        .set(_hlaReporter._numberOfTAGs,
+                                _hlaReporter._numberOfTicks
+                                        .get(_hlaReporter._numberOfTAGs)
+                                        + 1);
+            } else {
+                _hlaReporter._numberOfOtherTicks++;
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
@@ -2471,39 +2467,39 @@ public class HlaManager extends AbstractInitializableAttribute
         /** Indicates the current HLA logical time of the Federate. */
         public LogicalTime hlaLogicalTime;
 
-        /** Indicates if the Federate is currently synchronize to others. This
+        /** Indicates if the Federate is currently synchronized to others. This
          * value is set by callback by the RTI.
          */
-        public Boolean inPause;
+        public boolean inPause;
 
         /** Indicates if an RAV has been received. */
-        public Boolean hasReceivedRAV;
+        public boolean hasReceivedRAV;
 
         /** Indicates if the request of synchronization by the Federate is
          *  validated by the HLA/CERTI Federation. This value is set by callback
          *  by the RTI.
          */
-        public Boolean synchronizationSuccess;
+        public boolean synchronizationSuccess;
 
         /** Indicates if the request of synchronization by the Federate
          *  has failed. This value is set by callback by the RTI.
          */
-        public Boolean synchronizationFailed;
+        public boolean synchronizationFailed;
 
         /** Indicates if the Federate has received the time advance grant from
          *  the HLA/CERTI Federation. This value is set by callback by the RTI.
          */
-        public Boolean timeAdvanceGrant;
+        public boolean timeAdvanceGrant;
 
         /** Indicates if the Federate is declared as time constrained in the
          *  HLA/CERTI Federation. This value is set by callback by the RTI.
          */
-        public Boolean timeConstrained;
+        public boolean timeConstrained;
 
         /** Indicates if the Federate is declared as time regulator in the
          *  HLA/CERTI Federation. This value is set by callback by the RTI.
          */
-        public Boolean timeRegulator;
+        public boolean timeRegulator;
 
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
@@ -2915,7 +2911,10 @@ public class HlaManager extends AbstractInitializableAttribute
         @Override
         public void synchronizationPointRegistrationFailed(
                 String synchronizationPointLabel) throws FederateInternalError {
-            synchronizationFailed = true;
+           if (!_checkSynchronizationPointNameMatch(synchronizationPointLabel)) {
+               return;
+           }
+           synchronizationFailed = true;
             if (_debugging) {
                 _hlaDebug("INNER callback: synchronizationPointRegistrationFailed(): "
                         + "synchronizationFailed = " + synchronizationFailed);
@@ -2928,6 +2927,9 @@ public class HlaManager extends AbstractInitializableAttribute
         @Override
         public void synchronizationPointRegistrationSucceeded(
                 String synchronizationPointLabel) throws FederateInternalError {
+            if (!_checkSynchronizationPointNameMatch(synchronizationPointLabel)) {
+                return;
+            }
             synchronizationSuccess = true;
             if (_debugging) {
                 _hlaDebug("INNER callback: synchronizationPointRegistrationSucceeded(): "
@@ -2942,6 +2944,9 @@ public class HlaManager extends AbstractInitializableAttribute
         public void announceSynchronizationPoint(
                 String synchronizationPointLabel, byte[] userSuppliedTag)
                 throws FederateInternalError {
+            if (!_checkSynchronizationPointNameMatch(synchronizationPointLabel)) {
+                return;
+            }
             inPause = true;
             if (_debugging) {
                 _hlaDebug("INNER callback: announceSynchronizationPoint(): inPause = "
@@ -2957,6 +2962,9 @@ public class HlaManager extends AbstractInitializableAttribute
         public void federationSynchronized(String synchronizationPointLabel)
                 throws FederateInternalError {
             inPause = false;
+            if (!_checkSynchronizationPointNameMatch(synchronizationPointLabel)) {
+                return;
+            }
             if (_debugging) {
                 _hlaDebug("INNER callback: federationSynchronized(): inPause = "
                         + inPause + "\n");

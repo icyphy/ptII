@@ -9,7 +9,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the time advancing in a federation&#10;with two federates  f1 and f2. There are no displays, so&#10;running the model is not very interesting. It's really just&#10;a smoke test.&#10;&#10;For a more interesting run, run the models manually. Open the&#10;models in the VisualModelReference actors, right click on their&#10;HlaManagers, select Listen to Attribute, and then run the models in order.&#10;The last model to be run set Synchronization Point Register to true.&#10;This prevents the earlier models from completing before the last&#10;model is run.&#10;&#10;By default, the first federate uses TAR (Time Advance Request)&#10;with a time step of 1, and the second federate uses NER&#10;(Next Event Request). Feel free to experiment with changing these.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model tests the time advancing in a federation&#10;with two federates  f1 and f2. There are no displays, so&#10;running the model is not very interesting. It's really just&#10;a smoke test.&#10;&#10;For a more interesting run, run the models manually. Open the&#10;models in the VisualModelReference actors, right click on their&#10;HlaManagers, select Listen to Attribute, and then run the models in order.&#10;The last model to be run provides the synchronization point, which&#10;prevents the earlier models from completing before the last&#10;model is run.&#10;&#10;By default, the first federate uses TAR (Time Advance Request)&#10;with a time step of 1, and the second federate uses NER&#10;(Next Event Request). Feel free to experiment with changing these.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, -40.0]">
         </property>
@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0066832682285205">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.57803882986792, 208.300441935911}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.57803882986786, 208.300441935911}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">

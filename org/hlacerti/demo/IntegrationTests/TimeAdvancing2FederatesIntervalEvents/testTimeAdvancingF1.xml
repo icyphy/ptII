@@ -12,28 +12,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 80.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;f1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TestTimeAdvance&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="testTimeAdvanceEvent.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
-        </property>
-    </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 268, 684, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 522]">
@@ -96,6 +74,24 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 125.0]">
+        </property>
+    </property>
+    <property name="HlaManager2" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="f1">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TestTimeAdvance">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="TestTimeAdvance.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="f1">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 85.0]">
         </property>
     </property>
 </entity>

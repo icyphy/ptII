@@ -8,32 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 29, 658, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={760, 23, 658, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[424, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7592592592592593">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{164.66315789473686, 184.93278166118424}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F2&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Fleet&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleet.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingF&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 75.0]">
-        </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -43,6 +24,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using NER time management, a message&#10;RAV(t') coming throught the RTI corresponds &#10;to an event e(t').">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="F2">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Fleet">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleet.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 75.0]">
         </property>
     </property>
     <entity name="A2" class="ptolemy.actor.TypedCompositeActor">
@@ -69,11 +62,11 @@
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 605, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[371, 277]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[371, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7233624631336173">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{140.89335775375366, 315.74648533633535}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{140.89335775375366, 386.82845597253936}">
         </property>
         <port name="speed" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -94,9 +87,13 @@
             </property>
         </entity>
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 451, 499, 223}, maximized=false}">
+            <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 179]">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="local, remote">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 451, 600, 292}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 248]">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{185, 315}">
             </property>
@@ -104,12 +101,12 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
+<title>Local and Remote Events</title>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="4.1000000000000005"/>
-<yRange min="1.0" max="2.0"/>
-<default connected="no"/>
+<xRange min="0.0" max="4.1"/>
+<yRange min="0.0" max="2.0"/>
+<default connected="no" stems="yes"/>
 </plot>?>
             </configure>
         </entity>
