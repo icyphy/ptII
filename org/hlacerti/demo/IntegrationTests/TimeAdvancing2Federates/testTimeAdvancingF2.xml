@@ -7,31 +7,9 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
-        </property>
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;f2&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TestTimeAdvance2&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="testTimeAdvance2.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 95.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={685, 268, 683, 632}, maximized=false}">
@@ -110,6 +88,24 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a trivial federate named f2. All this does&#10;is set a time step for NER (Next Event Requests),&#10;which will cause the model to advance directly to&#10;the stop time.&#10;&#10;To observe how the time advances, right-click on&#10;HlaManager and choose Listen To Attribute before&#10;running the model.&#10;&#10;This model provides a synchronization point named&#10;&quot;Simulating&quot; upon starting its execution.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 180.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="f2">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TestTimeAdvance2">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="testTimeAdvance2.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="f2">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 90.0]">
         </property>
     </property>
 </entity>

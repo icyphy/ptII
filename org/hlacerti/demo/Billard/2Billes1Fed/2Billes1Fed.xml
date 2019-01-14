@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="2Billes1Fed" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 258, 775, 509}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 775, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[541, 399]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[541, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9183821075959011">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.040513000097594">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.095353452621, 225.7854849210348}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{259.16259765625006, 260.03248587570624}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -54,7 +54,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso, David Come, Pierre Siron&#10;Update: CIELE Ingenierie - http://www.ciele.fr">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 465.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -87,7 +87,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="These models can interact with C++ federates from&#10;CERTI demo &quot;Billard&quot;. To run with a C++ federate,&#10;unset the parameter &quot;creator&quot; in federate PoolTable2.xml.&#10;Launch the federates in this order:&#10;- C++ federate: in a terminal, type: billard -n1 -fTest -FTest.fed -t10&#10;- launch PtII federates TwoBilliarBalls.xml and PoolTable2.xml in any order&#10;- come back to the terminal, and press &quot;Enter&quot;. The simulation starts.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 260.0]">
         </property>
     </property>
 </entity>

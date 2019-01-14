@@ -34,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -290,7 +291,7 @@ public class CertiRtig extends NamedObj {
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
             System.out.println("CertiRtig: " + _hlaManager.getFullName()
-                    + ": About to terminate rtig.");
+                    + ": About to terminate RTIG.");
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
@@ -303,32 +304,12 @@ public class CertiRtig extends NamedObj {
                                 + "Closing stdin of the subprocess threw an IOException.");
             }
             if (_process != null) {
-                System.out.println("CertiRtig " + _hlaManager.getFullName()
-                                   + " before destroy: _process.isAlive is "
-                                   + _process.isAlive());
                 if (_debugging) {
                     _debug("CertiRtig " + _hlaManager.getFullName()
-                           + " before destroy: _process.isAlive is "
-                              + _process.isAlive());
+                           + " sending destroy (SIGINT) to RTIG. "
+                           + "RTIG may take up to 50 seconds to die.");
                 }
-                // FIXMEjc: The rtig process is still running after .destroy;
-                // tested with MacOS 10.12 and also a VM CentOS 7.
-                // After running the same federation several times, e.g, 10 times,
-                // (whitout kill the rtig before a new lauching), an exception
-                // appears in the last federate to be launched, after a
-                // correct execution of the federation:
-                // java.lang.NullPointerException
-                // at org.hlacerti.lib.CertiRtig.terminateProcess(CertiRtig.java:310)
-                // at org.hlacerti.lib.HlaManager.wrapup(HlaManager.java:1323)
                 _process.destroy();
-                System.out.println("CertiRtig " + _hlaManager.getFullName()
-                                   + " after destroy: _process.isAlive is "
-                                   + _process.isAlive());
-                if (_debugging) {
-                    _debug("CertiRtig " + _hlaManager.getFullName()
-                           + " after destroy: _process.isAlive is "
-                              + _process.isAlive());
-                }
                 _process = null;
             }
         }

@@ -4,7 +4,7 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 34, 969, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 24, 969, 703}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 593]">
     </property>
@@ -15,14 +15,19 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;display&quot;">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="display">
             <display name="Federate's name"/>
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Test&quot;">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
             <display name="Federation's name"/>
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="./Test.fed">
             <display name="Federate Object Model (.fed) file path"/>
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
+        </property>
+        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
+            <display name="HLA time unit"/>
         </property>
         <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Require synchronization ?"/>
@@ -32,9 +37,6 @@
         </property>
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
-            <display name="HLA time unit"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1410.0, -2615.0]">
         </property>
@@ -83,9 +85,9 @@
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={739, 70, 328, 227}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 548, 410, 281}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[328, 183]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[410, 237]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1435.0, -2525.0]">
         </property>
@@ -110,8 +112,8 @@
 <title>ArrayPlotterXY</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.0" max="600.0"/>
-<yRange min="0.0" max="100.0"/>
+<xRange min="-52.0" max="652.0"/>
+<yRange min="-8.666666666666666" max="108.66666666666667"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -195,7 +197,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xBall1,  yBall1, xBall2, yBall2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={898, 437, 433, 274}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={575, 550, 433, 274}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[433, 230]">
         </property>
@@ -206,8 +208,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.1" max="1599.1000000000001"/>
-<yRange min="-1.0" max="501.0"/>
+<xRange min="1.1" max="1599.1000000000001"/>
+<yRange min="0.0" max="500.0"/>
 </plot>?>
         </configure>
     </entity>
