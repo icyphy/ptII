@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="1SubscriberBadClassN" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 103, 820, 655}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 22, 820, 655}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[586, 545]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4361599551200015">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2991489136755299">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-292.46523437500014, 40.56918334960932}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-271.31640625, 63.08567301432291}">
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
         <display name="Lookahead"/>
@@ -51,34 +51,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-255.0, -120.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;1SubsBadClassN&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;1SubscriberBadClassName&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1SubscriberBadClassName.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Require synchronization ?"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-325.0, -110.0]">
-        </property>
-    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-440.0, -115.0]">
         </property>
@@ -98,9 +70,31 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,0.8,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model raise the exception:&#10;&quot;NameNotFound: unknownClass is not a HLA  class from &#10;the FOM (see .fed file).&quot;&#10;- change the .fed file or &#10;- use the classes defined in the .fed file.&#10;&#10;After the run, execute &quot;pkill rtig&quot;. Otherwise, in a new run &#10;the following msg will appear: &quot;Federate name already in use&quot;.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model raises the exception caught by the actor TestExceptionAttribute:&#10;&quot;NameNotFound: unknownClass is not a HLA  class from &#10;the FOM (see .fed file).&quot;&#10;- change the .fed file or &#10;- use the classes defined in the .fed file.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-490.0, 25.0}">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="1SubsBadClassN">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="1SubscriberBadClassName">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1SubscriberBadClassName.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="1SubsBadClassN">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-330, -105}">
+        </property>
+    </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="NameNotFound: unknownClass is not a HLA class from the FOM (see .fed file).&#10;Because:&#10;unknownClass">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-225.0, -30.0}">
         </property>
     </property>
     <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
@@ -116,7 +110,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-405.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-415.0, -35.0]">
         </property>
     </entity>
     <entity name="display" class="ptolemy.actor.lib.gui.Display">
@@ -124,7 +118,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[297, 371]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-205.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, -10.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
