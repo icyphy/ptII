@@ -340,7 +340,7 @@ public class HlaManager extends AbstractInitializableAttribute
         attributeChanged(timeManagementService);
 
         hlaTimeStep = new Parameter(this, "hlaTimeStep");
-        hlaTimeStep.setExpression("0.01");
+        hlaTimeStep.setExpression("1.0");
         hlaTimeStep.setTypeEquals(BaseType.DOUBLE);
         attributeChanged(hlaTimeStep);
 
@@ -446,15 +446,19 @@ public class HlaManager extends AbstractInitializableAttribute
     public Parameter isTimeRegulator;
 
     /** Value of the time step of this Federate. This is a double that
-     *  defaults to 0.01. This is used only if you select TAR in the
+     *  defaults to 1.0. This is used only if you select TAR in the
      *  timeManagementService parameter. The units here are HLA logical
      *  time, not seconds. See the hlaTimeUnit parameter.
+     *  Normally, hlaTimeStep is larger than or equal to hlaLookAHead
+     *  when using TAR.
      */
     public Parameter hlaTimeStep;
 
     /** Value of the lookahead of this federate. This is a double that
      *  default to 0.1. The units here are HLA logical logical
      *  time, not seconds. See the hlaTimeUnit parameter.
+     *  Normally, hlaLookAhead is smaller than or equal to hlaTimeStep
+     *  when using TAR.
      */
     public Parameter hlaLookAHead;
     
