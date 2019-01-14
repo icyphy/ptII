@@ -2692,11 +2692,24 @@ public class CompositeActor extends CompositeEntity
 
         try {
             _workspace.getReadAccess();
-
+            
+            // Collect exception messages during wrapup.
+            StringBuffer exceptions = new StringBuffer();
+            Throwable initialThrowable = null;
+            
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
-                    initializable.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        initializable.wrapup();
+                    } catch (Throwable throwable) {
+                        if (initialThrowable == null) {
+                            initialThrowable = throwable;
+                        }
+                        exceptions.append(throwable);
+                        exceptions.append("========\n");
+                    }
                 }
             }
 
@@ -2704,13 +2717,31 @@ public class CompositeActor extends CompositeEntity
             if (_piggybacks != null) {
                 // Invoke the wrapup() method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
-                    piggyback.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        piggyback.wrapup();
+                    } catch (Throwable throwable) {
+                        if (initialThrowable == null) {
+                            initialThrowable = throwable;
+                        }
+                        exceptions.append(throwable);
+                        exceptions.append("========\n");
+                    }
                 }
             }
             if (_derivedPiggybacks != null) {
                 // Invoke the wrapup() method of each piggyback.
                 for (Executable piggyback : _derivedPiggybacks) {
-                    piggyback.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        piggyback.wrapup();
+                    } catch (Throwable throwable) {
+                        if (initialThrowable == null) {
+                            initialThrowable = throwable;
+                        }
+                        exceptions.append(throwable);
+                        exceptions.append("========\n");
+                    }
                 }
             }
 
@@ -2732,7 +2763,21 @@ public class CompositeActor extends CompositeEntity
             Director director = getDirector();
 
             if (director != null) {
-                director.wrapup();
+                // Catch any exceptions so that additional wrapup methods are invoked.
+                try {
+                    director.wrapup();
+                } catch (Throwable throwable) {
+                    if (initialThrowable == null) {
+                        initialThrowable = throwable;
+                    }
+                    exceptions.append(throwable);
+                    exceptions.append("========\n");
+                }
+            }
+            if (exceptions.length() > 0) {
+                throw new IllegalActionException(this, initialThrowable,
+                        "Exception(s) thrown during wrapup:\n" 
+                        + exceptions.toString());
             }
         } finally {
             _workspace.doneReading();
