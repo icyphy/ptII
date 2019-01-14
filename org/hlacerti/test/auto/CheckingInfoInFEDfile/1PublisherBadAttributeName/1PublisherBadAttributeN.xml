@@ -4,13 +4,13 @@
 <entity name="1PublisherBadAttributeN" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 24, 834, 678}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 24, 839, 485}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 568]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 375]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1425850406849565">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3994774197135074">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-252.2945728302002, 54.69025993347168}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-246.2644001588983, -7.4125397245762485}">
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -59,7 +59,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model raise the exception:&#10;&quot; NameNotFound: unknownValue is not a HLA attribute value &#10;from the FOM (see .fed file).&quot;&#10;- change the .fed file (add this attribute in the class) or &#10;- use the attributes already defined in the .fed file.&#10;&#10;After the run, execute &quot;pkill rtig&quot;. Otherwise, in a new run &#10;the following msg will appear: &quot;Federate name already in use&quot;.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model raises the exception caught by the TestExceptionAttribute:&#10;&quot; NameNotFound: unknownValue is not a HLA attribute value &#10;from the FOM (see .fed file).&quot;&#10;- change the .fed file (add this attribute in the class) or &#10;- use the attributes already defined in the .fed file.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-460.0, 30.0]">
         </property>
@@ -92,6 +92,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, -100.0]">
         </property>
     </property>
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="NameNotFound: unknownValue is not a HLA attribute value from the FOM (see .fed file).&#10;Because:&#10;unknownValue">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, -30.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
@@ -111,7 +119,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;Sender1ValueTransfer1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, -20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 5.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
