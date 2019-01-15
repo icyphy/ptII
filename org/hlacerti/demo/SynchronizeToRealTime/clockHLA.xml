@@ -1,6 +1,8 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="clockHLA" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 261, 743, 634}, maximized=false}">
     </property>
@@ -35,26 +37,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 60.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <display name="clockHLA"/>
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;clockHLA&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;SynchronizeToRealTime&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SynchronizeToRealTime.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="isTimeConstrained" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="isTimeConstrained ?"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 35.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
@@ -69,6 +51,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This Ptolemy HLA/CERTI federate uses the synchronizeToRealTime&#10;attibute to synchronize the HLA Logical time of the Federation with &#10;the clock of the computer.&#10;&#10;No value is published here to the HLA Federation. The discrete clock&#10;is used here to avoid the termination of the simulation if no event&#10;is produced.&#10;&#10;To observe the &quot;realtime&quot; behavior of the demo, during the simulation&#10;execution remove the attribut &quot;SynchronizeToRealTime&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 210.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="clockHLA">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="SynchronizeToRealTime">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="SynchronizeToRealTime.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="clockHLA">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 40.0]">
         </property>
     </property>
     <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
@@ -86,7 +82,7 @@
         </property>
     </entity>
     <entity name="clockHla-Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 122, 522, 196}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={816, 606, 522, 196}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[522, 152]">
         </property>

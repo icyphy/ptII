@@ -2,12 +2,12 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="f14HlaTAR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates of the F14 HLA PRISE demo.&#10;Each Ptolemy HLA/CERTI Federate i a Ptolemy model. &#10;&#10;To run the F14 distributed simulation, click on the link below in the order&#10;they appear:&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates of the F14 HLA PRISE demo.&#10;&#10;To run the F14 distributed simulation, run the models in the links below in&#10;the order that they appear:&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
         </property>
@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1037, 326, 742, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={55, 23, 834, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[508, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9456218214304363">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1480104205659865">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.1888727184203, 334.72133298780085}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{265.96630859375, 286.9944915254237}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.0,1.0,1.0}">
@@ -108,13 +108,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com&#10;               Janette Cardoso - SUPAERO ISAE - janette.cardoso@isae.fr&#10;               Pierre Siron - SUPAERO ISAE / ONERA - pierre.siron@isae.fr&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 335.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.0,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates use TAR time management for advancing. The value of the&#10;HLA time step can be changed on parameter TARtimeStep. Each federate&#10;can have a different time step. Usually lookahead &lt;= TARtimeStep.&#10;&#10;See also ../AllFederatesNER.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All Federates use TAR time management for advancing. The value of the&#10;HLA time step can be changed by changing the timeManagementService&#10;parameter of the HlaManager. Each federate can have a different time step.&#10;Usually lookahead &lt;= TARtimeStep.&#10;&#10;See also ../AllFederatesNER.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 220.0]">
         </property>
