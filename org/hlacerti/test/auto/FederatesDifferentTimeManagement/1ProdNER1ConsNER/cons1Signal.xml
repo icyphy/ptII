@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={675, 104, 735, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={610, 80, 735, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3839312076706491">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{87.39321047121345, 194.42707728910017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{87.3932104712135, 194.42707728910017}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -48,9 +48,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yanxuan LI (ISAE-SUPAERO)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yanxuan LI and J. Cardoso (ISAE-SUPAERO)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 200.0]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -99,11 +99,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-90.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 125.0]">
         </property>
     </property>
     <entity name="cons" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={889, 553, 366, 172}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1035, 605, 366, 172}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[366, 128]">
         </property>
@@ -116,8 +116,8 @@
 <title>cons</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="3.1" max="12.1"/>
+<yRange min="0.0" max="3.0"/>
 <default connected="no"/>
 </plot>?>
         </configure>
@@ -142,12 +142,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 105.0}">
         </property>
     </entity>
+    <entity name="timestamp" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3.1, 6.1, 9.1, 12.1}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 175.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 175.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[60.0, 105.0]">
+        </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="cons.input" relation="relation3"/>
-    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="HlaSubscriber.output" relation="relation"/>
+    <link port="HlaSubscriber.output" relation="relation2"/>
+    <link port="timestamp.input" relation="relation"/>
+    <link port="CurrentTime.output" relation="relation"/>
+    <link port="CurrentTime.trigger" relation="relation2"/>
 </entity>

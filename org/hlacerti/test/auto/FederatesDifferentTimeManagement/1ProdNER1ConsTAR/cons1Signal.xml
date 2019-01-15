@@ -82,13 +82,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Yanxuan LI (ISAE-SUPAERO)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 185.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -137,8 +137,8 @@
 <title>cons</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="8.0" max="16.0"/>
+<yRange min="0.0" max="3.0"/>
 <default connected="no"/>
 </plot>?>
         </configure>
@@ -163,12 +163,36 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 105.0}">
         </property>
     </entity>
+    <entity name="timestamp" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8.0, 8.0, 16.0, 16.0}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.600000000000001E-8">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
+        <doc>Output the current time.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 180.0}">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[55.0, 105.0]">
+        </vertex>
     </relation>
     <link port="cons.input" relation="relation3"/>
-    <link port="AddSubtract.plus" relation="relation"/>
+    <link port="AddSubtract.plus" relation="relation4"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="HlaSubscriber.output" relation="relation"/>
+    <link port="HlaSubscriber.output" relation="relation4"/>
+    <link port="timestamp.input" relation="relation2"/>
+    <link port="CurrentTime.output" relation="relation2"/>
+    <link port="CurrentTime.trigger" relation="relation4"/>
 </entity>
