@@ -2693,9 +2693,8 @@ public class CompositeActor extends CompositeEntity
         try {
             _workspace.getReadAccess();
             
-            // Collect exception messages during wrapup.
-            StringBuffer exceptions = new StringBuffer();
-            Throwable initialThrowable = null;
+            // Collect exceptions during wrapup.
+            LinkedList<Throwable> throwables = new LinkedList<Throwable>();
             
             // First invoke initializable methods.
             if (_initializables != null) {
@@ -2704,11 +2703,7 @@ public class CompositeActor extends CompositeEntity
                     try {
                         initializable.wrapup();
                     } catch (Throwable throwable) {
-                        if (initialThrowable == null) {
-                            initialThrowable = throwable;
-                        }
-                        exceptions.append(throwable);
-                        exceptions.append("========\n");
+                        throwables.add(throwable);
                     }
                 }
             }
@@ -2721,11 +2716,7 @@ public class CompositeActor extends CompositeEntity
                     try {
                         piggyback.wrapup();
                     } catch (Throwable throwable) {
-                        if (initialThrowable == null) {
-                            initialThrowable = throwable;
-                        }
-                        exceptions.append(throwable);
-                        exceptions.append("========\n");
+                        throwables.add(throwable);
                     }
                 }
             }
@@ -2736,11 +2727,7 @@ public class CompositeActor extends CompositeEntity
                     try {
                         piggyback.wrapup();
                     } catch (Throwable throwable) {
-                        if (initialThrowable == null) {
-                            initialThrowable = throwable;
-                        }
-                        exceptions.append(throwable);
-                        exceptions.append("========\n");
+                        throwables.add(throwable);
                     }
                 }
             }
@@ -2767,17 +2754,26 @@ public class CompositeActor extends CompositeEntity
                 try {
                     director.wrapup();
                 } catch (Throwable throwable) {
-                    if (initialThrowable == null) {
-                        initialThrowable = throwable;
-                    }
-                    exceptions.append(throwable);
-                    exceptions.append("========\n");
+                    throwables.add(throwable);
                 }
             }
-            if (exceptions.length() > 0) {
-                throw new IllegalActionException(this, initialThrowable,
-                        "Exception(s) thrown during wrapup:\n" 
-                        + exceptions.toString());
+            if (throwables.size() == 1) {
+                Throwable exception = throwables.get(0);
+                if (exception instanceof IllegalActionException) {
+                    throw (IllegalActionException)exception;
+                } else {
+                    throw new IllegalActionException(this, exception,
+                            "Exception thrown during wrapup.");
+                }
+            } else if (throwables.size() > 1) {
+                StringBuffer message = new StringBuffer();
+                for (Throwable throwable : throwables) {
+                    message.append(throwable.getMessage());
+                    message.append("\n======\n");
+                }
+                throw new IllegalActionException(this, throwables.get(0),
+                        "Multiple exceptions thrown during wrapup:\n" 
+                        + message.toString());
             }
         } finally {
             _workspace.doneReading();
