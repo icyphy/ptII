@@ -247,7 +247,7 @@ public class DisplayJavaSE extends AbstractPlaceableJavaSE
                     }
                 } else {
                     // Erase previous text.
-                    textArea.setText("");
+                    textArea.setText(null);
                 }
 
                 if (_frame != null) {
