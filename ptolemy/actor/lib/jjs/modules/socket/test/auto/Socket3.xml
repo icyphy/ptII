@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Socket3" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={281, 116, 1053, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 196, 1053, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[819, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3884186386086579">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.95165667088585, 137.89732789993283}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{158.95165667088597, 137.89732789993283}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="130">
@@ -47,7 +47,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 60.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -123,21 +123,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 225.0}">
         </property>
     </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 50.0}">
-        </property>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
-        </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
-        </property>
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
-        </property>
-    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;aa&quot;, &quot;aaa&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;b&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -179,24 +166,37 @@
             <property name="input"/>
         </port>
     </entity>
+    <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 60.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;a&quot;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;b&quot;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 120}">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerErrors.input&quot;,x=165.0,y=305.0}, points={20.0,305.0} } }">
         </property>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerConnected.input&quot;,x=165.0,y=225.0}, points={} } }">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.start&quot;,x=30.0,y=225.0}, tail={id=&quot;SingleEvent.output&quot;,x=-95.0,y=225.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-60.0,y=50.0}, tail={id=&quot;Ramp.trigger&quot;,x=100.0,y=60.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.toSend&quot;,x=235.0,y=60.0}, tail={id=&quot;Ramp.output&quot;,x=100.0,y=60.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -213,21 +213,36 @@
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{100.0, 225.0}">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Client.toSend" relation="relation2"/>
     <link port="Server.error" relation="relation4"/>
     <link port="Server.listening" relation="relation7"/>
-    <link port="Server.connected" relation="relation6"/>
+    <link port="Server.connected" relation="relation9"/>
     <link port="Server.received" relation="relation8"/>
     <link port="Server.start" relation="relation"/>
     <link port="ServerErrors.input" relation="relation4"/>
     <link port="ServerReceived.input" relation="relation8"/>
-    <link port="ServerConnected.input" relation="relation6"/>
+    <link port="ServerConnected.input" relation="relation9"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="SingleEvent.output" relation="relation"/>
-    <link port="DiscreteClock.output" relation="relation3"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Ramp.trigger" relation="relation3"/>
     <link port="Test.input" relation="relation8"/>
     <link port="Test.output" relation="relation5"/>
     <link port="Stop.stop" relation="relation5"/>
+    <link port="Merge.input" relation="relation3"/>
+    <link port="Merge.input" relation="relation6"/>
+    <link port="Merge.output" relation="relation2"/>
+    <link port="SingleEvent2.output" relation="relation3"/>
+    <link port="Const.output" relation="relation6"/>
+    <link port="Const.trigger" relation="relation9"/>
 </entity>
