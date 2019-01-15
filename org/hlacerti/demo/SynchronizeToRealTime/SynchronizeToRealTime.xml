@@ -2,26 +2,28 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SynchronizeToRealTime" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will run the synchronizeToRealTime example.&#10;Each actor will open one model.&#10;">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 180.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model runs a federation with three federates. The first two federates&#10;communicate. The third, clockHLA, does not communicate, but synchronizes&#10;to real time. This third federate slows the execution of the first two because&#10;it is regulating the passage of time and synchronizing it to real time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 165.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1971, 224, 1226, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1244, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 514]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2311178376275658">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{547.1349650846814, 360.8736630276795}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{547.1349650846814, 364.122742748357}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockHLA federate is the creator of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate has to be launched &#10;in last position (its firing actor has to be the last created).&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockHLA federate (see ClockHLA.xml model). This action will show&#10;the different behavior of the federates and the evolution of the HLA logical time of the federation&#10;when one federate is synchronize to its computer clock (i.e. the realtime) or not.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockHLA federate is the creator of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate has to be launched &#10;last (its firing actor has to be the last created).&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockHLA federate (see ClockHLA.xml model). This action will speed up the&#10;execution of the other two federates.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 255.0]">
         </property>
