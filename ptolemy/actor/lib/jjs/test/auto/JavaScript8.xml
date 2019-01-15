@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="JavaScript8" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={157, 262, 934, 634}, maximized=false}">
     </property>
@@ -26,18 +26,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 25.0]">
         </property>
     </property>
-    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value=" was initialized and should have handled an exception but did not see any.&#10;  in .JavaScript8.TestExceptionAttribute">
-        </property>
-        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="20">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 150.0}">
-        </property>
-    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function fire() {&#10;  error(&quot;foo&quot;);&#10;}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;  error(&quot;foo&quot;);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -54,7 +48,7 @@
         </port>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;JavaScript&quot;, &quot;JavaScript&quot;, &quot;JavaScript&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
         <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -63,12 +57,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;foo&quot;, &quot;foo&quot;, &quot;foo&quot;}">
         </property>
-        <vertex name="vertex1" value="{130.0, 140.0}">
-        </vertex>
+        <property name="requireAllCorrectValues" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 215.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="JavaScript.output" relation="relation3"/>
-    <link port="NonStrictTest.input" relation="relation3"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.error" relation="relation2"/>
+    <link port="JavaScript.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
+    <link port="NonStrictTest2.input" relation="relation2"/>
 </entity>
