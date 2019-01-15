@@ -290,8 +290,6 @@ public class CertiRtig extends NamedObj {
     //    and the Federation was destroyed (see While (!canDestroyRtig) {}).
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
-            System.out.println("CertiRtig: " + _hlaManager.getFullName()
-                    + ": About to terminate RTIG.");
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
@@ -309,6 +307,8 @@ public class CertiRtig extends NamedObj {
                            + " sending destroy (SIGINT) to RTIG. "
                            + "RTIG may take up to 50 seconds to die.");
                 }
+                System.out.println("CertiRtig: " + _hlaManager.getFullName()
+                + ": About to terminate RTIG by sending it SIGINT.");
                 _process.destroy();
                 _process = null;
             }
