@@ -1289,7 +1289,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             }
                             try {
                                 // Give the other federates a chance to finish.
-                                Thread.sleep(200l);
+                                Thread.sleep(2000l);
                             } catch (InterruptedException e1) {
                                 // Ignore.
                             }
