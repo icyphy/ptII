@@ -846,6 +846,12 @@ public class HlaManager extends AbstractInitializableAttribute
             _certiRtig = new CertiRtig(this, _debugging);
             _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
             _certiRtig.exec();
+            // Give the RTIG some time start up.
+            try {
+                Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+                // Ignore
+            }
 
             if (_certiRtig.isAlreadyLaunched()) {
                 // certiRtig should already have terminated the process.
@@ -1327,16 +1333,23 @@ public class HlaManager extends AbstractInitializableAttribute
 
                     // HLA Reporter support.
                     _hlaReporter = null;
-
-                    // Terminate RTIG subprocess.
-                    if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
-                        if (_debugging) {
-                            _hlaDebug("wrapup() - "
-                                    + "Killing the RTIG process (if authorized by the system)");
+                    
+                    // Close the connection socket connection between jcerti (the Java
+                    // proxy for the ambassador) and certi.
+                    try {
+                        // Sadly, this nondeterministically triggers an IOException:
+                        // _rtia.closeConnexion();
+                    } finally {
+                        // Terminate RTIG subprocess.
+                        if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
+                            if (_debugging) {
+                                _hlaDebug("wrapup() - "
+                                        + "Killing the RTIG process (if authorized by the system)");
+                            }
+                            _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
+                            System.out.println("*********** Sending kill message to RTIG.");
+                            _certiRtig.terminateProcess();
                         }
-                        _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
-                        System.out.println("*********** Sending kill message to RTIG.");
-                        _certiRtig.terminateProcess();
                     }
                     if (_debugging) {
                         _hlaDebug("-----------------------");
