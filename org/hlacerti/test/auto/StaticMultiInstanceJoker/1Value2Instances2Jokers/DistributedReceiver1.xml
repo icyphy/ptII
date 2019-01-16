@@ -2,49 +2,21 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedReceiver1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 100.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 101, 916, 737}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 114, 916, 737}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[682, 627]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8809269724485009">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3261539054520226">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{293.41640624999997, 339.6758521670387}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstanceJoker&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstanceJoker.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="hlaReportPath" class="ptolemy.data.expr.FileParameter" value="testsResults">
-            <display name="HLA report folder path"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 25.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.36425781249994, 301.17740449451264}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -62,7 +34,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 80.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -81,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 95.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -91,19 +63,29 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 295.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver12Joker">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="StaticMultiInstanceJoker">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr), Janette Cardoso&#10;">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstanceJoker.fed">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 0.0]">
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender12Joker">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 105.0]">
         </property>
     </property>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
@@ -119,7 +101,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-17.96406249999997, 147.37608695652173}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 150.0]">
         </property>
     </entity>
     <entity name="HlaSub2" class="org.hlacerti.lib.HlaSubscriber">
@@ -135,7 +117,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-22.96406249999997, 442.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 385.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - val" class="ptolemy.actor.lib.gui.Display">
@@ -143,7 +125,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{542.0359375, 467.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[422.3121673583985, 385.5882909360139]">
         </property>
     </entity>
     <entity name="HlaSub1 - val" class="ptolemy.actor.lib.gui.Display">
@@ -151,7 +133,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{532.0359375, 187.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[416.06042785644536, 168.77944541599436]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Value" class="ptolemy.actor.lib.Test">
@@ -159,13 +141,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{542.0359375, 122.37608695652173}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 110.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Time" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 3.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{537.0359375, 247.37608695652173}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 225.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Microstep" class="ptolemy.actor.lib.Test">
@@ -173,21 +155,21 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{537.0359375, 317.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 285.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{207.03593750000005, 222.37608695652173}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[208.50242156982426, 202.54783988620923]">
         </property>
     </entity>
     <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{212.03593750000005, 292.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[211.29876251220708, 263.0255544247834]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{372.03593750000005, 167.37608695652173}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 155.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -207,16 +189,16 @@
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{212.03593750000005, 502.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 430.0]">
         </property>
     </entity>
     <entity name="CurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{217.03593750000005, 572.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[202.96406249999995, 487.6239130434783]">
         </property>
     </entity>
     <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{377.03593750000005, 447.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 375.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -239,13 +221,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{542.0359375, 597.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 500.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - test - Time" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 1.0, 3.0, 3.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{542.0359375, 527.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 440.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - test - Value" class="ptolemy.actor.lib.Test">
@@ -253,13 +235,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{542.0359375, 402.3760869565217}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 350.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{102.03593750000003, 147.37608695652173}">
+        <vertex name="vertex1" value="[165.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -267,7 +249,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{102.03593750000003, 442.3760869565217}">
+        <vertex name="vertex1" value="[157.4825317382813, 388.2208135190217]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -275,25 +257,25 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{277.03593750000005, 212.37608695652173}">
+        <vertex name="vertex1" value="[250.0, 200.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{337.03593750000005, 292.3760869565217}">
+        <vertex name="vertex1" value="[265.0, 265.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{352.03593750000005, 572.3760869565217}">
+        <vertex name="vertex1" value="[265.0, 490.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{307.03593750000005, 502.3760869565217}">
+        <vertex name="vertex1" value="[245.0, 430.0]">
         </vertex>
     </relation>
     <link port="HlaSub.output" relation="relation"/>
