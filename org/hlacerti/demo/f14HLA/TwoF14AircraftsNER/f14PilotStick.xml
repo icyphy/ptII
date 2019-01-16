@@ -4,13 +4,13 @@
 <entity name="f14PilotStick" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={493, 268, 638, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={681, 268, 758, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[404, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[524, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1720213929379335">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{95.08566907313488, 129.97292212041881}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.27927386698306, 129.97292212041881}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -120,25 +120,19 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;PilotStick&quot;">
-            <display name="Federate's name"/>
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="PilotStick">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;F14fleet&quot;">
-            <display name="Federation's name"/>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="F14fleet">
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
-            <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
-            <display name="lookahead (s)"/>
         </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingA&quot;">
-            <display name="Synchronization point name"/>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="PilotStick">
         </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, -60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -45.0]">
         </property>
     </property>
     <entity name="PilotStick" class="ptolemy.actor.TypedCompositeActor">

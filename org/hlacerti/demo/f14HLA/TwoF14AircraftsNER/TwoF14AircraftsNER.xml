@@ -1,13 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="f14HlaNER" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+<entity name="TwoF14AircraftsNER" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates simulating two&#10;aircrafts flying in same aerial space; they do not exchange data.&#10;&#10;To run the F14 distributed simulation, click on each of the 6&#10;links below in the order they appear:&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This file contains links to the Ptolemy federates simulating two&#10;aircraft flying in same aerial space; they do not exchange data.&#10;&#10;To run the F14 distributed simulation, click on each of the 6&#10;links below in the order they appear:&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 60.0}">
         </property>
@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 708, 381}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 23, 708, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 271]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9081027096494666">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0714775392386795">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.13267796106607, 207.70621143766192}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{225.52343750000003, 302.92241379310343}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
@@ -79,7 +79,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PilotStick Model (Synchronizatio Point register)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 310.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14PilotStick.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -108,7 +108,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com&#10;               Janette Cardoso - SUPAERO ISAE - janette.cardoso@isae.fr&#10;               Pierre Siron - SUPAERO ISAE / ONERA - pierre.siron@isae.fr&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 370.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">

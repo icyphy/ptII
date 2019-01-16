@@ -4,7 +4,7 @@
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={542, 268, 898, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={542, 147, 898, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[664, 522]">
     </property>
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -15.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -63,22 +63,19 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;AutoPilot&quot;">
-            <display name="Federate's name"/>
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="AutoPilot">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;F14fleet&quot;">
-            <display name="Federation's name"/>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="F14fleet">
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
-            <display name="Federate Object Model (.fed) file path"/>
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
-            <display name="lookahead (s)"/>
         </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingA&quot;">
-            <display name="Synchronization point name"/>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="PilotStick">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, -15.0]">
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, -10.0]">
         </property>
     </property>
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
@@ -518,11 +515,11 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>AutoPilot2 Elevator Command</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.005" max="11.995000000000001"/>
-<yRange min="-4.2411515600128" max="3.0325716925957744"/>
+<yRange min="-1.6878121449772725" max="1.1618434660573933"/>
 </plot>?>
             </configure>
         </entity>
