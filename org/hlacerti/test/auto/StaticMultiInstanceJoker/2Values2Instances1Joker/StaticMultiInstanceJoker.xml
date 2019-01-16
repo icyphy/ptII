@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={733, 37, 670, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.660460503703641">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7542399093107531">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{331.5022523005804, 446.6083407931859}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{294.3889675140381, 473.41455078125}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
@@ -89,9 +89,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test - 2Values2Instances1Joker&#10;&#10;Feature:&#10;             Static HLA multi instance with Joker wildcard&#10;&#10;Expected result:&#10;             This test must succeed: the exception is caught by actor &#10;             TestExceptionAttribute (red star in DistributedReceiver)&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;----------------------------------------------------------&#10;Model type: &#10;             Test - 2Values2Instances1Joker&#10;Feature:&#10;             Static HLA multi instance with Joker wildcard&#10;Expected result:&#10;             This test must succeed: the exception is caught by actor &#10;             TestExceptionAttribute (red star in DistributedReceiver)&#10;-----------------------------------------------------------&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 130.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -100,16 +100,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance with joker usage. &#10;&#10;The test shows:&#10;&#10;- a sender which publishes updates of the attribute values 'val1'&#10;and 'val2' using  two instance class names 'instance1' and 'instance2'.&#10;&#10;- a receiver which deploys two HLA subscribers to receive updates&#10;of attribute values 'val1' and 'val2' using only 'joker_1' as wildcard.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 310.0]">
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 795.0]">
         </property>
     </property>
     <property name="Director" class="ptolemy.actor.Director">
@@ -125,6 +115,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[7.985454545454843, 593.6636363636369]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model does not work.&#10;There is a problem with the exception.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 610.0]">
         </property>
     </property>
     <entity name="DistributedReceiver" class="ptolemy.vergil.actor.lib.VisualModelReference">
