@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DistributedSender1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DistributedSender11" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -9.999999999999972]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 40.0]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -45,28 +45,47 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 73, 784, 399}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={553, 269, 766, 447}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[550, 289]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 337]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4972158705532113">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.447308674868104">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{116.490966796875, 75.35457763671874}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{126.490966796875, 95.14994022764009}">
+    </property>
+    <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 25.0]">
+        </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2nd federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 40.0]">
         </property>
     </property>
-    <property name="period_dc2" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="hla_value_dc1" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -82,30 +101,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 45.0]">
-        </property>
-    </property>
-    <property name="hla_value_dc2" class="ptolemy.data.expr.Parameter" value="20">
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Sender1">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Sender11">
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="StaticMultiInstanceJoker">
         </property>
@@ -138,46 +138,46 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
         </property>
     </property>
-    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period_dc2">
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period_dc1">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc2}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 95.0]">
         </property>
     </entity>
-    <entity name="HlaPublisher2" class="org.hlacerti.lib.HlaPublisher">
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val2&quot;">
+    <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
             <display name="Name of the attribute to receive"/>
         </property>
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance2&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 95.0]">
         </property>
     </entity>
-    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="hla_value_dc2">
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="hla_value_dc1">
         </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="period_dc2">
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="period_dc1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 110.0]">
         </property>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DiscreteClock2.output" relation="relation4"/>
-    <link port="HlaPublisher2.input" relation="relation"/>
-    <link port="Ramp2.output" relation="relation"/>
-    <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="HlaPublisher.input" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation3"/>
 </entity>
