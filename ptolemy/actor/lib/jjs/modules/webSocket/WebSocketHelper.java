@@ -341,14 +341,14 @@ public class WebSocketHelper extends VertxHelperBase {
         // in the Vert.x thread, so blocking is OK. We need to stall
         // execution of the model to not get ahead of the capability.
 
-        // FIXME: Spotbugs says that there is inconsistent synchronization here because
-        // access to _webSocket is not locked.
+        // Spotbugs says that there is inconsistent synchronization here because
+        // access to _webSocket is not locked.  Maybe fixed with WebSocketHelper.this.
         if (_webSocket.writeQueueFull()) {
             // Blocking _must not_ be done in the verticle.
             // If this is called outside the director thread, then defer to the
             // director thread.
             _issueResponse(() -> {
-                synchronized (this) {
+                synchronized (WebSocketHelper.this) {
                     try {
                         while (isOpen() && _webSocket.writeQueueFull()) {
                             _actor.log(
