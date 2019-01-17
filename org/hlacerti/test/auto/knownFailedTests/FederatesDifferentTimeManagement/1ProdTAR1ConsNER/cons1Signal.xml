@@ -11,18 +11,20 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 437, 665, 407}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={72, 268, 665, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 297]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[431, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2252486260928124">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{81.80186577418343, 129.1347116441583}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{81.80186577418343, 220.95281092964828}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
