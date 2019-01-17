@@ -123,7 +123,7 @@ public class VisualModelReference extends ModelReference {
 
         // Set the options for the parameters.
         openOnFiring.setExpression("do not open");
-        openOnFiring.addChoice("doNotOpen");
+        openOnFiring.addChoice("do not open");
         openOnFiring.addChoice("open in Vergil");
         openOnFiring.addChoice("open in Vergil (full screen)");
 
