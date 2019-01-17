@@ -1,0 +1,27 @@
+;; MultiDataTypes 
+
+(Fed
+  (Federation MultiDataTypesF)
+  (FedVersion v1.3)
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class HLAobjectClass
+		(Attribute val RELIABLE TIMESTAMP)
+		(Attribute val1 RELIABLE TIMESTAMP)
+		(Attribute val2 RELIABLE TIMESTAMP)
+		(Attribute val3 RELIABLE TIMESTAMP)
+		(Attribute val4 RELIABLE TIMESTAMP)
+		(Attribute val5 RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)
