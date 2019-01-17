@@ -11,6 +11,8 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 50.0]">
@@ -127,8 +129,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="3.0" max="3.0"/>
-<yRange min="0.0" max="0.0"/>
+<xRange min="3.0" max="12.0"/>
+<yRange min="0.0" max="3.0"/>
 <default connected="no"/>
 </plot>?>
         </configure>
