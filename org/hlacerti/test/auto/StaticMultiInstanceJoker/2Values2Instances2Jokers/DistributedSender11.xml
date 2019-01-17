@@ -50,7 +50,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={671, 172, 766, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={665, 156, 766, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 522]">
     </property>
@@ -120,6 +120,8 @@
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
         </property>
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender1">
+        </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 20.0]">
         </property>
