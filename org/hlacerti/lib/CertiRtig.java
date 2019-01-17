@@ -34,7 +34,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -154,7 +153,6 @@ public class CertiRtig extends NamedObj {
      */
     public void initialize(String directory) throws IllegalActionException {
         _directoryAsFile = null;
-        _isAlreadyLaunched = false;
         _runtime = Runtime.getRuntime();
 
         // Retrieve CERTI_HOME environment variable.
@@ -257,13 +255,6 @@ public class CertiRtig extends NamedObj {
                     "CertiRtig: initialize(): No such directory: "
                             + _directoryAsFile);
         }
-    }
-
-    /** Indicate if the RTIG process is already running somewhere else.
-     *  @return True if the RTIG is launched somewhere else, False otherwise.
-     */
-    public boolean isAlreadyLaunched() {
-        return _isAlreadyLaunched;
     }
 
     /** Indicate if the current subprocess is running.
@@ -408,23 +399,6 @@ public class CertiRtig extends NamedObj {
             if (_debugging) {
                 _debug("_read(): " + _stringBuffer.toString());
             }
-
-            if (_stringBuffer.toString()
-                    .matches(".*SocketUDP:\\sBind:\\sAddress\\s"
-                            + "already\\sin\\suse\n.*")) {
-                _isAlreadyLaunched = true;
-
-                // If another is running, we don't need this subprocess anymore,
-                // so destroy it. This can happen if a first Ptolemy federate
-                // already lauched the rtig, or if it was lauched in the shell
-                // before lauching any Ptolemy federate.
-                try {
-                    terminateProcess();
-                } catch (IllegalActionException e) {
-                    throw new InternalErrorException(_actor, e, getName()
-                            + " failed to execute terminateProcess().");
-                }
-            }
         }
 
         // The actor associated with this stream reader.
@@ -476,7 +450,4 @@ public class CertiRtig extends NamedObj {
     /** A reference to the associated {@link HlaManager}.
      */
     private HlaManager _hlaManager;
-
-    /** Indicate if another RTIG subprocess is already running. */
-    private Boolean _isAlreadyLaunched;
 }
