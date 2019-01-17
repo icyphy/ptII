@@ -4,7 +4,7 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 670, 877}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 670, 877}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 767]">
     </property>
@@ -97,9 +97,9 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance with joker usage. &#10;The test shows:&#10;&#10;- two senders: Sender1 sends updates of attribute 'val1' and&#10;Sender11 of attribute 'val2'&#10;&#10;- a receiver which deploys two HLA subscribers bind to attribute&#10; values 'val1' and 'val2'.  'joker_1' and 'joker_2' are used as wildcard&#10;to bind any discovered instance class name (the order is not fixed). ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance with joker usage. &#10;The test shows:&#10;&#10;- two senders: Sender1 sends updates of attribute 'val1' and&#10;Sender11 of attribute 'val2'&#10;&#10;- a receiver which deploys two HLA subscribers bind to attribute&#10; values 'val1' and 'val2'.  'joker_1' and 'joker_2' are used as wildcard&#10;to bind any discovered instance class name (the order is not fixed,&#10;but Ptolemy topological sort guarantees that a joker is always&#10;binded to the same instance). ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
         </property>
     </property>
     <property name="Director" class="ptolemy.actor.Director">
@@ -146,16 +146,6 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
             </property>
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo works if each model is&#10;run &quot;by hand&quot; (blue links above), &#10;but only 2 VisualModelReference&#10;are open if the top level model is run.&#10;&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 685.0]">
         </property>
     </property>
     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
