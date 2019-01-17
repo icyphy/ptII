@@ -705,10 +705,10 @@ public class ModelReference extends TypedAtomicActor
             }
 
             _manager.waitForCompletion();
-        }
 
-        // Test auto/ModelReference2.xml seems to end up here with
-        _manager = null;
+            // Test auto/ModelReference2.xml seems to end up here with
+            _manager = null;
+        }
 
         return super.postfire();
     }
@@ -761,6 +761,16 @@ public class ModelReference extends TypedAtomicActor
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        if (_manager != null) {
+            _manager.finish();
+
+            // Wait for the finish.
+            if (_debugging) {
+                _debug("** Waiting for completion of execution.");
+            }
+
+            _manager.waitForCompletion();
+        }
         _alreadyReadInputs = false;
 
         if (_throwable != null) {
