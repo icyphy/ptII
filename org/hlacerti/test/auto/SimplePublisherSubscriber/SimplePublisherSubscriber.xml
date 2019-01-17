@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SimplePublisherSubscriber" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={766, 64, 921, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={519, 64, 921, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[687, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6390654729420788">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{498.67968749999994, 89.58493353028075}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{498.67968749999994, 89.58493353028081}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -20,16 +20,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model Type: &#10;             Test&#10;&#10;Actions: &#10;            1PublisherBadAttributeName:  a Publisher using a bad HLA attribute name, success&#10;            1PublisherBadClassName: a Publisher using a bad HLA class name, success&#10;            1Subscriber1PublisherNoInstanceClassName: a Publisher and a Subscriber using no instance class name, success&#10;            1SubscriberBadAttributeName: a Subscriber using a bad HLA attribute name, success&#10;            1SubscriberBadClassName: a Subscriber using a bad HLA class name, success&#10;&#10;Expected result:&#10;             The model must show an error&#10;&#10;----------------------------------------------------------------&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, -315.0]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie - http://www.ciele.fr">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 290.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -45,7 +35,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 140.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1PublisherBadAttributeName/1PublisherBadAttributeName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="/Users/j.cardoso/logiciels/pthla/ptII/org/hlacerti/test/auto/1PublisherBadAttributeN.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -76,7 +66,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 160.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1SubscriberBadAttributeName/1SubscriberBadAttributeName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="/Users/j.cardoso/logiciels/pthla/ptII/org/hlacerti/test/auto/1SubscriberBadAttributeN.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -115,7 +105,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 180.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1PublisherBadClassName/1PublisherBadClassName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="/Users/j.cardoso/logiciels/pthla/ptII/org/hlacerti/test/auto/1PublisherBadClassN.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -146,7 +136,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 200.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1SubscriberBadClassName/1SubscriberBadClassName.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="/Users/j.cardoso/logiciels/pthla/ptII/org/hlacerti/test/auto/1SubscriberBadClassN.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
