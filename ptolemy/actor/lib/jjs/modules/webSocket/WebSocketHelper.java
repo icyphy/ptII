@@ -350,10 +350,17 @@ public class WebSocketHelper extends VertxHelperBase {
             _issueResponse(() -> {
                 synchronized (this) {
                     try {
-                        if (isOpen() && _webSocket.writeQueueFull()) {
+                        while (isOpen() && _webSocket.writeQueueFull()) {
                             _actor.log(
                                     "WARNING: Send buffer is full. Stalling to allow it to drain.");
-                            wait();
+                            // If the socket buffer does not drain,
+                            // this will block the director thread.
+                            wait(1000L);
+                            if (_actor.getDirector().isStopRequested()) {
+                                // There is a request to stop execution of the model.
+                                // Give up on this socket.
+                                break;
+                            }
                         }
                     } catch (InterruptedException e) {
                         _error("Buffer is full, and wait for draining was interrupted.",
