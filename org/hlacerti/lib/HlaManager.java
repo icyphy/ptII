@@ -256,6 +256,12 @@ import ptolemy.kernel.util.Workspace;
  * federate, .... see {@link CertiRtig}. 
  * <b>FIXME: explain why the choice of launch the rtig by the federate was made? </b>
  * </p>
+ * <p>
+ * This attribute provides extensive debug output. Listen to the attribute to get
+ * the details. Some of these messages, primarily those related to the lifecycle of
+ * the interaction with the RTI, are also printed to standard out, even if you are
+ * listening to the attribute.
+ * </p>
  * <p><b>References</b>:</p>
  *
  * <p>[1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
@@ -695,7 +701,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             _hlaReporter.initializeReportVariables(_hlaLookAHead, _hlaTimeStep,
-                    _hlaTimeUnitValue, _startTime, _director.getModelStopTime(),
+                    _hlaTimeUnitValue, 0.0, _director.getModelStopTime(),
                     _federateName, fedFile.asFile().getPath(), _isSynchronizationPointRegister,
                     _timeStepped, _eventBased);
 
@@ -703,55 +709,44 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaAttributesToPublish);
         }
 
-        // Get a link to the RTI.
-        final RtiFactory factory;
-        try {
-            factory = RtiFactoryFactory.getRtiFactory();
-        } catch (RTIinternalError e) {
-            throw new IllegalActionException(this, e,
-                    "RTIinternalError: " + e.getMessage());
-        }
-        try {
-            _hlaDebugSys("Creating RTI Ambassador");
-            _rtia = (CertiRtiAmbassador) factory.createRtiAmbassador();
-            _hlaDebugSys("RTI Ambassador created.");
-        } catch (Exception e) {
-            throw new IllegalActionException(this, e, "RTIinternalError. "
-                    + "If the error is \"Connection to RTIA failed\", "
-                    + "then the problem is likely that the RTIG "
-                    + "is not running. You could try setting launchRTIG to true. "
-                    + "Note that the RTIG relies on a number of environment "
-                    + "variables defined in $CERTI_HOME/share/scripts/myCERTI_env.sh.");
-        }
-
         // Create the Federation if one does not already exist.
         _isFederationCreator = false;
         try {
-            _hlaDebugSys("Creating Federation execution.");
+            _hlaDebug("Creating Federation execution.");
             // Second argument is the location of the FED file on the machine
             // running the RTIG, which is not necessarily the same as the machine
             // running this federate.
             _rtia.createFederationExecution(_federationName,
                     fedFileOnRTIG.stringValue());
             _isFederationCreator = true;
-            _hlaDebugSys("createFederationExecution: FED file on RTIG machine = "
+            _hlaDebug("createFederationExecution: FED file on RTIG machine = "
                     + fedFileOnRTIG.stringValue());
         } catch (FederationExecutionAlreadyExists e) {
-            if (_debugging) {
-                _hlaDebug("initialize() - Federation execution already exists. No need to create one.");
-            }
+            _hlaDebug("initialize() - Federation execution already exists. No need to create one.");
         } catch (CouldNotOpenFED e) {
-            _hlaDebugSys("createFederationExecution: RTIG failed to open FED file: "
+            _hlaDebug("createFederationExecution: RTIG failed to open FED file: "
                         + fedFileOnRTIG.stringValue());
+            String more = "";
+            if (_preexistingRTI) {
+                more = "\nThis federate expected to launch its own RTIG (launchRTIG is true)\n"
+                        + "but a pre-existing RTIG was found and we are trying to use that one.\n"
+                        + "That pre-existing RTIG cannot find this FED file.\n"
+                        + "Try killing the pre-existing RTIG so that a new one can start.\n"
+                        + "Alternatively, adjust the CERTI_FOM_PATH used by the RTIG.";
+            }
             throw new IllegalActionException(this, e,
-                    "RTIG could not open FED file: " + fedFileOnRTIG.stringValue());
+                    "RTIG could not find FED file: " + fedFileOnRTIG.stringValue() + more);
         } catch (ErrorReadingFED e) {
+            _hlaDebug("createFederationExecution: RTIG failed to open FED file: "
+                    + fedFileOnRTIG.stringValue());
             throw new IllegalActionException(this, e,
                     "Error reading FED file.");
         } catch (RTIinternalError e) {
+            _hlaDebug("RTI internal error.");
             throw new IllegalActionException(this, e,
                     "RTI internal error.");
         } catch (ConcurrentAccessAttempted e) {
+            _hlaDebug("Concurrent access error.");
             throw new IllegalActionException(this, e,
                     "Concurrent access error.");
         }
@@ -760,13 +755,10 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Join the Federation.
         try {
-            _hlaDebugSys("Joining the federation.");
+            _hlaDebug("Joining the federation.");
             _rtia.joinFederationExecution(_federateName, _federationName,
                     _federateAmbassador);
-
-            if (_debugging) {
-                _hlaDebug("initialize() - federation joined");
-            }
+            _hlaDebug("initialize() - federation joined");
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
                     "RTIexception: " + e.getMessage());
@@ -774,8 +766,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Initialize the Federate Ambassador.
         try {
-            _hlaDebugSys("Initializing the RTI Ambassador");
+            _hlaDebug("Initializing the RTI Ambassador");
             _federateAmbassador.initialize(_rtia);
+            _hlaDebug("RTI Ambassador initialized.");
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
                     "RTIexception: " + e.getMessage());
@@ -813,55 +806,84 @@ public class HlaManager extends AbstractInitializableAttribute
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _startTime = System.nanoTime();
 
-        // XXX: FIXME: remove after debug
         if (System.getenv("CERTI_FOM_PATH") != null) {
-            _hlaDebugSys("preinitialize() - "
+            _hlaDebug("preinitialize() - "
                     + "CERTI_FOM_PATH = " + System.getenv("CERTI_FOM_PATH"));
         }
 
-        if (((BooleanToken)launchRTIG.getToken()).booleanValue()) {
-            // Request to launch a local RTI.
-            // Check for a compatible CERTI_HOST environment variable.
-            String certiHost = System.getenv("CERTI_HOST");
-            if (certiHost != null
-                    && !certiHost.equals("localhost")
-                    && !certiHost.equals("127.0.0.1")) {
-                throw new IllegalActionException(this,
-                        "The environment variable CERTI_HOST, which has value: "
-                        + certiHost
-                        + ", is neither localhost nor 127.0.0.1."
-                        + " We cannot launch an RTI at that address. "
-                        + "You may want to set launchRTIG to false.");
+        // First, check whether there is already an RTI running.
+        _factory = null;
+        _certiRtig = null;
+        _rtia = null;
+        _preexistingRTI = false;
+        try {
+            _factory = RtiFactoryFactory.getRtiFactory();
+        } catch (RTIinternalError e) {
+            throw new IllegalActionException(this, e, "Getting RTI factory failed.");
+        }
+        try {
+            _hlaDebug("Creating RTI Ambassador");
+            _rtia = (CertiRtiAmbassador) _factory.createRtiAmbassador();
+            if (((BooleanToken)launchRTIG.getToken()).booleanValue()) {
+                // The model is expecting to launch its own RTIG, but there is
+                // already one running. That one is unlikely to know about the
+                // FED files used by this federation, so we abort here.
+                _hlaDebug("****** WARNING: Expected to launch a new RTIG, "
+                        + "but one is running already. Will try using that one.");
+                _preexistingRTI = true;
             }
-            if (certiHost == null) {
-                certiHost = "localhost";
-            }
-            if (_debugging) {
-                _hlaDebug("preinitialize() - Launching CERTI RTI on "
-                        + "CERTI_HOST = " + certiHost);
-            }
-            // Try to launch the HLA/CERTI RTIG subprocess.
-            _certiRtig = new CertiRtig(this, _debugging);
-            _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
-            _certiRtig.exec();
-            // Give the RTIG some time start up.
-            try {
-                Thread.sleep(1000L);
-            } catch (InterruptedException e) {
-                // Ignore
-            }
-
-            if (_certiRtig.isAlreadyLaunched()) {
-                // certiRtig should already have terminated the process.
-                // _certiRtig.terminateProcess();
-                _certiRtig = null;
-
-                if (_debugging) {
-                    _hlaDebug("preinitialize() - "
-                            + "Did not launch RTIG because another one is running.");
+            _hlaDebug("RTI Ambassador created.");
+        } catch (Exception e) {
+            // If this fails, there is likely no RTI running.
+            _hlaDebug("preinitialize() - **** No RTI running.");
+            // If set to create one, the create one.
+            if (((BooleanToken)launchRTIG.getToken()).booleanValue()) {
+                
+                // Request to launch a local RTI.
+                // Check for a compatible CERTI_HOST environment variable.
+                String certiHost = System.getenv("CERTI_HOST");
+                if (certiHost != null
+                        && !certiHost.equals("localhost")
+                        && !certiHost.equals("127.0.0.1")) {
+                    throw new IllegalActionException(this,
+                            "The environment variable CERTI_HOST, which has value: "
+                            + certiHost
+                            + ", is neither localhost nor 127.0.0.1."
+                            + " We cannot launch an RTI at that address. "
+                            + "You may want to set launchRTIG to false.");
                 }
+                if (certiHost == null) {
+                    certiHost = "localhost";
+                }
+                _hlaDebug("preinitialize() - Launching CERTI RTI "
+                        + " in directory "
+                        + System.getProperty("user.dir"));
+                // Try to launch the HLA/CERTI RTIG subprocess.
+                _certiRtig = new CertiRtig(this, _debugging);
+                _certiRtig.initialize(fedFile.asFile().getAbsolutePath());
+                _certiRtig.exec();
+                _hlaDebug("RTI launched.");
+                // Give the RTIG some time start up.
+                // FIXME: Do we need this?
+                try {
+                    Thread.sleep(500L);
+                } catch (InterruptedException ex) {
+                    // Ignore
+                }
+                try {
+                    _hlaDebug("Creating RTI Ambassador");
+                    _rtia = (CertiRtiAmbassador) _factory.createRtiAmbassador();
+                    _hlaDebug("RTI Ambassador created.");
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, ex,
+                            "Failed to create RTI Ambassador.");
+                }
+            } else {
+                throw new IllegalActionException(this, "Could not connect to an RTI. "
+                        + "Consider setting launchRTIG to true.\n"
+                        + "Note that the RTIG relies on a number of environment "
+                        + "variables defined in $CERTI_HOME/share/scripts/myCERTI_env.sh.");
             }
         }
     }
@@ -920,19 +942,6 @@ public class HlaManager extends AbstractInitializableAttribute
                         + " -> SKIP RTI -> returning stopTime");
             }
             return _stopTime;
-        }
-
-        // XXX: FIXME: see why this is called again after STOPTIME ?
-        // XXX: FIXME: may be to removed since the above if test ?
-        // This test is used to avoid exception when the RTIG subprocess is
-        // shutdown before the last call of this method.
-        if (_rtia == null) {
-            if (_debugging) {
-                _hlaDebug("    proposeTime(" + strProposedTime
-                        + ") - called but the _rtia is null "
-                        + " -> SKIP RTI ->  returning proposedTime");
-            }
-            return proposedTime;
         }
 
         // If the proposedTime is equal to current time
@@ -1200,9 +1209,7 @@ public class HlaManager extends AbstractInitializableAttribute
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (_enableHlaReporter) {
-            if (_debugging) {
-                _hlaDebug(_hlaReporter.displayAnalysisValues());
-            }
+            _hlaDebug(_hlaReporter.displayAnalysisValues());
             _hlaReporter.calculateRuntime();
             _hlaReporter.writeNumberOfHLACalls();
             _hlaReporter.writeDelays();
@@ -1213,6 +1220,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         try {
             // Unsubscribe to HLA attributes.
+            _hlaDebug("wrapup() - Unsubscribing to HLA attributes.");
             for (Object[] obj : _hlaAttributesToSubscribeTo.values()) {
                 try {
                     _rtia.unsubscribeObjectClass(_getClassHandleFromTab(obj));
@@ -1229,6 +1237,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             // Unpublish HLA attributes.
+            _hlaDebug("wrapup() - Unpublishing HLA attributes.");
             for (Object[] obj : _hlaAttributesToPublish.values()) {
                 try {
                     _rtia.unpublishObjectClass(_getClassHandleFromTab(obj));
@@ -1248,14 +1257,13 @@ public class HlaManager extends AbstractInitializableAttribute
             try {
                 // _rtia can be null if we are exporting to JNLP.
                 if (_rtia != null) {
+                    _hlaDebug("wrapup() - Resigning Federation execution");
                     _rtia.resignFederationExecution(
                             ResignAction.DELETE_OBJECTS_AND_RELEASE_ATTRIBUTES);
-                }
-                if (_debugging) {
                     _hlaDebug("wrapup() - Resigned Federation execution");
                 }
-                _hlaDebugSys("wrapup() - Resigned Federation execution");
             } catch (RTIexception e) {
+                _hlaDebug("wrapup() - RTIexception.");
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
             } finally {
@@ -1269,28 +1277,20 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         // Destroy federation execution.
                         try {
+                            // CERTI seems to require some time for resigning the
+                            // federation, done above, to settle.
+                            // Thread.sleep(3000L);
+                            _hlaDebug("wrapup() - Destroying the federation.");
                             _rtia.destroyFederationExecution(_federationName);
-
                             federationIsActive = false;
-
-                            if (_debugging) {
-                                _hlaDebug("wrapup() - Federation destroyed by this federate.");
-                            }
-                            _hlaDebugSys("wrapup() - Federation destroyed by this federate.");
+                            _hlaDebug("wrapup() - Federation destroyed by this federate.");
 
                         } catch (FederatesCurrentlyJoined e) {
-                            if (_debugging) {
-                                _hlaDebug("wrapup() - Federates are still joined to the federation."
-                                        + " Wait some time and try again to destroy the federation.");
-                            }
-                            _hlaDebugSys("wrapup() - Federates are still joined to the federation."
+                            _hlaDebug("wrapup() - Federates are still joined to the federation."
                                     + " Wait some time and try again to destroy the federation.");
 
                             if (_director.isStopRequested()) {
-                                if (_debugging) {
-                                    _hlaDebug("wrapup() - Federate was stopped by the user.");
-                                }
-                                _hlaDebugSys("wrapup() - Federate was stopped by the user.");
+                                _hlaDebug("wrapup() - Federate was stopped by the user.");
                                 break;
                             }
                             try {
@@ -1302,13 +1302,8 @@ public class HlaManager extends AbstractInitializableAttribute
                         } catch (FederationExecutionDoesNotExist e) {
                             // No more federation. Some other federate must have
                             // succeeded in destroying it.
-                            if (_debugging) {
-                                _hlaDebug("wrapup() - Federation was destroyed by some other federate.");
-                            }
-                            _hlaDebugSys("wrapup() - Federation was destroyed by some other federate.");
-
+                            _hlaDebug("wrapup() - Federation was destroyed by some other federate.");
                             federationIsActive = false;
-
                         } catch (RTIinternalError e) {
                             throw new IllegalActionException(this, e,
                                     "RTIinternalError: " + e.getMessage());
@@ -1338,21 +1333,21 @@ public class HlaManager extends AbstractInitializableAttribute
                     // proxy for the ambassador) and certi.
                     try {
                         // Sadly, this nondeterministically triggers an IOException:
-                        // _rtia.closeConnexion();
+                        _rtia.closeConnexion();
                     } finally {
                         // Terminate RTIG subprocess.
                         if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
-                            if (_debugging) {
-                                _hlaDebug("wrapup() - "
-                                        + "Killing the RTIG process (if authorized by the system)");
+                            // CERTI seems to require some time for destroying the
+                            // federation, done above, to settle.
+                            try {
+                                Thread.sleep(1000L);
+                            } catch (InterruptedException e) {
+                                // Continue to the kill.
                             }
-                            _hlaDebugSys("Killing the RTIG process (if authorized by the system)");
-                            System.out.println("*********** Sending kill message to RTIG.");
+                            _hlaDebug("**** Killing the RTIG process (if authorized by the system)");
                             _certiRtig.terminateProcess();
                         }
-                    }
-                    if (_debugging) {
-                        _hlaDebug("-----------------------");
+                        _hlaDebug("----------------------- End execution.");
                     }
                 }
             }
@@ -1605,20 +1600,18 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** Customized debug message for {@link #HlaManager}.
+     *  This will send the message to debug listeners if there are any.
+     *  Otherwise, it sends the message to standard out.
      *  @param reason The reason to print
      */
     private void _hlaDebug(String reason) {
         String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
-        _debug(dbgHeader + reason);
+        if (_debugging) {
+            _debug(dbgHeader + reason);
+        } else {
+            System.out.println(dbgHeader + reason);
+        }
     }
-
-    /** Customized system debug message for {@link #HlaManager}.
-     *  @param reason The reason to print
-     */
-    private void _hlaDebugSys(String reason) {
-        String dbgHeader = "Federate: " + _federateName + " - Federation: " + _federationName + " - ";
-        System.out.println(dbgHeader + reason);
-    }    
 
     /** RTI service for time-stepped federate TAR
      *  is used for proposing a time to advance to.
@@ -1642,7 +1635,6 @@ public class HlaManager extends AbstractInitializableAttribute
             _hlaDebug("\n" + "start " + headMsg + " print proposedTime.toString="
                     + proposedTime.toString());
         }
-
         // Algorithm 4 - TAR (naive implementation to be compliant with the algorithm)
 
         // f() => _convertToPtolemyTime()
@@ -1675,7 +1667,6 @@ public class HlaManager extends AbstractInitializableAttribute
                     + certiProposedTime.getTime() + "; h+TS= "
                     + nextPointInTime.getTime() + " @ " + headMsg);
         }
-
         while (certiProposedTime.isGreaterThanOrEqualTo(nextPointInTime)) {
             // Wait the time grant from the HLA/CERTI Federation (from the RTI).
             _federateAmbassador.timeAdvanceGrant = false;
@@ -1714,7 +1705,6 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() //jc: no need
                             + ") by calling tick2() in " + headMsg);
                 }
-
                 try {
                     _rtia.tick2();
 
@@ -2095,13 +2085,11 @@ public class HlaManager extends AbstractInitializableAttribute
      *  point. */
     private boolean _isSynchronizationPointRegister;
 
+    /** RTI factory, set up in preinitialize(). */
+    private RtiFactory _factory;
+    
     /** The simulation stop time. */
     private Time _stopTime;
-
-    /** Represents the instant when the simulation is fully started
-     * (when the last federate starts running).
-     */
-    private static double _startTime;
 
     /** A reference to the enclosing director. */
     private DEDirector _director;
@@ -2136,6 +2124,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Indicates if the HLA reporter is enabled or not. */
     private boolean _enableHlaReporter;
+    
+    /** Indicator that we are trying to use a preexisting RTI when we expected to launch our own. */
+    private boolean _preexistingRTI;
 
     ///////////////////////////////////////////////////////////////////
     ////                    private  methods                       ////
@@ -2615,16 +2606,16 @@ public class HlaManager extends AbstractInitializableAttribute
                     HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj)
                             .getContainer();
 
-                    /*
-                    _hlaDebugSys("INNER callback: reflectAttributeValues():"
-                            + " theObject=" + theObject
-                            + " theAttributes" + theAttributes
-                            + " userSuppliedTag=" + userSuppliedTag
-                            + " theTime=" + theTime
-                            + " classHandle=" + classHandle
-                            + " classInstanceOrJokerName=" + classInstanceOrJokerName
-                            + " HlaSusbcriber=" + hs.getFullName());
-                    */
+                    if (_debugging) {
+                        _hlaDebug("INNER callback: reflectAttributeValues():"
+                                + " theObject=" + theObject
+                                + " theAttributes" + theAttributes
+                                + " userSuppliedTag=" + userSuppliedTag
+                                + " theTime=" + theTime
+                                + " classHandle=" + classHandle
+                                + " classInstanceOrJokerName=" + classInstanceOrJokerName
+                                + " HlaSusbcriber=" + hs.getFullName());
+                    }
 
                     // The tuple (attributeHandle, classHandle, classInstanceName)
                     // allows to identify the object attribute (i.e. one of the HlaSubscribers)
@@ -2675,7 +2666,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         }
                     } catch (ArrayIndexOutOfBounds e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
-                        //_hlaDebugSys(
+                        //_hlaDebug(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION ArrayIndexOutOfBounds");
                         //e.printStackTrace();
 
@@ -2684,7 +2675,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                         + e.getMessage());
                     } catch (IllegalActionException e) {
                         // Java classic exceptions are encapsulated as FederateInternalError to avoid system prints.
-                        //_hlaDebugSys(
+                        //_hlaDebug(
                         //        "INNER callback: reflectAttributeValues(): EXCEPTION IllegalActionException");
                         //e.printStackTrace();
 
@@ -3131,8 +3122,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // The attribute handle set to declare all attributes to publish
                 // for one object class.
-                AttributeHandleSet _attributesLocal = RtiFactoryFactory
-                        .getRtiFactory().createAttributeHandleSet();
+                AttributeHandleSet _attributesLocal = _factory.createAttributeHandleSet();
 
                 // Fill the attribute handle set with all attribute to publish.
                 for (String sPub : hlaPublishersFullnames) {
@@ -3364,8 +3354,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // The attribute handle set to declare all subscribed attributes
                 // for one object class.
-                AttributeHandleSet _attributesLocal = RtiFactoryFactory
-                        .getRtiFactory().createAttributeHandleSet();
+                AttributeHandleSet _attributesLocal = _factory.createAttributeHandleSet();
 
                 for (String sSub : hlaSubscribersFullnames) {
                     try {
