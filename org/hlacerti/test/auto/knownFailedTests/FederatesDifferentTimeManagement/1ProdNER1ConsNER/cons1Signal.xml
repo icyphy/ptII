@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3839312076706491">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{87.3932104712135, 194.42707728910017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{87.39321047121356, 194.42707728910017}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -85,9 +85,9 @@
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
         </property>
-        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="cons1">
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="prod1">
         </property>
-        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.00000000000003, 50.0]">
         </property>
@@ -97,7 +97,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 125.0]">
         </property>
