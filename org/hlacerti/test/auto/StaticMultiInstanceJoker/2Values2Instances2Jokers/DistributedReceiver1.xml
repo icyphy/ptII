@@ -104,6 +104,8 @@
         </property>
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender1">
         </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 50.0]">
