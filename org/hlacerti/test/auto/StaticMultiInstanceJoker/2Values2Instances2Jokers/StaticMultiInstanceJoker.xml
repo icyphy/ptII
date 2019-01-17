@@ -4,13 +4,13 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 22, 670, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 670, 877}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 768]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 767]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8270715466638353">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.53515625, 517.2433061913146}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.53515625, 516.6387635710093}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
@@ -99,7 +99,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance with joker usage. &#10;The test shows:&#10;&#10;- two senders: Sender1 sends updates of attribute 'val1' and&#10;Sender11 of attribute 'val2'&#10;&#10;- a receiver which deploys two HLA subscribers bind to attribute&#10; values 'val1' and 'val2'.  'joker_1' and 'joker_2' are used as wildcard&#10;to bind any discovered instance class name (the order is not fixed). ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 255.0]">
         </property>
     </property>
     <property name="Director" class="ptolemy.actor.Director">
@@ -158,22 +158,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 685.0]">
         </property>
     </property>
-    <entity name="DistributedReceiver" class="ptolemy.vergil.actor.lib.VisualModelReference">
+    <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedReceiver1.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 730.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 595.0]">
         </property>
     </entity>
-    <entity name="DistributedSender" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender1.xml">
+    <entity name="DistributedSender11" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender11.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
@@ -183,25 +183,25 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 610.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 665.0]">
         </property>
     </entity>
-    <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 740.0]">
+    <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender1.xml">
         </property>
-    </entity>
-    <entity name="DistributedSender2" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender11.xml">
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
         </property>
-        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-        </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="200L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 670.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 730.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 725.0]">
         </property>
     </entity>
 </entity>
