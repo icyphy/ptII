@@ -161,13 +161,10 @@
  *  Mutable accessors are a particular type of composite accessors. They have the ability
  *  to dynamically change their behavior by substituting a contained accessor X by another
  *  accessor X'. The Mutable accessor can be used as a placeholder where a designer can
- *  plug in a discovered accessor. In this version, reification mechanism is quit open,
- *  assuming that the correctness is checked by third party (such as a Broker accessor...).
- *  Nevertheless, reification condition, in the sense of interface refinement, as pointed 
- *  out in 'Introduction to Embedded Systems' textbook (by Lee & Seshia) can be called as
- *  a commomHost function, that is isReifyableBy(). 
+ *  plug in a discovered accessor. In this version, the reification mechanism is quite open;
+ *  very little checking is done for correctness. 
  *  
- *  When calling 'reify' function on a particular accessor X, the Mutable Accessor
+ *  When calling the 'reify' function on a particular accessor X, the Mutable Accessor
  *  will connect to X, making it equivalent to X itself. This is enabled by the composition
  *  mechanism. And this is done on runtime. If there is a previous reified accessor, it is
  *  unreified.
@@ -2812,9 +2809,9 @@ function instantiateAccessor(
     return instance;
 }
 
-/** Evaluates if mutable is reifiable by the accessor given as parameters.
- *  Reification conditions are based on interface refinement theory. The conditions are: 
- *  ** the set of accessor inputs are included in the set of 'mutable accessor'
+/** Evaluates whether a mutable is reifiable by the accessor given as parameters.
+ *  It is reifiable if: 
+ *  ** the set of accessor inputs are included in the set of mutable accessor'
  *     inputs.
  *  ** and the set of outputs of mutable accessor are included in the set of
  *     outputs of accessor.
@@ -2825,14 +2822,12 @@ function instantiateAccessor(
  *  FIXME: augment type checking with subtyping.
  *  FIXME: augment the function to accept interface names, urls, ontologies...
  *
- *  @param mutable an instantiated accessor that can be a mutable
- *  @param accessor An instantiated Accessor object
- *  @return false if mutable is not reifyable by accessor, else return true.
+ *  @param mutable An instantiated Accessor that is mutable.
+ *  @param accessor An instantiated Accessor object.
+ *  @return false if the mutable is not reifiable by the accessor, otherwise true.
  */
 function isReifiableBy (mutable, accessor) {
-    // Note that we could just use this instead of this.root because of the
-    // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = mutable.root; 
+    var mutableRoot = mutable.root; 
     var i;
 
 
@@ -2848,8 +2843,8 @@ function isReifiableBy (mutable, accessor) {
         accInputInList = accessor.inputList[i];
         accInput = accessor.inputs[accInputInList];
 
-        myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
-        myInput = thiz.inputs[myInputInList];
+        myInputInList = mutableRoot.inputList[mutableRoot.inputList.indexOf(accInputInList)];
+        myInput = mutableRoot.inputs[myInputInList];
 
         // Check the input name
         if (!myInputInList) {
@@ -2863,9 +2858,9 @@ function isReifiableBy (mutable, accessor) {
     }
 
     // Look for mapping the mutableAccesssor outputs to the accessor outputs
-    for (i = 0; i < thiz.outputList.length; i++) {
-        var myOutputInList = thiz.outputList[i];
-        var myOutput = thiz.outputs[myOutputInList];
+    for (i = 0; i < mutableRoot.outputList.length; i++) {
+        var myOutputInList = mutableRoot.outputList[i];
+        var myOutput = mutableRoot.outputs[myOutputInList];
 
         var accOutputInList = accessor.outputList[accessor.outputList.indexOf(myOutputInList)];
         var accOutput = accessor.outputs[accOutputInList];
