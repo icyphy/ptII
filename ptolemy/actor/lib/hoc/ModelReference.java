@@ -660,6 +660,15 @@ public class ModelReference extends TypedAtomicActor
             }
         }
     }
+    
+    /** Reset the state.
+     *  @throws IllegalActionException If the parent class throws it.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _throwable = null;
+    }
 
     /** Report in debugging statements that the manager state has changed.
      *  This method is called if the referenced model
