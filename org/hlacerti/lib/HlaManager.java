@@ -1333,7 +1333,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     // proxy for the ambassador) and certi.
                     try {
                         // Sadly, this nondeterministically triggers an IOException:
-                        _rtia.closeConnexion();
+                        // _rtia.closeConnexion();
                     } finally {
                         // Terminate RTIG subprocess.
                         if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
@@ -1706,7 +1706,14 @@ public class HlaManager extends AbstractInitializableAttribute
                             + ") by calling tick2() in " + headMsg);
                 }
                 try {
-                    _rtia.tick2();
+                    // Do not use tick2() here because it can block the director.
+                    _rtia.tick();
+                    
+                    if (_director.isStopRequested()) {
+                        // Not sure what to do here, but we can't just keep waiting.
+                        throw new IllegalActionException(this,
+                                "Stop requested while waiting for a time advance grant from the RTIG.");
+                    }
 
                     if (_enableHlaReporter) {
                         _hlaReporter._numberOfTicks2++;
@@ -1717,8 +1724,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                                 + 1);
                     }
 
-                } catch (SpecifiedSaveLabelDoesNotExist
-                        | ConcurrentAccessAttempted | RTIinternalError e) {
+                } catch (ConcurrentAccessAttempted | RTIinternalError e) {
                     throw new IllegalActionException(this, e, e.getMessage());
                 } // algo4: 4: tick()  > Wait TAG()
 
