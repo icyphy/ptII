@@ -11,6 +11,8 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 50.0]">
