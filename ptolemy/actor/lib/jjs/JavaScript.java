@@ -1081,6 +1081,8 @@ public class JavaScript extends AbstractPlaceableActor
             synchronized (this) {
                 // Now, holding a lock on this actor, invoke the pending callbacks.
                 for (Runnable callbackFunction : callbacks) {
+                    // FIXME: If the following blocks, the director thread will lock
+                    // up and the model will become nonresponsive.
                     callbackFunction.run();
                 }
                 // Handle timeout requests that match the current time.
@@ -1705,6 +1707,8 @@ public class JavaScript extends AbstractPlaceableActor
     public void invokeCallback(final Runnable function)
             throws IllegalActionException {
         if (Thread.currentThread().equals(_directorThread)) {
+            // FIXME: If the following blocks, the director thread will lock
+            // up and the model will become nonresponsive.
             function.run();
         } else {
             _pendingCallbacks.offer(function);
