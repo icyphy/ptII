@@ -166,8 +166,13 @@ public class TestExceptionAttribute extends AbstractInitializableAttribute
             int prefixLength = ((IntToken) matchPrefixOfLength.getToken())
                     .intValue();
             if (prefixLength <= 0) {
-                if (!exception.getMessage()
-                        .equals(correctExceptionMessage.stringValue())) {
+                String message = exception.getMessage();
+                if (message == null) {
+                    throw new IllegalActionException(this, exception,
+                            "Expected:\n"
+                                    + correctExceptionMessage.stringValue()
+                                    + "\nBut got null error message:\n" + exception);
+                } else if (!message.equals(correctExceptionMessage.stringValue())) {
                     throw new IllegalActionException(this, exception,
                             "Expected:\n"
                                     + correctExceptionMessage.stringValue()
