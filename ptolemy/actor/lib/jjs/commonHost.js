@@ -2021,8 +2021,9 @@ Accessor.prototype.reify = function (accessor) {
         }
     }
 
-    // Initialize the instance
-    accessorInstance.initialize();
+    // Update: Initialize is now performed by mutableBase, to allow additional control
+    // over when intialization happens by a mutable.
+    //accessorInstance.initialize();
 
     // Update the mutable accessor state and history
     thiz.state = 'reified';
