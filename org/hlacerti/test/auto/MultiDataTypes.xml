@@ -11,13 +11,19 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 708, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={514, 23, 776, 644}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[474, 534]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[542, 534]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.1403623541050045">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0701660642575692">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{205.99442390267177, 159.5908203125001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.6552894115448, 282.00345730423027}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model to see a simple/producer&#10;(both Ptolemy models) exchanging data with&#10;several types in a distributed manner with HLA.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 55.0]">
+        </property>
     </property>
     <entity name="consumer" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="StaticMultiInstance/MultiDataTypes/MultiDataTypesConsumer.xml">
