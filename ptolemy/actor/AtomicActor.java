@@ -900,9 +900,34 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T>
             _debug("Called wrapup()");
         }
         // Invoke initializable methods.
+        // Collect exceptions during wrapup.
+        LinkedList<Throwable> throwables = new LinkedList<Throwable>();
+
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();
+                try {
+                    initializable.wrapup();
+                } catch (Throwable throwable) {
+                    throwables.add(throwable);
+                }
+            }
+            if (throwables.size() == 1) {
+                Throwable exception = throwables.get(0);
+                if (exception instanceof IllegalActionException) {
+                    throw (IllegalActionException)exception;
+                } else {
+                    throw new IllegalActionException(this, exception,
+                            "Exception thrown during wrapup.");
+                }
+            } else if (throwables.size() > 1) {
+                StringBuffer message = new StringBuffer();
+                for (Throwable throwable : throwables) {
+                    message.append(throwable.getMessage());
+                    message.append("\n======\n");
+                }
+                throw new IllegalActionException(this, throwables.get(0),
+                        "Multiple exceptions thrown during wrapup:\n" 
+                        + message.toString());
             }
         }
     }
