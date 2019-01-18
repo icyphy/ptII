@@ -129,24 +129,20 @@ import ptolemy.kernel.util.Workspace;
 //// HlaManager
 
 /**
- *  FIXME: Make sure that this explains how the time stamp at the output of
- *  the HlaSubscriber relates to the time stamp at the input of the corresponding
- *  HlaPublisher.
- *  
  * The Ptolemy-HLA co-simulation framework leverages two open source tools: 
- * Ptolemy II and HLA/CERTI. It must comply with both, Ptolemy and rules, 
- * in particular when dealing with data exchange and time advance.
- * Three new components are added to Ptolemy:
- * - a Hla Manager interface, implemented by the HlaManager class,
- * - HlaPublisher actor and HlaSubscribe actor.
- * This class implements a HLA Manager which, together with new classes
- * CertiRtig, HlaPublisher, HlaSubscriber, HlaTimedEvent and MessageProcessing,
- * allows a Ptolemy model to be a Federate in a HLA/CERTI Federation.
- * <p>
+ * Ptolemy II and HLA/CERTI to enable construction in Ptolemy II of an HLA
+ * federate. 
  * The High Level Architecture (HLA) [1][2] is a standard for distributed
  * discrete-event simulation. A simulation in HLA is called an HLA
- * Federation. A Federation is a collection of Federates, typically modeling
+ * federation. A federation is a collection of federates, typically modeling
  * components in a system, interconnected by a Run Time Infrastructure (RTI).
+ * Each federate may be running on a different machine, and the RTI enables
+ * them to send each other time-stamped events and ensures that the time
+ * stamps respect DE semantics. Specifically, time advance in each of the
+ * federates is coordinated so that events never arrive with time stamps
+ * that are in the past with respect to the current time of the federate.
+ * In Ptolemy II, a federate is typically a DE model, although any timed
+ * model of computation can be used, in principle.
  * </p><p>
  * A Federation needs a FOM (Federation Object Model)
  * that describes all data exchanged between the federates. The FOM follows the 
@@ -1313,27 +1309,27 @@ public class HlaManager extends AbstractInitializableAttribute
                         }
                     }
                 } finally {
-                    // Clean HLA attribute tables.
-                    _hlaAttributesToPublish.clear();
-                    _hlaAttributesToSubscribeTo.clear();
-                    _fromFederationEvents.clear();
-                    _objectIdToClassHandle.clear();
-
-                    // Clean HLA object instance id maps.
-                    _registerObjectInstanceMap.clear();
-                    _discoverObjectInstanceMap.clear();
-
-                    // Joker wildcard support.
-                    _usedJokerFilterMap.clear();
-
-                    // HLA Reporter support.
-                    _hlaReporter = null;
-                    
-                    // Close the connection socket connection between jcerti (the Java
-                    // proxy for the ambassador) and certi.
                     try {
+                        // Clean HLA attribute tables.
+                        _hlaAttributesToPublish.clear();
+                        _hlaAttributesToSubscribeTo.clear();
+                        _fromFederationEvents.clear();
+                        _objectIdToClassHandle.clear();
+
+                        // Clean HLA object instance id maps.
+                        _registerObjectInstanceMap.clear();
+                        _discoverObjectInstanceMap.clear();
+
+                        // Joker wildcard support.
+                        _usedJokerFilterMap.clear();
+
+                        // HLA Reporter support.
+                        _hlaReporter = null;
+                        
+                        // Close the connection socket connection between jcerti (the Java
+                        // proxy for the ambassador) and certi.
                         // Sadly, this nondeterministically triggers an IOException:
-                        // _rtia.closeConnexion();
+                        _rtia.closeConnexion();
                     } finally {
                         // Terminate RTIG subprocess.
                         if (_certiRtig != null && ((BooleanToken)killRTIG.getToken()).booleanValue()) {
