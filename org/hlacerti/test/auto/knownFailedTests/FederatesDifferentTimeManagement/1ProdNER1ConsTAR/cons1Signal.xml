@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 22, 636, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 23, 636, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[402, 522]">
     </property>
@@ -110,7 +110,9 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="killRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="killRTIG" class="ptolemy.data.expr.Parameter" value="launchRTIG">
+            <property name="style" class="ptolemy.actor.gui.style.LineStyle">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
