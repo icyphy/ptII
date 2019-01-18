@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DerivedAgain7" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={269, 48, 934, 634}, maximized=false}">
     </property>
@@ -123,6 +123,10 @@
         </property>
         <property name="p" class="ptolemy.data.expr.Parameter" value="40">
         </property>
+        <entity name="DerivedAgainD" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that overrides a previous default value.&#10;exports.setup = function () {&#10;    this.extend('DerivedD');&#10;    this.input('in1', {&#10;        'value': 43&#10;    });&#10;}&#10;">
+            </property>
+        </entity>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>

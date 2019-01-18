@@ -114,13 +114,13 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <port name="whatIsGoingOn" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
         <port name="accessorPath" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
+        </port>
+        <port name="whatIsGoingOn" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="TextDisplay" class="org.terraswarm.accessor.JSAccessor">
@@ -196,13 +196,9 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="accessorPath" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -212,8 +208,8 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Clock.output" relation="relation2"/>
-    <link port="MutableInterface.whatIsGoingOn" relation="relation"/>
     <link port="MutableInterface.accessorPath" relation="relation3"/>
+    <link port="MutableInterface.whatIsGoingOn" relation="relation"/>
     <link port="TextDisplay.input" relation="relation"/>
     <link port="AccessorUpdate.trigger" relation="relation2"/>
     <link port="AccessorUpdate.accessorPath" relation="relation3"/>
