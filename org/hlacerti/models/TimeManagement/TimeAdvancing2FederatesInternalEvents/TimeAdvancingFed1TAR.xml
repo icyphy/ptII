@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimeAdvancingFed1TAR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -12,43 +12,21 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 80.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Fed1TAR&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TimeAdvancing2FederatesInternalEvents&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 90.0]">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 143, 638, 582}, maximized=false}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 176, 666, 640}, maximized=false}">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[404, 472]">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 522]">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0553442602367786">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2173924341741973">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{247.71411799863384, 262.4671597506831}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{253.6689453125, 268.2296706456218}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federation Fed1TAR participating to &#10;&quot;TimeAdvancing2FederatesInternalEvents&quot; federation;&#10;it must be the last one to be launched since it &#10;registers the synchronization point.&#10;&#10;For observing how the time advances in each&#10;federate, do a right-click on HlaManager icone&#10;and choose Listen To Attribute.&#10;&#10;Note: Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;&#10;Parameter hlaTimeStep is only used with TAR.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate Fed1TAR participating to &#10;&quot;TimeAdvancing2FederatesInternalEvents&quot; federation;&#10;it must be the last one to be launched since it &#10;registers the synchronization point.&#10;&#10;For observing how the time advances in each&#10;federate, do a right-click on HlaManager icone&#10;and choose Listen To Attribute.&#10;&#10;Note: Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;&#10;Parameter hlaTimeStep is only used with TAR.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -94,6 +72,34 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 125.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Fed1TAR">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TimeAdvancing2FederatesInternalEvents">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Signal.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Fed2NER">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
         </property>
     </property>
 </entity>
