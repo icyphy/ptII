@@ -44,9 +44,7 @@ package ptolemy.actor.lib;
  * {@link ptolemy.actor.lib.CatchExceptionAttribute}, the client is
  * the Ptolemy developer (defines commands by dragging and dropping
  * attributes into the model), and the receiver is a Ptolemy entity
- * (such as an attribute that writes to a file, or an actor such as
- * {@link org.ptolemy.ptango.lib.HttpActor} which sends a retry
- * message upon exception with restart policy.
+ * (such as an attribute that writes to a file.
  *
  * @author Elizabeth Latronico
  * @version $Id: ExceptionSubscriber.java 69467 2014-06-29 14:35:19Z beth@berkeley.edu$
