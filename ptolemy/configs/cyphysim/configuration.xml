@@ -170,7 +170,7 @@
 	    <!-- input source="ptolemy/domains/openmodelica/lib/openmodelicaentities.xml"/ -->
 
             <input source="org/ptolemy/optimization/optimization.xml"/>
-	    <input source="org/ptolemy/ptango/lib/ptango.xml"/>
+	    <!-- input source="org/ptolemy/ptango/lib/ptango.xml"/-->
             <input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
 
