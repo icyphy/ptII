@@ -174,7 +174,7 @@ import ptolemy.kernel.util.Workspace;
  * federate is fed into an HlaPublisher, then a corresponding time-stamped
  * event will pop out of any HlaSubscriber elsewhere in the federation
  * if the parameters of that HlaSubscriber match those of the
- * HlaPublisher. These three parameters correspond to a
+ * HlaPublisher. These parameters conform to a
  * Federation Object Model (FOM) that is an important part of the
  * definition of a federation and is described in a file called a
  * Federation Execution Data (FED) file that needs to be
@@ -325,12 +325,16 @@ import ptolemy.kernel.util.Workspace;
  * synchronization point named in <i>synchronizeStartTo</i> is
  * reached by all federates in the federation.
  * If <i>synchronizeStartTo</i> is the same as <i>federateName</i>,
- * then it is <i>this</i> federate that is providing the synchronization
- * point. In that case, this federate should be last one launched.
+ * then it is <i>this</i> federate that registers the synchronization
+ * point with the HLA. In that case, this federate should be last one launched.
  * All other federates that name this federate in their
  * <i>synchronizeStartTo</i> parameters will be waiting for
- * this federate to have reached this point, and now the
- * coordinated simulation can begin.
+ * a message from the RTIG when all federates have reached this point, 
+ * and now the coordinated simulation can begin.
+ * <b>NOTE:</b> If any federate fails to reach this synchronization point,
+ * then the entire federation will be frozen in its initialization.
+ * Consequently, <i>every</i> federate must have the same value for
+ * <i>synchronizeStartTo</i>.
  * </p><p>
  * The simulation then executes like a normal DE simulation, except
  * that it may be stalled waiting for the RTI to permit time to advance.
