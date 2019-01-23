@@ -69,7 +69,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (ltrnc)
  *  @Pt.AcceptedRating Red (ltrnc)
- *  @see org.ptolemy.ptango.lib.WebServer
  */
 public class SuperdenseTimeTest extends TypedAtomicActor {
 
