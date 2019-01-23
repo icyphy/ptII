@@ -132,128 +132,232 @@ import ptolemy.kernel.util.Workspace;
  * The Ptolemy-HLA co-simulation framework leverages two open source tools: 
  * Ptolemy II and HLA/CERTI to enable construction in Ptolemy II of an HLA
  * federate. 
+ * </p>
+ * <h2>About HLA</h2>
+ * <p>
  * The High Level Architecture (HLA) [1][2] is a standard for distributed
  * discrete-event simulation. A simulation in HLA is called an HLA
  * federation. A federation is a collection of federates, typically modeling
  * components in a system, interconnected by a Run Time Infrastructure (RTI).
  * Each federate may be running on a different machine, and the RTI enables
  * them to send each other time-stamped events and ensures that the time
- * stamps respect DE semantics. Specifically, time advance in each of the
- * federates is coordinated so that events never arrive with time stamps
+ * stamps respect DE semantics. The coordination between federates is handled
+ * by a process called the RTIG, for RTI Gateway, which may be running
+ * on a remote machine. Specifically, time advance in each of the
+ * federates is coordinated by the RTIG so that events never arrive with time stamps
  * that are in the past with respect to the current time of the federate.
- * In Ptolemy II, a federate is typically a DE model, although any timed
- * model of computation can be used, in principle.
+ * In Ptolemy II, a federate is a DE model with an instance of this HlaManager.
+ * The model can contain composite actors with other models of computation, using
+ * the ContinuousDirector for example.
  * </p><p>
- * A Federation needs a FOM (Federation Object Model)
- * that describes all data exchanged between the federates. The FOM follows the 
- * OMT meta-model and it is designed by the federation developer. It must contain 
- * all shared information (objects and interactions) as well the data encoding
- * schemes. A subset of the FOM, along with other information about the data (if
- * it is time-stamped, it the transportation is reliable or best-effort) is 
- * specified in a file called  Federation Execution Data (FED), a required input
- * to the RTI [7]. It must also provide the name of the federation and the HLA 
- * version. The FED file does not indicate the data type. 
- * </p><p>
- * The RTI used in the Ptolemy-HLA framework is CERTI.
- * CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
- * manages every part of federation. It also ensures a real-time behavior of
- * a federation execution. CERTI is implemented in C++ and bindings are
- * provided as JCERTI for Java and PyHLA for Python. For more information see:
+ * This framework has been tested with an open-source RTI implementation
+ * called CERTI [4]. In principle, it should work with other RTI implementations.
+ * CERTI is implemented in C++, and an API called JCERTI is provided for Java.
+ * Ptolemy II uses JCERTI.  CERTI also provides a Python API, so in principle,
+ * a Ptolemy II federate should be able to interact with a federate written
+ * in Python. For more about CERTI, see:
  * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a>.
- * </p><p>
- * The {@link HlaManager} attribute handles the time synchronization between
- * Ptolemy model time and HLA logical time by implementing the {@link TimeRegulator}
- * interface. It also manages objects that implement interfaces provided by
- * JCERTI related to the Federation, Declaration, Object, and Time management
- * areas in HLA (each management area provides a set of services). Ownership
- * management is not provided in the Ptolemy-HLA framework.
- * </p><p>
- * The {@link HlaManager} of a federate is responsible for the different phases
- * of execution: 
- * - Create the federation execution (if it is the first federate lauched)
- * - Join the federation
- * - Deal with synchronization points
- *  </p><p>
- *  Before enter in the simulation loop (receive data, calculate and send new 
- *  values), the {@link HlaManager} perform some initialization:
- *  - Enable time constrain and time regulation: in the Ptolemy-HLA framework, 
- *    all federates are time-constrained and time-regulating, and all data are
- *    time-stamped;
- *  - Publish and subscribe to attributes of object classes defined in the FOM
- *  - Register initial class instances and discover class instances
- *  The class name, the attribute name and the instance name are indicated
- *  in actors {@link HlaPublisher} and {@link HlaSubscriber}. 
- *   </p><p> 
- * When entering in the simulation loop, the federate advances its logical time
- * according to the time management chosen by the user:
- *  - Next Event Request (NER) used for Event-Driven Simulation or 
- *  - Time Advance Request (TAR) used for Timed-Step Simulation.
- * When using NER, the logical time is advanced to the earliest event in the queue.
- * When using TAR, the logical time is advanced in equal steps.
- * The events in the calendar queue can be internal or external (coming from
- * other federates). 
- * </p><p> When the simulation ends, the federate resigns from the federation.
- * When all federates have resigned, the last federate destroys the federation.
- *  </p><p>
- * To enable a Ptolemy model to be a Federate, it must contain an {@link HlaManager}.
- * The parameters of this manager specify the name of the federate (this Ptolemy model),
- * the FED file (a file with a .fed extension), and the following other parameters:
- * </p><p>
- * The parameter <i>timeManagementService</i> specifies which time management 
- * the federate will use: NER or TAR.
- * If TAR is selected, the parameter <i>hlaTimeStep</i> (displayed as
- * "Time Step for TAR") must specify the time step taken by each time advance.
- * </p><p>
- * A federate can only advance its time if it is granted by the RTI. When this federate
- * is <i>constrained</i>, this grant is computed by the RTI with the knowledge of the time
- * advancements of the <i>regulating</i> federates, so that the conservative property of the
- * distributed simulation is guaranteed between regulator and constrained federates.
- * <i>istimeConstrained</i> is set to specify the federate is time-constrained Federate and
- * <i>istimeRegulator</i> is set to specify time-regulating Federate. In the current version
- * a Ptolemy federate is both time-constrained and time-regulating. See [7], section 3.
- * </p><p>
- * The parameter <i>hlaLookAHead</i> is used for avoiding deadlock [Fujimoto 1998].
- * A time-regulating federate at logical time t with lookahead lah cannot send any
- * event with a time-stamp t' < t+lah.
- * </p><p>
- * FIXME: Update documentation:
- * The parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
- * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
- * This mechanism is usually used to synchronize the Federates, during their
- * initialization, to avoid that Federates that only consume some HLA
- * attributes finished their simulation before the other federates have started.
- * <i>isCreatorSyncPt</i> indicates if the Federate is the register of the
- * synchronization point. Only one Federate can register the named synchronization
- * point for the whole HLA Federation. In the Ptolemy-HLA framework the federate
- * that register the synchronization point must be the last one to be launched. </p>
- *
- * <p>{@link HlaPublisher} and {@link HlaSubscriber} actors provide the
- * <i>classObjectName</i> and <i>attributeName</i> (as specified in the FOM and
- * indicated in the FED file) and the <i>classInstanceName</i> chosen by the user.
- * This information is used by HLA services and callbacks. </p>
- * 
- * <p>For a correct execution, the <i>CERTI_HOME</i> environment variable has to
- * be set. It could be set in the shell (by running one of the scripts provided
- * by CERTI) where Vergil is executed, or as a parameter of the Ptolemy model
- * or as a parameter of the {@link HlaManager}:</p>
- * <pre>
- * CERTI_HOME="/absolute/path/to/certi/"
- * </pre>
- *<b>FIXME: These 2 last ways where never implemented: parameter of the model
- *   nor parameter of the HlaManager. Remove these sentences? </b>
- * <p>Otherwise, the current implementation is not able to find the CERTI
- * environment, the RTIG binary and to perform its execution. See also
- * the {@link CertiRtig} class.</p>
- *
- * <p>NOTE: For speeding up the simulation CERTI can be compiled with the option
- * "CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL"
- * </p><b>
- * Although the rtig can be launched in a terminal before launching any Ptolemy
- * federate, .... see {@link CertiRtig}. 
- * <b>FIXME: explain why the choice of launch the rtig by the federate was made? </b>
  * </p>
+ * <h2>Creating a Federate</h2>
  * <p>
- * This attribute provides extensive debug output. Listen to the attribute to get
+ * To create a federate, in a Ptolemy model with a DE director, instantiate
+ * an instance of this HLAManager. You will need to set the federationName
+ * parameter to the name of the federation and
+ * the <i>federateName</i> parameter to a unique name for the federate (unique
+ * to the federation).
+ * If, when running the model, there is no federation with the specified
+ * name, then a federation with that name will be automatically created.
+ * Otherwise, the federate will join the pre-existing federation.
+ * </p><p>
+ * Federates can exchange information using the {@link HlaPublisher}
+ * and {@link HlaSubscriber} actors. When a time-stamped event in one
+ * federate is fed into an HlaPublisher, then a corresponding time-stamped
+ * event will pop out of any HlaSubscriber elsewhere in the federation
+ * if the parameters of that HlaSubscriber match those of the
+ * HlaPublisher. These parameters conform to a
+ * Federation Object Model (FOM) that is an important part of the
+ * definition of a federation and is described in a file called a
+ * Federation Execution Data (FED) file that needs to be
+ * available to this HlaManager. More about this later.
+ * </p>
+ * <h2>Time-Stamped Communication</h2>
+ * <p>
+ * When a time-stamped event is sent from one federate to another
+ * through the RTI,
+ * the relationship of the received time stamp compared to the sent
+ * time stamp depends on the parameters of the two HlaManagers at
+ * each end of the communication.
+ * First, the parameter <i>timeManagementService</i> selects between two
+ * styles called "Next Event Request (NER)" and
+ * "Time Advancement Request (TAR)".
+ * We explain these in order.
+ * </p><p>
+ * The NER style is the default, and it is the most natural for use
+ * with DE models. When <i>timeManagementService</i> specifies NER at both
+ * the sending and receiving federate, then
+ * the received time stamp is simply equal to the sent time stamp
+ * plus the value of the <i>hlaLookahead</i> parameter of the sending
+ * federate. So logically, there
+ * is a "model-time delay" equal to <i>hlaLookahead</i> in each
+ * communication.  The <i>hlaLookahead</i> is required to be strictly
+ * greater than zero (this significantly simplifies distributed
+ * coordination).
+ * </p><p>
+ * It rarely makes sense in a DE federate to use the TAR style,
+ * and the result of using it is much more complicated.
+ * The easiest way to understand the effect is to consider that
+ * the time stamp may be modified first at the sending federate
+ * and then again at the receiving federate. If the sending
+ * federate is NER, then it simply increments the time stamp
+ * by its <i>hlaLookahead</i>. If the receiving federate is NER, then
+ * it makes no modification to the received time stamp. It uses whatever
+ * it receives. Hence, if both ends are NER, the total modification
+ * to the time stamp is to increment it by the <i>hlaLookahead</i> value at the sender.
+ * But the situation is much more complicated if either end
+ * uses TAR.
+ * </p><p>
+ * Suppose a sending federate is using TAR. In this case,
+ * both <i>hlaLookahead</i> and the <i>hlaTimeStep</i> parameter may affect
+ * the time stamp. Specifically, if the sender has an event
+ * with time stamp equal to or greater than
+ * <i>N</i> times <i>hlaTimeStep</i> and less than
+ * <i>N</i> times <i>hlaTimeStep</i> plus <i>hlaLookahead</i>, 
+ * for any integer <i>N</i>, then the
+ * time stamp will be modified by the sender to equal
+ * <i>N</i> times <i>hlaTimeStep</i> plus <i>hlaLookahead</i>.
+ * Otherwise, the time stamp is unmodified by the sender.
+ * </p><p>
+ * For example, if the sender has <i>hlaTimeStep</i> = 10 and
+ * <i>hlaLookahead</i> = 2 and it wishes to send an event with
+ * time stamp 1, the time stamp will be modified to 2,
+ * introducing a delay of 1.
+ * If it wants to send an event with time stamp 11,
+ * the time stamp will be modified to 12.
+ * </p><p>
+ * Suppose a receiving federate is using TAR. In this
+ * case, the time stamp of any incoming event will be
+ * modified to equal the next largest (or equal)
+ * multiple of the receiver's <i>hlaTimeStep</i>, i.e.
+ * <i>M</i> times <i>hlaTimeStep</i> for some integer <i>M</i>.
+ * </p><p>
+ * For example, if a receiving federate of the previous message
+ * whose time stamp was modified to 2 uses TAR with
+ * <i>hlaTimeStep</i> = 5, then the time stamp will be modified
+ * from 2 to 5, thereby getting a total delay of 4.
+ * If the receiving federate uses NER, on the other
+ * hand, the time stamp will not be modified by the receiver.
+ * It will be received with time stamp 2.
+ * </p><p>
+ * If the sending federate is using NER and the receiving federate
+ * is using TAR, then the sending federate will first modify the
+ * time stamp by adding its <i>hlaLookahead</i> to the time stamp,
+ * and then the receiving federate will further modify the time
+ * stamp to make it equal to the least larger multiple of its
+ * <i>hlaTimeStep</i>.
+ * </p>
+ * <h2>Exchanging Data</h2>
+ * <p>
+ * In HLA, the data that is sent from one federate to another through
+ * the RTI is viewed
+ * as an update to an attribute of an instance of a class.
+ * {@link HlaPublisher} and {@link HlaSubscriber} actors specify
+ * which attribute of which instance of which class they update
+ * or are notified of updates.
+ * See the documentation for those two actors.
+ * </p><p>
+ * A Federation requires a Federation Execution Data (FED) file [7],
+ * which defines classes and specifies which attributes a class contains.
+ * The location of the FED file is given by two parameters of
+ * this HlaManager, <i>fedFile</i> and <i>fedFileOnRTIG</i>.
+ * Unfortunately, in HLA, the FED file is not a networked resource,
+ * and it is needed by both the Ptolemy II federate and the RTIG,
+ * and these may not be running on the same machine. So the locations
+ * of the two files may be different.
+ * By default, <i>fedFileOnRTIG</i> is set to "$fedFile", which
+ * makes it the same as whatever you specify in the <i>fedFile</i>
+ * parameter. This will usually work if the RTIG is being run
+ * on the same machine as the federate, and will always work
+ * the federate itself launches the RTIG by setting the
+ * <i>launchRTIG</i> parameter.
+ * </p>
+ * <h2>Environment Variables</h2>
+ * <p>
+ * CERTI, which is the implementation of HLA that Ptolemy II uses,
+ * relies on some environment variables to execute. The first and most
+ * important is CERTI_HOST, which provides the location of the machine
+ * that hosts the RTIG. To set it, before launching Ptolemy II,
+ * you can execute a command like:
+ * <pre>
+ *    export CERTI_HOST=localhost
+ * </pre>
+ * This specifies that the RTIG host is the local machine.
+ * If you are connecting to a remote RTIG, you can instead specify the
+ * IP address or domain name of that machine.
+ * </p><p>
+ * The second environment variable is CERTI_HOME, but this one is required
+ * only if you wish the federate to launch an RTIG, something you specify
+ * with the <i>launchRTIG</i> parameter.  If you wish the federate to launch
+ * an RTIG, then you must set CERTI_HOME equal to the path to your
+ * installation of CERTI, and you must set your PATH environment variable
+ * to include the share/scripts and bin directories of your CERTI installation.
+ * </p><p>
+ * Sometime in the future, these environment variables may be replaced
+ * or supplemented by parameters added to this HlaManager.
+ * See also the {@link CertiRtig} class.
+ * </p>
+ * <h2>Lifecycle of Execution of a Federate</h2>
+ * <p>
+ * When a Ptolemy II federate starts executing, this HlaManager attempts
+ * to connect to an RTIG running on the host specified by CERT_HOST.
+ * If this fails, and if <i>launchRTIG</i>
+ * is set to true and CERT_HOST is either "localhost" or "127.0.0.1",
+ * then this HlaManager will attempt to launch an RTIG on the local
+ * machine.  This will require that the rtig executable be in your
+ * PATH and that CERTI_HOME be specified, as explained above.
+ * </p><p>
+ * Once the federate has connected to the RTIG, it will attempt to
+ * join the federation whose name is given by <i>federationName</i>.
+ * If there is no such federation, then it will create it and then
+ * join it.
+ * </p><p>
+ * After joining the federation, if <i>synchronizeStartTo</i> is
+ * not empty, then it will stall the execution until the
+ * synchronization point named in <i>synchronizeStartTo</i> is
+ * reached by all federates in the federation.
+ * If <i>synchronizeStartTo</i> is the same as <i>federateName</i>,
+ * then it is <i>this</i> federate that registers the synchronization
+ * point with the HLA. In that case, this federate should be last one launched.
+ * All other federates that name this federate in their
+ * <i>synchronizeStartTo</i> parameters will be waiting for
+ * a message from the RTIG when all federates have reached this point, 
+ * and now the coordinated simulation can begin.
+ * <b>NOTE:</b> If any federate fails to reach this synchronization point,
+ * then the entire federation will be frozen in its initialization.
+ * Consequently, <i>every</i> federate must have the same value for
+ * <i>synchronizeStartTo</i>.
+ * </p><p>
+ * The simulation then executes like a normal DE simulation, except
+ * that it may be stalled waiting for the RTI to permit time to advance.
+ * This HlaManager implements the Ptolemy II TimeRegulator interface,
+ * which enables it to regulate the advancement of time in the DEDirector.
+ * The parameters <i>isTimeConstrained</i> and <i>isTimeRegulator</i> can be used
+ * to decouple the advancement of time of the DEDirector from that of the RTI,
+ * but this is rarely a good idea. For more details about time management
+ * during execution, see [8].
+ * </p><p>
+ * The DEDirector in the model is required to have a finite <i>stopTime</i>
+ * parameter set. It is usually also a good idea to set its
+ * <i>stopWhenQueueIsEmpty</i> parameter to false, particularly if it
+ * is relying on an HlaSubscriber actor to provide it with events to process.
+ * Otherwise, the federate may prematurely finish its simulation.
+ * </p><p>
+ * When the simulation ends, the federate resigns from the federation.
+ * When all federates have resigned, the last federate destroys the federation.
+ * In addition, if one of the federates launched the RTIG, and if
+ * that federate's <i>killRTIG</i> parameter is set to true, then
+ * that federate will also kill the RTIG.
+ * </p><p>
+ * This HlaManager provides extensive debug output. Listen to the attribute to get
  * the details. Some of these messages, primarily those related to the lifecycle of
  * the interaction with the RTI, are also printed to standard out, even if you are
  * listening to the attribute.
@@ -275,10 +379,10 @@ import ptolemy.kernel.util.Workspace;
  *     Simulation Framework", Festschrift Lee, Internal DISC report, 2017. </p>
  * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure 
  *     Programmer’s Guide RTI 1.3 Version 6, March 1999</p>
- * <p> [Fujimoto 1998] R. Fujimoto, "Time Management in The High Level Architecture",
+ * <p>[8] R. Fujimoto, "Time Management in The High Level Architecture",
  *     https://doi.org/10.1177/003754979807100604</p>
  *
- *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
+ *  @author Gilles Lasnier, Janette Cardoso, and Edward A. Lee. Contributors: Patricia Derler, David Come, Yanxuan LI
  *  @version $Id: HlaManager.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
  *

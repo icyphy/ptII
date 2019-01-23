@@ -4,13 +4,13 @@
 <entity name="clockDisplayer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={633, 23, 726, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 22, 701, 384}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[492, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[467, 274]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9960905805119127">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.777656220322887">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.94586789099515, 259.71178909952613}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{145.5400390625, 76.4367178952407}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -42,9 +42,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron (ISAE SUPAERO - ONERA)&#10;Update: CIELE Ingenierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron (ISAE SUPAERO - ONERA)&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.58086492890976, 144.33893661137455]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 120.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -66,7 +66,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 100.0]">
         </property>
     </entity>
     <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
@@ -85,7 +85,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[104.99999999999997, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[89.99999999999997, 100.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
