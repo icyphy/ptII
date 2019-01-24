@@ -360,7 +360,8 @@ public class StringUtilities {
         try {
             if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
                     .length() > 0) {
-                throw new RuntimeException("Normally, we would "
+                throw new RuntimeException("StringUtilities.exit() was called. "
+                        + "Normally, we would "
                         + "exit here because Manager.exitAfterWrapup() "
                         + "was called.  However, because the "
                         + "ptolemy.ptII.exitAfterWrapup property "
