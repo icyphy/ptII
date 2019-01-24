@@ -4470,7 +4470,7 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     You need not download JavaCC unless you plan on modifying .jjt files
     in ptolemy/data/expr.
     JavaCC is available from	
-    http://javacc.dev.java.net/
+    https://javacc.org
 
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
@@ -4483,7 +4483,7 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
 
     Try:
     cd $PTII/vendors/sun
-    wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
+    wget https://javacc.org/downloads/javacc-5.0.tar.gz
     tar -zxf javacc-5.0.tar.gz
     cd $PTII
     ./configure
