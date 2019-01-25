@@ -51,7 +51,6 @@ DOMAINS =	algebraic atc tcs ca ci continuous \
 	        dde ddf de hdf modal pn sdf dt giotto fmima \
 		$(PTMETROII_DIR) \
 		ontologies \
-		$(PTOPENMODELICA_DIR) \
 		petrinet qss rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos \
 		scr $(PTSPACE_DIR) \
@@ -77,9 +76,6 @@ PTCLASSJAR =
 # PTGRDOMAIN_JAR is the name of the jar file that includes the GR
 # domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
 
-# PTOPENMODELICADOMAIN_JAR is the name of the jar file that includes the openmodelica
-# domain if OpenModelica was found.  PTOPENMODELICADOMAIN_JAR is set by configure.
-
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR is set by configure.
 
@@ -94,7 +90,6 @@ PTAUXALLJARS = \
 		fmima/fmima.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
-		$(PTOPENMODELICADOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		ptera/ptera.jar \
 		pthales/pthales.jar \
@@ -144,7 +139,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DOMAINS) fmima openmodelica test
+MISC_FILES =	$(DOMAINS) fmima test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES

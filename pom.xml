@@ -481,11 +481,6 @@ See $PTII/doc/coding/maven.htm
       <artifactId>jdom</artifactId>
       <version>1.0</version>
     </dependency>
-    <dependency> <!-- $PTII/org/ptango/lib -->
-      <groupId>org.eclipse.jetty</groupId>
-      <artifactId>jetty-server</artifactId>
-      <version>8.1.5-v20120716</version>
-    </dependency>
     <dependency>
        <groupId>org.python</groupId>
        <artifactId>jython-standalone</artifactId>
@@ -729,7 +724,6 @@ See $PTII/doc/coding/maven.htm
 	   <exclude>ptolemy/actor/lib/mail/**</exclude>
 	   <exclude>ptolemy/homer/**</exclude>
 	   <exclude>ptolemy/vergil/basic/imprt/g4ltl/**</exclude>
-	   <exclude>ptserver/**</exclude>
            <exclude>**/adm/**</exclude>
            <exclude>**/build/**</exclude>
            <exclude>**/codeDoc/**</exclude>

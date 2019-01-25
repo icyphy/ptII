@@ -50,9 +50,6 @@ ME =		ptolemy
 # $PTII/configure looks for Jini and sets PTDISTRIBUTED_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTDISTRIBUTED_DIR is empty.
 #
-# $PTII/configure looks for Java 1.5 and sets PTBACKTRACK_DIR to backtrack
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTBACKTRACK is empty.
-#
 # $PTII/configure looks for Netbeans gui jars and sets PTHOMER_DIR to homer
 # if it was found.  Otherwise, PTHOMER_DIR is empty.
 #
@@ -61,7 +58,7 @@ DIRS = util math kernel plot graph moml data actor gui media	\
 	domains	\
 	$(PTCOPERNICUS_DIR) \
 	verification \
-	vergil $(PTCHIC_DIR) cg component $(PTBACKTRACK_DIR) \
+	vergil $(PTCHIC_DIR) cg component \
 	configs \
 	$(PTDISTRIBUTED_DIR) $(PTHOMER_DIR) ptp $(PTCALTROP_DIR) \
 	contrib demo
@@ -113,7 +110,7 @@ EXTRA_SRCS =
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 MISC_FILES = util kernel plot graph moml data actor gui math media	\
-	backtrack ptp verification \
+    ptp verification \
 	$(PTCALTROP_DIR) \
 	$(PTCOPERNICUS_DIR) \
 	$(PTDISTRIBUTED_DIR) \

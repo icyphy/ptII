@@ -104,8 +104,8 @@
         <?moml
           <group>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
-        <!-- Backtracking actors -->
-            <input source="ptolemy/backtrack/backtrack.xml"/>
+        <!-- Backtracking actors. No longer shipped after 11.0. -->
+            <!-- input source="ptolemy/backtrack/backtrack.xml"/-->
         <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
         <!-- Javacomm serial actors depend on javacomm being present  -->

@@ -19,8 +19,6 @@
     <ul>
       <li> Figure 16.4: <a href="Spectrum2/index.html">Spectrum</a>
 	This model also references <a href="MaximumEntropySpectrum/index.html">MaximumEntropySpectrum</a>.</li>
-      <li> Figure 16.13: <a href="WebServerDE/index.html">WebServerDE</a></li>
-      <li> Figure 16.17: <a href="Cookies/index.html">Cookies</a></li>
     </ul>
 
     <!--#include virtual="/ssi/bottom.htm" -->

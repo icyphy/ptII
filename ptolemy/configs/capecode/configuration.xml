@@ -181,9 +181,6 @@
 
             <input source="org/ptolemy/optimization/optimization.xml"/>
             
-            <!-- Not sure if we want to include Ptango, so let's exclude it. -->
-            <!-- input source="org/ptolemy/ptango/lib/ptango.xml"/ -->
-
             <!-- The Ontology facility should not be included in CapeCode. -->
             <!-- input source="ptolemy/data/ontologies/ontologyAnalysisLibrary.xml"/ -->
 

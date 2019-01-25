@@ -107,11 +107,6 @@
       <!--ptinyKeplerDocs-->
       <!--/vergilDocs-->
 
-      <!--dontship-->
-      <!--Don't ship OpenModelica, it is not ready -->
-      <li><a href="#openmodelica">OpenModelica</a></li>
-      <!--/dontship-->
-
       <li><a href="#psdf">PSDF (Parameterized Synchronous Dataflow)</a></li>
       <li><a href="#petrinet">Petrinet</a></li>
       <!--vergilDocs-->
@@ -178,7 +173,6 @@
         </ul>
       </li>
       <li><a href="#osc">Open Sound Countrol (osc)</a></li>
-      <li><a href="#ptango">Ptango</a></li>
       <li><a href="#ros">Robot Operating System (ros)</a></li>
       <li><a href="#ssm">State Space Model</a></li>
       <li><a href="#systemTypes">System-Level Types</a></li>
@@ -514,22 +508,12 @@
       <li><a href="../../domains/de/demo/ModalModel/ModalModel.xml">Modal Model</a> 
       <li><a href="../../actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml">Parallel Execution</a> 
       <li><a href="../../../ptolemy/domains/de/demo/PersistentIO/PersistentIO.xml">PersistentIO</a> (New in Ptolemy II 11.0)</li>
-      <!--/vergilDocs-->
-      <!-- Ptiny and Kepler don't include backtracking -->
-      <li><a href="../../backtrack/demo/PrimeTest/PrimeTest.xml">Prime Test with Backtracking</a> 
-	<!--vergilDocs-->
-
 	<!--/bcvtbDocs-->
 	<!--/ptinyKeplerDocs-->
       <li><a href="../../../ptolemy/demo/Quarry/Quarry.xml">Quarry</a>
 	<!-- QueueAndServer uses Colt, which is not part of Kepler -->
       <li><a href="../../domains/de/demo/QueueAndServer/QueueAndServer.xml">Queue and Server (M/M/1 Queues)</a>
 	<!--ptinyKeplerDocs-->
-
-	<!--/vergilDocs-->
-	<!-- Ptiny, Kepler and BCVTB don't include backtracking -->
-      <li><a href="../../backtrack/demo/RampRollback/RampRollback.xml">Ramp Rollback with Backtracking</a> 
-	<!--vergilDocs-->
 
       <li><a href="../../domains/de/demo/RealTimeComposite/RealTimeComposite.xml">Real Time Composite</a>  
 
@@ -653,17 +637,6 @@
     </ul>
     <!--/bcvtbDocs-->
     <!--/vergilDocs-->
-    <!--Ptiny does not include OpenModelica --> 
-
-    <!--dontship-->
-    <!--Don't ship OpenModelica, it is not ready -->
-    <h2><a name="openmodelica">OpenModelica</a></h2>
-    <!-- Please keep the demos alphabetical -->
-    <ul>
-      <!-- "../../../ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.xml -->
-      <li><a href="../../domains/openmodelica/demo/OpenModelica/OpenModelicaInteractive.xml">OpenModelica</a>
-    </ul>
-    <!--/dontship-->
 
     <!--Ptiny does not include PSDF --> 
     <h2><a name="psdf">Parameterized Synchronous Dataflow (PSDF)</a></h2>
@@ -821,14 +794,6 @@
       <li><a href="../../domains/rendezvous/demo/Barrier/Barrier.xml">Barrier Synchronization</a>
       <li><a href="../../domains/rendezvous/demo/ResourcePool/ResourcePool.xml">Resource Management</a>
       <li><a href="../../domains/rendezvous/demo/Sequencing/Sequencing.xml">Sequencing</a>
-	<!--ptinyKeplerDocs-->
-
-	<!--/vergilDocs-->
-	<!-- Ptiny and Kepler don't include backtracking, leave it out for 6.0 -->
-      <li><a href="../../backtrack/demo/TrialModule/TrialModule.xml">Trial Module with Backtracking</a> 
-	<!--vergilDocs-->
-
-	<!--/ptinyKeplerDocs-->
       <li><a href="../../domains/rendezvous/demo/WriteRegulator/WriteRegulator.xml">Write Regulator</a>
     </ul>
     <!--ptinyKeplerDocs-->
@@ -1624,39 +1589,7 @@
         </ul>
       </ul>
 
-
-
-      <!--vergilDocs-->
-
-      <!-- Ptiny does not include these somewhat esoteric models -->
-      <!--/vergilDocs-->
-      <h2><a name="ptango">Ptango: The Internet of things</a></h2>
-      <!-- Please keep these updated and alphabetical.  If you add demos before 10.0 is released, update whatsNew10.0.htm -->
-      <ul>
-        <li><a href="../../../org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight.xml">BlinkyLight</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Chat/Chat.xml">Chat</a></li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Chat/ChatServer.xml">Chat Server</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Chat/ChatClient.xml">Chat Client</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Chat/ChatClient2.xml">Chat Client2</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Cookies/Cookies.xml">Cookies</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/DOPpresence/DOPpresence.xml">DOPpresence</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.xml">Eplus70Actuator</a> (Requires EnergyPlus) </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.xml">ErrorHandler</a> </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Exception/Exception.xml">Exception</a> </li>
-        <!-- ../../../org/ptolemy/ptango/demo/files/files.xml -->
-        <li><a href="../../../org/ptolemy/ptango/demo/Guidance/Guidance.xml">Guidance</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.xml">GuidanceSingleUserWithName</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.xml">OccupancyAlert</a> </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.xml"> OptimizationAdvisor</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.xml">SensorAndrew</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/SmartRoom/SmartRoom.xml">SmartRoom</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.xml">TemperatureSimulation</a> (Requires EnergyPlus) </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPower.xml">UCBPower</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml">UCBPowerAnalyzerServer</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml">UCBPowerPtera</a>  </li>
-        <li><a href="../../../org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml">WebServerDE</a>  </li>
-      </ul>
-
+ 
       <!--vergilDocs-->
 
       <!-- Don't ship Fuzzy because it is gpl'd -->
@@ -1716,9 +1649,6 @@
       <!-- ../../../ptolemy/gui/demo -->
       <!-- ../../../ptolemy/media/javasound/demo -->
       <!-- ../../../ptolemy/plot/demo -->
-      <!-- ../../../ptserver/demo -->
-
-      <!-- ../../../ptserver/actor/lib/io/demo/RESTGetHandlerAirConditionerModel/RESTGetHandlerAirConditionerModel.xml -->
       <!-- ../../../ptolemy/chic/demo/Math/SquareRoot.xml -->
       <!-- ../../../ptolemy/chic/demo/Math/StatelessSDF.xml -->
       <!-- ../../../ptolemy/chic/demo/TokenRing/TokenRing_complicated.xml -->

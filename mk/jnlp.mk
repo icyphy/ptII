@@ -293,8 +293,6 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/demo/CapeCodeDemos.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
-	org/ptolemy/ptango/ptango.jar \
-	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTGDP_JAR) \
 	$(JNA_JAR) \
@@ -396,8 +394,6 @@ CYPHYSIM_JNLP_JARS =	\
 	$(EXPORT_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(PDFRENDERER_JARS) \
-	org/ptolemy/ptango/ptango.jar \
-	$(PTANGO_JAR_FILES) \
 	$(PTFMI_JARS) \
 	$(PTLBNL_JARS) \
 	$(PTMATLAB_JARS) \
@@ -420,13 +416,6 @@ SDF_DEMO_JARS = \
 	ptolemy/data/unit/demo/demo.jar \
 	ptolemy/moml/demo/demo.jar \
 	ptolemy/vergil/kernel/attributes/demo/demo.jar
-
-PTANGO_JAR_FILES = \
-	lib/jetty-all-8.1.5-v20120716.jar \
-	lib/javax.servlet-api-3.0.1.jar \
-	lib/jsoup-1.8.2.jar \
-	lib/smack.jar \
-	lib/smackx.jar
 
 # Actors that use the jsoup html parser.
 JSOUP_JARS = \
@@ -729,11 +718,8 @@ FULL_ONLY_JNLP_JARS = \
 	doc/img/img.jar \
 	doc/papers/papers.jar \
 	$(EXPORT_JARS) \
-	$(PTANGO_JAR_FILES) \
 	lib/jcerti.jar \
 	org/hlacerti/hlacerti.jar \
-	org/ptolemy/ptango/ptango.jar \
-	org/ptolemy/ptango/demo/demo.jar \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
 	$(PTFMI_JARS) \
@@ -761,8 +747,6 @@ FULL_ONLY_JNLP_JARS = \
 	lib/saxon8.jar \
 	lib/saxon8-dom.jar \
 	lib/java_cup.jar \
-	ptolemy/backtrack/backtrack.jar \
-	ptolemy/backtrack/demo/demo.jar \
 	ptolemy/caltrop/caltrop.jar \
 	ptolemy/caltrop/demo/demo.jar \
 	ptolemy/distributed/distributed.jar \

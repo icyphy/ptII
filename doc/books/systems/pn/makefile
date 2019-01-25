@@ -3,7 +3,6 @@ CHAPTER=pn
 EXAMPLE_MODELS = \
 	AreYouReady.xml \
 	Barrier.xml \
-	ChatClient.xml \
 	HammingNumbers.xml \
 	LocalChat.xml \
 	RendezvousMerge.xml \
