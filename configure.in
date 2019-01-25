@@ -768,7 +768,6 @@ if test "$UPGRADE_JVM" = "yes"; then
     JDK 1.5 or later is required so that these packages can use generics:
 	- actor/gui/run, which uses org/mlc/swing
 	- actor/lib/vhdl
-	- backtrack
 	- ptalon
     JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
     JDK 1.8 is needed for Nashorn, nio and many other features.
@@ -1048,8 +1047,6 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="ptolemy/apps/webstart/"/>
 <exclude name="ptolemy/apps/xsl/"/>
 <exclude name="ptolemy/apps/zaurus/"/>
-<exclude name="ptolemy/backtrack/eclipse/plugin/"/>
-<exclude name="ptolemy/backtrack/test/"/>
 <exclude name="ptolemy/codegen/c/actor/lib/oldJavaFiles/"/>
 <exclude name="ptolemy/codegen/dsp/lib/"/>
 <exclude name="ptolemy/codegen/kernel/newInterfaces/"/>
@@ -1893,7 +1890,6 @@ else
     You will not be able to run the ptolemy.actor.corba actors,
     which is probably not a problem.])
        updateExcludes "ptolemy/actor/corba/"
-       updateExcludes "ptolemy/domains/openmodelica/"
     fi
     cd "$startdir"
 
@@ -3042,111 +3038,6 @@ else
            updateExcludes "org/hlacerti/"
         fi
     fi
-fi
-
-#--------------------------------------------------------------------
-#       "Jetty is a pure Java-based HTTP server and Java Servlet container." 
-#	See http://www.eclipse.org/jetty/
-#       Jetty is used by Ptango and Ptserver 
-#--------------------------------------------------------------------
-
-# Jetty jar files used by Ptango and ptserver.
-PTJETTY_JAR=
-
-# javax.servlet-api*.jar used by Ptango and ptserver.
-PTSERVLET_JAR=
-
-# smack.jar and smackx.jar used by Ptango, implements xmpp
-PTSMACK_JAR=
-PTSMACKX_JAR=
-
-# We only need to look for Jetty if $PTANGO_USER_DIR is present
-# We only need to look for Jetty if $PTSERVER_USER_DIR is present
-PTANGO_USER_DIR="$PTII/org/ptolemy/ptango/"
-PTSERVER_USER_DIR="$PTII/ptserver/"
-PTHOMER_USER_DIR="$PTII/ptolemy/homer/"
-if test ! -d "$PTANGO_USER_DIR" -a ! -d "$PTSERVER_USER_DIR" -a ! -d "$PTHOMER_DIR"; then
-    PT_MSG_STATUS([$PTANGO_USER_DIR, $PTSERVER_USER_DIR
-    and $PTHOMER_DIR are not present,
-    so we need not find Jetty, javax.servlet, smack or smackx])
-else
-    AC_MSG_CHECKING([for Jetty, used by ptango and ptserver ])
-    AC_ARG_WITH(jetty, [  --with-jetty=JAR       use jetty.jar from JAR,
-                          defaults to \$PTII/lib/jetty-all-8.1.5-v20120716.jar],
-        PTJETTY_JAR=$withval,
-	PTJETTY_JAR=$PTII/lib/jetty-all-8.1.5-v20120716.jar)
-    if test  -f "$PTJETTY_JAR"; then
-	PT_MSG_RESULT([$PTJETTY_JAR])
-	
-        AC_MSG_CHECKING([for Servlet, used by ptango and ptserver])
-	AC_ARG_WITH(servlet, [  --with-servlet=JAR       use servlet.jar from JAR,
-                          defaults to \$PTII/lib/javax.servlet-api-3.0.1.jar],
-	    PTSERVLET_JAR=$withval,
-	    PTSERVLET_JAR=$PTII/lib/javax.servlet-api-3.0.1.jar)
-
-        if test  -f "$PTSERVLET_JAR"; then
-	    PT_MSG_RESULT([$PTSERVLET_JAR])
-        fi
-    fi
-
-    AC_MSG_CHECKING([for Smack, used by ptango])
-    AC_ARG_WITH(smack, [  --with-smack=JAR       use smack.jar from JAR,
-                          defaults to \$PTII/lib/smack.jar],
-        PTSMACK_JAR=$withval,
-	PTSMACK_JAR=$PTII/lib/smack.jar)
-    if test  -f "$PTSMACK_JAR"; then
-	PT_MSG_RESULT([$PTSMACKJAR])
-       updateClasspath "$PTSMACK_JAR"
-    else
-        AC_MSG_WARN([Failed to find the Smack jar files necessary to compile ptango.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
-    fi
-
-    AC_MSG_CHECKING([for Smackx, used by ptango])
-    AC_ARG_WITH(smackx, [  --with-smackx=JAR       use smackx.jar from JAR,
-                          defaults to \$PTII/lib/smackx.jar],
-        PTSMACKX_JAR=$withval,
-	PTSMACKX_JAR=$PTII/lib/smackx.jar)
-
-    if ! test  -f "$PTSMACKX_JAR"; then
-        updateExcludes "$PTANGO_USER_DIR"
-        AC_MSG_WARN([Failed to find the Smackx jar files necessary to compile ptango.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
-
-    else
-	PT_MSG_RESULT([$PTSMACKXJAR])
-        updateClasspath "$PTSMACKX_JAR"
-    fi
-
-    if ! test -f "$PTJETTY_JAR"; then
-        updateExcludes "$PTANGO_USER_DIR"
-        updateExcludes "$PTSERVER_USER_DIR"
-        updateExcludes "$PTHOMER_USER_DIR"
-        AC_MSG_WARN([Failed to find the Jetty jar files necessary to compile ptango,
-    ptserver and homer.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
-
-    else 
-        updateClasspath "$PTJETTY_JAR"
-    fi
-
-    if ! test -f "$PTSERVLET_JAR"; then
-        updateExcludes "$PTANGO_USER_DIR"
-        updateExcludes "$PTSERVER_USER_DIR"
-        updateExcludes "$PTHOMER_USER_DIR"
-        AC_MSG_WARN([Failed to find the Servlet jar files necessary to compile ptango,
-    ptserver and homer.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
-
-    else 
-       updateClasspath "$PTSERVLET_JAR"
-    fi
-
-    # We check that the appropriate jars are available below for Ptango
 fi
 
 #--------------------------------------------------------------------
@@ -5476,41 +5367,6 @@ if test -d "$MESCAL_USER_DIR"; then
    updateExcludes "mescal/xml2hmdes/"
 fi
 
-#--------------------------------------------------------------------
-#       OpenModelica is an implementation of Modelica.
-#       At compile time, it is used in $PTII/ptolemy/actor/lib/fmi/fmus/omc
-#       At runtime, it is used in $PTII/ptolemy/domains/openmodelica        
-#	See https://openmodelica.org
-#--------------------------------------------------------------------
-
-# We only enable OpenModelical if either of these two directories are present
-PTOMC_USER_DIR="$PTII/ptolemy/actor/lib/fmi/fmus/omc"
-PTOPENMODELICA_USER_DIR="$PTII/ptolemy/domains/openmodelica"
-
-
-if test ! -d "$PTOMC_USER_DIR" -a ! -d "$PTOPENMODELICA_USER_DIR"; then
-    PT_MSG_STATUS([$PTOMC_USER_DIR and $PTOPENMODELICA_USER_DIR are not present])
-else
-    AC_PATH_PROG(PTOMC, omc)
-    if test "${PTOMC:-none}" = "none"; then
-        AC_MSG_WARN([Failed to find omc, the OpenModelicaCompiler.
-    Rebuilding the OpenModelica fmus will not be possible.
-    Running the OpenModelica models will not be possible.
-    This is only a concern if you are interested in OpenModelica])
-        updateExcludes "ptolemy/actor/lib/fmi/fmus/omc"
-        updateExcludes "ptolemy/domains/openmodelica"
-    else
-        if test -d "$PTOMC_USER_DIR";  then
-                PTOMC_DIR=omc
-        fi
-        if test -d "$PTOPENMODELICA_USER_DIR";  then
-                PTOPENMODELICA_DIR=openmodelica
-                PTOPENMODELICA_PACKAGES="ptolemy.domains.openmodelica.kernel ptolemy.domains.openmodelica.lib ptolemy.domains.openmodelica.lib.omc ptolemy.domains.openmodelica.lib.omc.corba"
-		PTOPENMODELICADOMAIN_JAR=openmodelica/openmodelica.jar
-        fi
-    fi
-fi
-
 
 #--------------------------------------------------------------------
 #       ProtoBuf - "Protocol Buffers are a way of encoding structured data in an efficient yet extensible format."
@@ -5557,6 +5413,7 @@ fi
 #--------------------------------------------------------------------
 
 # We only enable Ptango if $PTPAHO_USER_DIR is present
+# Ptango has been removed, but it is not clear that this depends on Ptango.
 PTPAHO_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/localStorage"
 
 # PTPAHO_MQTT_DIRS is set to localStorage and mqtt if Paho MQTT is found and used in ptII/ptolemy/actor/lib/jjs/modules/
@@ -5596,121 +5453,6 @@ else
    updateClasspath "$PTPAHO_MQTT_JAR"
    PTPAHO_MQTT_DIRS="localStorage mqtt"
    PTPAHO_MQTT_PACKAGES="ptolemy.actor.lib.jjs.modules.localStorage ptolemy.actor.lib.jjs.modules.mqtt"
-fi 
-
-#--------------------------------------------------------------------
-#       Ptango is the Ptolemy Internet of Things project
-#	See http://chess.eecs.berkeley.edu/ptango
-#--------------------------------------------------------------------
-
-# PTANGO_DIR is set to ptango if ptango is found.
-PTANGO_DIR=
-
-# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
-PTXMPP_DIR=
-
-# We only enable Ptango if $PTANGO_USER_DIR is present
-PTANGO_USER_DIR="org/ptolemy/ptango"
-if test ! -d "$PTANGO_USER_DIR"; then
-    PT_MSG_STATUS([$PTANGO_USER_DIR is not present])
-else
-    # We checked for Jetty above.	
-    if test  -f "$PTJETTY_JAR"; then
-	# We checked for Servlet above.
-        if test  -f "$PTSERVLET_JAR" -a -f "$PTSMACK_JAR" -a -f "$PTSMACKX_JAR"; then
-	    PTANGO_DIR=ptango
-	    PTXMPP_DIR=xmpp
-            # PTANGO_PACKAGES is used in ptII/doc/makefile
-	    PTANGO_PACKAGES=`find $PTANGO_USER_DIR -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-        fi
-    fi
-
-    if test "$PTANGO_DIR" = ""; then
-        AC_MSG_WARN([Failed to find the Jetty, Servlet, Smack or SmackX jar files necessary to compile ptango.
-    Ptango is the Ptolemy Internet of Things project.
-    For further instructions, see http://chess.eecs.berkeley.edu/ptango.])
-    else
-        PTANGO_JARS="${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTSMACK_JAR}${CLASSPATHSEPARATOR}${PTSMACKX_JAR}"
-    fi
-fi
-
-if test -z "$PTANGO_JARS"; then
-   updateExcludes "org/ptolemy/ptango/"
-fi 
-
-
-#--------------------------------------------------------------------
-#       ptserver is the Ptolemy server interface to the Android client
-#	http://chess.eecs.berkeley.edu
-#	
-#--------------------------------------------------------------------
-
-# PTSERVER_DIR is set to ptserver and used in
-# $PTII/makefile if ptserver is found
-PTSERVER_DIR=
-
-# Jar files used by ptserver.
-PTHESSIAN_JAR=
-PTWMQTT_JAR=
-
-# Jar files necessary for compilation of ptserver.
-PTSERVER_JARS=
-
-# We only need to look for Hessian if $PTSERVER_USER_DIR is present
-PTSERVER_USER_DIR="$PTII/ptserver"
-PTSERVER_USER_DIR2="$PTII/ptolemy/homer"
-if test ! -d "$PTSERVER_USER_DIR" -o ! -d "$PTSERVER_USER_DIR2" -o -z "$PTHOMER_DIR"; then
-    PT_MSG_STATUS([$PTSERVER_USER_DIR or
-    $PTSERVER_USER_DIR2 are not present or
-    Homer was not found
-    so we need not find the Hessian, Jetty, Servlet and WMQTT interfaces for ptserver.])
-else
-    # We checked for Jetty above.	
-    if test  -f "$PTJETTY_JAR"; then
-	# We checked for Servlet above.
-        if test  -f "$PTSERVLET_JAR"; then
-	    AC_MSG_CHECKING([for Hessian, used by ptserver ])
-	    AC_ARG_WITH(hessian, [  --with-hessian=JAR       use Hessian.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/hessian-4.0.7.jar],
-  	    PTHESSIAN_JAR=$withval,
-	    PTHESSIAN_JAR=$PTII/ptserver/lib/hessian-4.0.7.jar)
-            if test  -f "$PTHESSIAN_JAR"; then
-   	        PT_MSG_RESULT([$PTHESSIAN_JAR])
-
-		AC_MSG_CHECKING([for WMQTT, used by ptserver ])
-		AC_ARG_WITH(wmqtt, [  --with-wmqtt=JAR       use wmqtt.jar from JAR,
-                          defaults to \$PTII/ptserver/lib/wmqtt.jar],
-	  	PTWMQTT_JAR=$withval,
-		PTWMQTT_JAR=$PTII/ptserver/lib/wmqtt.jar)
-
-		if test  -f "$PTWMQTT_JAR"; then
-	     	    PT_MSG_RESULT([$PTWMQTT_JAR])
-
-	            # Set to ptserver and used in
-	            # $PTII/makefile
-	            PTSERVER_DIR=ptserver
-                    # PTSERVER_PACKAGES is used in ptII/doc/makefile
-	            PTSERVER_PACKAGES=`find ptserver -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-                fi
-             fi
-         fi
-    fi
-
-    if test "$PTSERVER_DIR" = ""; then
-        AC_MSG_WARN([Failed to find the jar files necessary to compile ptserver.
-    The ptserver interface is used to support Ptolemy running on the Android.
-    For further instructions, see $PTII/ptserver/package.html] )
-    else
-        PTSERVER_JARS="${CLASSPATHSEPARATOR}${PTHESSIAN_JAR}${CLASSPATHSEPARATOR}${PTJETTY_JAR}${CLASSPATHSEPARATOR}${PTSERVLET_JAR}${CLASSPATHSEPARATOR}${PTWMQTT_JAR}"
-    fi
-fi
-
-if test -z "$PTSERVER_JARS"; then
-   updateExcludes "ptserver/"
-   updateExcludes "ptolemy/homer/"
-else
-   updateClasspath "$PTHESSIAN_JAR"
-   updateClasspath "$PTWMQTT_JAR"
 fi 
 
 #--------------------------------------------------------------------
@@ -5900,7 +5642,7 @@ PTRTOOL_DIR=
 # Used in mk/jnlp.jar 
 PTRTOOL_JNLP_JARS=
 
-# We only enable RPtango if $PTRTOOL_USER_DIR is present
+# We only enable R if $PTRTOOL_USER_DIR is present
 PTRTOOL_USER_DIR="ptolemy/actor/lib/r"
 if test ! -d "$PTRTOOL_USER_DIR"; then
     PT_MSG_STATUS([$PTRTOOL_USER_DIR is not present])
@@ -7196,7 +6938,7 @@ AC_SUBST(CMKIT_DIR)
 # http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac#EclipseProblems
 AC_SUBST(ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS)
 
-# Location of Eclipse, which is used by ptolemy/backtracking
+# Location of Eclipse, which is used by ptolemy/backtracking (no longer)
 AC_SUBST(ECLIPSE_DIR)
 
 # Location of GNU Awk, used by maven
@@ -7393,16 +7135,6 @@ AC_SUBST(PSDF_DIR)
 
 # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
 AC_SUBST(PTACCESSOR_DIR)
-
-# Set to ptango if jetty and javax.servlet jar files are found.
-# Used in org/ptolemy/makefile.
-AC_SUBST(PTANGO_DIR)
-
-# Jar files for Ptango.
-AC_SUBST(PTANGO_JARS)
-
-# PTANGO_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTANGO_PACKAGES)
 
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)
@@ -7689,9 +7421,6 @@ AC_SUBST(PTJAVAMAIL_PACKAGES)
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
 AC_SUBST(PTJCERTI_JAR)
 
-# Jetty jar files used by Ptango and ptserver.
-AC_SUBST(PTJETTY_JAR)
-
 # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
 AC_SUBST(PTJJS_DIR)
 
@@ -7886,20 +7615,6 @@ AC_SUBST(PTOPENCV_INCLUDE_DIR)
 # PTOPENCV_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTOPENCV_PACKAGES)
 
-# PTOMC_DIR is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
-AC_SUBST(PTOMC_DIR)
-
-# PTOPENMODELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
-AC_SUBST(PTOPENMODELICA_DIR)
-
-# PTOPENMODELICADOMAIN_JAR is set to openmodelica/openmodelica.jar if OpenModelica is found and used in ptII/ptolemy/domains/makefile.
-AC_SUBST(PTOPENMODELICADOMAIN_JAR)
-
-#There are no OMC FMU .java files, so there is no PTOMC_PACKAGES.
-
-# PTOPENMODELICA_PACKAGES is used in doc/makefile.  
-AC_SUBST(PTOPENMODELICA_PACKAGES)
-
 # Open Sound Control/Processing.org jar file used by org.ptolemy.js
 AC_SUBST(PTOSCP5_JAR)
 
@@ -8010,19 +7725,6 @@ AC_SUBST(PTSCALA_PACKAGES)
 # $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 AC_SUBST(PTSERIAL_DIR)
 
-# PTSERVER_DIR is set to ptserver and used in
-# $PTII/makefile if dbxml is found
-AC_SUBST(PTSERVER_DIR)
-
-# PTSERVER_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTSERVER_PACKAGES)
-
-# PTSERVER_JARS includes hessian, jetty, servlet and mqtt jars and is used by $PTII/ptserver
-AC_SUBST(PTSERVER_JARS)
-
-# javax.servlet-api*.jar used by Ptango and ptserver.
-AC_SUBST(PTSERVLET_JAR)
-
 # slf4j-api*.jar, used by webcam-capture and xbjlib (XBee).
 AC_SUBST(PTSLF4J_API_JAR)
 
@@ -8089,9 +7791,6 @@ AC_SUBST(PTXBJLIB_JARS)
 
 # PTXBJLIB_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTXBJLIB_PACKAGES)
-
-# PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
-AC_SUBST(PTXMPP_DIR)
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
