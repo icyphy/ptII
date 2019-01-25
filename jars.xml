@@ -52,8 +52,6 @@
     <include name="org/ptolemy/opencv.jar" />
     <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/osc.jar" />
-    <include name="org/ptolemy/ptango/ptango.jar" />
-    <include name="org/ptolemy/ptango/demo/demo.jar" />
     <include name="org/ptolemy/qss/qss.jar" />
     <include name="org/ptolemy/qss/demo/demo.jar" />
     <include name="org/ptolemy/ssm/ssm.jar" />
@@ -119,8 +117,6 @@
     <include name="ptolemy/actor/ptalon/gt/demo/demo.jar" />
     <include name="ptolemy/actor/ptalon/gt/gt.jar" />
     <include name="ptolemy/actor/ptalon/ptalon.jar" />
-    <include name="ptolemy/backtrack/backtrack.jar" />
-    <include name="ptolemy/backtrack/demo/demo.jar" />
     <include name="ptolemy/caltrop/caltrop.jar" />
     <include name="ptolemy/caltrop/demo/demo.jar" />
     <include name="ptolemy/cg/cg.jar" />
@@ -189,7 +185,6 @@
     <include name="ptolemy/domains/modal/kernel/fmv/fmv.jar" />
     <include name="ptolemy/domains/modal/modal.jar" />
     <include name="ptolemy/domains/modal/modal/modal.jar" />
-    <include name="ptolemy/domains/openmodelica/openmodelica.jar" />
     <include name="ptolemy/domains/petrinet/petrinet.jar" />
     <include name="ptolemy/domains/petrinet/demo/demo.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
@@ -277,7 +272,6 @@
     <include name="ptolemy/vergil/vergilApplet.jar" />
     <include name="ptolemy/verification/demo/demo.jar" />
     <include name="ptolemy/verification/verification.jar" />
-    <include name="ptserver/ptserver.jar" />
 
     <!-- Demos from $PTII/adm/bin/updateantjar here -->
     <include name="lbnl/demo/CRoom/CRoom.jar" />
@@ -288,26 +282,6 @@
     <include name="org/ptolemy/machineLearning/particleFilter/demo/OpenLoopTwoRobotTargetLocalization/OpenLoopTwoRobotTargetLocalization.jar" />
     <include name="org/ptolemy/optimization/demo/LinearRegression/LinearRegression.jar" />
     <include name="org/ptolemy/optimization/demo/SimpleOptimization/SimpleOptimization.jar" />
-    <include name="org/ptolemy/ptango/demo/BlinkyLight/BlinkyLigh.jar" />
-    <include name="org/ptolemy/ptango/demo/Chat/Chat.jar" />
-    <include name="org/ptolemy/ptango/demo/Chat/ChatClient.jar" />
-    <include name="org/ptolemy/ptango/demo/Chat/ChatClient2.jar" />
-    <include name="org/ptolemy/ptango/demo/Chat/ChatServer.jar" />
-    <include name="org/ptolemy/ptango/demo/Cookies/Cookies.jar" />
-    <include name="org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar" />
-    <include name="org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar" />
-    <include name="org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar" />
-    <include name="org/ptolemy/ptango/demo/Guidance/Guidance.jar" />
-    <include name="org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.jar" />
-    <include name="org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar" />
-    <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar" />
-    <include name="org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar" />
-    <include name="org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar" />
-    <include name="org/ptolemy/ptango/demo/TemperatureSimulation.jar" />
-    <include name="org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.jar" />
-    <include name="org/ptolemy/ptango/demo/UCBPower/UCBPower.jar" />
-    <include name="org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar" />
-    <include name="org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar" />
     <include name="org/ptolemy/qss/demo/RLC/RLC.jar" />
     <include name="ptolemy/actor/gt/demo/BouncingBallX2/BouncingBallX2.jar" />
     <include name="ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.jar" />
@@ -363,9 +337,6 @@
     <include name="ptolemy/actor/ptalon/demo/SmallWorld/SmallWorld.jar" />
     <include name="ptolemy/actor/ptalon/demo/Unicycle/Unicycle.jar" />
     <include name="ptolemy/actor/ptalon/gt/demo/Adder/Adder.jar" />
-    <include name="ptolemy/backtrack/demo/PrimeTest/PrimeTest.jar" />
-    <include name="ptolemy/backtrack/demo/RampRollback/RampRollback.jar" />
-    <include name="ptolemy/backtrack/demo/TrialModule/TrialModule.jar" />
     <include name="ptolemy/caltrop/demo/FunctionClosures/FunctionClosures.jar" />
     <include name="ptolemy/caltrop/demo/FunctionDefinition/FunctionDefinition.jar" />
     <include name="ptolemy/caltrop/demo/Primes/Primes.jar" />
@@ -481,7 +452,6 @@
     <include name="ptolemy/domains/modal/demo/MultipleRuns/MultipleRuns.jar" />
     <include name="ptolemy/domains/modal/demo/StateTracker/StateTracker.jar" />
     <include name="ptolemy/domains/modal/demo/SystemLevelType/SystemLevelType.jar" />
-    <include name="ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar" />
     <include name="ptolemy/domains/petrinet/demo/PetriNetSimple/PetriNetSimple.jar" />
     <include name="ptolemy/domains/pn/demo/BrockAckerman/BrockAckerman.jar" />
@@ -1974,109 +1944,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/backtrack/backtrack.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/backtrack/backtrack.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/automatic/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/automatic/ptolemy/configs/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/automatic/ptolemy/domains/sdf/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/automatic/ptolemy/math/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/eclipse/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/ast/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/ast/transform/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/build/build.xml"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/doc/backtrack.html"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/doc/index.html"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/doc/toc.xml"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/icons/ptolemy_icon.gif"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/icons/sort_members_icon.png"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/icons/standardize_tabs_spaces_icon.png"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/images/ptolemy.gif"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/actions/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/actions/codestyle/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/build/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/compatibility/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/console/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/dialogs/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/doc/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/editor/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/icons/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/images/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/preferences/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/util/*.class"/>
-	<include name="ptolemy/backtrack/eclipse/plugin/widgets/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/manual/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/manual/ptolemy/actor/lib/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/manual/ptolemy/actor/lib/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/manual/ptolemy/configs/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/*.gcc-header"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/*.gcc-patch"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/java/util/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/test/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/util/test/junit/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/xmlparser/*.class"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/backtrack/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/backtrack/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/demo/PrimeTest/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/demo/RampRollback/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/backtrack/demo/TrialModule/*.xml"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/caltrop/caltrop.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/caltrop/caltrop.jar"
@@ -3190,24 +3057,6 @@
       </fileset>
     </jar>
 
-    <!-- ptserver/ptserver.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptserver/ptserver.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="lib/jetty-all-license.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptserver/*.properties.default"/>
-	<include name="ptserver/*.properties"/>
-	<include name="ptserver/*/*.class"/>
-	<include name="ptserver/actor/lib/io/*.class"/>
-	<include name="ptserver/actor/lib/tld/*.class"/>
-	<include name="ptserver/data/handler/*.class"/>
-	<include name="ptserver/demo/*.xml"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/domains/ptera/ptera.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/ptera/ptera.jar"
@@ -4049,62 +3898,6 @@
 	<include name="org/ptolemy/osc/*.class"/>
 	<include name="org/ptolemy/osc/*.xml"/>
 	<include name="org/ptolemy/osc/demo/*/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- org/ptolemy/ptango/ptango.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/org/ptolemy/ptango/ptango.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="lib/javax.servlet-api-license.htm"/>
-	<include name="lib/smack-license.htm"/>
-	<include name="lib/jetty-all-license.htm"/>
-        <include name="org/ptolemy/ptango/lib/*.class"/>
-        <include name="org/ptolemy/ptango/lib/*.xml"/>
-        <include name="org/ptolemy/ptango/lib/http/*.class"/>
-        <include name="org/ptolemy/ptango/lib/http/*.xml"/>
-        <include name="org/ptolemy/ptango/lib/img/*.gif"/>
-        <include name="org/ptolemy/ptango/lib/webSocket/*.class"/>
-        <include name="org/ptolemy/ptango/lib/webSocket/*.xml"/>
-        <include name="org/ptolemy/ptango/lib/xmpp/*.class"/>
-        <include name="org/ptolemy/ptango/lib/xmpp/img/*.gif"/>
-        <include name="org/ptolemy/ptango/lib/xmpp/*.xml"/>
-      </fileset>
-    </jar>
-
-
-    <!-- org/ptolemy/ptango/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/org/ptolemy/ptango/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-        
-        <include name="org/ptolemy/ptango/demo/*/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/*/*.png"/>
-        <include name="org/ptolemy/ptango/demo/*/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/*/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/*/*.xsl"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.cfg"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.css"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.csv"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.ddy"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.epw"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.jpg"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.js"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.htm"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.html"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.idf"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.osm"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.pdf"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.png"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.skp"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.stat"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.svg"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/*/*/*.xsl"/>
-        <include name="org/ptolemy/ptango/demo/files/*.gif"/>
       </fileset>
     </jar>
 
@@ -5063,21 +4856,6 @@
 	<include name="ptolemy/domains/modal/demo/SystemLevelType/fmv/*.xml"/>
       </fileset>
     </jar>
-
-    <!-- ptolemy/domains/openmodelica/openmodelica.jar -->
-         <jar defaultexcludes="yes" 
-     	 destfile="${basedir}/ptolemy/domains/openmodelica/openmodelica.jar" 
-     	 > 
-           <fileset dir="${basedir}"> 
-     	<include name="ptolemy/domains/openmodelica/kernel/*.class"/> 
-     	<include name="ptolemy/domains/openmodelica/lib/*.class"/> 
-     	<include name="ptolemy/domains/openmodelica/lib/omc/*.class"/> 
-     	<include name="ptolemy/domains/openmodelica/lib/omc/corba/*.class"/> 
-     	<include name="ptolemy/domains/openmodelica/*.xml"/> 
-     	<include name="ptolemy/domains/openmodelica/lib/*.xml"/> 
-     	<include name="ptolemy/domains/openmodelica/demo/*/*.xml"/> 
-           </fileset> 
-         </jar> 
 
     <!-- ptolemy/domains/petrinet/petrinet.jar -->
     <jar defaultexcludes="yes"
@@ -6326,239 +6104,6 @@
     </jar>
 
     <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/BlinkyLight/BlinkyLight.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.css"/>
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.html"/>
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.js"/>
-        <include name="org/ptolemy/ptango/demo/BlinkyLight/pages/*.png"/>
-       </fileset>
-    </jar>
-    
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/Chat.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatClient.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatClient2.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Chat/ChatServer.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Chat/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Cookies/Cookies.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Cookies/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/Cookies/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/DOPpresence/DOPpresence.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/DOPpresence/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/icons/*.pdf"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.css"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.js"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.jpg"/>
-        <include name="org/ptolemy/ptango/demo/DOPpresence/pages/*.html"/>
-       </fileset>
-    </jar>
-    
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Exception/Exception.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Exception/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/EPlus70Actuator/EPlus70Actuator.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.html"/>
-        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.pdf"/>
-        <include name="org/ptolemy/ptango/demo/EPlus70Actuator/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/ErrorHandler/ErrorHandler.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/ErrorHandler/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Guidance/Guidance.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/Guidance/GuidanceSingleUserWithName.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/Guidance/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/Guidance/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/OccupancyAlert/OccupancyAlert.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.css"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.html"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.jpg"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.js"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.svg"/>
-        <include name="org/ptolemy/ptango/demo/OccupancyAlert/pages/*.xsl"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/OptimizationAdvisor/OptimizationAdvisor.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/OptimizationAdvisor/files/*.html"/>
-	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/SensorAndrew/SensorAndrew.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/SensorAndrew/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/SensorAndrew/*.xsl"/>
-        <include name="org/ptolemy/ptango/demo/SensorAndrew/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/SmartRoom/SmartRoom.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/SmartRoom/*.png"/>
-        <include name="org/ptolemy/ptango/demo/SmartRoom/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/SmartRoom/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/TemperatureSimulation/TemperatureSimulation.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.cfg"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.ddy"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.epw"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.idf"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.osf"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.png"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.skp"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.stat"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.csv"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.gif"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.htm"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.html"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.jpg"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.js"/>
-        <include name="org/ptolemy/ptango/demo/TemperatureSimulation/pages/*.png"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPower/UCBPower.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.png"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPower/buildingsToXY"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/data/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPower/pages/*.html"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.txt"/>
-        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/UCBPowerPtera/data/*.txt"/>
-	<include name="org/ptolemy/ptango/demo/UCBPower/ucb_medium_map.png"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
-        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
-	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
-        <include name="doc/img/PtolemyIISmall.gif"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
          destfile="${basedir}/org/ptolemy/qss/demo/RLC/RLC.jar"
          >
        <fileset dir="${basedir}">
@@ -7012,30 +6557,6 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/actor/ptalon/gt/demo/Adder/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/backtrack/demo/PrimeTest/PrimeTest.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/backtrack/demo/PrimeTest/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/backtrack/demo/RampRollback/RampRollback.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/backtrack/demo/RampRollback/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/backtrack/demo/TrialModule/TrialModule.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/backtrack/demo/TrialModule/*.xml"/>
        </fileset>
     </jar>
 
@@ -7996,14 +7517,6 @@
         <include name="ptolemy/domains/modal/demo/SystemLevelType/fmv/*.xml"/>
        </fileset>
     </jar>
-
-<!--     <jar defaultexcludes="yes" -->
-<!--          destfile="${basedir}/ptolemy/domains/openmodelica/demo/OpenModelica/OpenModelica.jar" -->
-<!--          > -->
-<!--        <fileset dir="${basedir}"> -->
-<!--         <include name="ptolemy/domains/openmodelica/demo/OpenModelica/*.xml"/> -->
-<!--        </fileset> -->
-<!--     </jar> -->
 
     <jar defaultexcludes="yes"
          destfile="${basedir}/ptolemy/domains/petrinet/demo/PetriNetDiningPhilosophers/PetriNetDiningPhilosophers.jar"

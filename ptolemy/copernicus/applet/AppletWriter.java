@@ -1802,8 +1802,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar");
             auxiliaryClassMap.put("actor/lib/js/js.jar needs lib/socketio.jar",
                     "lib/socketio.jar");
-            auxiliaryClassMap.put("actor/lib/js/js.jar needs ptango.jar",
-                    "org/ptolemy/ptango/ptango.jar");
         }
 
         if (jarFilesThatHaveBeenRequired.contains(jniJar)) {
@@ -1873,16 +1871,6 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
             }
             auxiliaryClassMap.put("ptalon jar needs antlr jar",
                     "ptolemy/actor/ptalon/antlr/antlr.jar");
-        }
-
-        if (jarFilesThatHaveBeenRequired
-                .contains("org/ptolemy/ptango/ptango.jar")) {
-            auxiliaryClassMap.put("ptango requires jetty",
-                    "lib/jetty-all-8.1.5-v20120716.jar");
-            auxiliaryClassMap.put("ptango requires javax.servlet",
-                    "lib/javax.servlet-api-3.0.1.jar");
-            auxiliaryClassMap.put("ptango requires smack", "lib/smack.jar");
-            auxiliaryClassMap.put("ptango requires smackx", "lib/smackx.jar");
         }
 
         if (jarFilesThatHaveBeenRequired

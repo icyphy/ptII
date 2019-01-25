@@ -1008,107 +1008,108 @@ test Pxgraph-4.1 {Test out file args} {
 </plot>
 }
 
-test Pxgraph-4.2 {Test out file args} {
-    # Test out file args
-    pxgraphTest  https://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
-<plot>
-<!-- Ptolemy plot, version XXX -->
-<title>My Plot</title>
-<xLabel>X Axis</xLabel>
-<yLabel>Y Axis</yLabel>
-<xRange min="0.0" max="4.0"/>
-<yRange min="-4.0" max="4.0"/>
-<xTicks>
-  <tick label="zero" position="0.0"/>
-  <tick label="one" position="1.0"/>
-  <tick label="two" position="2.0"/>
-  <tick label="three" position="3.0"/>
-  <tick label="four" position="4.0"/>
-  <tick label="five" position="5.0"/>
-</xTicks>
-<noGrid/>
-<noColor/>
-<default connected="no" marks="various"/>
-<dataset connected="yes" name="dot">
-<m x="0.0" y="-4.0"/>
-<p x="1.0" y="-3.0"/>
-<p x="2.0" y="-2.0"/>
-<p x="3.0" y="-1.0"/>
-<p x="4.0" y="0.0"/>
-</dataset>
-<dataset connected="yes" name="cross">
-<m x="0.0" y="-3.5"/>
-<p x="1.0" y="-2.5"/>
-<p x="2.0" y="-1.5"/>
-<p x="3.0" y="-0.5"/>
-<p x="4.0" y="0.5"/>
-</dataset>
-<dataset name="square">
-<m x="0.0" y="-3.0"/>
-<m x="1.0" y="-2.0"/>
-<m x="2.0" y="-1.0"/>
-<m x="3.0" y="0.0"/>
-<m x="4.0" y="1.0"/>
-</dataset>
-<dataset name="triangle">
-<m x="0.0" y="-2.5"/>
-<m x="1.0" y="-1.5"/>
-<m x="2.0" y="-0.5"/>
-<m x="3.0" y="0.5"/>
-<m x="4.0" y="1.5"/>
-</dataset>
-<dataset name="diamond">
-<m x="0.0" y="-2.0"/>
-<m x="1.0" y="-1.0"/>
-<m x="2.0" y="0.0"/>
-<m x="3.0" y="1.0"/>
-<m x="4.0" y="2.0"/>
-</dataset>
-<dataset name="circle">
-<m x="0.0" y="-1.5"/>
-<m x="1.0" y="-0.5"/>
-<m x="2.0" y="0.5"/>
-<m x="3.0" y="1.5"/>
-<m x="4.0" y="2.5"/>
-</dataset>
-<dataset name="plus">
-<m x="0.0" y="-1.0"/>
-<m x="1.0" y="0.0"/>
-<m x="2.0" y="1.0"/>
-<m x="3.0" y="2.0"/>
-<m x="4.0" y="3.0"/>
-</dataset>
-<dataset name="square">
-<m x="0.0" y="-0.5"/>
-<m x="1.0" y="0.5"/>
-<m x="2.0" y="1.5"/>
-<m x="3.0" y="2.5"/>
-<m x="4.0" y="3.5"/>
-</dataset>
-<dataset name="triangle">
-<m x="0.0" y="0.0"/>
-<m x="1.0" y="1.0"/>
-<m x="2.0" y="2.0"/>
-<m x="3.0" y="3.0"/>
-<m x="4.0" y="4.0"/>
-</dataset>
-<dataset name="diamond">
-<m x="0.0" y="0.5"/>
-<m x="1.0" y="1.5"/>
-<m x="2.0" y="2.5"/>
-<m x="3.0" y="3.5"/>
-<m x="4.0" y="4.5"/>
-</dataset>
-<dataset name="dot">
-<m x="0.0" y="1.0"/>
-<m x="1.0" y="2.0"/>
-<m x="2.0" y="3.0"/>
-<m x="3.0" y="4.0"/>
-</dataset>
-</plot>
-}
+# FILE IS NO LONGER THERE.
+# test Pxgraph-4.2 {Test out file args} {
+#    # Test out file args
+#    pxgraphTest  https://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
+# } {<?xml version="1.0" standalone="no"?>
+# <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
+# <plot>
+# <!-- Ptolemy plot, version XXX -->
+# <title>My Plot</title>
+# <xLabel>X Axis</xLabel>
+# <yLabel>Y Axis</yLabel>
+# <xRange min="0.0" max="4.0"/>
+# <yRange min="-4.0" max="4.0"/>
+# <xTicks>
+#  <tick label="zero" position="0.0"/>
+#  <tick label="one" position="1.0"/>
+#  <tick label="two" position="2.0"/>
+#  <tick label="three" position="3.0"/>
+#  <tick label="four" position="4.0"/>
+#  <tick label="five" position="5.0"/>
+# </xTicks>
+# <noGrid/>
+# <noColor/>
+# <default connected="no" marks="various"/>
+# <dataset connected="yes" name="dot">
+# <m x="0.0" y="-4.0"/>
+# <p x="1.0" y="-3.0"/>
+# <p x="2.0" y="-2.0"/>
+# <p x="3.0" y="-1.0"/>
+# <p x="4.0" y="0.0"/>
+# </dataset>
+# <dataset connected="yes" name="cross">
+# <m x="0.0" y="-3.5"/>
+# <p x="1.0" y="-2.5"/>
+# <p x="2.0" y="-1.5"/>
+# <p x="3.0" y="-0.5"/>
+# <p x="4.0" y="0.5"/>
+# </dataset>
+# <dataset name="square">
+# <m x="0.0" y="-3.0"/>
+# <m x="1.0" y="-2.0"/>
+# <m x="2.0" y="-1.0"/>
+# <m x="3.0" y="0.0"/>
+# <m x="4.0" y="1.0"/>
+# </dataset>
+# <dataset name="triangle">
+# <m x="0.0" y="-2.5"/>
+# <m x="1.0" y="-1.5"/>
+# <m x="2.0" y="-0.5"/>
+# <m x="3.0" y="0.5"/>
+# <m x="4.0" y="1.5"/>
+# </dataset>
+# <dataset name="diamond">
+# <m x="0.0" y="-2.0"/>
+# <m x="1.0" y="-1.0"/>
+# <m x="2.0" y="0.0"/>
+# <m x="3.0" y="1.0"/>
+# <m x="4.0" y="2.0"/>
+# </dataset>
+# <dataset name="circle">
+# <m x="0.0" y="-1.5"/>
+# <m x="1.0" y="-0.5"/>
+# <m x="2.0" y="0.5"/>
+# <m x="3.0" y="1.5"/>
+# <m x="4.0" y="2.5"/>
+# </dataset>
+# <dataset name="plus">
+# <m x="0.0" y="-1.0"/>
+# <m x="1.0" y="0.0"/>
+# <m x="2.0" y="1.0"/>
+# <m x="3.0" y="2.0"/>
+# <m x="4.0" y="3.0"/>
+# </dataset>
+# <dataset name="square">
+# <m x="0.0" y="-0.5"/>
+# <m x="1.0" y="0.5"/>
+# <m x="2.0" y="1.5"/>
+# <m x="3.0" y="2.5"/>
+# <m x="4.0" y="3.5"/>
+# </dataset>
+# <dataset name="triangle">
+# <m x="0.0" y="0.0"/>
+# <m x="1.0" y="1.0"/>
+# <m x="2.0" y="2.0"/>
+# <m x="3.0" y="3.0"/>
+# <m x="4.0" y="4.0"/>
+# </dataset>
+# <dataset name="diamond">
+# <m x="0.0" y="0.5"/>
+# <m x="1.0" y="1.5"/>
+# <m x="2.0" y="2.5"/>
+# <m x="3.0" y="3.5"/>
+# <m x="4.0" y="4.5"/>
+# </dataset>
+# <dataset name="dot">
+# <m x="0.0" y="1.0"/>
+# <m x="1.0" y="2.0"/>
+# <m x="2.0" y="3.0"/>
+# <m x="3.0" y="4.0"/>
+# </dataset>
+# </plot>
+# }
 
 ######################################################################
 ####

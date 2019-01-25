@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/domains/openmodelica/demo/RLC
+ME =		ptolemy/domains/algebraic/demo/RLC
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..

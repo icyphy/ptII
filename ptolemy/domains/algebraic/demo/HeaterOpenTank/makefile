@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/domains/openmodelica/demo/HeaterOpenTank
+ME =		ptolemy/domains/algebraic/demo/HeaterOpenTank
 
 # Root of Ptolemy II directory
 ROOT =		../../../../..

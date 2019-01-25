@@ -42,7 +42,6 @@ PTTHALES_DIR = thales
 DIRS = util com diva edu net org ptolemy \
 	ptdb \
 	$(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
-	ptserver \
 	contrib bin doc
 
 # Root of Ptolemy II directory

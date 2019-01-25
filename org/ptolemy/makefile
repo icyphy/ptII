@@ -29,7 +29,6 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-# PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
 # PTOPENCV_DIR is set by configure in $PTII/mk/ptII.mk if Open Computer Vision was found. 
 # See also $PTII/org/opencv
 DIRS = classloading \
@@ -41,7 +40,6 @@ DIRS = classloading \
 	$(PTOPENCV_DIR) \
 	optimization \
 	$(PTOSCP5_DIR) \
-	$(PTANGO_DIR) \
 	qss \
 	ssm
 
