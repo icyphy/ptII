@@ -372,13 +372,16 @@ $(NODE_WIN): node
 	fi
 
 
-
+$(TAR):
+	if [ ! -e "$(TAR)" ]; then \
+		echo "$(TAR) does not exist.  It is best if GNU Tar is installed, see https://www.gnu.org/software/tar/"; \
+	fi
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
 # then we tar it up.
 ptiidist: $(PTIIDIST) 
-$(PTIIDIST): $(IZPACK_DIR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
+$(PTIIDIST): $(IZPACK_DIR) $(TAR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARWIN) $(NODE_LINUX) $(NODE_WIN) 
 	@echo "#"
 	@echo "# Now creating PTIIDIST: $@"
 	@echo "#"
@@ -670,7 +673,7 @@ clean_src:
 	rm -f $(PTII_FULL)
 src: $(PTII_FULL) $(PTII_FULL_ZIP)
 PTII_FULL: $(PTII_FULL) $(PTII_FULL_ZIP)
-$(PTII_FULL): $(PTIIDIST)
+$(PTII_FULL): $(PTIIDIST) $(TAR)
 	@echo "#"
 	@echo "# Now creating PTII_FULL: $@"
 	@echo "#"
@@ -740,7 +743,7 @@ updateversions_test:
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
 
 ptii_src: $(PTII_SRC) $(PTII_SRC_JAR)
-$(PTII_SRC): $(PTII_FULL)
+$(PTII_SRC): $(PTII_FULL) $(TAR)
 	@echo "#"
 	@echo "# Now creating PTII_SRC: $@"
 	@echo "#"
@@ -1205,7 +1208,7 @@ $(PTII_SRC_JAR): src_jar
 	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
-src_jar: #$(PTII_SRC) 
+src_jar: $(TAR) #$(PTII_SRC) 
 	@echo "#"
 	@echo "src_jar rule"
 	@echo "#"
@@ -1239,7 +1242,7 @@ $(CAPECODE_SRC_JAR): src_jar/$(CAPECODE_CAPECODE_VERSION)
 
 # The Jar file that we create.
 capecode.tar: $(CAPECODE_SRC_TAR)
-$(CAPECODE_SRC_TAR): src_jar/$(CAPECODE_CAPECODE_VERSION)
+$(CAPECODE_SRC_TAR): $(TAR) src_jar/$(CAPECODE_CAPECODE_VERSION)
 	@echo "#"
 	@echo "# Now creating CAPECODE_SRC_TAR: $@"
 	@echo "#"
@@ -1574,7 +1577,7 @@ $(HYVISUAL_SRC_JAR): src_jar/hyvisual$(VERSION)
 
 HYVISUAL_SRC_TAR = hyvisual$(VERSION).src.tar.gz
 # The Jar file that we create.
-hyvisual.tar: $(HYVISUAL_SRC_TAR)
+hyvisual.tar: $(TAR) $(HYVISUAL_SRC_TAR)
 $(HYVISUAL_SRC_TAR): src_jar/hyvisual$(VERSION)
 	(cd src_jar; \
 		cp $(PTIIHOME)/doc/design/hyvisual.pdf \
@@ -1670,7 +1673,7 @@ VIPTOS_SRC_TAR = viptos$(VIPTOS_VERSION).src.tar.gz
 # The Jar file that we create.
 viptos: $(VIPTOS_SRC_TAR)
 viptos.tar: $(VIPTOS_SRC_TAR)
-$(VIPTOS_SRC_TAR): src_jar/viptos$(VIPTOS_VERSION)
+$(VIPTOS_SRC_TAR): $(TAR) src_jar/viptos$(VIPTOS_VERSION)
 	(cd src_jar; \
 		$(TAR) -czf ../viptos$(VIPTOS_VERSION).src.tar.gz \
 		viptos$(VIPTOS_VERSION) \
@@ -2207,7 +2210,7 @@ remote1nuke:
 
 # untarthe remote dist.  Usually this is run on the remote machine
 remote1ptiidist: $(REMOTE1PTIIDIST)
-$(REMOTE1PTIIDIST): $(PTII_FULL)
+$(REMOTE1PTIIDIST): $(TAR) $(PTII_FULL)
 	@echo "#"
 	@echo "# Now untaring on `hostname`"
 	@echo "#"
@@ -3025,7 +3028,7 @@ $(L4J_TAR): $(INSTALLER_SRCS)
 
 l4j_dir:$(L4J_DIR)
 
-$(L4J_DIR): $(L4J_TAR)
+$(L4J_DIR): $(L4J_TAR) $(TAR)
 	@echo "Creating L4J_DIR: $(L4J_DIR)"
 	if [ ! -d $(L4J_DIR) ]; then \
 		cd $(PTIIHOME)/vendors; \
