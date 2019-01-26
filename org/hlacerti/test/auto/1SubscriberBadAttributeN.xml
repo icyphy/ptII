@@ -89,6 +89,8 @@
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
         </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="1SubsBadAttrN">
+        </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-330.0, -110.0]">

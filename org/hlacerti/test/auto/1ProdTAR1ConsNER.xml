@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{342.67657232284546, 517.5518025746655}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdTAR1ConsNER/cons1Signal.xml: first federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdTAR1ConsNER/cons1Signal.xml: first federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 515.0]">
         </property>
@@ -46,7 +46,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdTAR1ConsNER/prod1Signal.xml: last federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdTAR1ConsNER/prod1Signal.xml: last federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 540.0]">
         </property>

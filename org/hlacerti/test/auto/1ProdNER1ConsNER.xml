@@ -4,13 +4,13 @@
 <entity name="1ProdNER1ConsNER" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 66, 901, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 66, 969, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[667, 525]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.04251012145749">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.1048543689321, 481.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.7184466019417, 479.56116504854367}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 570.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 585.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -58,7 +58,7 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdNER1ConsNER/cons1Signal.xml: first federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdNER1ConsNER/cons1Signal.xml: first federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 520.0]">
         </property>
@@ -89,7 +89,7 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdNER1ConsNER/prod1Signal.xml: last federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdNER1ConsNER/prod1Signal.xml: last federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 545.0]">
         </property>
