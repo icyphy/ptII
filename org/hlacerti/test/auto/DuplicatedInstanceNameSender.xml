@@ -1,13 +1,13 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="DistributedSender1" class="ptolemy.actor.TypedCompositeActor">
+<entity name="DuplicatedInstanceNameSender" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 35.0]">
         </property>
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="2">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 45.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -45,7 +45,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -9.999999999999972]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 25.0]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -64,26 +64,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={441, 268, 707, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={160, 225, 745, 633}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[473, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 523]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.923374154747437">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1502547430734145">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{207.71093749999997, 256.72062297516163}">
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie - http://www.ciele.fr&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 400.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{169.77784574109066, 227.30267531722464}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -101,7 +91,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 70.0]">
         </property>
     </property>
     <property name="period_dc2" class="ptolemy.data.expr.Parameter" value="2">
@@ -120,7 +110,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 90.0]">
         </property>
     </property>
     <property name="hla_value_dc1" class="ptolemy.data.expr.Parameter" value="11">
@@ -139,7 +129,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 175.0]">
         </property>
     </property>
     <property name="hla_value_dc2" class="ptolemy.data.expr.Parameter" value="31">
@@ -166,17 +156,17 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An exception is throwed by the HLA manager &#10;if a duplicate class instance name is detected in a Federate.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An exception is throwed by the HlaManager &#10;if two HlaPublisher actors with the same &#10;class instance name have different class names.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 325.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Sender1TAR">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="SenderD">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="StaticMultiInstance">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="InstanceNameDuplicated">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstance.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="FEDfiles/StaticMultiInstance.fed">
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
         </property>
@@ -184,17 +174,19 @@
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
         </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="SenderD">
+        </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 40.0]">
         </property>
     </property>
     <property name="TestException - Duplicate instance name detected" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaPublisher '.DistributedSender1.HlaPublisher2' with the same HLA information specified by the HlaPublisher '.DistributedSender1.HlaPublisher' &#10;is already registered for publication.&#10;  in .DistributedSender1.HlaManager">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaPublisher '.DuplicatedInstanceNameSender.HlaPublisher2' with the same HLA information specified by the HlaPublisher '.DuplicatedInstanceNameSender.HlaPublisher' &#10;is already registered for publication.&#10;  in .DuplicatedInstanceNameSender.HlaManager">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 345.0]">
         </property>
     </property>
     <entity name="DiscreteClock1" class="ptolemy.actor.lib.DiscreteClock">
@@ -203,7 +195,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 145.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -225,7 +217,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 145.0]">
         </property>
     </entity>
     <entity name="HlaPublisher2" class="org.hlacerti.lib.HlaPublisher">

@@ -4,16 +4,16 @@
 <entity name="1ProdNER1ConsTAR" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={322, 88, 890, 638}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={148, 83, 957, 635}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[656, 528]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 525]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9753105352063534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{345.17657232284546, 499.55644653751386}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.52460691360494, 498.0184748394202}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdNER1ConsTAR/cons1Signal.xml: first federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdNER1ConsTAR/cons1Signal.xml: first federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 515.0]">
         </property>
@@ -46,7 +46,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- knownFailedTests/1ProdNER1ConsTAR/prod1Signal.xml: last federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdNER1ConsTAR/prod1Signal.xml: last federate to be launched.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 540.0]">
         </property>
