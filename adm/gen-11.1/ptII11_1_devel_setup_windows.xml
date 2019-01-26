@@ -155,7 +155,7 @@
            <file src="src/ptII11.1.devel/ant" targetdir="$INSTALL_PATH"/>
            <executable stage="never">
              <fileset targetdir="$INSTALL_PATH/ant/bin" includes="ant,antRun,antRun.pl,complete-ant-cmd.pl,runant.pl,runant.py"/>
-             <fileset targetdir="$INSTALL_PATH/bin" includes="ant,capecode,capecode.bat,comm.policy,comm.policy.in,convertToLazy.bat,cyphysim,homer,homer.bat,hyvisual,IncrementalFMU_wrap.dll,libfmipp.dll,macContents,makeapp,makefile,mkjnlp,mkl4j,mkosgi,mkptdemo,mkptlivelinkdemo,mkpttest,node,npm,persist,policy.all,ptcodegen,ptcodegen.bat,ptcygpath,ptinvoke,ptinvoke.in,ptjunit,ptweb,ptweb.bat,reloadAllAccessors,sandbox.policy,startjini,updateFmu,vergil,viptos"/>
+             <fileset targetdir="$INSTALL_PATH/bin" includes="ant,capecode,capecode.bat,comm.policy,comm.policy.in,convertToLazy.bat,cyphysim,hyvisual,IncrementalFMU_wrap.dll,libfmipp.dll,macContents,makeapp,makefile,mkjnlp,mkl4j,mkosgi,mkptdemo,mkptlivelinkdemo,mkpttest,node,npm,persist,policy.all,ptcodegen,ptcodegen.bat,ptcygpath,ptinvoke,ptinvoke.in,ptjunit,ptweb,ptweb.bat,reloadAllAccessors,sandbox.policy,startjini,updateFmu,vergil,viptos"/>
            </executable>
 
 <!--/MacOSInclude-->
@@ -504,10 +504,6 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.1.devel/jar_dist/lib/java_cup.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/backtrack/backtrack.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/backtrack"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/backtrack/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/backtrack/demo"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/caltrop/caltrop.jar"
                   targetdir="$INSTALL_PATH/ptolemy/caltrop"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/caltrop/demo/demo.jar"
@@ -682,24 +678,10 @@
             <file src="../dists/ptII11.1.devel/jar_dist/lib/oscP5.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
-            <file src="../dists/ptII11.1.devel/jar_dist/org/ptolemy/ptango/ptango.jar"
-                  targetdir="$INSTALL_PATH/org/ptolemy/ptango"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/org/ptolemy/ptango/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/org/ptolemy/ptango/demo"/>
-
             <file src="../dists/ptII11.1.devel/jar_dist/org/ptolemy/qss/qss.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/qss"/>
             <file src="../dists/ptII11.1.devel/jar_dist/org/ptolemy/qss/demo/demo.jar"
                   targetdir="$INSTALL_PATH/org/ptolemy/qss/demo"/>
-
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/smack.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/smackx.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
 
             <file src="../dists/ptII11.1.devel/jar_dist/lib/org.eclipse.paho.client.mqttv3.jar"
                   targetdir="$INSTALL_PATH/lib"/>
@@ -779,9 +761,6 @@
                   targetdir="$INSTALL_PATH/ptolemy/domains/metroII"/-->
             <!-- file src="../dists/ptII11.1.devel/jar_dist/ptolemy/domains/metroII/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/metroII/demo"/-->
-
-            <!-- file src="../dists/ptII11.1.devel/jar_dist/ptolemy/domains/openmodelica/openmodelica.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/openmodelica"/ -->
 
             <!-- file src="../dists/ptII11.1.devel/jar_dist/ptolemy/domains/scr/scr.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/scr"/ -->
@@ -908,7 +887,6 @@
 	    <file src="src/ptII11.1.devel/ptdb" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII11.1.devel/ptserver" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/thales" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/vergil.jnlp.in" targetdir="$INSTALL_PATH"/>
