@@ -4,7 +4,7 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 24, 969, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 136, 969, 703}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 593]">
     </property>
@@ -13,33 +13,6 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1543.4320723212647, -2438.3969894652237}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="display">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="./Test.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
-        </property>
-        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
-            <display name="HLA time unit"/>
-        </property>
-        <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Require synchronization ?"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init2&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1410.0, -2615.0]">
-        </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
@@ -71,7 +44,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron&#10;Update: CIELE Ingenierie - http://www.ciele.fr">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1700.0, -2630.0]">
         </property>
@@ -80,6 +53,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The class name &quot;Bille&quot; needs to match the class name specified&#10;in the Federation Object Model (FOM) file, which has extension .fed,&#10;and also the federate that publishes instances of class Bille must&#10;specify that class name in the HlaPublisher actor.&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1820.0, -2400.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="display">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Test.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1440, -2615}">
         </property>
     </property>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">

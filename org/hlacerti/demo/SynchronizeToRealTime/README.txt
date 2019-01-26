@@ -20,7 +20,7 @@ Updated values are published each two units of time (see DiscreteClock actor
 specification from the model).
 
 - clockHLA.xml: a Federate (TC + TR) using NER. The ClockHLA federate is the
-creator of the synchronization point used during the initialization of the
+register of the synchronization point used during the initialization of the
 simulation to synchronize all federates. This federate has to be launched
 in last position (its firing actor has to be the last created).
 

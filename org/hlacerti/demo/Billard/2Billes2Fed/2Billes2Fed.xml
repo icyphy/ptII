@@ -2,16 +2,16 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="2Billes2Fed" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to the Ptolemy federates for the &#10;Billiard Federation. It can interoperate with CERTI Billard demo&#10;(c++ federates Billard.cc).&#10;&#10;Check if you have $PTII and $CERTI_HOME set.&#10;&#10;1. For running only Ptolemy federates, set the parameter &#10;&quot;Synchronization Point Register&quot; in federate BilliardTable.xml. &#10;Launch the federates by clicking in the link below in this order:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to the Ptolemy federates for the &#10;Billiard Federation. &#10;&#10;Check if you have $PTII and $CERTI_HOME set.&#10;&#10;Launch the federates by clicking in the link below in this order:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 50.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={555, 34, 716, 706}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={321, 28, 766, 406}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[482, 596]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 296]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0465600890797742">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1060036063743124">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{229.50066877431905, 288.96481335116727}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{239.9847639698093, 183.2943342823093}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billard table Model">
@@ -104,73 +104,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso, David Come, Pierre Siron">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 515.0]">
-        </property>
-    </property>
-    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. For running with a C++ federate, untick the parameter &#10;&quot;Is Synchronization Point Register&quot; in BilliardTable.xml. &#10;&#10;a. Open 2 terminals (check $CERTI_HOME and $PTII are set)&#10;b. Go to first terminal and type the command &quot;rtig&quot;&#10;c. Go to second terminal and call the billard federate &quot;ball1&quot;&#10;           billard -nball1 -fTest -FTest.fed -t10&#10;    DO NOT HIT ENTER YET.&#10;d. Launch the Ptolemy federates in this order:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 235.0}">
-        </property>
-    </property>
-    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="e. Come back to the second terminal, and press &quot;Enter&quot;. &#10;&#10;If you have problems with X11, remplace &quot;billard&quot; by&#10;&quot;billard-nogui&quot;.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 450.0]">
-        </property>
-    </property>
-    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billard ball 2 Model">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 390.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardBall2.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billard table Model (untick &quot;Is Synchronization Point &#10;Register&quot; in HlaManager before run this model)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 410.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardTable.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 255.0]">
         </property>
     </property>
 </entity>

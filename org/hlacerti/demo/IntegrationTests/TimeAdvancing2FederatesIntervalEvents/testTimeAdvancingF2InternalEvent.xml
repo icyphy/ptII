@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
         </property>
@@ -25,7 +25,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate f2 participating in the HlaFederation;&#10;it must be the first one to be launched.&#10;It generates &quot;internal&quot; events that are not&#10;sent through the federation&#10;&#10;To observe how time advances,&#10;right-click on HlaManager and&#10;choose Listen To Attribute.&#10;&#10;Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;The parameter hlaTimeStep is only used with TAR.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-45.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 255.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
@@ -54,7 +54,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clement Michel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 515.0]">
         </property>
     </property>
     <property name="clockPeriod" class="ptolemy.data.expr.Parameter" value="1">
@@ -92,7 +92,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 85.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -111,6 +111,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 90.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If SynchronizeToRealTime is set in the DE director, then the&#10;logical time is equal to wall clock time in the whole federation.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 220.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 120.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="clockPeriod">
         </property>
@@ -119,7 +139,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={288, 144, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={804, 533, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>

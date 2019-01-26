@@ -1,6 +1,6 @@
 Janette Cardoso, july 2017
 
-This is a Federation with a 2 federates: 
+This is a Federation with 2 federates: 
 - testTimeAdvancingF2.xml: set parameter synchronizeToRealTime in DE director for forcing the time to advance in a federate 
 - testTimeAdvancingF1.xml
 No federate sends any UAV. 
