@@ -2,39 +2,20 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="BillardBall1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={58, 223, 940, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={561, 36, 804, 511}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[570, 401]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4144266125540756">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.3112533211452515">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.00414849983324, 264.480989234315}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.14639163017273, 209.6878892885787}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 160.0]">
-        </property>
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;ball1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;Test&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="./Test.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 165.0]">
         </property>
     </property>
     <property name="EndSimu" class="ptolemy.data.expr.Parameter" value="1600.0">
@@ -64,6 +45,22 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 280.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="ball1">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Test.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Init">
+        </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 165.0]">
         </property>
     </property>
     <entity name="Ball" class="ptolemy.actor.TypedCompositeActor">

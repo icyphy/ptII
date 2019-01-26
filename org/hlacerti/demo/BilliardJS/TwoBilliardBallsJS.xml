@@ -20,35 +20,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 10.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="billiard">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="./Test.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
-        </property>
-        <property name="hlaTimeUnit" class="ptolemy.data.expr.Parameter" value="1">
-            <display name="HLA time unit"/>
-        </property>
-        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Require synchronization ?"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Init2&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point creator ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 20.0]">
-        </property>
-    </property>
     <property name="EndSimu" class="ptolemy.data.expr.Parameter" value="1600.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -86,6 +57,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate simulates 2 instances of class&#10;&quot;Bille&quot; (see Test.fed file) and can interoperate&#10;with C++ federates of CERTI demo &quot;Billard&quot;.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 225.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="billiardJS">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Test.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 20.0]">
         </property>
     </property>
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
@@ -242,7 +227,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 10.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 387, 1118, 632}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 268, 1118, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[884, 522]">
         </property>
@@ -255,9 +240,9 @@
             </property>
             <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
             </property>
-            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso, Patricia Derler.">
+            <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Edward Lee, Janette Cardoso">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 255.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 210.0]">
             </property>
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -272,14 +257,14 @@
         </property>
         <port name="X" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 170.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 125.0]">
             </property>
         </port>
         <port name="Y" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 225.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 180.0]">
             </property>
         </port>
         <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -299,7 +284,7 @@
                 <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 180.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
             </property>
             <property name="Vx" class="ptolemy.data.expr.Parameter" value="Vx">
             </property>
