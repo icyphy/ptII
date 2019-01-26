@@ -674,7 +674,6 @@ FULL_10_0_JARS = \
 	ptolemy/domains/atc/atc.jar \
 	ptolemy/domains/atc/demo/demo.jar \
 	ptolemy/domains/fmima/fmima.jar \
-	ptolemy/domains/openmodelica/openmodelica.jar \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/vergil/scr/scr.jar \
