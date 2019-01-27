@@ -1,26 +1,26 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="BillardTable" class="ptolemy.actor.TypedCompositeActor">
+<entity name="BillardTableCpp" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 161, 937, 674}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 249, 927, 647}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[703, 564]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[693, 537]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8649423210599416">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6959503202408563">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1637.203369140625, -2468.2101716100733}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1621.6379695653463, -2461.3701171875}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1600">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1770.0, -2585.0]">
         </property>
     </property>
-    <property name="endTime" class="ptolemy.data.expr.Parameter" value="1600">
+    <property name="endTime" class="ptolemy.data.expr.Parameter" value="800.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -46,7 +46,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="All instances to be discovered must &#10;have a HlaSubscriber in the model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1645.0, -2385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1645.0, -2355.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -56,7 +56,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1655.0, -2355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1640.0, -2325.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -64,13 +64,13 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the demo 2Billes2FedCpp that&#10;interacts with a C++ billiard ball.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using with a C++ billiard&#10;ball, no Ptolemy federate can be&#10;called &quot;Init&quot; (it is the name of the&#10;synchronization point, dealt by&#10;the C++ federate).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1650.0, -2585.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1630.0, -2615.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Init">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Display">
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="Test">
         </property>
@@ -80,17 +80,17 @@
         </property>
         <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1680.0, -2580.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1685.0, -2580.0]">
         </property>
     </property>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={940, 556, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 521, 500, 376}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 332]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1535.0, -2505.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1525.0, -2495.0]">
         </property>
         <port name="x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -111,10 +111,10 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>ArrayPlotterXY</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="-0.8903894017298329" max="1.098236351230167"/>
-<yRange min="-0.08886257529600003" max="0.11000000000000001"/>
+<xLabel>X</xLabel>
+<yLabel>Y</yLabel>
+<xRange min="0.0" max="505.0"/>
+<yRange min="0.0" max="103.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -154,25 +154,25 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1745.0, -2420.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1745.0, -2440.0]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xBall1,  yBall1, xBall2, yBall2">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xBall1,  yBall1, xBall2, yBall2,xBall3,yBall3">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 501, 649, 399}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={116, 497, 649, 399}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[649, 355]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1535.0, -2435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1525.0, -2420.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="0.1" max="1.1"/>
-<yRange min="50.0" max="200.0"/>
+<xRange min="0.1" max="800.0"/>
+<yRange min="-1.0" max="501.0"/>
 </plot>?>
         </configure>
     </entity>
@@ -192,7 +192,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1740.0, -2475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1740.0, -2480.0]">
         </property>
     </entity>
     <entity name="PositionY2" class="org.hlacerti.lib.HlaSubscriber">
@@ -211,7 +211,45 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1745.0, -2370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1745.0, -2400.0]">
+        </property>
+    </entity>
+    <entity name="PositionX3" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;PositionX&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;Testball3&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1745.0, -2360.0]">
+        </property>
+    </entity>
+    <entity name="PositionY3" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;PositionY&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Bille&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;Testball3&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1750.0, -2320.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -223,31 +261,45 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-1635.0, -2430.0]">
+        <vertex name="vertex1" value="[-1635.0, -2440.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-1655.0, -2475.0]">
+        <vertex name="vertex1" value="[-1660.0, -2480.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-1615.0, -2395.0]">
+        <vertex name="vertex1" value="[-1625.0, -2400.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-1600.0, -2360.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[-1650.0, -2320.0]">
         </vertex>
     </relation>
     <link port="ArrayPlotterXY.x" relation="relation3"/>
     <link port="ArrayPlotterXY.x" relation="relation5"/>
+    <link port="ArrayPlotterXY.x" relation="relation2"/>
     <link port="ArrayPlotterXY.y" relation="relation"/>
     <link port="ArrayPlotterXY.y" relation="relation4"/>
+    <link port="ArrayPlotterXY.y" relation="relation6"/>
     <link port="PositionX.output" relation="relation3"/>
     <link port="PositionY.output" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation3"/>
     <link port="TimedPlotter.input" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation5"/>
     <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TimedPlotter.input" relation="relation2"/>
+    <link port="TimedPlotter.input" relation="relation6"/>
     <link port="PositionX2.output" relation="relation5"/>
     <link port="PositionY2.output" relation="relation4"/>
+    <link port="PositionX3.output" relation="relation2"/>
+    <link port="PositionY3.output" relation="relation6"/>
 </entity>
