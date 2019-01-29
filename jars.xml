@@ -1408,19 +1408,6 @@
       </fileset>
     </jar>
 
-    <!-- ptolemy/homer/homer.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/homer/homer.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="lib/netbeans-visual-library-license.htm"/>
-	<include name="ptolemy/homer/widgets/ResizableImageWidget-license.htm"/>
-	<include name="ptolemy/homer/*.class"/>
-	<include name="ptolemy/homer/*/*.class"/>
-	<include name="ptolemy/homer/*/*.properties"/>
-      </fileset>
-    </jar>
-
     <!-- ptolemy/matlab/demo/demo.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/matlab/demo/demo.jar"
