@@ -2,9 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2004-2012 The Regents of the University of California.
+# @Copyright (c) 2004-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,5 +52,6 @@ test Exit-1.1 {} {
     catch {java::new ptolemy.actor.gui.MoMLSimpleApplication Exit.xml} errMsg
     java::call System setProperty ptolemy.ptII.doNotExit true
     list $errMsg
-} {{java.lang.RuntimeException: Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
+} {{java.lang.RuntimeException: StringUtilities.exit() was called. Normally, we would exit here because Manager.exitAfterWrapup() was called.  However, because the ptolemy.ptII.exitAfterWrapup property is set, we throw this exception instead.}}
+
 
