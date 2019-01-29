@@ -372,7 +372,6 @@ public class ExportModelJUnitTest {
                 "f14HLAr74766.xml", // Has links to other models
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU", //SimX only works under 32-bits.
                 "PhysicalPlantCausalityLoop", // Deliberately brings up message on run.  AMS
-                "ptango", // Skip running all ptango demos, they do not provide useful exportable output.
                 //"GravitationWithCollisionDetection.xml", // "Cannot render to more than 32 Canvas3Ds."
                 //"demo/ExecDemo/Demos/BouncingBall.xml", // "Cannot render to more than 32 Canvas3Ds."
                 "EPlus70Actuator.xml", // Hangs in a strange way after running.o

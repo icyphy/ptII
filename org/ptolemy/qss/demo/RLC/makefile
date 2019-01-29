@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		org/ptolemy/ptango/demo/RLC
+ME =		org/ptolemy/qss/demo/RLC
 
 DIRS =
 
