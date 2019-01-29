@@ -769,7 +769,7 @@ if test "$UPGRADE_JVM" = "yes"; then
 	- actor/gui/run, which uses org/mlc/swing
 	- actor/lib/vhdl
 	- ptalon
-    JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
+    JDK 1.6 or later is needed to use javax.swing.GroupLayout.
     JDK 1.8 is needed for Nashorn, nio and many other features.
     Please upgrade your JDK to 1.8 or later and try again.
     $upgradeMessage]) 	
@@ -2398,107 +2398,6 @@ if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
    updateExcludes "ptolemy/backtrack/"
    updateExcludes "ptolemy/backtrack/ast/"
 fi 
-
-#--------------------------------------------------------------------
-#       db and dbxml is the Oracle Berkeley XML DB
-#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-#	dbxml is used by the ptdb directory.
-#       db and dbxml are basically GPL'd, see $PTII/ptdb/lib/db-dbxml-license.htm
-#--------------------------------------------------------------------
-
-# PTDB_DIR is set to database and used in
-# $PTII/ptdb/makefile if dbxml is found
-PTDB_DIR=
-
-
-PTDBXML_JAR='${PTII}/vendors/oracle/dbxml.jar'
-PTDB_JAR='${PTII}/vendors/oracle/db.jar'
-
-# Jar files necessary for compilation
-PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
-
-# We only need to look for dbxml if $PTDB_USER_DIR
-PTDB_USER_DIR="$PTII/ptdb"
-if test ! -d "$PTDB_USER_DIR"; then
-    PT_MSG_STATUS([$PTDB_USER_DIR is not present,
-    so we need not find the dbxml interface.])
-else
-    AC_MSG_CHECKING([for dbxml.jar ])
-    AC_ARG_WITH(dbxml, [  --with-dbxml=JAR       use dbxml.jar from JAR,
-                          defaults to \$PTII/vendors/oracle/dbxml.jar],
-	PTDBXML_JAR=$withval,
-	PTDBXML_JAR=$PTII/vendors/oracle/dbxml.jar)
-
-    if test  -f "$PTDBXML_JAR"; then
-	PT_MSG_RESULT([$PTDBXML_JAR])
-
-        AC_MSG_CHECKING([for db.jar ])
-        AC_ARG_WITH(db, [  --with-db=JAR       use db.jar from JAR,
-                          defaults to \$PTII/vendors/oracle/db.jar],
-	PTDB_JAR=$withval,
-	PTDB_JAR=$PTII/vendors/oracle/db.jar)
-
-        if test  -f "$PTDB_JAR"; then
-	    PT_MSG_RESULT([$PTDB_JAR])
-	    # Set to ptdb and used in
-	    # $PTII/makefile
-
-	    # Set to database and used in
-	    # $PTII/ptdb/makefile
-	    PTDB_DIR=database
-            # PTDB_PACKAGES is used in ptII/doc/makefile
-	    PTDB_PACKAGES=`$FIND ptdb -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-         fi
-    fi	
-
-    # Look for shared libraries necessary at runtime.
-    AC_MSG_CHECKING([for dbxml runtime shared libraries])
-    AC_ARG_WITH(dbxmllib, [  --with-dbxmllib=DIR    use libdbxml from DIR,
-                          defaults to \$PTII/vendors/misc/dbxml-2.5.16/install/lib],
-	PTDBXML_LIB=$withval,
-	PTDBXML_LIB=$PTII/vendors/misc/dbxml-2.5.16/install/lib)
-    if test  -d "$PTDBXML_LIB"; then
-	PT_MSG_RESULT([$PTDBXML_LIB])
-	libdbxml=`$FIND "$PTDBXML_LIB" -name "*dbxml-*"`
-	if test ! -f "$libdbxml"; then
-	    AC_MSG_WARN([Failed to find dbxml-X.Y shared library in $PTDBXML_LIB])
-        fi
-    else
-        AC_MSG_WARN([Failed to find dbxml-X.Y shared library in $PTDBXML_LIB.
-    This means that the Ptolemy/Android HandSimDroid prototype will not run.])       
-    fi
-
-    if test "$PTDB_DIR" = ""; then
-        AC_MSG_WARN([Failed to find the Oracle Berkeley XML DB (dbxml) in
-    $PTDBXML_JAR and
-    $PTDB_JAR
-    Perhaps the Oracle Berkeley XML DB is not installed?
-    You need not download dbxml unless you
-    plan on using the ptdb facility which uses a database to manage actors with Ptolemy II. 
-    The dbxml interface can be downloaded from
-    http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built.
-    For further instructions, see $PTII/ptdb/doc] )
-    else
-        PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
-    fi
-
-    if test ! "$HAS_GENERICS" = "yes"; then 
-        #ptdb.gui.GraphPatternSearchEditor import ptalon.gt.PtalonMatcher
-        AC_MSG_WARN([You are running Java $JVERSION, which does not
-    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile.])
-        PTDBXML_JAR=""
-	PTDB_JAR=""
-    fi
-fi
-
-if test -z "$PTDB_DIR"; then
-   updateExcludes "ptdb/kernel/database/"
-else
-   updateClasspath "$PTDBXML_JAR"
-   updateClasspath "$PTDB_JAR"
-fi 
-
 
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
@@ -5497,91 +5396,6 @@ else
 fi 
 
 #--------------------------------------------------------------------
-#       PowerMock is used for testing and is CPL'd.
-#       PowerMock includes JUnit and EasyMock. 
-#--------------------------------------------------------------------
-
-# PTPOWERMOCK_DIR is set to test and used in
-# $PTII/ptdb/makefile
-PTPOWERMOCK_DIR= 
-
-# PowerMock, used for testing, see http://code.google.com/p/powermock/
-# Used in ptolemy/ptdb/test/makefile
-PTPOWERMOCK_JARS=
-
-# We only need to look for PowerMock if the ptdb/test directory is present
-POWERMOCK_USER_DIR="$PTII/ptdb/test"
-if test ! -d "$POWERMOCK_USER_DIR"; then
-    PT_MSG_STATUS([$POWERMOCK_USER_DIR is not present,
-    so we need not find PowerMock])
-else
-    AC_MSG_CHECKING([for PowerMock test harness])
-    AC_ARG_WITH(ptpowermock, [  --with-powermock=DIR       use PowerMock test harness from DIR,
-                          defaults to \$PTII/vendors/misc/powermock-easymock-junit-1.3.8],
-	POWERMOCK_DIR=$withval,
-	POWERMOCK_DIR=$PTII/vendors/misc/powermock-easymock-junit-1.3.8)
-
-    if test -d "$POWERMOCK_DIR"; then
-	PT_MSG_RESULT([$POWERMOCK_DIR])
-	AC_MSG_CHECKING([for PowerMock jars])
-        jars="cglib-nodep- easymock- easymockclassextension- javassist- junit- objenesis- powermock-easymock-"
-	powermockjarpath=
-	for jar in $jars
-	do
-	    if test "${PTVERBOSE:-none}" = "none"; then
-	        $PT_ECHO $ECHO_N "."
-	    else
-                $PT_ECHO $ECHO_N "$jar "
-            fi
-	    # Do not use a leading * before ${jar}.  If we do, then we don't find the easymock jar file.
-	    jarpath=`$FIND "$POWERMOCK_DIR" -name "${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-                # Keep track of the jars so we can use them while building
-	        # with make.
-  	        powermockjarpath="$powermockjarpath$CLASSPATHSEPARATOR$jarpath"
-
-                updateClasspath "$jarpath"
-            else   
-	        AC_MSG_WARN([Failed to find $jar in $POWERMOCK_DIR: $jarpath])
-	        powermockjarpath=
-	        break
-	   fi
-	done	
-	if test ! -z eclipsejarpath; then
-	   PT_MSG_RESULT( ok)
-	   PTPOWERMOCK_JARS=$powermockjarpath
-	   PTPOWERMOCK_DIR=test
-        fi
-	
-    fi	
-
-    if test "$PTPOWERMOCK_DIR" = ""; then
-        AC_MSG_WARN([Failed to find PowerMock.
-    Perhaps PowerMock was not installed?
-    You need not download these packages if you would like
-    to run the tests.  To install PowerMock, go to
-    http://code.google.com/p/powermock/ and download
-    http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
-    (which contains PowerMock for EasyMock and JUnit) and unzip it in
-    $PTII/vendors/misc so that 
-    $PTII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-    then rerun configure.
-    Other versions of PowerMock _may_ work, but are untested.])
-    fi
-fi
-
-if test -z "$PTPOWERMOCK_DIR"; then
-    if test -d ptdb; then
-        ptdbTestDirectories=`$FIND ptdb -name test`
-        for ptdbTestDirectory in $ptdbTestDirectories
-        do 
-            updateExcludes "$ptdbTestDirectory/"
-        done   
-    fi
-fi 
-
-
-#--------------------------------------------------------------------
 #       Ptalon 
 #--------------------------------------------------------------------
 
@@ -7236,19 +7050,6 @@ AC_SUBST(PTDATABASE_JNLP_JARS)
 # used in ptII/doc/makefile
 AC_SUBST(PTDATABASE_PACKAGES)
 
-# PTDB_DIR is set to ptdb and used in
-# $PTII/makefile if dbxml is found
-AC_SUBST(PTDB_DIR)
-
-# PTDB_PACKAGES is used in ptII/doc/makefile
-AC_SUBST(PTDB_PACKAGES)
-
-# PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
-AC_SUBST(PTDBXML_JARS)
-
-# Directory that contains libdbxml-X.Y.{so,dll,dylib}.  Used in $PTII/ptdb
-AC_SUBST(PTDBXML_LIB)
-
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 AC_SUBST(PTDISTRIBUTED_DIR)
@@ -7672,14 +7473,6 @@ AC_SUBST(PTSVGSALAMANDER_JAR)
 
 # PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTSVGSALAMANDER_PACKAGES)
-
-# PTPOWERMOCK_DIR is set to test and used in
-# $PTII/ptdb/makefile
-AC_SUBST(PTPOWERMOCK_DIR)
-
-# PowerMock, used for testing, see http://code.google.com/p/powermock/
-# Used in ptolemy/ptdb/test/makefile
-AC_SUBST(PTPOWERMOCK_JARS)
 
 # Jar files used by the Image Processing library from http://processing.org
 AC_SUBST(PTPROCESSING_JARS)

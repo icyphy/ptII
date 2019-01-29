@@ -40,7 +40,7 @@ DIRS =		\
 		doc \
 		dsp full fullViewer hyvisual jxta \
 		test \
-		pn ptdb ptiny ptinyKepler \
+		pn ptiny ptinyKepler \
 		ptinyViewer ptserver \
 		space viptos visualsense
 

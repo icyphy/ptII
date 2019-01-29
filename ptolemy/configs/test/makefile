@@ -48,7 +48,6 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
 	cloneTest.tcl \
-	configTest.tcl \
 	configurationTools.tcl \
 	testDefs.tcl
 

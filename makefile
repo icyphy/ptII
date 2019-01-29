@@ -40,7 +40,6 @@ ME =		.
 #   if $PTII/mescal was found
 PTTHALES_DIR = thales
 DIRS = util com diva edu net org ptolemy \
-	ptdb \
 	$(PTLBNL_DIR) $(PTMESCAL_DIR) $(PTTHALES_DIR) \
 	contrib bin doc
 

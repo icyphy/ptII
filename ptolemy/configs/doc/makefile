@@ -61,7 +61,6 @@ DERIVED_FILES = \
 	demosBcvtb.htm \
 	demosPtinyKepler.htm \
 	docsBcvtb.htm \
-	docsPtdb.htm \
 	docsPtiny.htm \
 	docsPtinyKepler.htm \
 	models.txt
@@ -139,9 +138,6 @@ demosPtinyKepler.htm: demosPtiny.htm
 
 docsBcvtb.htm: docsPtiny.htm
 	$(GAWK) -f $(ROOT)/doc/ptinyBcvtb.awk docsPtiny.htm | sed 's/introPtiny.htm/intro.htm/' | sed 's/completeDemosPtiny.htm/completeDemosBcvtb.htm/' > $@
-
-docsPtdb.htm: docs.htm
-	$(GAWK) -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
 
 docsPtiny.htm: docs.htm
 	$(GAWK) -f $(ROOT)/doc/javahtml.awk docs.htm | sed 's/intro.htm/introPtiny.htm/' | sed 's/completeDemos.htm/completeDemosPtiny.htm/' > $@  
