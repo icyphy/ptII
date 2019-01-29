@@ -190,8 +190,16 @@ exitIfNotCron () {
         if [ "$RUN_TESTS" = "true" ]; then
             echo "$0: RUN_TESTS was set to true, so the tests are being run even though TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", which is != cron."
         else
-            echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", so this target is *not* being run."
-            echo "$0: If you want to run the tests anyway, then set RUN_TESTS to true in https://travis-ci.org/icyphy/ptII/settings"
+            echo "$0: ##########################################"
+            echo "$0: We only run the tests when Travis is invoked via a cron job."
+            echo "$0: TRAVIS_EVENT_TYPE is \"$TRAVIS_EVENT_TYPE\", which is not \"cron\","
+            echo "$0: so the tests for this target are *not* being run."
+            echo "$0: This means that the JUnit output will reflect the output of the last cron job."
+            echo "$0: The JUnit output will *not* reflect changes made since that cron job."
+            echo "$0: This means that we just run a smoke build most of the time, yet once"
+            echo "$0: a day we run a cron job"
+            echo "$0: If you want to run the tests anyway, then set RUN_TESTS to true"
+            echo "$0: in https://travis-ci.org/icyphy/ptII/settings"
             echo "$0: Exiting"
             exit 0
         fi
