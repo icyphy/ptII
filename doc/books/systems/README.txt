@@ -13,16 +13,11 @@ Perhaps models that have InteractiveShells should not be run?
 
 discreteevents/InteractiveShell.xml
 discreteevents/ThreadedComposite.xml
-export/ChatClient.xml
-export/ChatClient2.xml
-export/ChatClient3.xml
 modal/ErrorTransition.xml
 modal/RefinementOutput.xml
 modal/Termination.xml
 pn/AreYouReady.xml
-pn/ChatClient.xml
 pn/LocalChat.xml
-pn/RemoteChat.xml
 types/ExpressionEvaluator.xml
 types/ExpressionEvaluatorBackward.xml
 types/ExpressionEvaluatorCoerced.xml
@@ -186,18 +181,6 @@ doc/books/systems/modelingtime/BusError.xml
 ptolemy.kernel.util.IllegalActionException: Test fails in iteration 0.
 Value was: 0.0. Should have been: 2.0
   in .BusError.Test2
-
-####
-doc/books/systems/pn/ChatClient.xml
-The model has this comment:
-  This model requires that ChatServer be running providing a chat service
-  at the specified URL. Such a chat server is available at
-
-   $PTII/org/ptolemy/ptango/demo/Chat/ChatServer.xml
-
-  which you can access by clicking on this comment.
-
-So, it will not run when we are exporting html.  
 
 
 #####
