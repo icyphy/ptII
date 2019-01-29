@@ -678,8 +678,6 @@ PTPTALON_PACKAGES
 PTPTALON_DIR
 PTPROTOBUF_JAR
 PTPROCESSING_JARS
-PTPOWERMOCK_JARS
-PTPOWERMOCK_DIR
 PTSVGSALAMANDER_PACKAGES
 PTSVGSALAMANDER_JAR
 PTSVGSALAMANDER_DIR
@@ -804,10 +802,6 @@ PTDOCLETS_DIR
 PTDISTRIBUTED_PACKAGES
 PTDISTRIBUTED_JARS
 PTDISTRIBUTED_DIR
-PTDBXML_LIB
-PTDBXML_JARS
-PTDB_PACKAGES
-PTDB_DIR
 PTDATABASE_PACKAGES
 PTDATABASE_JNLP_JARS
 PTDATABASE_DIR
@@ -1002,9 +996,6 @@ with_cobertura
 with_cunit
 with_tools_jar
 with_eclipse
-with_dbxml
-with_db
-with_dbxmllib
 with_gc_include
 with_gcc_arm
 with_itextpdf
@@ -1034,7 +1025,6 @@ with_jode
 with_kvm
 with_pahoMqtt
 with_mapss
-with_ptpowermock
 with_antlr
 with_soot
 with_javasystemjar
@@ -1707,12 +1697,6 @@ Optional Packages:
                           defaults to \$PTJAVA_HOME/../lib/tools.jar
   --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                          defaults to $TMP_ECLIPSE_DIR
-  --with-dbxml=JAR       use dbxml.jar from JAR,
-                          defaults to \$PTII/vendors/oracle/dbxml.jar
-  --with-db=JAR       use db.jar from JAR,
-                          defaults to \$PTII/vendors/oracle/db.jar
-  --with-dbxmllib=DIR    use libdbxml from DIR,
-                          defaults to \$PTII/vendors/misc/dbxml-2.5.16/install/lib
   --with-gc-include=DIR       use gc.h from DIR
                           defaults to \$PTII/vendors/gc/gc/include
   --with-gcc-arm=GCC_BINARY       use gcc-arm
@@ -1776,8 +1760,6 @@ Optional Packages:
                                   defaults to \$PTII/lib/org.eclipse.paho.client.mqttv3.jar
   --with-mapss=DIR       use mapss.jar from DIR,
                           defaults to \$PTII/lib
-  --with-powermock=DIR       use PowerMock test harness from DIR,
-                          defaults to \$PTII/vendors/misc/powermock-easymock-junit-1.3.8
   --with-antlr=DIR       use antlr.jar from DIR,
                           defaults to \$PTII/ptolemy/actor/ptalon/antlr'
   --with-soot=DIR       use SOOT from DIR,
@@ -3896,7 +3878,7 @@ if test "$UPGRADE_JVM" = "yes"; then
 	- actor/gui/run, which uses org/mlc/swing
 	- actor/lib/vhdl
 	- ptalon
-    JDK 1.6 or later is needed for ptdb to use javax.swing.GroupLayout.
+    JDK 1.6 or later is needed to use javax.swing.GroupLayout.
     JDK 1.8 is needed for Nashorn, nio and many other features.
     Please upgrade your JDK to 1.8 or later and try again.
     $upgradeMessage" "$LINENO" 5
@@ -6338,145 +6320,6 @@ if test -z "$PTBACKTRACK_ECLIPSE_DIR"; then
    updateExcludes "ptolemy/backtrack/"
    updateExcludes "ptolemy/backtrack/ast/"
 fi
-
-#--------------------------------------------------------------------
-#       db and dbxml is the Oracle Berkeley XML DB
-#	http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-#	dbxml is used by the ptdb directory.
-#       db and dbxml are basically GPL'd, see $PTII/ptdb/lib/db-dbxml-license.htm
-#--------------------------------------------------------------------
-
-# PTDB_DIR is set to database and used in
-# $PTII/ptdb/makefile if dbxml is found
-PTDB_DIR=
-
-
-PTDBXML_JAR='${PTII}/vendors/oracle/dbxml.jar'
-PTDB_JAR='${PTII}/vendors/oracle/db.jar'
-
-# Jar files necessary for compilation
-PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
-
-# We only need to look for dbxml if $PTDB_USER_DIR
-PTDB_USER_DIR="$PTII/ptdb"
-if test ! -d "$PTDB_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTDB_USER_DIR is not present,
-    so we need not find the dbxml interface." >&5
-$as_echo "$PTDB_USER_DIR is not present,
-    so we need not find the dbxml interface." >&6; }; fi
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for dbxml.jar " >&5
-$as_echo_n "checking for dbxml.jar ... " >&6; }
-
-# Check whether --with-dbxml was given.
-if test "${with_dbxml+set}" = set; then :
-  withval=$with_dbxml; PTDBXML_JAR=$withval
-else
-  PTDBXML_JAR=$PTII/vendors/oracle/dbxml.jar
-fi
-
-
-    if test  -f "$PTDBXML_JAR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTDBXML_JAR" >&5
-$as_echo "$PTDBXML_JAR" >&6; }; fi
-
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for db.jar " >&5
-$as_echo_n "checking for db.jar ... " >&6; }
-
-# Check whether --with-db was given.
-if test "${with_db+set}" = set; then :
-  withval=$with_db; PTDB_JAR=$withval
-else
-  PTDB_JAR=$PTII/vendors/oracle/db.jar
-fi
-
-
-        if test  -f "$PTDB_JAR"; then
-	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTDB_JAR" >&5
-$as_echo "$PTDB_JAR" >&6; }; fi
-	    # Set to ptdb and used in
-	    # $PTII/makefile
-
-	    # Set to database and used in
-	    # $PTII/ptdb/makefile
-	    PTDB_DIR=database
-            # PTDB_PACKAGES is used in ptII/doc/makefile
-	    PTDB_PACKAGES=`$FIND ptdb -name "*.java" | grep -v /test | awk -F / '{printf("%s", $1); for (i = 2; i < NF; i++) printf(".%s", $i); printf("\n")}' | sort | uniq | awk '{printf("%s ", $0)}'`
-         fi
-    fi
-
-    # Look for shared libraries necessary at runtime.
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for dbxml runtime shared libraries" >&5
-$as_echo_n "checking for dbxml runtime shared libraries... " >&6; }
-
-# Check whether --with-dbxmllib was given.
-if test "${with_dbxmllib+set}" = set; then :
-  withval=$with_dbxmllib; PTDBXML_LIB=$withval
-else
-  PTDBXML_LIB=$PTII/vendors/misc/dbxml-2.5.16/install/lib
-fi
-
-    if test  -d "$PTDBXML_LIB"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTDBXML_LIB" >&5
-$as_echo "$PTDBXML_LIB" >&6; }; fi
-	libdbxml=`$FIND "$PTDBXML_LIB" -name "*dbxml-*"`
-	if test ! -f "$libdbxml"; then
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find dbxml-X.Y shared library in $PTDBXML_LIB" >&5
-$as_echo "$as_me: WARNING: Failed to find dbxml-X.Y shared library in $PTDBXML_LIB" >&2;}
-        fi
-    else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find dbxml-X.Y shared library in $PTDBXML_LIB.
-    This means that the Ptolemy/Android HandSimDroid prototype will not run." >&5
-$as_echo "$as_me: WARNING: Failed to find dbxml-X.Y shared library in $PTDBXML_LIB.
-    This means that the Ptolemy/Android HandSimDroid prototype will not run." >&2;}
-    fi
-
-    if test "$PTDB_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
-    $PTDBXML_JAR and
-    $PTDB_JAR
-    Perhaps the Oracle Berkeley XML DB is not installed?
-    You need not download dbxml unless you
-    plan on using the ptdb facility which uses a database to manage actors with Ptolemy II.
-    The dbxml interface can be downloaded from
-    http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built.
-    For further instructions, see $PTII/ptdb/doc " >&5
-$as_echo "$as_me: WARNING: Failed to find the Oracle Berkeley XML DB (dbxml) in
-    $PTDBXML_JAR and
-    $PTDB_JAR
-    Perhaps the Oracle Berkeley XML DB is not installed?
-    You need not download dbxml unless you
-    plan on using the ptdb facility which uses a database to manage actors with Ptolemy II.
-    The dbxml interface can be downloaded from
-    http://www.oracle.com/technology/software/products/berkeley-db/xml/index.html
-    an untar'd into $PTII/vendors/misc and built.
-    For further instructions, see $PTII/ptdb/doc " >&2;}
-    else
-        PTDBXML_JARS="${PTDBXML_JAR}${CLASSPATHSEPARATOR}${PTDB_JAR}"
-    fi
-
-    if test ! "$HAS_GENERICS" = "yes"; then
-        #ptdb.gui.GraphPatternSearchEditor import ptalon.gt.PtalonMatcher
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: You are running Java $JVERSION, which does not
-    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile." >&5
-$as_echo "$as_me: WARNING: You are running Java $JVERSION, which does not
-    support generics.  Thus, ptdb, which depends on ptolemy/actor/ptalon will not compile." >&2;}
-        PTDBXML_JAR=""
-	PTDB_JAR=""
-    fi
-fi
-
-if test -z "$PTDB_DIR"; then
-   updateExcludes "ptdb/kernel/database/"
-else
-   updateClasspath "$PTDBXML_JAR"
-   updateClasspath "$PTDB_JAR"
-fi
-
 
 #--------------------------------------------------------------------
 #       Garbage Collector (GC)
@@ -12611,115 +12454,6 @@ else
 fi
 
 #--------------------------------------------------------------------
-#       PowerMock is used for testing and is CPL'd.
-#       PowerMock includes JUnit and EasyMock.
-#--------------------------------------------------------------------
-
-# PTPOWERMOCK_DIR is set to test and used in
-# $PTII/ptdb/makefile
-PTPOWERMOCK_DIR=
-
-# PowerMock, used for testing, see http://code.google.com/p/powermock/
-# Used in ptolemy/ptdb/test/makefile
-PTPOWERMOCK_JARS=
-
-# We only need to look for PowerMock if the ptdb/test directory is present
-POWERMOCK_USER_DIR="$PTII/ptdb/test"
-if test ! -d "$POWERMOCK_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $POWERMOCK_USER_DIR is not present,
-    so we need not find PowerMock" >&5
-$as_echo "$POWERMOCK_USER_DIR is not present,
-    so we need not find PowerMock" >&6; }; fi
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for PowerMock test harness" >&5
-$as_echo_n "checking for PowerMock test harness... " >&6; }
-
-# Check whether --with-ptpowermock was given.
-if test "${with_ptpowermock+set}" = set; then :
-  withval=$with_ptpowermock; POWERMOCK_DIR=$withval
-else
-  POWERMOCK_DIR=$PTII/vendors/misc/powermock-easymock-junit-1.3.8
-fi
-
-
-    if test -d "$POWERMOCK_DIR"; then
-	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $POWERMOCK_DIR" >&5
-$as_echo "$POWERMOCK_DIR" >&6; }; fi
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PowerMock jars" >&5
-$as_echo_n "checking for PowerMock jars... " >&6; }
-        jars="cglib-nodep- easymock- easymockclassextension- javassist- junit- objenesis- powermock-easymock-"
-	powermockjarpath=
-	for jar in $jars
-	do
-	    if test "${PTVERBOSE:-none}" = "none"; then
-	        $PT_ECHO $ECHO_N "."
-	    else
-                $PT_ECHO $ECHO_N "$jar "
-            fi
-	    # Do not use a leading * before ${jar}.  If we do, then we don't find the easymock jar file.
-	    jarpath=`$FIND "$POWERMOCK_DIR" -name "${jar}*.jar" | head -1`
-   	    if test -f "$jarpath"; then
-                # Keep track of the jars so we can use them while building
-	        # with make.
-  	        powermockjarpath="$powermockjarpath$CLASSPATHSEPARATOR$jarpath"
-
-                updateClasspath "$jarpath"
-            else
-	        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $jar in $POWERMOCK_DIR: $jarpath" >&5
-$as_echo "$as_me: WARNING: Failed to find $jar in $POWERMOCK_DIR: $jarpath" >&2;}
-	        powermockjarpath=
-	        break
-	   fi
-	done
-	if test ! -z eclipsejarpath; then
-	   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; fi
-	   PTPOWERMOCK_JARS=$powermockjarpath
-	   PTPOWERMOCK_DIR=test
-        fi
-
-    fi
-
-    if test "$PTPOWERMOCK_DIR" = ""; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find PowerMock.
-    Perhaps PowerMock was not installed?
-    You need not download these packages if you would like
-    to run the tests.  To install PowerMock, go to
-    http://code.google.com/p/powermock/ and download
-    http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
-    (which contains PowerMock for EasyMock and JUnit) and unzip it in
-    $PTII/vendors/misc so that
-    $PTII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-    then rerun configure.
-    Other versions of PowerMock _may_ work, but are untested." >&5
-$as_echo "$as_me: WARNING: Failed to find PowerMock.
-    Perhaps PowerMock was not installed?
-    You need not download these packages if you would like
-    to run the tests.  To install PowerMock, go to
-    http://code.google.com/p/powermock/ and download
-    http://powermock.googlecode.com/files/powermock-easymock-junit-1.3.8.zip
-    (which contains PowerMock for EasyMock and JUnit) and unzip it in
-    $PTII/vendors/misc so that
-    $PTII/vendors/misc/powermock-easymock-junit-1.3.8 is created,
-    then rerun configure.
-    Other versions of PowerMock _may_ work, but are untested." >&2;}
-    fi
-fi
-
-if test -z "$PTPOWERMOCK_DIR"; then
-    if test -d ptdb; then
-        ptdbTestDirectories=`$FIND ptdb -name test`
-        for ptdbTestDirectory in $ptdbTestDirectories
-        do
-            updateExcludes "$ptdbTestDirectory/"
-        done
-    fi
-fi
-
-
-#--------------------------------------------------------------------
 #       Ptalon
 #--------------------------------------------------------------------
 
@@ -14891,19 +14625,6 @@ fi
 # used in ptII/doc/makefile
 
 
-# PTDB_DIR is set to ptdb and used in
-# $PTII/makefile if dbxml is found
-
-
-# PTDB_PACKAGES is used in ptII/doc/makefile
-
-
-# PTDBXML_JARS includes dbxml.jar and db.xml and is used by $PTII/ptdb
-
-
-# Directory that contains libdbxml-X.Y.{so,dll,dylib}.  Used in $PTII/ptdb
-
-
 # Set to distributed and used in
 # $PTII/ptolemy/makefile if jini was found
 
@@ -15326,14 +15047,6 @@ fi
 
 
 # PTSVGSALAMANDER_PACKAGES is used in ptII/doc/makefile
-
-
-# PTPOWERMOCK_DIR is set to test and used in
-# $PTII/ptdb/makefile
-
-
-# PowerMock, used for testing, see http://code.google.com/p/powermock/
-# Used in ptolemy/ptdb/test/makefile
 
 
 # Jar files used by the Image Processing library from http://processing.org

@@ -604,7 +604,6 @@ ALLPACKAGES = \
 	$(PTCOLT_PACKAGES) \
 	$(PTCORBA_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \
-	$(PTDB_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
 	$(PTEXCEL_PACKAGES) \
 	$(PTFMIPP_PACKAGES) \
@@ -1351,7 +1350,7 @@ ptII.fb:
 
 ptII.fbp:
 	echo "<Project projectName=\"ptII\">" > ptII.fbp
-	echo "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(PTPOWERMOCK_JARS)" | awk -v CLASSPATHSEPARATOR=$(CLASSPATHSEPARATOR) '{nf=split($$0, f, CLASSPATHSEPARATOR); for(i=1;i<=nf;i++) {if (length(f[i]) > 0 && f[i] != ".") {printf(" <AuxClasspathEntry>%s</AuxClasspathEntry>\n", f[i])}}}' >> ptII.fbp
+	echo "$(CLASSPATH)" | awk -v CLASSPATHSEPARATOR=$(CLASSPATHSEPARATOR) '{nf=split($$0, f, CLASSPATHSEPARATOR); for(i=1;i<=nf;i++) {if (length(f[i]) > 0 && f[i] != ".") {printf(" <AuxClasspathEntry>%s</AuxClasspathEntry>\n", f[i])}}}' >> ptII.fbp
 	if [ -d "$(JXTA_DIR)" ]; then \
 		for file in `ls $(JXTA_DIR)/*.jar`; do \
 		echo " <AuxClasspathEntry>$$file</AuxClasspathEntry>" >> ptII.fbp; \
