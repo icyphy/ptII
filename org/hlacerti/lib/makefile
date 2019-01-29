@@ -55,6 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	AutomaticSimulation.java \
 	CertiRtig.java \
+	HlaAttributeReflector.java \
 	HlaManager.java \
 	HlaPublisher.java \
 	HlaSubscriber.java \
