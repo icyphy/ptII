@@ -884,7 +884,6 @@
 	    <file src="src/ptII11.1.devel/org" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/plugin.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/pom.xml" targetdir="$INSTALL_PATH"/>
-	    <file src="src/ptII11.1.devel/ptdb" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/ptKeystore.properties" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/ptolemy" targetdir="$INSTALL_PATH"/>
 	    <file src="src/ptII11.1.devel/thales" targetdir="$INSTALL_PATH"/>
