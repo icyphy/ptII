@@ -2,7 +2,6 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id$
 #
 # @Copyright (c) 2010-2011 The Regents of the University of California.
 # All rights reserved.
@@ -118,7 +117,9 @@ test ModularCodeGenTypedCompositeActor-1.2 {change the value of a parameter in a
 } {{20 20}}
 
 test ModularCodeGenTypedCompositeActor-1.3 {reparse the model and rerun} {
-    file delete -force $env(HOME)/cg
+    if {[catch {file delete -force $env(HOME)/cg} errMsg]} {
+	puts "Warning: failed to delete $env(HOME)/cg: $errMsg"
+    }
     set r1 [list \
 		[file exists $env(HOME)/cg/ModularCodeGenPubSub3_A1.class] \
 		[file exists $env(HOME)/cg/ModularCodeGenPubSub3_A1_A2.class]]
