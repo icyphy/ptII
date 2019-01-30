@@ -252,6 +252,7 @@ deploy:
     file_glob: true
     file:
       - $PTII/adm/gen-11.1/capecode0.3.devel.setup.mac.app.tar.gz
+      - $PTII/adm/gen-11.1/capecode0.3.devel.setup.linux.jar.tar.gz
       - $PTII/adm/gen-11.1/capecode0_3_devel_setup_windows_64.exe
       - $PTII/adm/gen-11.1/capecode0.3.devel.tar.gz
       - $PTII/adm/gen-11.1/ptII11.1.devel.setup.mac.app.tar.gz
