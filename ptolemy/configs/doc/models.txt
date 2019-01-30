@@ -9,7 +9,13 @@ $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/BillardBall1.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/BillardBall2.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/BillardTable.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
+$CLASSPATH/org/hlacerti/demo/BilliardJS/BilliardJS.xml
+$CLASSPATH/org/hlacerti/demo/BilliardJS/PoolTable2.xml
+$CLASSPATH/org/hlacerti/demo/BilliardJS/TwoBilliardBallsJS.xml
 $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
+$CLASSPATH/org/hlacerti/demo/Fleet/A1.xml
+$CLASSPATH/org/hlacerti/demo/Fleet/A2.xml
+$CLASSPATH/org/hlacerti/demo/Fleet/Fleet.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
@@ -47,10 +53,13 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/KeyValueStoreS
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoSOHO/SoundServerSOHO.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/AugmentedRealityVideoTerra.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityVideoTerra/SoundServerTerra.xml
+$CLASSPATH/org/terraswarm/accessor/demo/ConnectedCar/ConnectedCar.xml
+$CLASSPATH/org/terraswarm/accessor/demo/DynamicTopologyUpdate/DynamicTopologyUpdate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/Hue.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/HueToggle.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Hue/OccupancyLights.xml
+$CLASSPATH/org/terraswarm/accessor/demo/IndoorLocationAwareDiscovery/IndoorLocationAwareDiscovery.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Lifx/Lifx.xml
 $CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
