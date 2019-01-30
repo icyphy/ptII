@@ -427,6 +427,7 @@ public class ExportModelJUnitTest {
                 "RijndaelEncryption.xml", // FIXME: Hangs during wrapup.
                 "cg/lib/demo/Scale/Scale.xml", // Contains links to other demos.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
+                "SemanticYelpSensorUpdateExample.xml", // Needs a Yelp key
                 "SequencedActors.xml", // Has links to other models
                 "SecureCommServerClientJS.xml", // Does not run under Travis.
                 "actor/lib/io/comm/demo", // Requires serial port.
