@@ -2067,8 +2067,8 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** This method is called when a time advancement phase is performed. Every
-     *  updated HLA attributes received by callbacks (from the RTI) during the
-     *  time advancement phase is saved as {@link TimedEvent} and stored in a
+     *  updated HLA attribute received by callbacks (from the RTI) during the
+     *  time advancement phase is saved as a {@link TimedEvent} and stored in a
      *  queue. Then, every {@link TimedEvent} is moved from this queue to the
      *  output port of their corresponding {@link HLASubscriber} actors
      *  @exception IllegalActionException If the parent class throws it.
