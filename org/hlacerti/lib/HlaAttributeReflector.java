@@ -74,14 +74,16 @@ import ptolemy.kernel.util.Workspace;
  * This actor assumes that there is exactly one HlaManager in the model
  * that contains this actor.
  * <p>
- * The attribute that this actor reflects is specified using three parameters.
- * The <i>className</i> parameter is used to discover an instance of the
- * specified class whose name matches the <i>instanceName</i> parameter.
- * When such an instance is discovered, this actor begins reflecting any
- * updates to the attribute, specified by <i>attributeName</i>, of that
- * instance of that class.  The <i>className</i> and <i>attributeName</i>
- * are required to match a class and attribute specified in the FED file
- * that is specified in the HlaManager.
+ * The attribute that this actor reflects is specified using three parameters:
+ * <i>attributeName</i>, <i>className</i>, and <i>instanceName</i>.
+ * These three parameters specify the attribute to which this actor listens
+ * for updates.  Those updates could be produced, for example, by an
+ * {@link HlaPublisher} whose three parameters match those of this actor.
+ * The <i>className</i> and <i>attributeName</i> are required to match
+ * a class and attribute specified in the FED file
+ * that is specified in the HlaManager. The <i>instanceName</i> is an arbitrary
+ * name chosen by the designer for the instance of the class. It is required
+ * to be unique across the federation.
  * <p>
  * FIXME: Explain the data types.
  * 
@@ -195,7 +197,6 @@ public class HlaAttributeReflector extends TypedAtomicActor {
 
         // Basic token types available.
         typeSelector = new StringParameter(this, "typeSelector");
-        typeSelector.setDisplayName("type of the parameter");
         typeSelector.addChoice("int");
         typeSelector.addChoice("double");
         typeSelector.addChoice("string");
@@ -242,7 +243,10 @@ public class HlaAttributeReflector extends TypedAtomicActor {
     /** The output port. */
     public TypedIOPort output;
 
-    /** The type of the output port specified through the user interface. */
+    /** The type of the attribute that this actor is listening to.
+     *  This will be used to set the type of the output port.
+     *  This is a string that defaults to 
+     */
     public StringParameter typeSelector;
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
@@ -377,29 +381,22 @@ public class HlaAttributeReflector extends TypedAtomicActor {
 
         Iterator<HlaTimedEvent> it = _reflectedAttributeValues.iterator();
 
+        // If there is no event, then there is nothing to do.
+        if (!it.hasNext()) {
+            return;
+        }
         // Get first event on RAV list.
-        it.hasNext();
-        TimedEvent te = it.next();
+        HlaTimedEvent te = it.next();
 
+        // If the time of the first event matches current time, produce an output.
         if (te.timeStamp.compareTo(currentTime) == 0) {
             // Build token with HLA value.
             Token content = _buildToken((Object[]) te.contents);
+            int fromObjectInstanceId = te.getHlaObjectInstanceId();
 
-            // XXX: FIXME: to remove after cleaning ?
-            int fromObjectInstanceId = -1;
-            if (te instanceof HlaTimedEvent) {
-                HlaTimedEvent he = (HlaTimedEvent) te;
-                fromObjectInstanceId = he.getHlaObjectInstanceId();
-            }
-
-            // Either it is NOT a HlaTimedEvent and we let it go,
-            // either it is and it has to match the HLA object instance
-            // ID of this HlaAttributeReflector.
-
-            // XXX: FIXME: what to do if this is not a HlaTimedEvent? (-1 case)
-            if (fromObjectInstanceId == -1
-                    || fromObjectInstanceId == _objectInstanceId) {
-                this.outputPortList().get(0).send(0, content);
+            // If the instance matches what we expect, produce an output.
+            if (fromObjectInstanceId == _objectInstanceId) {
+                output.send(0, content);
 
                 if (_debugging) {
                     _debug(this.getDisplayName()
@@ -409,19 +406,17 @@ public class HlaAttributeReflector extends TypedAtomicActor {
                             + "\" has been sent at \"" + te.timeStamp + "\" ("
                             + content.toString() + ")");
                 }
-
             }
-
             it.remove();
         }
 
-        // Refire if token to process at same time
+        // Refire if there is another event with the same time stamp.
         if (it.hasNext()) {
             TimedEvent tNext = it.next();
             if (tNext.timeStamp.compareTo(currentTime) == 0) {
                 // Refiring the actor to handle the other tokens
                 // that are still in channels
-                getDirector().fireAt(this, currentTime);
+                getDirector().fireAtCurrentTime(this);
             }
         }
     } // End of fire.
