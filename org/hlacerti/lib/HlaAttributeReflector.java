@@ -58,6 +58,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -406,8 +407,20 @@ public class HlaAttributeReflector extends TypedAtomicActor {
                             + "\" has been sent at \"" + te.timeStamp + "\" ("
                             + content.toString() + ")");
                 }
+            } else {
+                throw new InternalErrorException(this, null,
+                        "Unexpected attribute reflected. Instance ID "
+                        + fromObjectInstanceId
+                        + " does not match the ID that this actor is reflecting "
+                        + _objectInstanceId);
             }
             it.remove();
+        } else {
+            throw new InternalErrorException(this, null,
+                    "Unexpected firing. Current time "
+                    + currentTime
+                    + " does not match HLA event time "
+                    + te.timeStamp);
         }
 
         // Refire if there is another event with the same time stamp.

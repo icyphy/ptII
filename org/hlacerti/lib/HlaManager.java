@@ -1540,7 +1540,7 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** Time advancement method for event-based federates. This method
-     *  uses NER or NERA RTI services to propose a time to advance to
+     *  uses NER RTI service to propose a time to advance to
      *  in a HLA simulation
      *  This method implements the algorithm 3 "NER proposeTime(t')"
      *  from [citeFestscrhiftLeeRapportInterneDisc-2017].
