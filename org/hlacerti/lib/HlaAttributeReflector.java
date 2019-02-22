@@ -71,7 +71,7 @@ import ptolemy.kernel.util.Workspace;
  * In HLA, the terminology is that this actor "reflects" the specified attribute
  * value whenever another federate "updates" the attribute value.
  * The time stamp of the output depends on the parameters of the
- * {@see HlaManager}, as explained in the documentation for that class.
+ * {@link HlaManager}, as explained in the documentation for that class.
  * This actor assumes that there is exactly one HlaManager in the model
  * that contains this actor.
  * <p>
@@ -83,73 +83,38 @@ import ptolemy.kernel.util.Workspace;
  * The <i>className</i> and <i>attributeName</i> are required to match
  * a class and attribute specified in the FED file
  * that is specified in the HlaManager. The <i>instanceName</i> is an arbitrary
- * name chosen by the designer for the instance of the class. It is required
- * to be unique across the federation.
+ * name chosen by the designer for the instance of the class. It specifies
+ * the instance of the specified class whose attribute this actor reflects.
  * <p>
- * FIXME: Explain the data types.
- * 
- * This actor is associated with a unique HLA attribute of a given object 
- * instance. Reflected values of this HLA attribute are received from the HLA
- * Federation by the {@link HlaManager} attribute deployed in the same model. 
- * The {@link HlaManager} invokes the putReflectedAttribute() to put the 
- * received value in the HlaAttributeReflector actor token queue and to program its 
- * firing time, using the _fireAt() method.
- * 
- *  </p><p>
- * Parameters <i>className</i> and <i>attributeName</i> need to match the
- * name of the class and the name of the attribute defined in the Federate 
- * Object Model (FOM) specified for the Federation and indicated in the FED file.
- * The data type of the output port of this actor must have the same type of the
- * HLA attribute (defined in the FOM, not present in the FED file). 
- * </p><p>
- * The parameter <i>instanceName</i> is chosen by the user. 
- * 
- * </p><p>
- * Entering in more details:
- * This actor provides 3 information: a class name <i>C</i>, an attribute
- * name <i>attr</i> and an instance name <i>i</i>. To each HlaAttributeReflector actor
- * in a Ptolemy model (federate) corresponds a unique {@link HlaPublisher}
- * actor in a (unique) federate with the same information.
- * Let us recall some terms:
- * - FOM: Federation Object Model
- * - FED: Federation Execution Data, contains classes and attributes defined
- *   in the FOM and, for each attribute, if it is timestamped and its QoS 
- * - RTI: Run-Time Infrastructure. The RTI has a Central RTI Component (CRC)
- *   and one or more Local RTI Components (LRC). The LRC has a numerical 
- *   representation (handle) for all object classes and object class attributes
- *   contained in the FED file.
- * 
- * The information supplied in this actor by the user is used in the following
- * way by the {@link HlaManager} attribute (deployed in the same model):
- * 
- * 1. During the initialization phase, the {@link HlaManager}: 
- *  - Subscribes to all the <i>k</i attributes <i>attr-k</i of a class  <i>C</i>
- *    (gathered from <i>k</i HlaAttributeReflector actors) by calling
- *    _rtia.subscribeObjectClassAttributes(classHandle, _attributesLocal), 
- *    where <i>classHandle</i is obtained by calling the HLA service 
- *    rtia.getObjectClassHandle() for  <i>C</i>;
- *    _attributesLocal is the set constructed by calling rtia.getAttributeHandle()
- *    for each <i>attr</i in this Ptolemy federate  model (the set is obtained
- *    from all HlaAttributeReflector actors that has the same class  <i>C</i>); 
- *    - Receives the HLA callback informing the discovering of an instance of
- *    class <i>C</i> named <i>i</i>:
- *    rtia.discoverObjectInstance(objectInstanceId, classHandle, someName), with 
- *    someName = <i>i</i>; objectInstanceId and classHandle are handles provided
- *    by the RTI.
- *    
- * 2. During the simulation loop phase, the {@link HlaManager} receives the RAV
- * callback from the RTI with the new value of an attribute of a class instance. Each 
- * HlaAttributeReflector  actor is related to one RAV callback:
- * rtia.reflectAttributeValues(objectInstanceId, suppAttributes, tag, ravTimeStamp).
- * The RAV callback, with a timestamp t'=<i>ravTimeStamp<\i> is received at the
- * input port of the HlaPublisher actor, during the advance time phase that
- * starts when the federate wants to advanced its time to <i>t<\i> (using NER or
- * TAR time management, see {@link HlaManager} code).
- * The optional parameter <i>tag</i> is not used in the current implementation.
- * </p><p>
- * 
- * 
- *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
+ * If there is no instance with the specified <i>instanceName</i>, then this actor
+ * produces no output. If a matching instance is later created, then this
+ * actor will begin producing outputs when that instance's attribute is updated.
+ * If the specified class does not have an attribute with the specified
+ * <i>attributeName</i>, as defined in the FED file, or there is no class
+ * matching <i>className</i> in the FED file, then an exception will be thrown.
+ * <p>
+ * The <i>attributeType</i> parameter specifies the data type of the attribute
+ * to which this actor listens. This parameter has two effects. First, it sets
+ * the type of the <i>output</i> port. Second, it specifies how to interpret
+ * the bytes that are transported via the HLA runtime infrastructure (RTI).
+ * Currently, only a small set of primitive data types are supported.
+ * <p>
+ * The <i>useCertiMessageBuffer</i> parameter works together with the
+ * <i>attributeType</i> parameter to interpret the bits that are transported
+ * over the RTI. Specifically, an HLA RTI will transport arbitrary byte sequences
+ * regardless of what they represent.  CERTI, the particular RTI that Ptolemy II
+ * uses, provides a convenience feature that packs and unpacks the message bytes
+ * for a small set of data types.  This feature takes into account the annoyance
+ * that the byte order can be different on different platforms (big endian or
+ * little endian). If the attribute that this actor is listening to is updated
+ * by a "foreign" federate (not implemented in Ptolemy II), then this
+ * <i>useCertiMessageBuffer</i> parameter should be set to true to ensure that
+ * byte order changes are handled. And in this case, only the small set of data
+ * types supported by CERTI can be used.  On the other hand, if the attribute
+ * is updated by a Ptolemy II model, and that update does not not specify
+ * to use the CERTI message buffer, then this parameter should be false.
+ *  
+ *  @author Gilles Lasnier, Janette Cardoso, Edward A. Lee. Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeReflector.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
  *
@@ -174,41 +139,28 @@ public class HlaAttributeReflector extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
 
         // HLA attribute name.
-        attributeName = new Parameter(this, "attributeName");
-        attributeName.setDisplayName("Name of the attribute to receive");
-        attributeName.setTypeEquals(BaseType.STRING);
-        attributeName.setExpression("\"HLAattributName\"");
+        attributeName = new StringParameter(this, "attributeName");
 
         // HLA object class in FOM.
-        className = new Parameter(this, "className");
-        className.setDisplayName("Object class in FOM");
-        className.setTypeEquals(BaseType.STRING);
-        className.setExpression("\"HLAobjectClass\"");
+        className = new StringParameter(this, "className");
 
         // HLA class instance name.
-        instanceName = new Parameter(this, "instanceName");
-        instanceName.setDisplayName("Name of the HLA class instance");
-        instanceName.setTypeEquals(BaseType.STRING);
-        instanceName.setExpression("\"HLAinstanceName\"");
-
-        // Propagate parameter changes after parameter instantiations.
-        attributeChanged(className);
-        attributeChanged(instanceName);
-        attributeChanged(attributeName);
+        instanceName = new StringParameter(this, "instanceName");
 
         // Basic token types available.
-        typeSelector = new StringParameter(this, "typeSelector");
-        typeSelector.addChoice("int");
-        typeSelector.addChoice("double");
-        typeSelector.addChoice("string");
-        typeSelector.addChoice("boolean");
+        attributeType = new StringParameter(this, "typeSelector");
+        attributeType.setExpression("int");
+        attributeType.addChoice("int");
+        attributeType.addChoice("double");
+        attributeType.addChoice("string");
+        attributeType.addChoice("boolean");
 
         // Allow the user to change the output port's type directly.
         // Useful for setting a value to typeSelector after reading the MomL file.
         output.addTypeListener(new TypeListener() {
             @Override
             public void typeChanged(TypeEvent event) {
-                typeSelector.setExpression(event.getNewType().toString());
+                attributeType.setExpression(event.getNewType().toString());
             }
         });
 
@@ -232,25 +184,44 @@ public class HlaAttributeReflector extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The HLA attribute name the HlaAttributeReflector is mapped to. */
-    public Parameter attributeName;
-
-    /** The object class of the HLA attribute to subscribe to. */
-    public Parameter className;
-
-    /** The name of the HLA class instance for this HlaAttributeReflector. */
-    public Parameter instanceName;
-
-    /** The output port. */
-    public TypedIOPort output;
+    /** The name of the attribute to which this actor listens for updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter attributeName;
 
     /** The type of the attribute that this actor is listening to.
      *  This will be used to set the type of the output port.
-     *  This is a string that defaults to 
+     *  This is a string that defaults to "int".
+     *  Currently, the only supported types are "int", "double", "string",
+     *  and "boolean".
      */
-    public StringParameter typeSelector;
+    public StringParameter attributeType;
 
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
+    /** The name of the class whose attribute this actor listens for updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter className;
+
+    /** The name of the instance of the class to whose attribute this actor
+     *  listens for updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter instanceName;
+
+    /** The output port through which the new value of each
+     *  update to the specified attribute of the specified instance
+     *  are sent. The type of this port is given by <i>attributeType</a>.
+     */
+    public TypedIOPort output;
+
+    /** Indicate whether the attribute value is conveyed through
+     *  a CERTI message buffer. This is a boolean that defaults to false.
+     *  It should be set to true if the attribute to which this actor
+     *  listens is updated by a foreign simulator. It can be false
+     *  if the attribute is updated by a federate implemented in Ptolemy II,
+     *  and if this corresponding parameter in the actor doing the updating
+     *  is also false.
+     */
     public Parameter useCertiMessageBuffer;
 
     ///////////////////////////////////////////////////////////////////
@@ -267,32 +238,11 @@ public class HlaAttributeReflector extends TypedAtomicActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == attributeName) {
-            String attributeNameValue = ((StringToken) attributeName.getToken())
-                    .stringValue();
-            if (attributeNameValue.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty attributeName!");
-            }
-        } else if (attribute == instanceName) {
-            String instanceNameValue = ((StringToken) instanceName
-                    .getToken()).stringValue();
-            if (instanceNameValue.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty instanceName!");
-            }
-        } else if (attribute == className) {
-            String classNameValue = ((StringToken) className.getToken())
-                    .stringValue();
-            if (classNameValue.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty className!");
-            }
-        } else if (attribute == useCertiMessageBuffer) {
+        if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
-        } else if (attribute == typeSelector) {
-            String newPotentialTypeName = typeSelector.stringValue();
+        } else if (attribute == attributeType) {
+            String newPotentialTypeName = attributeType.stringValue();
             // XXX: FIXME: What is the purpose of this test ?
             if (newPotentialTypeName == null) {
                 return;
@@ -321,11 +271,10 @@ public class HlaAttributeReflector extends TypedAtomicActor {
 
         // Manage private members.
         newObject._reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
-        newObject._hlaManager = _hlaManager;
-        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
 
-        newObject._attributeHandle = _attributeHandle;
-        newObject._classHandle = _classHandle;
+        // Set HLA handles to impossible values
+        newObject._attributeHandle = Integer.MIN_VALUE;
+        newObject._classHandle = Integer.MIN_VALUE;
         newObject._objectInstanceId = Integer.MIN_VALUE;
 
         return newObject;
@@ -363,10 +312,6 @@ public class HlaAttributeReflector extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "Only one HlaManager attribute is allowed per model");
         }
-        // Here, we are sure that there is one and only one instance of the
-        // HlaManager in the Ptolemy model.
-        _hlaManager = hlaManagers.get(0);
-
     }
 
     /** Put in the Ptolemy queue the token (with time-stamp t) corresponding to
@@ -517,50 +462,41 @@ public class HlaAttributeReflector extends TypedAtomicActor {
         return _useCertiMessageBuffer;
     }
 
-    /** Return the HLA attribute name provided by this HlaAttributeReflector actor.
-     * It must match the attribute name defined in the FOM for a class className.
-     *  @return the HLA attribute name.
-     *  @exception IllegalActionException if a bad token string value is provided.
+    /** Return the value of the <i>attributeName</i> parameter.
+     *  @return The value of the <i>attributeName</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
      */
     public String getHlaAttributeName() throws IllegalActionException {
-        String name = "";
-        try {
-            name = ((StringToken) attributeName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
+        String name = ((StringToken) attributeName.getToken()).stringValue();
+        if (name.trim().equals("")) {
             throw new IllegalActionException(this,
-                    "Bad attributeName token string value");
+                    "Cannot have an empty attributeName!");
         }
         return name;
     }
 
-    /** Return HLA class instance name provided by this HlaAttributeReflector actor.
-     * @return The HLA class instance name.
-     * @exception IllegalActionException if a bad token string value is provided.
-     */
-    public String getHlaInstanceName() throws IllegalActionException {
-        String name = "";
-        try {
-            name = ((StringToken) instanceName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
-            throw new IllegalActionException(this,
-                    "Bad instanceName token string value");
-        }
-        return name;
-    }
-
-    /** Return the HLA class object name provided by this HlaAttributeReflector actor.
-     * It must match the class name defined in the FOM (that has the attribute
-     * attributeName of this actor).
-     *  @return The HLA class object name.
-     *  @exception IllegalActionException if a bad token string value is provided.
+    /** Return the value of the <i>className</i> parameter.
+     *  @return The value of the <i>className</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
      */
     public String getHlaClassName() throws IllegalActionException {
-        String name = "";
-        try {
-            name = ((StringToken) className.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
+        String name = ((StringToken) className.getToken()).stringValue();
+        if (name.trim().equals("")) {
             throw new IllegalActionException(this,
-                    "Bad className token string value");
+                    "Cannot have an empty className!");
+        }
+        return name;
+    }
+
+    /** Return the value of the <i>instanceName</i> parameter.
+     *  @return The value of the <i>instanceName</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
+     */
+    public String getHlaInstanceName() throws IllegalActionException {
+        String name = ((StringToken) instanceName.getToken()).stringValue();
+        if (name.trim().equals("")) {
+            throw new IllegalActionException(this,
+                    "Cannot have an empty instanceName!");
         }
         return name;
     }
@@ -639,9 +575,6 @@ public class HlaAttributeReflector extends TypedAtomicActor {
 
     /** List of new values for the HLA attribute. */
     private LinkedList<HlaTimedEvent> _reflectedAttributeValues;
-
-    /** A reference to the associated {@link HlaManager}. */
-    private HlaManager _hlaManager;
 
     /** Indicate if the event is wrapped in a CERTI message buffer. */
     private boolean _useCertiMessageBuffer;
