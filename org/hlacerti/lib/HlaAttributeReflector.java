@@ -148,7 +148,7 @@ public class HlaAttributeReflector extends TypedAtomicActor {
         instanceName = new StringParameter(this, "instanceName");
 
         // Basic token types available.
-        attributeType = new StringParameter(this, "typeSelector");
+        attributeType = new StringParameter(this, "attributeType");
         attributeType.setExpression("int");
         attributeType.addChoice("int");
         attributeType.addChoice("double");
