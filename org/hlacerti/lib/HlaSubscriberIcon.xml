@@ -14,11 +14,11 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 262, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={142, 140, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="4.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="5.3076923076923075">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{0.0, 0.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-71.0, 32.42028985507247}">
     </property>
     <property name="Annotation1" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -29,7 +29,7 @@
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -16.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, -19.0]">
         </property>
     </property>
     <property name="ParameterValue1" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
@@ -41,7 +41,7 @@
         </property>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -16.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -73,7 +73,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="inst.:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-140.0, 4.0]">
         </property>
     </property>
     <property name="ParameterValue3" class="ptolemy.vergil.kernel.attributes.AttributeValueAttribute">
@@ -85,7 +85,7 @@
         </property>
         <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="25">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 4.0]">
         </property>
     </property>
 </property>
