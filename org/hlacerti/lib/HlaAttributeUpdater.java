@@ -237,8 +237,12 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+
         // Manage public members.
         HlaAttributeUpdater newObject = (HlaAttributeUpdater) super.clone(workspace);
+
+        newObject._hlaManager = _hlaManager;
+        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
 
         return newObject;
     }
