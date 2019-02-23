@@ -31,6 +31,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
@@ -40,6 +41,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -103,6 +105,15 @@ import ptolemy.kernel.util.Workspace;
  * Ptolemy II model, and the corresponding {@link HlaAttributeReflector} does
  * not not specify to use the CERTI message buffer, then this parameter should
  * be false.
+ *  
+ * FIXMEjc: took from publisher actor description. Keep it or not?
+ * In a federation implemented only with Ptolemy II federates, 
+ * an HlaAttributeUpdater is linked to a unique HlaAttributeReflector; any data
+ * dependencies that the director might assume on a regular "wired" connection
+ * will also be assumed across HlaAttributeUpdater-HlaAttributeReflector pairs.
+ * Similarly, type constraints will propagate across publisher-subscriber pairs. 
+ * That is, the type of the HlaAttributeReflector output must match the type of
+ * the HlaAttributeUpdater input.
  *   
  * (Check if we can reuse this sentences:) Each class has attributes, and this
  * actor sends updates to an attribute of an instance of a class when it
@@ -117,15 +128,15 @@ import ptolemy.kernel.util.Workspace;
  * of this particular instance of the class.
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
- *  @version $Id: HlaPublisher.java 214 2018-04-01 13:32:02Z j.cardoso $
+ *  @version $Id: HlaAttributeUpdater.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
  *
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaPublisher extends TypedAtomicActor {
+public class HlaAttributeUpdater extends TypedAtomicActor {
 
-    /** Construct the HlaPublisher actor.
+    /** Construct the HlaAttributeUpdater actor.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -133,7 +144,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *  actor with this name.
      */
-    public HlaPublisher(CompositeEntity container, String name)
+    public HlaAttributeUpdater(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -141,26 +152,14 @@ public class HlaPublisher extends TypedAtomicActor {
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
 
-        // HLA attribute name as defined in the FOM.
-        attributeName = new Parameter(this, "attributeName");
-        attributeName.setDisplayName("Name of the attribute to publish");
-        attributeName.setTypeEquals(BaseType.STRING);
-        attributeName.setExpression("\"HLAattributName\"");
-        attributeChanged(attributeName);
-
-        // HLA object class as defined in the FOM.
-        classObjectName = new Parameter(this, "classObjectName");
-        classObjectName.setDisplayName("Object class in FOM");
-        classObjectName.setTypeEquals(BaseType.STRING);
-        classObjectName.setExpression("\"HLAobjectClass\"");
-        attributeChanged(classObjectName);
-
-        // HLA class instance name given by the user.
-        classInstanceName = new Parameter(this, "classInstanceName");
-        classInstanceName.setDisplayName("Name of the HLA class instance");
-        classInstanceName.setTypeEquals(BaseType.STRING);
-        classInstanceName.setExpression("\"HLAclassInstanceName\"");
-        attributeChanged(classInstanceName);
+        // HLA attribute name.
+        attributeName = new StringParameter(this, "attributeName");
+        
+        // HLA object class in FOM.
+        className = new StringParameter(this, "className");
+       
+        // HLA class instance name.
+        instanceName = new StringParameter(this, "instanceName");
 
         // CERTI message buffer encapsulation
         useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
@@ -177,26 +176,44 @@ public class HlaPublisher extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The HLA attribute name the HLASubscriber is mapped to. */
-    public Parameter attributeName;
+    /** The name of the attribute this actor updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter attributeName;
 
-    /** The object class of the HLA attribute to publish. */
-    public Parameter classObjectName;
+    /** The name of the class whose attribute this actor updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter className;
 
-    /** The name of the HLA class instance for this HlaSubscriber. */
-    public Parameter classInstanceName;
+    /** The name of the instance of the class to whose attribute this actor updates.
+     *  This defaults to an empty string, but it must be non-empty to run the model.
+     */
+    public StringParameter instanceName;
+
+    /** The input port providing the new value that will update the specified
+     *  attribute of the specified instance.
+     */
 
     /** The input port. */
     public TypedIOPort input = null;
 
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
+    /** Indicate whether the attribute value is conveyed through
+     *  a CERTI message buffer. This is a boolean that defaults to false.
+     *  It should be set to true if the attribute to which this actor
+     *  listens is updated by a foreign simulator. It can be false
+     *  if the attribute is reflected by a federate implemented in Ptolemy II,
+     *  and if this corresponding parameter in the actor doing the reflecting
+     *  is also false.
+     */
     public Parameter useCertiMessageBuffer;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Call the attributeChanged method of the parent. Check if the
-     *  user has set all information related to HLA to publish.
+     *  user has set all information related to HLA to publish, for registering
+     *  instances 
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException If one of the parameters is
      *  empty.
@@ -204,29 +221,8 @@ public class HlaPublisher extends TypedAtomicActor {
     @Override
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == attributeName) {
-            String value = ((StringToken) attributeName.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty name !");
-            }
-        } else if (attribute == classObjectName) {
-            String value = ((StringToken) classObjectName.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty name !");
-            }
-        }
-        if (attribute == classInstanceName) {
-            String value = ((StringToken) classInstanceName.getToken())
-                    .stringValue();
-            if (value.compareTo("") == 0) {
-                throw new IllegalActionException(this,
-                        "Cannot have empty name !");
-            }
-        } else if (attribute == useCertiMessageBuffer) {
+
+        if (attribute == useCertiMessageBuffer) {
             _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
                     .getToken()).booleanValue();
         }
@@ -241,12 +237,12 @@ public class HlaPublisher extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
-        newObject._hlaManager = _hlaManager;
-        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
+        // Manage public members.
+        HlaAttributeUpdater newObject = (HlaAttributeUpdater) super.clone(workspace);
+
         return newObject;
     }
-
+    
     /** Retrieve and check if there is one and only one {@link HlaManager}
      *  deployed in the Ptolemy model. The {@link HlaManager} provides the
      *  method to publish the attributes of a class, register an instance of a
@@ -272,10 +268,6 @@ public class HlaPublisher extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "A HlaManager attribute is required to use this actor");
         }
-
-        // Here, we are sure that there is one and only one instance of the
-        // HlaManager in the Ptolemy model.
-        _hlaManager = hlaManagers.get(0);
     }
 
     /** All tokens, received in the input port, are transmitted to the
@@ -289,7 +281,10 @@ public class HlaPublisher extends TypedAtomicActor {
         for (int i = 0; i < input.getWidth(); ++i) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
+                // FIXMEjc:  add in HlaManager the name of this new actor:
+                // updateHlaAttribute(HlaPublisher hp, Token in)
                 _hlaManager.updateHlaAttribute(this, in);
+                // FIXME: check if the log is correct
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " Called fire() - the update value \""
@@ -301,57 +296,43 @@ public class HlaPublisher extends TypedAtomicActor {
         }
     }
 
-    /** Return the HLA attribute name indicated in the HlaPublisher actor
-     * that will be used by HLA services (publish and update). The attribute
-     * must be defined in the FED file. It belongs to the class classObjectName.
-     *  @return the HLA Attribute name.
-     *  @exception IllegalActionException if a bad token string value is provided
+    /** Return the value of the <i>attributeName</i> parameter.
+     *  @return The value of the <i>attributeName</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
      */
-    public String getAttributeName() throws IllegalActionException {
-        String parameter = "";
-        try {
-            parameter = ((StringToken) attributeName.getToken()).stringValue();
-        } catch (IllegalActionException illegalActionException) {
+    public String getHlaAttributeName() throws IllegalActionException {
+        String name = ((StringToken) attributeName.getToken()).stringValue();
+        if (name.trim().equals("")) {
             throw new IllegalActionException(this,
-                    "Bad attributeName token string value");
+                    "Cannot have an empty attributeName!");
         }
-        return parameter;
+        return name;
     }
 
-    /** Return the name of the HLA class instance indicated in the HlaPublisher
-     *  actor that will be used by HLA services (register and update). It is
-     *  chosen by the user.
-     *  @return the HLA class instance name.
-     *  @exception IllegalActionException if a bad token string value is provided.
+    /** Return the value of the <i>className</i> parameter.
+     *  @return The value of the <i>className</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
      */
-    public String getClassInstanceName() throws IllegalActionException {
-        String parameter = "";
-        try {
-            parameter = ((StringToken) classInstanceName.getToken())
-                    .stringValue();
-        } catch (IllegalActionException illegalActionException) {
+    public String getHlaClassName() throws IllegalActionException {
+        String name = ((StringToken) className.getToken()).stringValue();
+        if (name.trim().equals("")) {
             throw new IllegalActionException(this,
-                    "Bad classInstanceName token string value");
+                    "Cannot have an empty className!");
         }
-        return parameter;
+        return name;
     }
-
-    /** Return the HLA class object name indicated in the HlaPublisher actor.
-     * The class must be defined in the FED file and has the attribute
-     * attributeName.
-     *  @return the HLA object class name.
-     *  @exception IllegalActionException if a bad token string value is provided.
+    
+    /** Return the value of the <i>instanceName</i> parameter.
+     *  @return The value of the <i>instanceName</i> parameter.
+     *  @exception IllegalActionException If the class name is empty.
      */
-    public String getClassObjectName() throws IllegalActionException {
-        String parameter = "";
-        try {
-            parameter = ((StringToken) classObjectName.getToken())
-                    .stringValue();
-        } catch (IllegalActionException illegalActionException) {
+    public String getHlaInstanceName() throws IllegalActionException {
+        String name = ((StringToken) instanceName.getToken()).stringValue();
+        if (name.trim().equals("")) {
             throw new IllegalActionException(this,
-                    "Bad classObjectName token string value");
+                    "Cannot have an empty instanceName!");
         }
-        return parameter;
+        return name;
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message
