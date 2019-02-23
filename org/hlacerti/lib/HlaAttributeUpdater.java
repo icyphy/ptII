@@ -123,7 +123,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaPublisher extends TypedAtomicActor {
+public class HlaAttributeUpdater extends TypedAtomicActor {
 
     /** Construct the HlaPublisher actor.
      *  @param container The container.
@@ -133,7 +133,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *  actor with this name.
      */
-    public HlaPublisher(CompositeEntity container, String name)
+    public HlaAttributeUpdater(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
@@ -241,7 +241,7 @@ public class HlaPublisher extends TypedAtomicActor {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
+        HlaAttributeUpdater newObject = (HlaAttributeUpdater) super.clone(workspace);
         newObject._hlaManager = _hlaManager;
         newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
         return newObject;
@@ -289,7 +289,7 @@ public class HlaPublisher extends TypedAtomicActor {
         for (int i = 0; i < input.getWidth(); ++i) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
-                _hlaManager.updateHlaAttribute(this, in);
+                // FIXME: _hlaManager.updateHlaAttribute(this, in);
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " Called fire() - the update value \""
