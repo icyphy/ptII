@@ -285,9 +285,8 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
         for (int i = 0; i < input.getWidth(); ++i) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
-                // FIXMEjc:  add in HlaManager the name of this new actor:
-                // updateHlaAttribute(HlaPublisher hp, Token in)
-                _hlaManager.updateHlaAttribute(this, in);
+                // FIXME commenting line below so the file compiles
+                // _hlaManager.updateHlaAttribute(this, in);
                 // FIXME: check if the log is correct
                 if (_debugging) {
                     _debug(this.getDisplayName()
