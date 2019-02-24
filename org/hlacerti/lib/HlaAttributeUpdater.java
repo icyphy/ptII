@@ -53,8 +53,6 @@ import ptolemy.kernel.util.Workspace;
 //// HlaAttributeUpdater
 
 /**
-
-/**
  * This actor is a kind-of output port that sends the data on its input to the
  * federation through the network. In HLA, the terminology is that this actor
  * "updates" the specified attribute value of the specified instance whenever
@@ -105,21 +103,21 @@ import ptolemy.kernel.util.Workspace;
  * Ptolemy II model, and the corresponding {@link HlaAttributeReflector} does
  * not not specify to use the CERTI message buffer, then this parameter should
  * be false.
- *  
+ * <p>
  * FIXMEjc: took from publisher actor description. Keep it or not?
  * In a federation implemented only with Ptolemy II federates, 
- * an HlaAttributeUpdater is linked to a unique HlaAttributeReflector; any data
+ * an HlaAttributeUpdater is linked to a unique HlaAttributeReflector. Any data
  * dependencies that the director might assume on a regular "wired" connection
  * will also be assumed across HlaAttributeUpdater-HlaAttributeReflector pairs.
- * Similarly, type constraints will propagate across publisher-subscriber pairs. 
- * That is, the type of the HlaAttributeReflector output must match the type of
- * the HlaAttributeUpdater input.
- *   
+ * Similarly, the type of the HlaAttributeReflector output must match the type
+ * of the HlaAttributeUpdater input.
+* <p> 
  * (Check if we can reuse this sentences:) Each class has attributes, and this
  * actor sends updates to an attribute of an instance of a class when it
  * receives data on its input.  If there are instances of {@link HlaAttributeReflector}
  * that refer to the same attribute of the same instance, then those will be
  * notified of the update. 
+ * <p> 
  * If an instance with the specified name does not already exist, it will be
  * created during initialization of the model. 
  * 
@@ -193,9 +191,10 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
 
     /** The input port providing the new value that will update the specified
      *  attribute of the specified instance.
+     *  The type of the input port corresponds to the type of the attribute
+     *  (that would be defined in the FOM, but is not described in the FED file).
+     *  This type  must be the same as <i>attributeType</a> in {@link HlaAttributeReflector}.
      */
-
-    /** The input port. */
     public TypedIOPort input = null;
 
     /** Indicate whether the attribute value is conveyed through
@@ -273,9 +272,13 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
                     "A HlaManager attribute is required to use this actor");
         }
     }
-
-    /** All tokens, received in the input port, are transmitted to the
-     *  {@link HlaManager} for a publication to the HLA/CERTI Federation.
+ 
+    /** Ask the {@link HlaManager} for updating the event in the input port 
+     * (with time-stamp t) to the federation, by calling the UAV service (with
+     * time-stamp t') related to the HLA attribute of an instance (mapped to
+     * this actor). The value of t' depends on t and the time management
+     * parameters used (NER or TAR, see {@link HlaManager} code).
+     * 
      */
     @Override
     public void fire() throws IllegalActionException {
