@@ -73,7 +73,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1502547430734145">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{169.77784574109066, 227.30267531722464}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{169.7778457410906, 227.30267531722464}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -182,7 +182,7 @@
         </property>
     </property>
     <property name="TestException - Duplicate instance name detected" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaPublisher '.DuplicatedInstanceNameSender.HlaPublisher2' with the same HLA information specified by the HlaPublisher '.DuplicatedInstanceNameSender.HlaPublisher' &#10;is already registered for publication.&#10;  in .DuplicatedInstanceNameSender.HlaManager">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaUpdatable '.DuplicatedInstanceNameSender.HlaPublisher2' with the same HLA information specified by the HlaUpdatable '.DuplicatedInstanceNameSender.HlaPublisher' &#10;is already registered for publication.&#10;  in .DuplicatedInstanceNameSender.HlaManager">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
