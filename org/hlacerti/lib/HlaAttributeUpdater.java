@@ -31,7 +31,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.CompositeActor;
@@ -132,7 +131,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaAttributeUpdater extends TypedAtomicActor {
+public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatable {
 
     /** Construct the HlaAttributeUpdater actor.
      *  @param container The container.
@@ -271,6 +270,10 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
             throw new IllegalActionException(this,
                     "A HlaManager attribute is required to use this actor");
         }
+        
+        // Here, we are sure that there is one and only one instance of the
+        // HlaManager in the Ptolemy model.
+        _hlaManager = hlaManagers.get(0);
     }
  
     /** Ask the {@link HlaManager} for updating the event in the input port 
@@ -289,7 +292,7 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
                 // FIXME commenting line below so the file compiles
-                // _hlaManager.updateHlaAttribute(this, in);
+                _hlaManager.updateHlaAttribute(this, in);
                 // FIXME: check if the log is correct
                 if (_debugging) {
                     _debug(this.getDisplayName()
@@ -339,6 +342,11 @@ public class HlaAttributeUpdater extends TypedAtomicActor {
                     "Cannot have an empty instanceName!");
         }
         return name;
+    }
+
+    /** FIXME: This should probably not be here. See HlaManager. */
+    public TypedIOPort getInputPort() {
+        return input;
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message

@@ -121,7 +121,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaAttributeReflector extends TypedAtomicActor {
+public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflectable {
 
     /** Construct a HlaAttributeReflector actor.
      *  @param container The container.
@@ -401,6 +401,11 @@ public class HlaAttributeReflector extends TypedAtomicActor {
      */
     public int getObjectInstanceId() {
         return _objectInstanceId;
+    }
+
+    /** FIXME: This should probably not be here. See HlaManager. */
+    public TypedIOPort getOutputPort() {
+        return output;
     }
 
     /** Set the HLA attribute handle.

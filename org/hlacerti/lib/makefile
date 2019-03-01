@@ -56,10 +56,13 @@ JSRCS = \
 	AutomaticSimulation.java \
 	CertiRtig.java \
 	HlaAttributeReflector.java \
+	HlaAttributeUpdater.java \
 	HlaManager.java \
 	HlaPublisher.java \
+	HlaReflectable.java \
 	HlaSubscriber.java \
-        MessageProcessing.java \
+	HlaUpdatable.java \
+    MessageProcessing.java \
 	HlaTimedEvent.java  
 
 OTHER_FILES_TO_BE_JARED = \

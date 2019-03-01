@@ -162,7 +162,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaPublisher extends TypedAtomicActor {
+public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
 
     /** Construct the HlaPublisher actor.
      *  @param container The container.
@@ -346,7 +346,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @return the HLA Attribute name.
      *  @exception IllegalActionException if a bad token string value is provided
      */
-    public String getAttributeName() throws IllegalActionException {
+    public String getHlaAttributeName() throws IllegalActionException {
         String parameter = "";
         try {
             parameter = ((StringToken) attributeName.getToken()).stringValue();
@@ -363,7 +363,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @return the HLA class instance name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getClassInstanceName() throws IllegalActionException {
+    public String getHlaInstanceName() throws IllegalActionException {
         String parameter = "";
         try {
             parameter = ((StringToken) classInstanceName.getToken())
@@ -381,7 +381,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  @return the HLA object class name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getClassObjectName() throws IllegalActionException {
+    public String getHlaClassName() throws IllegalActionException {
         String parameter = "";
         try {
             parameter = ((StringToken) classObjectName.getToken())
@@ -391,6 +391,11 @@ public class HlaPublisher extends TypedAtomicActor {
                     "Bad classObjectName token string value");
         }
         return parameter;
+    }
+
+    /** FIXME: This should probably not be here. See HlaManager. */
+    public TypedIOPort getInputPort() {
+        return input;
     }
 
     /** Indicate if the HLA publisher actor uses the CERTI message
