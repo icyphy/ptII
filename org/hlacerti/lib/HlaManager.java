@@ -988,22 +988,24 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** Propose a time to advance to. This method is the one implementing the
-     *  TimeRegulator interface and using the HLA/CERTI Time Management services
-     *  (if required). Following HLA and CERTI recommendations, if the Time
-     *  Management is required then we have the following behavior:
-     *  Case 1: If lookahead = 0
-     *   -a) if time-stepped Federate, then the timeAdvanceRequestAvailable()
-     *       (TARA) service is used;
-     *   -b) if event-based Federate, then the nextEventRequestAvailable()
-     *       (NERA) service is used
-     *  Case 2: If lookahead &gt; 0
-     *   -c) if time-stepped Federate, then timeAdvanceRequest() (TAR) is used;
-     *   -d) if event-based Federate, then the nextEventRequest() (NER) is used;
-     *  Otherwise the proposedTime is returned.
-     *  NOTE: For the Ptolemy II - HLA/CERTI cooperation the default (and correct)
-     *  behavior is the case 1 and CERTI has to be compiled with the option
-     *  "CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL".
+    /** Propose a time to advance to. This method implements the
+     *  TimeRegulator interface and call HLA/CERTI Time Management services for
+     *  a time advance request. The time advance phase in HLA is a two-step
+     *  process: 1) a federate sends a time advance request service, and 
+     *  2) waits for the time to be granted, provided by the timeAdvanceGrant
+     *  (TAG) service. Two services, both with  lookahead &gt; 0 are proposed:
+     *  - timeAdvanceRequest() (TAR) for implementing time-stepped Federates;
+     *  - nextEventRequest() (NER) for implementing event-based Federates.
+     *  When RAV are received in a time advance phase, the  proposedTime 
+     *  returned depends on which service is called, NER or TAR.
+     *  - When using TAR: proposedTime has the same value the federate has 
+     *  asked to advance to;
+     *  - When using NER: proposedTime returns the value of the time-stamp of
+     *  the received RAV.
+     *  
+     *  NOTE: CERTI offers also the Null Prime Message Protocol that improves
+     *  the performance of the distributed simulation, see FIXME cite paper. 
+     *  When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
      *  @param proposedTime The proposed time.
      *  @return The proposed time or a smaller time.
      *  @exception IllegalActionException If this attribute is not
@@ -1078,7 +1080,9 @@ public class HlaManager extends AbstractInitializableAttribute
 
             return currentTime;
         }
-
+        //  FIXME: talk here about two time lines, Ptolemy and HLA?
+        //  FIXME: talk about the 2 (current) different time representation
+        //  in Ptolemy and CERTI.
         // If the HLA Time Management is required, ask to the HLA/CERTI
         // Federation (the RTI) the authorization to advance its time.
         if (_isTimeRegulator && _isTimeConstrained) {
@@ -1540,11 +1544,15 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** Time advancement method for event-based federates. This method
-     *  uses NER RTI service to propose a time to advance to
-     *  in a HLA simulation
-     *  This method implements the algorithm 3 "NER proposeTime(t')"
-     *  from [citeFestscrhiftLeeRapportInterneDisc-2017].
-     *  @param proposedTime time stamp of the next Ptolemy event.
+     *  uses NER RTI service to propose a time t' to advance to
+     *  in a HLA simulation. The federate wants to advance to
+     *  <i>proposedTime</i> but if a RAV(t'') is received in this time advance
+     *  phase, then <i>proposeTime</i> returns t'', the time granted by the RTI.
+     *  All RAV received are put in the HlaReflectable actors. FIXME is the good word here?.
+     *  Eventually a new NER(t') will be called until t' will be granted. See [6],
+     *  algorithm 3.
+     *  FIXME: talk here about two time lines, Ptolemy and HLA?
+     *  @param proposedTime time stamp of the last found event.
      *  @return the granted time from the HLA simulation.
      *  @exception IllegalActionException
      */
@@ -1671,6 +1679,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @return the HLA current time converted to a Ptolemy time, which is in
      *   units of seconds.
      */
+    
     private Time _getHlaCurrentTime() throws IllegalActionException {
         CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
         return _convertToPtolemyTime(certiCurrentTime);
@@ -1713,11 +1722,19 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** RTI service for time-stepped federate TAR
-     *  is used for proposing a time to advance to.
+
+    /** Time advancement method for time-stepped federates. This method
+     *  uses TAR RTI service to propose a time t' to advance to
+     *  in a HLA simulation. The federate wants to advance to
+     *  <i>proposedTime</i> and it returns t' (if granted by the RTI) event if
+     *  RAV(t''), t'' &lt;  t', are received in this time advance
+     *  phase. All RAV received are put in the HlaReflectable actors. FIXME is the good word here?.
+     *  See [6], algorithm 4.
+     *  FIXME: talk here about two time lines, Ptolemy and HLA?
      *  @param proposedTime time stamp of last found event
      *  @return a valid time to advance to
      */
+
     private Time _timeSteppedBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException {
 
