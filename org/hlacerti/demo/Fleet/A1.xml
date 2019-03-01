@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using NER time management, an event&#10;e(t) corresponds to an UAV(t+lookahead) &#10;sent throught the RTI.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 195.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -41,7 +41,7 @@
         </property>
     </property>
     <entity name="A1" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 165.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={493, 224, 606, 632}, maximized=false}">
         </property>
@@ -89,21 +89,18 @@
         <link port="out" relation="relation"/>
         <link port="DiscreteClock.output" relation="relation"/>
     </entity>
-    <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;speed&quot;">
-            <display name="Name of the attribute to receive"/>
+    <entity name="HlaAttributeUpdater" class="org.hlacerti.lib.HlaAttributeUpdater">
+        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="speed">
         </property>
-        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Aircraft&quot;">
-            <display name="Object class in FOM"/>
+        <property name="className" class="ptolemy.data.expr.StringParameter" value="Aircraft">
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;i1&quot;">
-            <display name="Name of the HLA class instance"/>
+        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="i1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 165.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="A1.out" relation="relation"/>
-    <link port="HlaPublisher.input" relation="relation"/>
+    <link port="HlaAttributeUpdater.input" relation="relation"/>
 </entity>

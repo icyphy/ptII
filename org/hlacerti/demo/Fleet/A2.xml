@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={760, 23, 658, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={534, 268, 861, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[424, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7592592592592593">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{164.66315789473686, 184.93278166118424}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.3578947368421, 184.93278166118424}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using NER time management, a message&#10;RAV(t') coming throught the RTI corresponds &#10;to an event e(t').">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="A2" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 140.0]">
         </property>
         <property name="Period" class="ptolemy.data.expr.Parameter" value="2.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -119,24 +119,18 @@
         <link port="TimedPlotter.input" relation="relation"/>
         <link port="TimedPlotter.input" relation="relation2"/>
     </entity>
-    <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;speed&quot;">
-            <display name="Name of the attribute to receive"/>
+    <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
+        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="speed">
         </property>
-        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Aircraft&quot;">
-            <display name="Object class in FOM"/>
+        <property name="className" class="ptolemy.data.expr.StringParameter" value="Aircraft">
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;i1&quot;">
-            <display name="Name of the HLA class instance"/>
+        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="i1">
         </property>
-        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
-            <display name="type of the parameter"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 140.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="A2.speed" relation="relation"/>
-    <link port="HlaSubscriber.output" relation="relation"/>
+    <link port="HlaAttributeReflector.output" relation="relation"/>
 </entity>

@@ -169,12 +169,12 @@ import ptolemy.kernel.util.Workspace;
  * name, then a federation with that name will be automatically created.
  * Otherwise, the federate will join the pre-existing federation.
  * </p><p>
- * Federates can exchange information using the {@link HlaPublisher}
- * and {@link HlaSubscriber} actors. When a time-stamped event in one
- * federate is fed into an HlaPublisher, then a corresponding time-stamped
- * event will pop out of any HlaSubscriber elsewhere in the federation
- * if the parameters of that HlaSubscriber match those of the
- * HlaPublisher. These parameters conform to a
+ * Federates can exchange information using the {@link HlaUpdatable}
+ * and {@link HlaReflectable} actors. When a time-stamped event in one
+ * federate is fed into an HlaUpdatable, then a corresponding time-stamped
+ * event will pop out of any HlaReflectable elsewhere in the federation
+ * if the parameters of that HlaReflectable match those of the
+ * HlaUpdatable. These parameters conform to a
  * Federation Object Model (FOM) that is an important part of the
  * definition of a federation and is described in a file called a
  * Federation Execution Data (FED) file that needs to be
@@ -260,7 +260,7 @@ import ptolemy.kernel.util.Workspace;
  * In HLA, the data that is sent from one federate to another through
  * the RTI is viewed
  * as an update to an attribute of an instance of a class.
- * {@link HlaPublisher} and {@link HlaSubscriber} actors specify
+ * {@link HlaUpdatable} and {@link HlaReflectable} actors specify
  * which attribute of which instance of which class they update
  * or are notified of updates.
  * See the documentation for those two actors.
@@ -348,7 +348,7 @@ import ptolemy.kernel.util.Workspace;
  * The DEDirector in the model is required to have a finite <i>stopTime</i>
  * parameter set. It is usually also a good idea to set its
  * <i>stopWhenQueueIsEmpty</i> parameter to false, particularly if it
- * is relying on an HlaSubscriber actor to provide it with events to process.
+ * is relying on an HlaReflectable actor to provide it with events to process.
  * Otherwise, the federate may prematurely finish its simulation.
  * </p><p>
  * When the simulation ends, the federate resigns from the federation.
@@ -1161,7 +1161,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @exception IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
-    public void updateHlaAttribute(HlaPublisher hp, Token in)
+    public void updateHlaAttribute(HlaUpdatable hp, Token in)
             throws IllegalActionException {
 
         // Get current model time.
@@ -1199,7 +1199,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // To avoid CERTI exception when calling UAV service
         // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
 
-        // Table 2: UAV timestamp sent by a HlaPublisher
+        // Table 2: UAV timestamp sent by a HlaUpdatable
         CertiLogicalTime uavTimeStamp = null;
 
         // g(t)
@@ -1246,11 +1246,11 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // XXX: FIXME: check if we may add the object instance id to the HLA publisher and remove this.
         int objectInstanceId = _registerObjectInstanceMap
-                .get(hp.getClassInstanceName());
+                .get(hp.getHlaInstanceName());
 
         try {
             if (_debugging) {
-                _hlaDebug("      * UAV '" + hp.getAttributeName()
+                _hlaDebug("      * UAV '" + hp.getHlaAttributeName()
                         + "', uavTimeStamp=" + uavTimeStamp.getTime()
                         + ", value=" + in.toString() + ", HlaPub="
                         + hp.getFullName());
@@ -1265,18 +1265,18 @@ public class HlaManager extends AbstractInitializableAttribute
 
         } catch (ObjectNotKnown e) {
             throw new IllegalActionException(this, e,
-                    "ObjectNotKnown: " + hp.getClassInstanceName() + ": "+ e.getMessage());
+                    "ObjectNotKnown: " + hp.getHlaInstanceName() + ": "+ e.getMessage());
         } catch (AttributeNotDefined e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotDefined: " + hp.getAttributeName() + ": " + e.getMessage());
+                    "AttributeNotDefined: " + hp.getHlaAttributeName() + ": " + e.getMessage());
         } catch (AttributeNotOwned e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotOwned: " + hp.getAttributeName() + ": " + e.getMessage());
+                    "AttributeNotOwned: " + hp.getHlaAttributeName() + ": " + e.getMessage());
         } catch (InvalidFederationTime e) {
             throw new IllegalActionException(this, e, "InvalidFederationTime: "
                     + e.getMessage() + "    updateHlaAttribute() - sending UAV("
                     + "HLA publisher=" + hp.getFullName() + ",HLA attribute="
-                    + hp.getAttributeName() + ",uavTimeStamp="
+                    + hp.getHlaAttributeName() + ",uavTimeStamp="
                     + uavTimeStamp.getTime() + ",value=" + in.toString() + ")"
                     + " ptII_time=" + currentTime.toString() + " certi_time="
                     + _federateAmbassador.hlaLogicalTime);
@@ -1459,18 +1459,18 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Table of HLA attributes (and their HLA information) that are published
      *  by the current {@link HlaManager} to the HLA/CERTI Federation. This
-     *  table is indexed by the {@link HlaPublisher} actors present in the model.
+     *  table is indexed by the {@link HlaUpdatable} actors present in the model.
      */
     protected HashMap<String, Object[]> _hlaAttributesToPublish;
 
     /** Table of HLA attributes (and their HLA information) that the current
      *  {@link HlaManager} is subscribed to. This table is indexed by the
-     *  {@link HlaSubscriber} actors present in the model.
+     *  {@link HlaReflectable} actors present in the model.
      */
     protected HashMap<String, Object[]> _hlaAttributesToSubscribeTo;
 
     /** List of events received from the HLA/CERTI Federation and indexed by the
-     *  {@link HlaSubscriber} actors present in the model.
+     *  {@link HlaReflectable} actors present in the model.
      */
     protected HashMap<String, LinkedList<TimedEvent>> _fromFederationEvents;
 
@@ -1654,7 +1654,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 } // algo3: 13: end if
 
                 // algo3: 14: putRAVonHlaSubs(t')
-                // Store reflected attributes RAV as events on HLASubscriber actors.
+                // Store reflected attributes RAV as events on HlaReflectable actors.
                 _putReflectedAttributesOnHlaSubscribers(proposedTime);
 
                 _federateAmbassador.hasReceivedRAV = false;
@@ -1678,18 +1678,18 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** The method {@link #_getHlaSubscribers()} get all HLA subscriber
      *  actors across the model.
-     *  @param ce the composite entity which may contain HlaSubscribers
-     *  @return the list of HlaSubscribers
+     *  @param ce the composite entity which may contain HlaReflectables
+     *  @return the list of HlaReflectables
      */
-    private List<HlaSubscriber> _getHlaSubscribers(CompositeEntity ce) {
+    private List<HlaReflectable> _getHlaSubscribers(CompositeEntity ce) {
         // The list of HLA subscribers to return.
-        LinkedList<HlaSubscriber> hlaSubscribers = new LinkedList<HlaSubscriber>();
+        LinkedList<HlaReflectable> hlaSubscribers = new LinkedList<HlaReflectable>();
 
         // List all classes from top level model.
         List<CompositeEntity> entities = ce.entityList();
         for (ComponentEntity classElt : entities) {
-            if (classElt instanceof HlaSubscriber) {
-                hlaSubscribers.add((HlaSubscriber) classElt);
+            if (classElt instanceof HlaReflectable) {
+                hlaSubscribers.add((HlaReflectable) classElt);
             } else if (classElt instanceof ptolemy.actor.TypedCompositeActor) {
                 hlaSubscribers
                         .addAll(_getHlaSubscribers((CompositeEntity) classElt));
@@ -1852,7 +1852,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 } // algo4: 11: end if
 
                 // algo4: 12: putRAVonHlaSubs(t')
-                // Store reflected attributes RAV as events on HLASubscriber actors.
+                // Store reflected attributes RAV as events on HlaReflectable actors.
                 _putReflectedAttributesOnHlaSubscribers(proposedTime);
 
                 _federateAmbassador.hasReceivedRAV = false;
@@ -1893,10 +1893,10 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // HlaPublishers.
         _hlaAttributesToPublish.clear();
-        List<HlaPublisher> _hlaPublishers = ce.entityList(HlaPublisher.class);
-        for (HlaPublisher hp : _hlaPublishers) {
+        List<HlaUpdatable> _hlaPublishers = ce.entityList(HlaUpdatable.class);
+        for (HlaUpdatable hp : _hlaPublishers) {
             // Note: The HLA attribute name is no more associated to the
-            // HlaPublisher actor name. As Ptolemy do not accept two actors
+            // HlaUpdatable actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
             // more required.
             //if (_hlaAttributesToPublish.get(hp.getFullName()) != null) {
@@ -1908,41 +1908,41 @@ public class HlaManager extends AbstractInitializableAttribute
             // Note: asked by JC on 20171128, the current implementation is not
             // optimized and may slow the model initialization step if there is
             // a lot of actors.
-            // The HLA attribute is no more associated to the HlaPublisher
+            // The HLA attribute is no more associated to the HlaUpdatable
             // actor name but instead to the attribute name parameter. Checks
             // and throws an exception if two actors specify the same HLA
             // attribute from a same HLA object class and a same HLA instance
             // class name.
-            for (HlaPublisher hpIndex : _hlaPublishers) {
+            for (HlaUpdatable hpIndex : _hlaPublishers) {
                 if ((!hp.getFullName().equals(hpIndex.getFullName())
-                        && (hp.getAttributeName()
-                                .compareTo(hpIndex.getAttributeName()) == 0)
-                        && (hp.getClassObjectName()
-                                .compareTo(hpIndex.getClassObjectName()) == 0)
-                        && (hp.getClassInstanceName().compareTo(
-                                hpIndex.getClassInstanceName()) == 0))
+                        && (hp.getHlaAttributeName()
+                                .compareTo(hpIndex.getHlaAttributeName()) == 0)
+                        && (hp.getHlaClassName()
+                                .compareTo(hpIndex.getHlaClassName()) == 0)
+                        && (hp.getHlaInstanceName().compareTo(
+                                hpIndex.getHlaInstanceName()) == 0))
                         || (!hp.getFullName().equals(hpIndex.getFullName())
-                                && (!hp.getClassObjectName()
-                                        .equals(hpIndex.getClassObjectName()))
-                                && (hp.getClassInstanceName().compareTo(hpIndex
-                                        .getClassInstanceName()) == 0))) {
+                                && (!hp.getHlaClassName()
+                                        .equals(hpIndex.getHlaClassName()))
+                                && (hp.getHlaInstanceName().compareTo(hpIndex
+                                        .getHlaInstanceName()) == 0))) {
 
-                    // FIXME: XXX: Highlight the faulty HlaPublisher actor here, see UCB for API.
+                    // FIXME: XXX: Highlight the faulty HlaUpdatable actor here, see UCB for API.
 
-                    throw new IllegalActionException(this, "A HlaPublisher '"
+                    throw new IllegalActionException(this, "A HlaUpdatable '"
                             + hpIndex.getFullName()
                             + "' with the same HLA information specified by the "
-                            + "HlaPublisher '" + hp.getFullName()
+                            + "HlaUpdatable '" + hp.getFullName()
                             + "' \nis already registered for publication.");
                 }
             }
 
-            // Only one input port is allowed per HlaPublisher actor.
-            TypedIOPort tIOPort = hp.inputPortList().get(0);
+            // Only one input port is allowed per HlaUpdatable actor.
+            TypedIOPort tIOPort = hp.getInputPort();
 
             _hlaAttributesToPublish.put(hp.getFullName(),
 
-                    // XXX: FIXME: simply replace Object[] by a HlaPublisher instance ?
+                    // XXX: FIXME: simply replace Object[] by a HlaUpdatable instance ?
 
                     // tObj[] object as the following structure:
 
@@ -1958,18 +1958,18 @@ public class HlaManager extends AbstractInitializableAttribute
                     // tObj[0 .. 3] are extracted from the Ptolemy model.
                     // tObj[3 .. 5] are provided by the RTI (CERTI).
                     new Object[] { tIOPort, tIOPort.getType(),
-                            hp.getClassObjectName(),
-                            hp.getClassInstanceName() });
+                            hp.getHlaClassName(),
+                            hp.getHlaInstanceName() });
         }
 
         // HlaSubscribers.
         _hlaAttributesToSubscribeTo.clear();
 
-        List<HlaSubscriber> _hlaSubscribers = _getHlaSubscribers(ce);
+        List<HlaReflectable> _hlaSubscribers = _getHlaSubscribers(ce);
 
-        for (HlaSubscriber hs : _hlaSubscribers) {
+        for (HlaReflectable hs : _hlaSubscribers) {
             // Note: The HLA attribute name is no more associated to the
-            // HlaSubscriber actor name. As Ptolemy do not accept two actors
+            // HlaReflectable actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
             // more required.
             //if (_hlaAttributesToSubscribeTo.get(hs.getFullName()) != null) {
@@ -1981,41 +1981,41 @@ public class HlaManager extends AbstractInitializableAttribute
             // Note: asked by JC on 20171128, the current implementation is not
             // optimized and may slow the model initialization step if there is
             // a lot of actors.
-            // The HLA attribute is no more associated to the HlaSubscriber
+            // The HLA attribute is no more associated to the HlaReflectable
             // actor name but instead to the attribute name parameter. Checks
             // and throws an exception if two actors specify the same HLA
             // attribute from a same HLA object class and a same HLA instance
             // class name.
-            for (HlaSubscriber hsIndex : _hlaSubscribers) {
+            for (HlaReflectable hsIndex : _hlaSubscribers) {
                 if ((!hs.getFullName().equals(hsIndex.getFullName())
-                        && (hs.getAttributeName()
-                                .compareTo(hsIndex.getAttributeName()) == 0)
-                        && (hs.getClassObjectName()
-                                .compareTo(hsIndex.getClassObjectName()) == 0)
-                        && (hs.getClassInstanceName().compareTo(
-                                hsIndex.getClassInstanceName()) == 0))
+                        && (hs.getHlaAttributeName()
+                                .compareTo(hsIndex.getHlaAttributeName()) == 0)
+                        && (hs.getHlaClassName()
+                                .compareTo(hsIndex.getHlaClassName()) == 0)
+                        && (hs.getHlaInstanceName().compareTo(
+                                hsIndex.getHlaInstanceName()) == 0))
                         || (!hs.getFullName().equals(hsIndex.getFullName())
-                                && (!hs.getClassObjectName()
-                                        .equals(hsIndex.getClassObjectName()))
-                                && (hs.getClassInstanceName().compareTo(hsIndex
-                                        .getClassInstanceName()) == 0))) {
+                                && (!hs.getHlaClassName()
+                                        .equals(hsIndex.getHlaClassName()))
+                                && (hs.getHlaInstanceName().compareTo(hsIndex
+                                        .getHlaInstanceName()) == 0))) {
 
-                    // FIXME: XXX: Highlight the faulty HlaSubscriber actor here, see UCB for API.
+                    // FIXME: XXX: Highlight the faulty HlaReflectable actor here, see UCB for API.
 
-                    throw new IllegalActionException(this, "A HlaSubscriber '"
+                    throw new IllegalActionException(this, "A HlaReflectable '"
                             + hsIndex.getFullName()
                             + "' with the same HLA information specified by the "
-                            + "HlaSubscriber '" + hs.getFullName()
+                            + "HlaReflectable '" + hs.getFullName()
                             + "' \nis already registered for subscription.");
                 }
             }
 
-            // Only one output port is allowed per HlaSubscriber actor.
-            TypedIOPort tiop = hs.outputPortList().get(0);
+            // Only one output port is allowed per HlaReflectable actor.
+            TypedIOPort tiop = hs.getOutputPort();
 
             _hlaAttributesToSubscribeTo.put(hs.getFullName(),
 
-                    // XXX: FIXME: simply replace object[] by a HlaSubscriber instance ?
+                    // XXX: FIXME: simply replace object[] by a HlaReflectable instance ?
 
                     // tObj[] object as the following structure:
 
@@ -2031,8 +2031,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     // tObj[0 .. 3] are extracted from the Ptolemy model.
                     // tObj[3 .. 5] are provided by the RTI (CERTI).
                     new Object[] { tiop, tiop.getType(),
-                            hs.getClassObjectName(),
-                            hs.getClassInstanceName() });
+                            hs.getHlaClassName(),
+                            hs.getHlaInstanceName() });
 
             // The events list to store updated values of HLA attribute,
             // (received by callbacks) from the RTI, is indexed by the HLA
@@ -2043,7 +2043,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // Joker wildcard support.
             _usedJoker = false;
 
-            String classInstanceOrJokerName = hs.getClassInstanceName();
+            String classInstanceOrJokerName = hs.getHlaInstanceName();
 
             if (classInstanceOrJokerName.contains(_jokerFilter)) {
                 _usedJoker = true;
@@ -2070,7 +2070,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  updated HLA attribute received by callbacks (from the RTI) during the
      *  time advancement phase is saved as a {@link TimedEvent} and stored in a
      *  queue. Then, every {@link TimedEvent} is moved from this queue to the
-     *  output port of their corresponding {@link HLASubscriber} actors
+     *  output port of their corresponding {@link HlaReflectable} actors
      *  @exception IllegalActionException If the parent class throws it.
      */
     private void _putReflectedAttributesOnHlaSubscribers(Time proposedTime)
@@ -2108,7 +2108,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     ravEvent.timeStamp = proposedTime;
                 }
 
-                // If any RAV-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
+                // If any RAV-event received by HlaReflectable actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
                 if (ravEvent.timeStamp
                         .compareTo(_director.getModelStartTime()) < 0) {
@@ -2121,13 +2121,13 @@ public class HlaManager extends AbstractInitializableAttribute
                 TypedIOPort tiop = _getPortFromTab(
                         _hlaAttributesToSubscribeTo.get(actorName));
 
-                HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
+                HlaReflectable hs = (HlaReflectable) tiop.getContainer();
                 hs.putReflectedHlaAttribute(ravEvent);
 
                 if (_debugging) {
                     _hlaDebug("       _putRAVOnHlaSubs(" + proposedTime.toString()
                             + " ravEvent.timeStamp=" + ravEvent.timeStamp
-                            + ") for '" + hs.getAttributeName()
+                            + ") for '" + hs.getHlaAttributeName()
                             //+ "',timestamp=" + ravEvent.timeStamp //jc: non need
                             + " in HlaSubs=" + hs.getFullName());
                 }
@@ -2476,7 +2476,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @param array the opaque Object[] array
      *  @return the class object name as String
      */
-    static private String _getClassObjectNameFromTab(Object[] array) {
+    static private String _getHlaClassNameFromTab(Object[] array) {
         return (String) array[2];
     }
 
@@ -2485,7 +2485,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @param array the opaque Object[] array
      *  @return the class instance name as String
      */
-    static private String _getClassInstanceNameFromTab(Object[] array) {
+    static private String _getHlaInstanceNameFromTab(Object[] array) {
         return (String) array[3];
     }
 
@@ -2627,7 +2627,7 @@ public class HlaManager extends AbstractInitializableAttribute
             this.timeRegulator = false;
             this.hasReceivedRAV = false;
 
-            // Configure HlaPublisher actors from model */
+            // Configure HlaUpdatable actors from model */
             if (!_hlaAttributesToPublish.isEmpty()) {
                 _setupHlaPublishers(rtia);
             } else {
@@ -2635,7 +2635,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaDebug("INNER initialize: _hlaAttributesToPublish is empty");
                 }
             }
-            // Configure HlaSubscriber actors from model */
+            // Configure HlaReflectable actors from model */
             if (!_hlaAttributesToSubscribeTo.isEmpty()) {
                 _setupHlaSubscribers(rtia);
             } else {
@@ -2709,7 +2709,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     Time ts = null;
                     TimedEvent te = null;
                     Object value = null;
-                    HlaSubscriber hs = (HlaSubscriber) _getPortFromTab(tObj)
+                    HlaReflectable hs = (HlaReflectable) _getPortFromTab(tObj)
                             .getContainer();
 
                     if (_debugging) {
@@ -2731,7 +2731,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 .getAttributeHandle()
                                 && classHandle == hs.getClassHandle()
                                 && (classInstanceOrJokerName != null
-                                        && hs.getClassInstanceName().compareTo(
+                                        && hs.getHlaInstanceName().compareTo(
                                                 classInstanceOrJokerName) == 0)) {
 
                             double timeValue = ((CertiLogicalTime) theTime)
@@ -2752,7 +2752,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             _fromFederationEvents.get(hs.getFullName()).add(te);
 
                             if (_debugging) {
-                                _hlaDebug("       *RAV '" + hs.getAttributeName()
+                                _hlaDebug("       *RAV '" + hs.getHlaAttributeName()
                                         + "', timestamp="
                                         + te.timeStamp.toString() + ",value="
                                         + value.toString() + " @ "
@@ -2872,21 +2872,21 @@ public class HlaManager extends AbstractInitializableAttribute
             // Joker support
             if (matchingName != null) {
                 // Get classHandle and attributeHandle IDs for each attribute
-                // value to subscribe to (i.e. HlaSubscriber). Update the HlaSubcribers.
+                // value to subscribe to (i.e. HlaReflectable). Update the HlaSubcribers.
                 Iterator<Entry<String, Object[]>> it1 = _hlaAttributesToSubscribeTo
                         .entrySet().iterator();
 
                 while (it1.hasNext()) {
                     Map.Entry<String, Object[]> elt = it1.next();
-                    // elt.getKey()   => HlaSubscriber actor full name.
+                    // elt.getKey()   => HlaReflectable actor full name.
                     // elt.getValue() => tObj[] array.
                     Object[] tObj = elt.getValue();
 
-                    // Get corresponding HlaSubscriber actor.
-                    HlaSubscriber sub = (HlaSubscriber) ((TypedIOPort) tObj[0])
+                    // Get corresponding HlaReflectable actor.
+                    HlaReflectable sub = (HlaReflectable) ((TypedIOPort) tObj[0])
                             .getContainer();
                     try {
-                        if (sub.getClassInstanceName()
+                        if (sub.getHlaInstanceName()
                                 .compareTo(matchingName) == 0) {
                             sub.setObjectInstanceId(objectInstanceId);
 
@@ -2900,7 +2900,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     } catch (IllegalActionException e) {
                         throw new FederateInternalError(
                                 "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
-                                        + "cannot retrieve HlaSubscriber actor class instance name.");
+                                        + "cannot retrieve HlaReflectable actor class instance name.");
                     }
                 }
             }
@@ -3075,27 +3075,27 @@ public class HlaManager extends AbstractInitializableAttribute
                 RTIinternalError, SaveInProgress, RestoreInProgress,
                 ConcurrentAccessAttempted, IllegalActionException {
 
-            // For each HlaPublisher actors deployed in the model we declare
+            // For each HlaUpdatable actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to publish.
 
             // 1. Get classHandle and attributeHandle IDs for each attribute
-            //    value to publish (i.e. HlaPublisher). Update the HlaPublishers
+            //    value to publish (i.e. HlaUpdatable). Update the HlaPublishers
             //    table with the information.
             Iterator<Entry<String, Object[]>> it = _hlaAttributesToPublish
                     .entrySet().iterator();
 
             while (it.hasNext()) {
                 Map.Entry<String, Object[]> elt = it.next();
-                // elt.getKey()   => HlaPublisher actor full name.
+                // elt.getKey()   => HlaUpdatable actor full name.
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
-                // Get corresponding HlaPublisher actor.
-                HlaPublisher pub = (HlaPublisher) _getPortFromTab(tObj)
+                // Get corresponding HlaUpdatable actor.
+                HlaUpdatable pub = (HlaUpdatable) _getPortFromTab(tObj)
                         .getContainer();
 
                 if (_debugging) {
-                    _hlaDebug("_setupHlaPublishers() - HlaPublisher: "
+                    _hlaDebug("_setupHlaPublishers() - HlaUpdatable: "
                             + pub.getFullName());
                 }
 
@@ -3107,12 +3107,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 try {
                     classHandle = rtia
-                            .getObjectClassHandle(pub.getClassObjectName());
+                            .getObjectClassHandle(pub.getHlaClassName());
 
                     if (_debugging) {
                         _hlaDebug("_setupHlaPublishers() "
                                 + "objectClassName (in FOM) = "
-                                + pub.getClassObjectName() + " - classHandle = "
+                                + pub.getHlaClassName() + " - classHandle = "
                                 + classHandle);
                     }
                 } catch (NameNotFound e) {
@@ -3125,7 +3125,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 int attributeHandle = Integer.MIN_VALUE;
                 try {
                     attributeHandle = rtia.getAttributeHandle(
-                            pub.getAttributeName(), classHandle);
+                            pub.getHlaAttributeName(), classHandle);
 
                     if (_debugging) {
                         _hlaDebug("_setupHlaPublishers() " + " attributeHandle = "
@@ -3154,8 +3154,8 @@ public class HlaManager extends AbstractInitializableAttribute
                 // All these information are required to publish/unpublish
                 // updated value of a HLA attribute.
                 elt.setValue(new Object[] { _getPortFromTab(tObj),
-                        _getTypeFromTab(tObj), _getClassObjectNameFromTab(tObj),
-                        _getClassInstanceNameFromTab(tObj), classHandle,
+                        _getTypeFromTab(tObj), _getHlaClassNameFromTab(tObj),
+                        _getHlaInstanceNameFromTab(tObj), classHandle,
                         attributeHandle });
             }
 
@@ -3168,14 +3168,14 @@ public class HlaManager extends AbstractInitializableAttribute
 
             while (it21.hasNext()) {
                 Map.Entry<String, Object[]> elt = it21.next();
-                // elt.getKey()   => HlaPublisher actor full name.
+                // elt.getKey()   => HlaUpdatable actor full name.
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
-                // Get corresponding HlaPublisher actor.
-                HlaPublisher pub = (HlaPublisher) _getPortFromTab(tObj)
+                // Get corresponding HlaUpdatable actor.
+                HlaUpdatable pub = (HlaUpdatable) _getPortFromTab(tObj)
                         .getContainer();
-                String classInstanceName = pub.getClassInstanceName();
+                String classInstanceName = pub.getHlaInstanceName();
 
                 if (classInstanceNameHlaPublisherTable
                         .containsKey(classInstanceName)) {
@@ -3198,7 +3198,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             while (it22.hasNext()) {
                 Map.Entry<String, Object[]> elt = it22.next();
-                // elt.getKey()   => HlaPublisher actor full name.
+                // elt.getKey()   => HlaUpdatable actor full name.
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
@@ -3223,7 +3223,7 @@ public class HlaManager extends AbstractInitializableAttribute
             while (it3.hasNext()) {
                 Map.Entry<Integer, LinkedList<String>> elt = it3.next();
                 // elt.getKey()   => HLA class instance name.
-                // elt.getValue() => list of HlaPublisher actor full names.
+                // elt.getValue() => list of HlaUpdatable actor full names.
                 LinkedList<String> hlaPublishersFullnames = elt.getValue();
 
                 // The attribute handle set to declare all attributes to publish
@@ -3276,7 +3276,7 @@ public class HlaManager extends AbstractInitializableAttribute
             while (it4.hasNext()) {
                 Map.Entry<String, LinkedList<String>> elt = it4.next();
                 // elt.getKey()   => HLA class instance name.
-                // elt.getValue() => list of HlaPublisher actor full names.
+                // elt.getValue() => list of HlaUpdatable actor full names.
                 LinkedList<String> hlaPublishersFullnames = elt.getValue();
 
                 // At this point, all HlaPublishers on the list have been initialized
@@ -3286,7 +3286,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         .get(hlaPublishersFullnames.getFirst());
 
                 int classHandle = _getClassHandleFromTab(tObj);
-                String classInstanceName = _getClassInstanceNameFromTab(tObj);
+                String classInstanceName = _getHlaInstanceNameFromTab(tObj);
 
                 if (!_registerObjectInstanceMap
                         .containsKey(classInstanceName)) {
@@ -3333,7 +3333,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 ConcurrentAccessAttempted, IllegalActionException {
             // XXX: FIXME: check mixing between tObj[] and HlaSubcriber getter/setter.
 
-            // For each HlaSubscriber actors deployed in the model we declare
+            // For each HlaReflectable actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to subscribe to.
 
             // 1. Get classHandle and attributeHandle IDs for each attribute
@@ -3343,16 +3343,16 @@ public class HlaManager extends AbstractInitializableAttribute
 
             while (it1.hasNext()) {
                 Map.Entry<String, Object[]> elt = it1.next();
-                // elt.getKey()   => HlaSubscriber actor full name.
+                // elt.getKey()   => HlaReflectable actor full name.
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
-                // Get corresponding HlaSubscriber actor.
-                HlaSubscriber sub = (HlaSubscriber) ((TypedIOPort) tObj[0])
+                // Get corresponding HlaReflectable actor.
+                HlaReflectable sub = (HlaReflectable) ((TypedIOPort) tObj[0])
                         .getContainer();
 
                 if (_debugging) {
-                    _hlaDebug("_setupHlaSubscribers() - HlaSubscriber: "
+                    _hlaDebug("_setupHlaSubscribers() - HlaReflectable: "
                             + sub.getFullName());
                 }
 
@@ -3364,12 +3364,12 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 try {
                     classHandle = rtia.getObjectClassHandle(
-                            _getClassObjectNameFromTab(tObj));
+                            _getHlaClassNameFromTab(tObj));
 
                     if (_debugging) {
                         _hlaDebug("_setupHlaSubscribers() "
                                 + "objectClassName (in FOM) = "
-                                + _getClassObjectNameFromTab(tObj)
+                                + _getHlaClassNameFromTab(tObj)
                                 + " - classHandle = " + classHandle);
                     }
                 } catch (NameNotFound e) {
@@ -3382,7 +3382,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 int attributeHandle = Integer.MIN_VALUE;
                 try {
                     attributeHandle = rtia.getAttributeHandle(
-                            sub.getAttributeName(), classHandle);
+                            sub.getHlaAttributeName(), classHandle);
 
                     if (_debugging) {
                         _hlaDebug("_setupHlaSubscribers() " + " attributeHandle = "
@@ -3411,8 +3411,8 @@ public class HlaManager extends AbstractInitializableAttribute
                 // All these information are required to subscribe/unsubscribe
                 // updated value of a HLA attribute.
                 elt.setValue(new Object[] { _getPortFromTab(tObj),
-                        _getTypeFromTab(tObj), _getClassObjectNameFromTab(tObj),
-                        _getClassInstanceNameFromTab(tObj), classHandle,
+                        _getTypeFromTab(tObj), _getHlaClassNameFromTab(tObj),
+                        _getHlaInstanceNameFromTab(tObj), classHandle,
                         attributeHandle });
 
                 sub.setClassHandle(classHandle);
@@ -3429,7 +3429,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             while (it22.hasNext()) {
                 Map.Entry<String, Object[]> elt = it22.next();
-                // elt.getKey()   => HlaSubscriber actor full name.
+                // elt.getKey()   => HlaReflectable actor full name.
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
@@ -3455,7 +3455,7 @@ public class HlaManager extends AbstractInitializableAttribute
             while (it3.hasNext()) {
                 Map.Entry<Integer, LinkedList<String>> elt = it3.next();
                 // elt.getKey()   => HLA class instance name.
-                // elt.getValue() => list of HlaSubscriber actor full names.
+                // elt.getValue() => list of HlaReflectable actor full names.
                 LinkedList<String> hlaSubscribersFullnames = elt.getValue();
 
                 // The attribute handle set to declare all subscribed attributes

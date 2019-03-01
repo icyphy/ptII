@@ -136,7 +136,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.ProposedRating Yellow (glasnier)
  *  @Pt.AcceptedRating Red (glasnier)
  */
-public class HlaSubscriber extends TypedAtomicActor {
+public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
 
     /** Construct a HlaSubscriber actor.
      *  @param container The container.
@@ -387,7 +387,7 @@ public class HlaSubscriber extends TypedAtomicActor {
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " Called fire() - An updated value"
-                            + " of the HLA attribute \"" + getAttributeName()
+                            + " of the HLA attribute \"" + getHlaAttributeName()
                             + " from " + fromObjectInstanceId
                             + "\" has been sent at \"" + te.timeStamp + "\" ("
                             + content.toString() + ")");
@@ -497,7 +497,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  @return the HLA attribute name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getAttributeName() throws IllegalActionException {
+    public String getHlaAttributeName() throws IllegalActionException {
         String name = "";
         try {
             name = ((StringToken) attributeName.getToken()).stringValue();
@@ -512,7 +512,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      * @return The HLA class instance name.
      * @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getClassInstanceName() throws IllegalActionException {
+    public String getHlaInstanceName() throws IllegalActionException {
         String name = "";
         try {
             name = ((StringToken) classInstanceName.getToken()).stringValue();
@@ -529,7 +529,7 @@ public class HlaSubscriber extends TypedAtomicActor {
      *  @return The HLA class object name.
      *  @exception IllegalActionException if a bad token string value is provided.
      */
-    public String getClassObjectName() throws IllegalActionException {
+    public String getHlaClassName() throws IllegalActionException {
         String name = "";
         try {
             name = ((StringToken) classObjectName.getToken()).stringValue();
@@ -538,6 +538,11 @@ public class HlaSubscriber extends TypedAtomicActor {
                     "Bad classObjectName token string value");
         }
         return name;
+    }
+    
+    /** FIXME: This should probably not be here. See HlaManager. */
+    public TypedIOPort getOutputPort() {
+        return output;
     }
 
     /** Manage the correct termination of the {@link HlaSubscriber}. Reset
