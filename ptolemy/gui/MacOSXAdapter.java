@@ -180,7 +180,10 @@ public class MacOSXAdapter implements InvocationHandler {
         // to use a different technique.
         String version = System.getProperty("java.version");
         int dot = version.indexOf(".");
-        int majorVersion = Integer.parseInt(version.substring(0, dot));
+ 
+        int majorVersion = (dot == -1) ? Integer.parseInt(version)
+                                       : Integer.parseInt(version.substring(0, dot));
+        
         if (majorVersion >= 9) {
             // Desktop class exists in Java 8, so this will compile.
             // But the methods we need to not exist, so we use reflection for those.
