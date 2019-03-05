@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={185, 262, 955, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 30, 955, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9738847256915534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.03293523528697, 166.07324218750017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.03293523528697, 166.07324218750023}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A test for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
@@ -38,7 +38,7 @@
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 205.0}">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -61,8 +61,10 @@
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="5">
+        </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{170.0, 215.0}">
         </property>
     </entity>
     <entity name="SubscriberConnection" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -74,11 +76,11 @@
         </property>
     </entity>
     <entity name="ReceivedTopic" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={114, 688, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={222, 690, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 130.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -89,7 +91,7 @@
         </property>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="count == 7">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="count == 5">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
@@ -288,11 +290,19 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Published message: 0&quot;, &quot;Published message: 1&quot;, &quot;Published message: 2&quot;, &quot;Published message: 3&quot;, &quot;Published message: 4&quot;, &quot;Published message: 5&quot;, &quot;Published message: 6&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Published message: 0&quot;, &quot;Published message: 1&quot;, &quot;Published message: 2&quot;, &quot;Published message: 3&quot;, &quot;Published message: 4&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[528.46875, 75.46875]">
+        </property>
+    </entity>
+    <entity name="Sent" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 44, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 140.0]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -347,8 +357,6 @@
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -363,9 +371,15 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[450.0, 215.0]">
+        </vertex>
+    </relation>
     <link port="DiscreteClock.output" relation="relation4"/>
     <link port="DiscreteClock.start" relation="relation18"/>
-    <link port="Expression.output" relation="relation3"/>
+    <link port="Expression.output" relation="relation19"/>
     <link port="Expression.count" relation="relation2"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation4"/>
@@ -390,10 +404,11 @@
     <link port="MQTTSubscriber.subscription" relation="relation14"/>
     <link port="MQTTSubscriber.received" relation="relation7"/>
     <link port="MQTTSubscriber.receivedTopic" relation="relation15"/>
-    <link port="MQTTPublisher.toPublish" relation="relation3"/>
+    <link port="MQTTPublisher.toPublish" relation="relation19"/>
     <link port="MQTTPublisher.connection" relation="relation17"/>
     <link port="PublisherConnection.input" relation="relation18"/>
     <link port="Test.input" relation="relation7"/>
+    <link port="Sent.input" relation="relation19"/>
     <link relation1="relation9" relation2="relation13"/>
     <link relation1="relation6" relation2="relation12"/>
     <link relation1="relation10" relation2="relation12"/>
