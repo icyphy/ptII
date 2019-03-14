@@ -2818,6 +2818,12 @@ public class HlaManager extends AbstractInitializableAttribute
                 int classHandle, String someName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
             // Joker support.
+            // FIXME jc: Joker implementation must be checked. In federation 
+            // models/StaticMultiInstanceJoker/2Values2Instances2Jokers, when 
+            // using "joker_", it works only if the two instances are 
+            // registered by different federates. This constraint does not exist
+            // when using the instance names. There is a problem of starvation
+            // in 3Federates4Values2Instances2Jokers federation.
             String matchingName = null;
 
             if (_usedJoker) {
