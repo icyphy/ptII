@@ -22,32 +22,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 166, 952, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={471, 199, 952, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.566967474833431">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{260.63280487060547, 192.37288687323448}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F4&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;FleetE&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingE&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 65.0]">
-        </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -105,6 +86,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate receives the HLA callback discoverObjectInstance for Aircraft.i3&#10;and Aircraft.i1, but reflects only Aircraft.speed.i3 since it has has only one &#10;HlaSubscribe actor for attribute speed of instance i3 (of class Aircraft). Another&#10;HlaSubscribe(Aircraft.speed.i1) can be added if the federate needs this information.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 225.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="F4">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="FleetE">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 65.0]">
         </property>
     </property>
     <entity name="A12" class="ptolemy.actor.TypedCompositeActor">

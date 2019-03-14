@@ -16,22 +16,6 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{115.15127434529047, 224.67899977992957}">
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;F1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;FleetE&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingE&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 85.0]">
-        </property>
-    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -57,11 +41,11 @@
         </property>
     </property>
     <property name="Rectangle2" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 150.0">
         </property>
         <property name="width" class="ptolemy.data.expr.Parameter" value="140.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="90.0">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -77,7 +61,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate:&#10;- Subscribes Aircraft.yaw and Aircraft.roll&#10;- Discovers all instances  of Aircraft&#10;- Reflects  Aircraft.yaw.i2 and Aircraft.roll.i2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 200.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -88,6 +72,20 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate:&#10;- Publishes Aircraft.speed&#10;- Registers instance Aircraft.i1&#10;- Updates  Aircraft.speed.i1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 170.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="F1">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="FleetE">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="aircraftFleetExpanded.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 80.0]">
         </property>
     </property>
     <entity name="A11" class="ptolemy.actor.TypedCompositeActor">

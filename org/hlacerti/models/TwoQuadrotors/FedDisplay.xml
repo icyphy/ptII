@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2498077822643519">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{151.62792968750003, 268.09126342235686}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{151.62792968750003, 273.38130248485686}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopT">
@@ -35,28 +35,6 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 130.0]">
-        </property>
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Display&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TwoQuadrotors&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Quadrotor.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;Simulating2Q&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 100.0]">
         </property>
     </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.0001">
@@ -96,6 +74,22 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WPs du quadrotor2 :&#10;WP1_UAV2=[1,1,1];&#10;WP2_UAV2=[1.5,2.5,1.5];">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 340.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Display2Q">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TwoQuadrotors">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Quadrotor.fed">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Display2Q">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 105.0]">
         </property>
     </property>
     <entity name="XYZ" class="ptolemy.actor.lib.gui.TimedPlotter">
