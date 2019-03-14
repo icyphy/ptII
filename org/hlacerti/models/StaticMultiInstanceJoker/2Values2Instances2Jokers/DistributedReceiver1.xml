@@ -4,13 +4,13 @@
 <entity name="DistributedReceiver1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={671, 23, 764, 635}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 866, 636}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[530, 525]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 526]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0539105966617637">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0559570250047963">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{310.70024271844653, 258.671875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.8375122565632, 258.671875}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -19,7 +19,7 @@
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
         </property>
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
@@ -82,11 +82,11 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.0,1.0,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 65.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -114,11 +114,11 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.0,1.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Works only if the two&#10;instances are registered &#10;by different federates.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using &quot;joker_&quot;, it works&#10;only if the two instances are &#10;registered by different federates.&#10;This constraint does not&#10;exist when using the instance&#10;name. =&gt; check the code!&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 170.0]">
         </property>
     </property>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
@@ -134,7 +134,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 130.0]">
         </property>
     </entity>
     <entity name="HlaSub2" class="org.hlacerti.lib.HlaSubscriber">
@@ -150,7 +150,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 350.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - val" class="ptolemy.actor.lib.gui.Display">

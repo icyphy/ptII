@@ -1,7 +1,7 @@
 ;; Test federation for proving the static multi-instance with joker
 
 	(Fed
-	 (Federation StaticMultiInstanceJoker)
+	 (Federation StaticMultiInstanceJoker) ;; the name is not used by the RTI
 	 (FedVersion v1.0)
 	 (Spaces)
 	 (Objects
