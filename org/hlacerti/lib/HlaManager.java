@@ -988,24 +988,30 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** Propose a time to advance to. This method implements the
-     *  TimeRegulator interface and call HLA/CERTI Time Management services for
+    /** Propose a time to advance to. Given a proposed time, this method
+     *  consults with the HLA RTI (runtime infrastructure) and blocks
+     *  until the RTI grants a time advance to the proposed time
+     *  or a lesser time. This method returns the time to which it is safe
+     *  to advance, and this time is always less than or equal to the proposed
+     *  time.
+     *  <p>
+     *  This method implements the TimeRegulator
+     *  interface by calling the HLA/CERTI Time Management services for
      *  a time advance request. The time advance phase in HLA is a two-step
-     *  process: 1) a federate sends a time advance request service, and 
-     *  2) waits for the time to be granted, provided by the timeAdvanceGrant
-     *  (TAG) service. Two services, both with  lookahead &gt; 0 are proposed:
+     *  process: 1) a federate sends a time advance request service and 
+     *  2) waits for the time to be granted by the timeAdvanceGrant
+     *  (TAG) service. Two services, both with  lookahead &gt; 0 are implemented:
      *  - timeAdvanceRequest() (TAR) for implementing time-stepped Federates;
      *  - nextEventRequest() (NER) for implementing event-based Federates.
-     *  When RAV are received in a time advance phase, the  proposedTime 
-     *  returned depends on which service is called, NER or TAR.
-     *  - When using TAR: proposedTime has the same value the federate has 
-     *  asked to advance to;
-     *  - When using NER: proposedTime returns the value of the time-stamp of
-     *  the received RAV.
+     *  The time returned by this method depends on whether TAR or NER is being
+     *  used. If TAR is being used, the time returned always equals the
+     *  proposedTime. If NER is being used, the time returned may be less
+     *  because, while this method is blocked, some attribute may be reflected
+     *  with a time stamp less than the proposed time. The time returned by
+     *  this method will equal the value of that time stamp. This allows the
+     *  director to properly handle that reflected attribute value at the
+     *  time of its time stamp.
      *  
-     *  NOTE: CERTI offers also the Null Prime Message Protocol that improves
-     *  the performance of the distributed simulation, see FIXME cite paper. 
-     *  When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
      *  @param proposedTime The proposed time.
      *  @return The proposed time or a smaller time.
      *  @exception IllegalActionException If this attribute is not
@@ -1013,6 +1019,11 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
+        // FIXME: A performance improvement may be possible.
+        // CERTI offers also the Null Prime Message Protocol that improves
+        //  the performance of the distributed simulation, see FIXME cite paper. 
+        //  When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
+
         Time currentTime = _director.getModelTime();
 
         String strProposedTime = proposedTime.toString();
@@ -1620,13 +1631,19 @@ public class HlaManager extends AbstractInitializableAttribute
 
             // algo3: 3: while not granted do
             while (!(_federateAmbassador.timeAdvanceGrant)) {
+                if (_director.isStopRequested()) {
+                    // Not sure what to do here, but we can't just keep waiting.
+                    throw new IllegalActionException(this,
+                            "Stop requested while waiting for a time advance grant from the RTIG.");
+                }
                 if (_debugging) {
                     _hlaDebug("        proposeTime(t(lastFoundEvent)="
                             + strProposedTime + ") - _eventsBasedTimeAdvance("
                             + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
                             + ") by calling tick2()");
                 }
-                _rtia.tick2(); // algo3: 4: tick()  > Wait TAG(h'')
+                // Do not use tick2() here because it can block the director.
+                _rtia.tick(); // algo3: 4: tick()  > Wait TAG(h'')
 
                 // HLA Reporter support.
                 if (_enableHlaReporter) {
