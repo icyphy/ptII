@@ -4,13 +4,13 @@
 <entity name="FedQuadControl" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={437, 116, 875, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={247, 113, 875, 641}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 531]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0635620589290697">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.3343922803591, 233.6796875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.33439228035917, 233.6796875}">
     </property>
     <property name="stopT" class="ptolemy.data.expr.Parameter" value="30.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -81,31 +81,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 395.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;QuadControl&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;QuadrotorSplit&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="QuadrotorSplit.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.05">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimulatingQ&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 55.0]">
-        </property>
-    </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="samplePeriod">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -143,6 +118,24 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="WPs du quadrotor1 :&#10;WP1_UAV2=[0,0,0];&#10;WP2_UAV2=[1,2,3];&#10;WP1_UAV3=[2,2,2];&#10;WP2_UAV4=[0,0,0];">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 45.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="QuadControl">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="QuadrotorSplit">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="QuadrotorSplit.fed">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Display">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 50.0]">
         </property>
     </property>
     <entity name="Control" class="ptolemy.actor.TypedCompositeActor">
