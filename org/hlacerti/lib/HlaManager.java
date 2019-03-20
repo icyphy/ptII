@@ -1640,7 +1640,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaDebug("        proposeTime(t(lastFoundEvent)="
                             + strProposedTime + ") - _eventsBasedTimeAdvance("
                             + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
-                            + ") by calling tick2()");
+                            + ") by calling tick()");
                 }
                 // Do not use tick2() here because it can block the director.
                 _rtia.tick(); // algo3: 4: tick()  > Wait TAG(h'')
@@ -1837,7 +1837,7 @@ public class HlaManager extends AbstractInitializableAttribute
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_debugging) {
                     _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() //jc: no need
-                            + ") by calling tick2() in " + headMsg);
+                            + ") by calling tick() in " + headMsg);
                 }
                 try {
                     // Do not use tick2() here because it can block the director.
