@@ -16,16 +16,16 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[848, 623]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000052">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.25000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{532.5234375, 405.2394531250001}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{394.84687499999995, 375.30976562500007}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this model first obtain a Yelp API key at&#10;https://www.yelp.com/developers/documentation/v3/authentication&#10;and set this accessor's APIKey parameter to that string.&#10;&#10;Also ensure your semantic repository is correctly configured for&#10;a repository named &quot;Yelp&quot;.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this model first obtain a Yelp API key at&#10;https://www.yelp.com/developers/documentation/v3/authentication&#10;and save it at ~/ptKeystore/yelp.txt.&#10;&#10;Also ensure your semantic repository is correctly configured for&#10;a repository named &quot;Yelp&quot;.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 5.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -47,7 +47,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Triggers at model start.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Triggers when SemanticYelpSearch has acquired it's API key.&#10;In Cape Code, this happens synchronously at model start.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 130.0]">
         </property>
@@ -176,6 +176,13 @@
         </port>
         <port name="semanticObservation" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="ready" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
         </port>
     </entity>
     <entity name="SemanticRepositoryUpdate" class="org.terraswarm.accessor.JSAccessor">
@@ -308,10 +315,6 @@
         <port name="update" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-    </entity>
-    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 205.0]">
-        </property>
     </entity>
     <entity name="SemanticRepositoryQuery" class="org.terraswarm.accessor.JSAccessor">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -476,9 +479,9 @@
         </property>
     </entity>
     <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={233, 581, 499, 208}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={353, 253, 1920, 1008}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1920, 964]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 290.0]">
         </property>
@@ -495,15 +498,19 @@
         <vertex name="vertex1" value="{405.0, 215.0}">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[170.0, 285.0]">
+        </vertex>
     </relation>
     <link port="SemanticYelpSearch.trigger" relation="relation4"/>
     <link port="SemanticYelpSearch.semanticObservation" relation="relation6"/>
+    <link port="SemanticYelpSearch.ready" relation="relation4"/>
     <link port="SemanticRepositoryUpdate.status" relation="relation"/>
     <link port="SemanticRepositoryUpdate.update" relation="relation6"/>
-    <link port="SingleEvent.output" relation="relation4"/>
     <link port="SemanticRepositoryQuery.response" relation="relation5"/>
     <link port="SemanticRepositoryQuery.query" relation="relation3"/>
     <link port="SingleEvent2.output" relation="relation2"/>
