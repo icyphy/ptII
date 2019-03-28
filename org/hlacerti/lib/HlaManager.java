@@ -362,6 +362,25 @@ import ptolemy.kernel.util.Workspace;
  * the interaction with the RTI, are also printed to standard out, even if you are
  * listening to the attribute.
  * </p>
+ * <p>NOTE FOR DEVELOPPERS:
+ * A federate needs to instructs the RTI that it is prepared to receive one or more
+ * callbacks. The way to do it was not in the HLA 1.3 standard and was introduced 
+ * in the HLA IEEE 1516. JCERTI, the Java API, is compliant only with DoD HLA 1.3
+ * even though CERTI (coded with C++) is compliant with both standards. JCERTI
+ * provides three different methods for receiving a callback: tick(), 
+ * tick(min,max) and tick2(). The tick() method returns immediately and allows the
+ * federate to receive all pending callbacks to be delivered. Is the responsibility
+ * of the federate to decide what to do if there is no pending callback, for
+ * example, to "tick" again until receive it or until some deadline. This can
+ * overloads the system. The tick2() was introduced for avoiding this overload,
+ * since it returs only if there is a pending callback (only one callback can be
+ * received). Unfortunately, if no callback is received the federate is blocked,
+ * which is bad. The tick(min,max) is not blocking, but it can be hard to find the
+ * value of parameters min and max, and they are dependent of the application.
+ * HLA IEEE 1516 has two methods, evokeMultipleCallback(min,max) and
+ * evokeCallback(min), where the "supplied wall-clock time arguments shall have a
+ * precision of at least one millisecond" [9].
+ * </p>
  * <p><b>References</b>:</p>
  *
  * <p>[1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
@@ -376,11 +395,18 @@ import ptolemy.kernel.util.Workspace;
  * <p>[5] Y. Li, J. Cardoso, and P. Siron, "A distributed Simulation Environment for
  *     Cyber-Physical Systems", Sept 2015.</p>
  * <p>[6] J. Cardoso, and P. Siron, "Ptolemy-HLA: a Cyber-Physical System Distributed
- *     Simulation Framework", Festschrift Lee, Internal DISC report, 2017. </p>
+ *     Simulation Framework", In: Principles of Modeling. Springer International 
+ *     Publishing Switzerland, 122-142. ISBN 978-3-319-95245-1. </p>
  * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure 
  *     Programmer’s Guide RTI 1.3 Version 6, March 1999</p>
  * <p>[8] R. Fujimoto, "Time Management in The High Level Architecture",
  *     https://doi.org/10.1177/003754979807100604</p>
+ * <p>[9] IEEE Standard for Modeling and Simulation HLA: Federate Interface Specification,
+ *     IEEE Std 1516.1-2010, 18 August 2010. </p>
+ * <p>[10] Chaudron, Jean-Baptiste and Siron, Pierre and Adelantado, Martin. Analysis and
+ *     Optimization of time-management services in CERTI 4.0. (2018) In: 2018 Fall
+ *     Simulation Innovation Workshop (SIW), 10-14 September 2018 (Orlando, United 
+ *     States). </p>    
  *
  *  @author Gilles Lasnier, Janette Cardoso, and Edward A. Lee. Contributors: Patricia Derler, David Come, Yanxuan LI
  *  @version $Id: HlaManager.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -965,7 +991,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 _certiRtig.exec();
                 _hlaDebug("RTI launched.");
                 // Give the RTIG some time start up.
-                // FIXME: Do we need this?
+                // FIXME: Do we need this after JCERTI fixed bug #53878?
                 try {
                     Thread.sleep(500L);
                 } catch (InterruptedException ex) {
@@ -1003,26 +1029,37 @@ public class HlaManager extends AbstractInitializableAttribute
      *  (TAG) service. Two services, both with  lookahead &gt; 0 are implemented:
      *  - timeAdvanceRequest() (TAR) for implementing time-stepped Federates;
      *  - nextEventRequest() (NER) for implementing event-based Federates.
-     *  The time returned by this method depends on whether TAR or NER is being
-     *  used. If TAR is being used, the time returned always equals the
-     *  proposedTime. If NER is being used, the time returned may be less
-     *  because, while this method is blocked, some attribute may be reflected
-     *  with a time stamp less than the proposed time. The time returned by
-     *  this method will equal the value of that time stamp. This allows the
-     *  director to properly handle that reflected attribute value at the
-     *  time of its time stamp.
+     *  While this method is blocked waiting for the TAG, some attribute may be
+     *  reflected with a time stamp less than the proposed time. In this case,
+     *  the time returned by this method depends on whether TAR or NER is being
+     *  used. If NER is being used, the time returned by this method will equal
+     *  the value of that time stamp. If TAR is being used, the time returned 
+     *  always equals the proposedTime. This allows the director to properly
+     *  handle that reflected attribute value at the time of its time stamp. If
+     *  no attribute is reflected while this method is blocked, the time
+     *  returned always equals the proposedTime no matter which service is
+     *  used, NER or TAR. 
+     *  <p>
+     *  In fact, this method deals with two timelines: the Ptolemy timeline
+     *  ptolemyTime and the HLA timeline hlaLogicalTime. Ptolemy wants to
+     *  advance to a ptolemyTime t, and the RTI will grant with a 
+     *  hlaLogicalTime h. As the time representation in CERTI and Ptolemy
+     *  are different, a conversion is needed: f converts double to Time, and
+     *  g converts Time to double. The values of the pair (t,h) in a federate
+     *  depends on whether TAR or NER is being used and also whether some 
+     *  attribute was reflected when this method is blocked waiting for a TAG.
+     *  More details in _eventsBasedTimeAdvance and _timeSteppedBasedTimeAdvance.
      *  
-     *  @param proposedTime The proposed time.
-     *  @return The proposed time or a smaller time.
+     *  @param proposedTime The proposed time g(t'), hlaLogicalTime.
+     *  @return The proposed time or a smaller time t', ptolemyTime.
      *  @exception IllegalActionException If this attribute is not
      *  contained by an Actor.
      */
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
-        // FIXME: A performance improvement may be possible.
         // CERTI offers also the Null Prime Message Protocol that improves
-        //  the performance of the distributed simulation, see FIXME cite paper. 
-        //  When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
+        // the performance of the distributed simulation, see [10]. 
+        // When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
 
         Time currentTime = _director.getModelTime();
 
@@ -1042,24 +1079,23 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
 
-        // If the proposeTime has exceed the simulation stop time
-        // so it has no need to ask for the HLA service
-        // then return the _stopTime.
+        // If the proposedTime exceeds the simulation stop time, the simulation
+        // must stop. The federate shall not ask to advance to this 
+        // proposedTime and must return the _stopTime. Notice that no RAV
+        // callback with time stamp bigger than the previous received TAG will
+        // be evoked.
 
-        // Test if we have exceed the simulation stop time.
         if (proposedTime.compareTo(_stopTime) > 0) {
-            // XXX: FIXME: clarify SKIP RTI
             if (_debugging) {
-                _hlaDebug("    proposeTime(" + strProposedTime + ") -"
-                        + " proposedTime > stopTime"
-                        + " -> SKIP RTI -> returning stopTime");
+                _hlaDebug("   proposeTime(" + strProposedTime + ") "
+                        + "  > stopTime(" + _stopTime 
+                        + "): returns proposeTime("+ _stopTime+ "), skip RTI.");
             }
             return _stopTime;
         }
 
-        // If the proposedTime is equal to current time
-        // so it has no need to ask for the HLA service
-        // then return the currentTime.
+        // If the proposedTime is equal to current time so it has no need to
+        // ask for the HLA service then return the currentTime.
 
         if (currentTime.equals(proposedTime)) {
             // Even if we avoid the multiple calls of the HLA Time management
@@ -1070,7 +1106,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 _hlaDebug("       proposeTime(" + strProposedTime
                        + "): currentTime t_ptII = proposedTime: tick() one time");  //-> returning currentTime");
             }
-             */ //jc: for make the reading easier. If needed, we can go back to this print.
+             */ 
             try {
                 _rtia.tick();
 
@@ -1091,14 +1127,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
             return currentTime;
         }
-        //  FIXME: talk here about two time lines, Ptolemy and HLA?
-        //  FIXME: talk about the 2 (current) different time representation
-        //  in Ptolemy and CERTI.
-        // If the HLA Time Management is required, ask to the HLA/CERTI
-        // Federation (the RTI) the authorization to advance its time.
+
+        // If the HLA Time Management is required, ask to the RTI the 
+        // authorization to advance its time by invoking TAR or NER service
+        // as chosen by the user in the HlaManager interface.
         if (_isTimeRegulator && _isTimeConstrained) {
             synchronized (this) {
-                // Call the corresponding HLA Time Management service.
+                // Call the corresponding HLA Time Management service (NER or TAR).
                 try {
                     if (_eventBased) {
                         if (_debugging) {
@@ -1151,7 +1186,9 @@ public class HlaManager extends AbstractInitializableAttribute
                         _hlaDebug("    proposeTime(" + strProposedTime + ") -"
                                 + " NoSuchElementException " + " for _rtia");
                     }
-                    // FIXME: XXX: explain properly that we want to do here?
+                    // If some attribute is reflected with a time stamp smaller
+                    // than the proposedTime, then this method returns that
+                    // smaller time stamp (if NER is used).
                     return proposedTime;
 
                 } catch (SpecifiedSaveLabelDoesNotExist e) {
@@ -1169,7 +1206,15 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Update the HLA attribute <i>attributeName</i> with the containment of
      *  the token <i>in</i>. The updated attribute is sent to the HLA/CERTI
-     *  Federation.
+     *  Federation. The time stamp provided by this method depends on whether
+     *  TAR or NER is being used. A federate promises that no events will be
+     *  sent before hlaCurrentTime + lookahead, lookahead > 0. Recall that a
+     *  federate has two time lines, ptolemyTime and the hlaLogicalTime.
+     *  If NER is being used, the time stamp takes always the value 
+     *  ptIICurrentTime + lookahead, ptIICurrentTime=g(currentTime). If TAR is
+     *  being used, the time stamp takes the value (ptIICurrentTime + lookahead)
+     *  if ptIICurrentTime &lt; hlaCurrentTime + lookahead, otherwise it takes
+     *  the value ptIICurrentTime.
      *  @param hp The HLA publisher actor (HLA attribute) to update.
      *  @param in The updated value of the HLA attribute to update.
      *  @param senderName the name of the federate that sent the attribute.
@@ -1208,42 +1253,40 @@ public class HlaManager extends AbstractInitializableAttribute
         byte[] tag = EncodingHelpers.encodeString(hp.getFullName());
 
         // Create a representation of uav-event timestamp for CERTI.
-        // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
-        // Let us recall the lookahead rule: a federate promises that no events will be sent
-        // before hlaCurrentTime + lookahead.
-        // To avoid CERTI exception when calling UAV service
-        // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
-
-        // Table 2: UAV timestamp sent by a HlaUpdatable
+        // UAV timestamp sent by a HlaUpdatable
         CertiLogicalTime uavTimeStamp = null;
 
-        // g(t)
+        // Convert Ptolemy time t (Time) to HLA time (double), 
+        // g(t) = _convertToCertiLogicalTime(t), where t=Ptolemy currentTime
         CertiLogicalTime ptIICurrentTime = _convertToCertiLogicalTime(
                 currentTime);
 
-        // NER (_eventBased case)
         if (_eventBased) {
-            // In the NER case, we have the equality currentTime = hlaCurrentTime.
-            // So, we chose tau <- currentTime + lookahead and we respect the condition
-            // above.
+            // When the time management NER is used, the time stamp takes always
+            // the value ptIICurrentTime + lookahead since HLA says that a
+            // federate must promise that no event will be sent before 
+            // hlaCurrentTime + lookahead. Notice that when using NER, 
+            // ptIICurrentTime = hlaCurrentTime.
             uavTimeStamp = new CertiLogicalTime(
                     ptIICurrentTime.getTime() + _hlaLookAHead);
         } else {
-            // TAR (_timeStepped case)
+            // If the time management is TAR (_timeStepped case) the value of
+            // uavTimeStamp depends whether (Ptolemy) currentTime is inside or
+            // outside the forbidden region [hlaCurrentTime, hlaCurrentTime + 
+            // lookahead]. If it is inside, uavTimeStamp takes the value 
+            // (hlaCurrentTime + lookahead), otherwise uavTimeStamp takes the
+            // value ptIICurrentTime. Notice that when using TAR, the values
+            // of hlaCurrentTime and ptIICurrentTime can be different.
 
-            // f() => _convertToPtolemyTime()
-            // g() => _convertToCertiLogicalTime()
-
-            // t => currentTime => Ptolemy time => getModelTime()
-
-            // h => hlaCurrentTime => HLA logical time => _federateAmbassador.logicalTimeHLA
+            // h : HLA current logical time provided by the RTI
             CertiLogicalTime hlaCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
 
-            // h + lah => minimal next UAV time
+            // Calculate the end of the forbidden interval (i.e., earliest value
+            // of the uavTimeStamp
             CertiLogicalTime minimalNextUAVTime = new CertiLogicalTime(
                     hlaCurrentTime.getTime() + _hlaLookAHead);
 
-            // if h + lah > g(t) <=> if g(t) < h +lah
+            // g(t) <  h + lah 
             if (minimalNextUAVTime.isGreaterThan(ptIICurrentTime)) {
                 // UAV(h + lah)
                 uavTimeStamp = minimalNextUAVTime;
@@ -1270,7 +1313,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         + ", value=" + in.toString() + ", HlaPub="
                         + hp.getFullName());
             }
-
+            // Call HLA service UAV
             _rtia.updateAttributeValues(objectInstanceId, suppAttributes, tag,
                     uavTimeStamp);
 
@@ -1559,10 +1602,13 @@ public class HlaManager extends AbstractInitializableAttribute
      *  in a HLA simulation. The federate wants to advance to
      *  <i>proposedTime</i> but if a RAV(t'') is received in this time advance
      *  phase, then <i>proposeTime</i> returns t'', the time granted by the RTI.
-     *  All RAV received are put in the HlaReflectable actors. FIXME is the good word here?.
+     *  All RAV received are put in the HlaReflectable actors. 
      *  Eventually a new NER(t') will be called until t' will be granted. See [6],
      *  algorithm 3.
-     *  FIXME: talk here about two time lines, Ptolemy and HLA?
+     *  A federate has two timelines: the Ptolemy timeline ptolemyTime and the
+     *  HLA timeline hlaLogicalTime. When NER is used, they have the same value
+     *  in the general case.
+
      *  @param proposedTime time stamp of the last found event.
      *  @return the granted time from the HLA simulation.
      *  @exception IllegalActionException
@@ -1575,6 +1621,10 @@ public class HlaManager extends AbstractInitializableAttribute
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted,
             SpecifiedSaveLabelDoesNotExist {
 
+        // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
+        // See comments about tick(), tick2() and tick(min,max)
+        double minTickTimeNER = 0.001;
+        double maxTickTimeNER = 10000;
         // Custom string representation of proposedTime.
         String strProposedTime = proposedTime.toString();
 
@@ -1589,28 +1639,21 @@ public class HlaManager extends AbstractInitializableAttribute
                     + " proposedTime=" + proposedTime.toString()
                     + " - calling CERTI NER()");
         }
-
-        // Algorithm 3 - NER (naive implementation to be compliant with the algorithm)
-
-        // f() => _convertToPtolemyTime()
-        // g() => _convertToCertiLogicalTime()
-
-        // r => director global time resolution
+        
+        // The director global time resolution may be used later in the
+        // particular case where HLA time advances but Ptolemy times does not.
         Double r = _director.getTimeResolution();
 
-        // t => Ptolemy time => getModelTime()
+        // Read current Ptolemy time and HLA time (provided by the RTI)
         Time ptolemyTime = _director.getModelTime();
-
-        // t' => proposedTime
-
-        // h => HLA logical time => _federateAmbassador.logicalTimeHLA
         CertiLogicalTime hlaLogicaltime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
 
-        // g(t') => certiProposedTime
+        // Convert proposedTime to double so it can be compared with HLA time
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(
                 proposedTime);
 
-        // algo3: 1: if g(t') > h then
+        // Call the NER service if the time Ptolemy wants to advance to is
+        // bigger than current HLA time
         if (certiProposedTime.isGreaterThan(hlaLogicaltime)) {
             // Wait the time grant from the HLA/CERTI Federation (from the RTI).
             _federateAmbassador.timeAdvanceGrant = false;
@@ -1620,7 +1663,6 @@ public class HlaManager extends AbstractInitializableAttribute
                 _hlaReporter.setTimeOfTheLastAdvanceRequest(System.nanoTime());
             }
 
-            // algo3: 2: NER(g(t'))
             // Call CERTI NER HLA service.
             _rtia.nextEventRequest(certiProposedTime);
 
@@ -1629,7 +1671,6 @@ public class HlaManager extends AbstractInitializableAttribute
                 _hlaReporter.incrNumberOfNERs();
             }
 
-            // algo3: 3: while not granted do
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_director.isStopRequested()) {
                     // Not sure what to do here, but we can't just keep waiting.
@@ -1640,11 +1681,17 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaDebug("        proposeTime(t(lastFoundEvent)="
                             + strProposedTime + ") - _eventsBasedTimeAdvance("
                             + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
-                            + ") by calling tick()");
+                            + ") by calling tick(min,max)");
                 }
-                // Do not use tick2() here because it can block the director.
-                _rtia.tick(); // algo3: 4: tick()  > Wait TAG(h'')
-
+                // Do not use tick2() here because it can block the director
+                // if no TAG is received. For avoiding the overload provoked by tick()
+                // then use tick(min,max).               
+                // _rtia.tick(minTickTimeNER,maxTickTimeNER); 
+                
+                // Instructs the RTI that a TAG callback is expected.
+                // RAV callbacks can also be received in this loop.
+                _rtia.tick();  
+                
                 // HLA Reporter support.
                 if (_enableHlaReporter) {
                     _hlaReporter._numberOfTicks2++;
@@ -1653,38 +1700,43 @@ public class HlaManager extends AbstractInitializableAttribute
                                     .get(_hlaReporter._numberOfTAGs) + 1);
                 }
 
-            } // algo3: 5: end while
+            } // end while
 
-            // algo3: 6: h <- h''    => Update HLA time
+            // A TAG was received then the HLA current time is updated for this federate
             _federateAmbassador.hlaLogicalTime = _federateAmbassador.grantedHlaLogicalTime;
 
-            // algo3: 7: if receivedRAV then
+            // If a RAV was received, the time stamp of TAG is the same as the
+            // RAV, and in the general case, the proposedTime will return with
+            // this time stamp (converted to Time, the Ptolemy time representation).
             if (_federateAmbassador.hasReceivedRAV) {
-
-                // algo3: 8: t'' <- f(h'')
                 Time newPtolemyTime = _convertToPtolemyTime(
                         (CertiLogicalTime) _federateAmbassador.grantedHlaLogicalTime);
 
-                // algo3: 9: if t'' > t then  => True in the general case
+                // True in the general case. If several RAV callbacks are received  
+                // with the same time stamp, the microsteps of the corresponding 
+                // Ptolemy events are increased in the order of the RAV reception.
                 if (newPtolemyTime.compareTo(ptolemyTime) > 0) {
-                    // algo3: 10: t' <- t''
                     proposedTime = newPtolemyTime;
-                } else { // algo3: 11: else
-                    // algo3: 12: t' <- t'' + r
-
-                    // Note: Modification from mail J.Cardoso 24/10/2017.
-                    //proposedTime = newPtolemyTime.add(r);
+                } else { 
+                    // However, it could happen that the RAV (and so the TAG)
+                    // received corresponds to an Hla time increased by a 
+                    // value epsilon but, because of the time representation 
+                    // conversion, it appears as equal to Ptolemy current time t.
+                    // In this case, inserting a new event at e(t;HlaUpdater) 
+                    // can be a problem to the director, since all existing
+                    // events e(t;HlaSubs) have already been treated.
+                    // In order to advance the Ptolemy time, the time resolution
+                    // is added to the current time t, since it is the shortest
+                    // value that can be add for advancing the time beyond t.
                     proposedTime = ptolemyTime.add(r);
+                } 
 
-                } // algo3: 13: end if
-
-                // algo3: 14: putRAVonHlaSubs(t')
                 // Store reflected attributes RAV as events on HlaReflectable actors.
                 _putReflectedAttributesOnHlaSubscribers(proposedTime);
 
                 _federateAmbassador.hasReceivedRAV = false;
 
-            } // algo3: 15: end if => if receivedRAV then
+            } // end  if receivedRAV then
 
         } // algo3: 16: end if
 
@@ -1743,18 +1795,28 @@ public class HlaManager extends AbstractInitializableAttribute
     /** Time advancement method for time-stepped federates. This method
      *  uses TAR RTI service to propose a time t' to advance to
      *  in a HLA simulation. The federate wants to advance to
-     *  <i>proposedTime</i> and it returns t' (if granted by the RTI) event if
+     *  <i>proposedTime</i> and it returns t' (if granted by the RTI) even if
      *  RAV(t''), t'' &lt;  t', are received in this time advance
-     *  phase. All RAV received are put in the HlaReflectable actors. FIXME is the good word here?.
-     *  See [6], algorithm 4.
-     *  FIXME: talk here about two time lines, Ptolemy and HLA?
+     *  phase. All RAV received are put in the HlaReflectable actors. 
+     *  If <i>proposedTime</i> is equal to or greater than <i>N</i> times
+     *  <i>hlaTimeStep</i> and less than <i>(N + 1)</i> times <i>hlaTimeStep</i>, 
+     *  for any integer <i>N</i>, then TAR will be called <i>N</i> times.
+     *  This is why, when TAR is used, the time lines can be different: Ptolemy
+     *  time is equal to <i>proposedTime</i> but HLA time is equal to <i>N</i> 
+     *  times <i>hlaTimeStep</i>. See [6], algorithm 4.
+     *  
      *  @param proposedTime time stamp of last found event
      *  @return a valid time to advance to
      */
 
     private Time _timeSteppedBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException {
-
+        
+        // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
+        // See comments about tick(), tick2() and tick(min,max)
+        double minTickTimeTAR = 0.001;
+        double maxTickTimeTAR = 10000;
+        
         // HLA Reporter support.
         if (_enableHlaReporter) {
             _hlaReporter.storeTimes("TAR()", proposedTime,
@@ -1769,27 +1831,17 @@ public class HlaManager extends AbstractInitializableAttribute
             _hlaDebug("\n" + "start " + headMsg + " print proposedTime.toString="
                     + proposedTime.toString());
         }
-        // Algorithm 4 - TAR (naive implementation to be compliant with the algorithm)
 
-        // f() => _convertToPtolemyTime()
-        // g() => _convertToCertiLogicalTime()
-
-        // t   => Ptolemy time => getModelTime()
-
-        // t'    => proposedTime
-        // g(t') => certiProposedTime
+        // Convert proposedTime to double so it can be compared with HLA time 
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(
                 proposedTime);
 
-        // h      => HLA logical time => _federateAmbassador.logicalTimeHLA
+        // Read current HLA time (provided by the RTI)
         CertiLogicalTime hlaLogicaltime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
 
-        // TS     => _hlaTimeStep
-        // h + TS => nextPointInTime
+        // Set the value of next HLA point in time (when using TAR)
         CertiLogicalTime nextPointInTime = new CertiLogicalTime(
                 hlaLogicaltime.getTime() + _hlaTimeStep);
-
-        // algo4: 1: while g(t') >= h + TS then
 
         // NOTE: Microstep reset problem
         //  To retrieve the old behavior with the microstep reset problem, you may change the line below:
@@ -1797,15 +1849,16 @@ public class HlaManager extends AbstractInitializableAttribute
         //  no reset => while (certiProposedTime.isGreaterThanOrEqualTo(nextPointInTime)) {
 
         if (_debugging) {
-            _hlaDebug("Before While g(t') > h+TS; g(t')= "
+            _hlaDebug("Before While g(t') >= h+TS; g(t')= "
                     + certiProposedTime.getTime() + "; h+TS= "
                     + nextPointInTime.getTime() + " @ " + headMsg);
         }
+        // Call as many TAR as needed for allowing Ptolemy time to advance to
+        // proposedTime
         while (certiProposedTime.isGreaterThanOrEqualTo(nextPointInTime)) {
             // Wait the time grant from the HLA/CERTI Federation (from the RTI).
             _federateAmbassador.timeAdvanceGrant = false;
 
-            // algo4: 2: TAR(h + TS))
             try {
                 if (_enableHlaReporter) {
                     // Set time of last time advance request.
@@ -1833,22 +1886,28 @@ public class HlaManager extends AbstractInitializableAttribute
                 throw new IllegalActionException(this, e, e.getMessage());
             }
 
-            // algo4: 3: while not granted do
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_debugging) {
-                    _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() //jc: no need
+                    _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() 
                             + ") by calling tick() in " + headMsg);
                 }
                 try {
-                    // Do not use tick2() here because it can block the director.
+                    // Do not use tick2() here because it can block the director
+                    // if no callback is received.
+                    //_rtia.tick(minTickTimeTAR,maxTickTimeTAR);
+                    
+                    // Instructs the RTI that a TAG callback is expected.
+                    // RAV callbacks can also be received in this loop.
                     _rtia.tick();
                     
                     if (_director.isStopRequested()) {
                         // Not sure what to do here, but we can't just keep waiting.
+                        // FIXME: Why this test is made here, but before tick in the NER case?
                         throw new IllegalActionException(this,
                                 "Stop requested while waiting for a time advance grant from the RTIG.");
                     }
 
+                    // HLA Reporter support.
                     if (_enableHlaReporter) {
                         _hlaReporter._numberOfTicks2++;
                         _hlaReporter._numberOfTicks
@@ -1860,60 +1919,70 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 } catch (ConcurrentAccessAttempted | RTIinternalError e) {
                     throw new IllegalActionException(this, e, e.getMessage());
-                } // algo4: 4: tick()  > Wait TAG()
+                } 
 
-            } // algo4: 5: end while
+            } //  end while
 
-            // algo4: 6: h <- h + TS    => Update HLA time
+            // A TAG was received then the HLA current time is updated for this federate
             _federateAmbassador.hlaLogicalTime = nextPointInTime;
 
-            // algo4: 7: if receivedRAV then
+            // If one or more RAV are received, HLA guarantees that their time
+            // stamps will never be smaller than the current HLA time h (neither 
+            // larger than nextPointInTime). And proposeTime method must return
+            // the same proposed time or a smaller time.
+            // This guarantees that the received time stamp is smaller. So, if
+            // because of the time conversion the newPtolemyTime appears
+            // as bigger than the proposedTime, keep proposedTime. Otherwise
+            // update it to newPtolemyTime.
             if (_federateAmbassador.hasReceivedRAV) {
 
-                // algo4: 8: t'' <- f(h)
+                // Convert HLA time to Time so it can be compared with Ptolemy time
                 Time newPtolemyTime = _convertToPtolemyTime(
                         (CertiLogicalTime) _federateAmbassador.hlaLogicalTime);
 
-                // algo4: 9: if t'' > t' then  => Update t' if the received time is smaller, otherwise keeps t'
+                // In the general case newPtolemyTime is smaller than proposedTime
+                // and proposedTime is updated to newPtolemyTime. This value will 
+                // be the time stamp on the output of the HlaReflectable actor.
                 if (newPtolemyTime.compareTo(proposedTime) < 0) {
-                    // algo4: 10: t' <- t''
                     if (_debugging) {
                         _hlaDebug("    newPtolemyTime= t'=t''=f(h)="
                                 + newPtolemyTime.toString()
                                 + " @line 10 in algo 4 " + headMsg);
                     }
                     proposedTime = newPtolemyTime;
-                } // algo4: 11: end if
+                } 
 
-                // algo4: 12: putRAVonHlaSubs(t')
                 // Store reflected attributes RAV as events on HlaReflectable actors.
+                // Notice that proposedTime here is a multiple of _hlaTimeStep.
                 _putReflectedAttributesOnHlaSubscribers(proposedTime);
-
+                
+                // Reinitialize variable
                 _federateAmbassador.hasReceivedRAV = false;
 
-                // algo4: 13: return t'
+                // Ptolemy time is updated
                 if (_debugging) {
                     _hlaDebug("Returns proposedTime=" + proposedTime.toString()
-                            + "    @line 13 algo 4 (hasReceivedRAV) " + headMsg
+                            + "    (if hasReceivedRAV) " + headMsg
                             + "\n");
                 }
                 return proposedTime;
 
-            } // algo4: 14: end if receivedRAV then
+            } // end if receivedRAV then
 
             // Update local variables with the new HLA logical time.
             hlaLogicaltime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
             nextPointInTime = new CertiLogicalTime(
                     hlaLogicaltime.getTime() + _hlaTimeStep);
 
-        } // algo4: 15: end while
+        } // end while: 
 
         if (_debugging) {
             _hlaDebug("returns proposedTime=" + proposedTime.toString() + "from "
                     + headMsg);
         }
 
-        // algo4: 16: return t' => Update PtII time
+        // All needed TAR were called. Update Ptolemy time to the time the
+        // federate asked to advance.
         return proposedTime;
     }
 
@@ -2069,8 +2138,8 @@ public class HlaManager extends AbstractInitializableAttribute
                             hs.getHlaInstanceName() });
 
             // The events list to store updated values of HLA attribute,
-            // (received by callbacks) from the RTI, is indexed by the HLA
-            // Subscriber actors present in the model.
+            // (received by callbacks) from the RTI, is indexed by the 
+            // HlaReflectable actors present in the model.
             _fromFederationEvents.put(hs.getFullName(),
                     new LinkedList<TimedEvent>());
 
@@ -2109,7 +2178,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private void _putReflectedAttributesOnHlaSubscribers(Time proposedTime)
             throws IllegalActionException {
-        // Reflected HLA attributes, e.g. updated values of HLA attributes
+        // Reflected HLA attributes, i.e., updated values of HLA attributes
         // received by callbacks (from the RTI) from the whole HLA/CERTI
         // Federation, are stored in a queue (see reflectAttributeValues()
         // in PtolemyFederateAmbassadorInner class).
@@ -2133,16 +2202,20 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 HlaTimedEvent ravEvent = (HlaTimedEvent) events.get(0);
 
-                // Update received RAV event timestamp (see Table 3 - FestscrhiftLeeRapportInterneDisc).
+                // Update received RAV event timestamp (see [6]).
                 if (_timeStepped) {
-                    // Table 3: e(f(h+TS)) (5)
+                    // The Ptolemy event corresponding to a RAV has
+                    // time stamp equal to HLA current time, e(f(h+TS))
                     ravEvent.timeStamp = _getHlaCurrentTime();
                 } else {
-                    // Table 3: e(f(h'')) (4)
+                    // The Ptolemy event corresponding to a RAV has
+                    // time stamp equal to current Ptolemy time. Indeed, no
+                    // modification is made to the received time stamp.
                     ravEvent.timeStamp = proposedTime;
                 }
 
-                // If any RAV-event received by HlaReflectable actors, RAV(tau) with tau < ptolemy startTime
+                // If any RAV-event received by HlaReflectable actors, RAV(tau),
+                // with tau < ptolemy startTime, they
                 // are put in the event queue with timestamp startTime
                 if (ravEvent.timeStamp
                         .compareTo(_director.getModelStartTime()) < 0) {
@@ -2175,7 +2248,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
 
-        // At this point we have handled every events for all registered HlaSubscribers,
+        // At this point we have handled all events for all registered HlaSubscribers,
         // so we may clear the receivedRAV boolean.
         _federateAmbassador.hasReceivedRAV = false;
 
