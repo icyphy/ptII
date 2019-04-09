@@ -1861,6 +1861,19 @@ Accessor.prototype.reify = function (accessor) {
         return false;
     }
 
+    // If no accessor is provided, then unreify, wrapup and return
+    if (!accessor) {
+        // No accessor specified.
+        // Remove previous reification, if any.
+        thiz.unreify();
+        
+        // Unregister any input handlers for this Mutable.
+        thiz.wrapup();
+        thiz.ssuper.initialize();
+        
+        return false;
+    }
+
     var accessorInstance;
     var isNewAccessor = true;
     var instanceName = this.accessorName + '.' + "tempAccessorName";
@@ -1882,17 +1895,7 @@ Accessor.prototype.reify = function (accessor) {
     }
 
     // Check the accessorArg argument type.
-    if (!accessorArg) {
-        // No accessor specified.
-        // Remove previous reification, if any.
-        thiz.unreify();
-        
-        // Unregister any input handlers for this Mutable.
-        thiz.wrapup();
-        thiz.ssuper.initialize();
-        
-        return false;
-    } else if (accessorArg.accessorName) {
+    if (accessorArg.accessorName) {
         // An accessor object is provided.
         accessorInstance = accessorArg;
         isNewAccessor = false;
@@ -1913,7 +1916,8 @@ Accessor.prototype.reify = function (accessor) {
             };
         };
     } else {
-        thiz.error("Argument is not an accessor: " + accessorArg);
+        thiz.error("Argument is not an accessor: " + util.inspect(accessorArg));
+        return false;
     }
 
     // Remove previous reification, if any
