@@ -4,13 +4,13 @@
 <entity name="DistributedReceiver1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 866, 636}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 907, 880}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[632, 526]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[673, 770]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0559570250047963">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2363377560876416">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.8375122565632, 258.671875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{287.13061266447374, 321.70312500000006}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -111,14 +111,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 50.0]">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using &quot;joker_&quot;, it works&#10;only if the two instances are &#10;registered by different federates.&#10;This constraint does not&#10;exist when using the instance&#10;name. =&gt; check the code!&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code for wildcard need to be checked. The behaviour is different if one or two&#10;federates are used for updating the attributes, which is not allowed by HLA.&#10;- One federate updates two instances instance1 and instance2 (model OneFederate.xml): &#10;The HlaSubscribers of Receiver1 must be configured joker1.val2 and joker2.val1.&#10;- Two federates, each one updates a different instance:&#10;The HlaSubscribers of Receiver1 must be configured joker1.val1 and joker2.val2.&#10;This constraint does not exist when the wildcard is not used (the instance names&#10;are used). &#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 515.0]">
         </property>
     </property>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
@@ -154,7 +154,7 @@
         </property>
     </entity>
     <entity name="HlaSub2 - val" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={822, 513, 407, 387}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={634, 693, 407, 387}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
@@ -162,7 +162,7 @@
         </property>
     </entity>
     <entity name="HlaSub1 - val" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={471, 513, 407, 387}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={299, 690, 407, 387}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>

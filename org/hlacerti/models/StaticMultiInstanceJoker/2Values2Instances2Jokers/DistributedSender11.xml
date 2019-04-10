@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -5.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={665, 156, 766, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={717, 32, 818, 494}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[532, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[584, 384]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4308619857034202">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3690203634622964">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{124.41815400123596, 161.0947730988835}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{155.79520619066454, 118.7756643450497}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -103,7 +103,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 145.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -145,6 +145,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 10.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The federation with 2 sender federates only works if the federate Receiver1&#10;uses this configuration: (joker1,val1) and (joker2,val2). Otherwise it does not work.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 170.0]">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period_dc1">
         </property>
@@ -164,7 +174,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 110.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -178,10 +188,10 @@
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation3"/>
-    <link port="HlaPublisher.input" relation="relation2"/>
-    <link port="Ramp.output" relation="relation2"/>
+    <link port="HlaPublisher.input" relation="relation"/>
+    <link port="Ramp.output" relation="relation"/>
     <link port="Ramp.trigger" relation="relation3"/>
 </entity>

@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 25.0]">
         </property>
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="2">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 35.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -45,7 +45,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, -4.999999999999972]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 10.000000000000028]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -65,26 +65,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 47, 844, 638}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={593, 38, 660, 523}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 528]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[426, 413]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0100568242736143">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0350839160486607">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{254.01299252717382, 235.89777938179344}">
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr)&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 300.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{157.10614089775564, 188.22001149470077}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -102,7 +92,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -112,7 +102,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 80.0]">
         </property>
     </property>
     <property name="period_dc2" class="ptolemy.data.expr.Parameter" value="2">
@@ -131,7 +121,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 80.0]">
         </property>
     </property>
     <property name="hla_value_dc1" class="ptolemy.data.expr.Parameter" value="10">
@@ -189,7 +179,17 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 30.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federate registers 2 different instances of class ValueTransfer &#10;(instance1 and instance2). Notice that instance1 updates only&#10;attribute val1, and instance2 updates only attribute val2.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 300.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -198,7 +198,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 135.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -207,7 +207,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc2}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 240.0]">
         </property>
     </entity>
     <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
@@ -220,7 +220,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 145.0]">
         </property>
     </entity>
     <entity name="HlaPublisher2" class="org.hlacerti.lib.HlaPublisher">
@@ -233,7 +233,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;instance2&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 250.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
