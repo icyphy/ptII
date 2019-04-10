@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 163, 775, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 80, 791, 418}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[541, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 308]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3151766407538736">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{210.8740234375, 288.65065913370995}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.95685653542844, 207.29276644891712}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">

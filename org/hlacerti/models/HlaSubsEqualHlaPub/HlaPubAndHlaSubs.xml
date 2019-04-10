@@ -48,8 +48,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -9.999999999999972]">
         </property>
     </property>
-    <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
-        <display name="Lookahead"/>
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -68,47 +67,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Send&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;HlaSubsEqualHlaPub&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="requireSynchronization" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Require synchronization ?"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimuSame&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 15.0}">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={719, 501, 807, 632}, maximized=false}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={582, 48, 807, 597}, maximized=false}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 487]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0287014026367887">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{207.64597664439202, 211.154296875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{207.64597664439202, 228.1660360980084}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -166,6 +131,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This HlaSubscriber has the same parameters&#10;(class, attribute, instance names) than the&#10;HlaPublisher in the same model. It does not &#10;receive  any update neither raises an error.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 230.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Send">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HLASubsEqualHlaPub">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HLASubsEqualHlaPub.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Send">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 20.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -253,7 +238,7 @@
         </port>
     </entity>
     <entity name="BeforeHlaPub" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1095, 34, 295, 125}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1375, 453, 430, 251}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
