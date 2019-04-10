@@ -10,41 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 40, 743, 414}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={752, 78, 774, 422}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 304]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[540, 312]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.094335233220891">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2754277119759354">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{139.992293792517, 128.671875}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Rec&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;HlaSubsEqualHlaPub&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimuSame&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 30.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{119.7734375, 115.57329746462264}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -91,7 +63,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 50.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -104,6 +76,24 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -5.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Rec">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HLASubsEqualHlaPub">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HLASubsEqualHlaPub.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Send">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
         </property>
     </property>
     <entity name="HlaSub1" class="org.hlacerti.lib.HlaSubscriber">
@@ -119,29 +109,29 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 105.0]">
         </property>
     </entity>
     <entity name="otherHlaSubs" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={198, 288, 281, 132}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1414, 51, 424, 171}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 140.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
         </property>
     </entity>
     <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[144.75, 204.65625]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 95.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -162,7 +152,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[85.0, 125.0]">
+        <vertex name="vertex1" value="[80.0, 105.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -170,13 +160,13 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[190.0, 170.0]">
+        <vertex name="vertex1" value="[185.0, 150.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[205.0, 240.0]">
+        <vertex name="vertex1" value="[199.75, 204.65625]">
         </vertex>
     </relation>
     <link port="HlaSub1.output" relation="relation"/>
