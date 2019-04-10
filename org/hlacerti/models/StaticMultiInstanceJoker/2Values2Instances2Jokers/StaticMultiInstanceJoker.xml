@@ -4,13 +4,13 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 670, 877}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 213, 675, 731}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 767]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[441, 621]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8270715466638353">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6917092652860983">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.53515625, 516.6387635710093}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.23766190798904, 447.32763671875006}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">
@@ -97,7 +97,7 @@
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance with joker usage. &#10;The test shows:&#10;&#10;- two senders: Sender1 sends updates of attribute 'val1' and&#10;Sender11 of attribute 'val2'&#10;&#10;- a receiver which deploys two HLA subscribers bind to attribute&#10; values 'val1' and 'val2'.  'joker_1' and 'joker_2' are used as wildcard&#10;to bind any discovered instance class name (the order is not fixed,&#10;but Ptolemy topological sort guarantees that a joker is always&#10;binded to the same instance). ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the HLA static multi instance using wildcard. &#10;The test shows:&#10;&#10;- Two senders: Sender1 updates attribute 'val1' of instance1 and&#10;Sender11 updates attribute 'val2' of instance2&#10;&#10;- A receiver that reflects attributes 'val1' and 'val2'.  &#10;'joker_1' and 'joker_2' are used as wildcard&#10;to bind any discovered instance class name (the order is not fixed,&#10;but Ptolemy topological sort guarantees that a joker is always&#10;binded to the same instance). ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
         </property>
@@ -106,7 +106,7 @@
         <doc>Simple director that executes actors in the order in which they were created.</doc>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 645.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 630.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -148,6 +148,26 @@
             </property>
         </property>
     </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model works when using lingerTime&#10;=1000L for all three VisualReferenceModels.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 660.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The federation with 2 sender federates only works if the federate Receiver1&#10;uses this configuration: (joker1,val1) and (joker2,val2). However, the&#10;behavior is different if only one federate is used for updating the 2 instances.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 760.0]">
+        </property>
+    </property>
     <entity name="DistributedReceiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedReceiver1.xml">
         </property>
@@ -159,7 +179,7 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 595.0]">
         </property>
     </entity>
     <entity name="DistributedSender11" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -167,13 +187,13 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 665.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 660.0]">
         </property>
     </entity>
     <entity name="DistributedSender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -181,13 +201,13 @@
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="0L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 730.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 720.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">

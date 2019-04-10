@@ -4,20 +4,20 @@
 <entity name="DistributedReceiver1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 75, 1004, 758}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 40, 914, 957}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[770, 648]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[680, 847]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0174008973827335">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0924527640927488">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.50075174648555, 412.0938568115235}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{328.6494140625, 436.6327294193097}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 85.0]">
         </property>
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
@@ -36,7 +36,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 75.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -55,7 +55,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 60.0]">
         </property>
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -75,7 +75,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 90.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -85,17 +85,17 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 120.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An exception is throwed by Ptolemy.&#10;&#10;As the receiver model specifies only one 'joker_1' wildcard for two attribute values and&#10; the sender publishes two attribute values (val1,instance1) and (val2,instance2), only&#10;one  attribute value will be associated to a HLA Subscriber during the HLA DOI.&#10;&#10;The other one HLA subscriber will never fire as it will never received update of its&#10;specified attribute value, so Ptolemy throws an exception.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An exception is throwed by Ptolemy because this model is wrong.&#10;&#10;Federate Sender22joker registers 2 different instances of class ValueTransfer &#10;(instance1 and instance2). But instance1 updates only attribute val1, and instance2&#10;updates only attribute val2.&#10;&#10;Federate  Receiver22Joker specifies only one wildcard name. During the discovering&#10;of object instances, one match is correctly done (for val2 in this example), and&#10;the attribute val2 will be reflected correctly.&#10;&#10;But the actor  HlaSub will never fire as it will never receive updates from the specified&#10;attribute val1, so Ptolemy throws an exception.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 550.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -115,15 +115,15 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 90.0]">
         </property>
     </property>
     <property name="TestException - IllegalActionException: fire() never called" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value=" was initialized and should have handled an exception but did not see any.&#10;  in .DistributedReceiver1.TestException - IllegalActionException: fire() never called">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Multiple exceptions thrown during wrapup:&#10; was initialized and should have handled an exception but did not see any.&#10;  in .DistributedReceiver1.TestException - IllegalActionException: fire() never called&#10;======&#10;Exceptions occurred during wrapup:&#10;ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.&#10;  in .DistributedReceiver1.HlaSub1 - test - Value&#10;ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.&#10;  in .DistributedReceiver1.HlaSub1 - test - Time&#10;ptolemy.kernel.util.IllegalActionException: The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.&#10;  in .DistributedReceiver1.HlaSub1 - test - Microstep&#10;&#10;  in .DistributedReceiver1.DE Director&#10;Because:&#10;The fire() method of this actor was never called. Usually, this is an error indicating that starvation is occurring.&#10;  in .DistributedReceiver1.HlaSub1 - test - Value&#10;======&#10;&#10;  in .DistributedReceiver1&#10;Because:&#10; was initialized and should have handled an exception but did not see any.&#10;  in .DistributedReceiver1.TestException - IllegalActionException: fire() never called">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 580.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -131,9 +131,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model does not work.&#10;There is a problem with the exception.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model would have two &#10;different wildcards, since val1&#10;and val2 came from two&#10;different instances.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 245.0]">
         </property>
     </property>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
@@ -149,7 +149,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 185.0]">
         </property>
     </entity>
     <entity name="HlaSub2" class="org.hlacerti.lib.HlaSubscriber">
@@ -165,7 +165,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 590.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 390.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - val" class="ptolemy.actor.lib.gui.Display">
@@ -173,7 +173,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.89161682128906, 582.6379089355469]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 380.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - val" class="ptolemy.actor.lib.gui.Display">
@@ -181,7 +181,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[521.0948486328125, 231.2109375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 185.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Value" class="ptolemy.actor.lib.Test">
@@ -189,13 +189,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 150.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Time" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 235.0]">
         </property>
     </entity>
     <entity name="HlaSub1 - test - Microstep" class="ptolemy.actor.lib.Test">
@@ -203,21 +203,21 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 300.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{278.14856833910784, 276.9711946366387}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[268.14856833910784, 231.9711946366387]">
         </property>
     </entity>
     <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 290.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 175.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -237,16 +237,16 @@
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[274.99999999999994, 630.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[249.99999999999994, 430.0]">
         </property>
     </entity>
     <entity name="CurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 495.0]">
         </property>
     </entity>
     <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 575.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 375.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -269,13 +269,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[479.89161682128906, 702.6379089355469]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 495.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - test - Time" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 3.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[499.89161682128906, 642.6379089355469]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 435.0]">
         </property>
     </entity>
     <entity name="HlaSub2 - test - Value" class="ptolemy.actor.lib.Test">
@@ -283,13 +283,13 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 560.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 360.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[238.14856833910784, 231.9711946366387]">
+        <vertex name="vertex1" value="[228.14856833910784, 186.9711946366387]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -297,7 +297,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[219.99999999999994, 590.0]">
+        <vertex name="vertex1" value="[194.99999999999994, 390.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -305,25 +305,25 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[320.0, 275.0]">
+        <vertex name="vertex1" value="[310.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[335.0, 330.0]">
+        <vertex name="vertex1" value="[325.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[330.0, 695.0]">
+        <vertex name="vertex1" value="[305.0, 495.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[313.49999999999994, 630.5]">
+        <vertex name="vertex1" value="[288.49999999999994, 430.5]">
         </vertex>
     </relation>
     <link port="HlaSub.output" relation="relation"/>
