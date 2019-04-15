@@ -444,7 +444,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _hlaAttributesToPublish = new HashMap<String, Object[]>();
         _hlaAttributesToSubscribeTo = new HashMap<String, Object[]>();
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
-        _objectIdToClassHandle = new HashMap<Integer, Integer>();
+        _objectHandleToClassHandle = new HashMap<Integer, Integer>();
 
         // Joker wildcard support.
         _usedJokerFilterMap = new HashMap<String, Boolean>();
@@ -758,7 +758,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
 
-        newObject._objectIdToClassHandle = new HashMap<Integer, Integer>();
+        newObject._objectHandleToClassHandle = new HashMap<Integer, Integer>();
         newObject._registerObjectInstanceMap = new HashMap<String, Integer>();
         newObject._discoverObjectInstanceMap = new HashMap<Integer, String>();
 
@@ -777,8 +777,8 @@ public class HlaManager extends AbstractInitializableAttribute
      *  Federate &lt;-&gt; RTIA &lt;-&gt; RTIG. RTIA and RTIG are both external communicant
      *  processes (see JCERTI); create the HLA/CERTI Federation (if not exists);
      *  allows the Federate to join the Federation; set the Federate time
-     *  management policies (regulator and/or contrained); creates a
-     *  synchronisation point (if required); and synchronizes the Federate with
+     *  management policies (regulator and/or contrained); register a
+     *  synchronization point (if required); and synchronizes the Federate with
      *  a synchronization point (if declared).
      *  @exception IllegalActionException If the container of the class is not
      *  an Actor or If a CERTI exception is raised and has to be displayed to
@@ -1303,7 +1303,7 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         // XXX: FIXME: check if we may add the object instance id to the HLA publisher and remove this.
-        int objectInstanceId = _registerObjectInstanceMap
+        int instanceHandle = _registerObjectInstanceMap
                 .get(hp.getHlaInstanceName());
 
         try {
@@ -1314,7 +1314,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         + hp.getFullName());
             }
             // Call HLA service UAV
-            _rtia.updateAttributeValues(objectInstanceId, suppAttributes, tag,
+            _rtia.updateAttributeValues(instanceHandle, suppAttributes, tag,
                     uavTimeStamp);
 
             if (_enableHlaReporter) {
@@ -1476,7 +1476,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         _hlaAttributesToPublish.clear();
                         _hlaAttributesToSubscribeTo.clear();
                         _fromFederationEvents.clear();
-                        _objectIdToClassHandle.clear();
+                        _objectHandleToClassHandle.clear();
 
                         // Clean HLA object instance id maps.
                         _registerObjectInstanceMap.clear();
@@ -1532,11 +1532,11 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     protected HashMap<String, LinkedList<TimedEvent>> _fromFederationEvents;
 
-    /** Table of object class handles associate to object ids received by
-     *  discoverObjectInstance and reflectAttributesValues services (e.g. from
+    /** Table of object class handles associate to instance handles received by
+     *  discoverObjectInstance and reflectAttributesValues services (from
      *  the RTI).
      */
-    protected HashMap<Integer, Integer> _objectIdToClassHandle;
+    protected HashMap<Integer, Integer> _objectHandleToClassHandle;
 
     /** Table of used joker (wildcard) filter. */
     protected HashMap<String, Boolean> _usedJokerFilterMap;
@@ -2310,13 +2310,14 @@ public class HlaManager extends AbstractInitializableAttribute
     /** The RTIG subprocess. */
     private CertiRtig _certiRtig;
 
-    /** Map class instance name and object instance ID. Those information are set
+    /** Map class instance name and object instance handle. Those information are set
      *  using discoverObjectInstance() callback and used by the RAV service.
      */
     private HashMap<Integer, String> _discoverObjectInstanceMap;
 
     /**
-     * Map <Sender actor + HlaPublishers> and ROI ID for an object instance. See HlaPublishers.
+     * Map <Sender actor + HlaPublishers> and registerObjectInstance (ROI) 
+     * handle for an object instance. See HlaPublishers.
      *
      * HashMap for HlaPublishers to remember which actor's ID has
      * been registered (as an object instance) to the Federation.
@@ -2799,8 +2800,8 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             // Get the object class handle corresponding to
-            // the received "theObject" id.
-            int classHandle = _objectIdToClassHandle.get(theObject);
+            // the received "theObject" handle.
+            int classHandle = _objectHandleToClassHandle.get(theObject);
             String classInstanceOrJokerName = _discoverObjectInstanceMap
                     .get(theObject);
 
@@ -2904,16 +2905,19 @@ public class HlaManager extends AbstractInitializableAttribute
          *  of HLA attribute that the Federate is subscribed to.
          */
         @Override
-        public void discoverObjectInstance(int objectInstanceId,
+        public void discoverObjectInstance(int instanceHandle,
                 int classHandle, String someName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
-            // Joker support.
-            // FIXME jc: Joker implementation must be checked. In federation 
-            // models/StaticMultiInstanceJoker/2Values2Instances2Jokers, when 
-            // using "joker_", it works only if the two instances are 
-            // registered by different federates. This constraint does not exist
-            // when using the instance names. There is a problem of starvation
-            // in 3Federates4Values2Instances2Jokers federation.
+            // Special attention must be taken when the wildcard "joker_" is
+            // used. The wildcard can be used only if all instances are treated 
+            // the same way, or if it is not important to know their names.
+            // Recall that the  order in which the instances will be discovered 
+            // is not known before the run, but Ptolemy topological sort
+            // guarantees that a joker is always binded to the same
+            // instance (for a same set of federates). However, if the wildcard  
+            // of the HlaReflectable is binded to an instance that does not 
+            // have the attributeName of this actor updated, then this actor
+            // produces no output. See the manual for details.
             String matchingName = null;
 
             if (_usedJoker) {
@@ -2941,17 +2945,17 @@ public class HlaManager extends AbstractInitializableAttribute
                 if (jokerFilter == null) {
                     if (_debugging) {
                         _hlaDebug("INNER callback: discoverObjectInstance: no more filter available.\n"
-                                + " objectInstanceId=" + objectInstanceId
+                                + " instanceHandle=" + instanceHandle
                                 + " classHandle=" + classHandle + " someName="
                                 + someName
                                 + " will be ignored during the simulation.");
                     }
                 } else {
-                    _discoverObjectInstanceMap.put(objectInstanceId,
+                    _discoverObjectInstanceMap.put(instanceHandle,
                             jokerFilter);
                     if (_debugging) {
-                        _hlaDebug("INNER callback: discoverObjectInstance: objectInstanceId="
-                                + objectInstanceId + " jokerFilter="
+                        _hlaDebug("INNER callback: discoverObjectInstance: instanceHandle="
+                                + instanceHandle + " jokerFilter="
                                 + jokerFilter + " matchingName="
                                 + matchingName);
                     }
@@ -2959,8 +2963,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     matchingName = jokerFilter;
                 }
             } else {
-                // Nominal case, class instance name usage.
-                if (_discoverObjectInstanceMap.containsKey(objectInstanceId)) {
+                // Nominal case, an instance name was defined in the callback discoverObjectInstance.
+                if (_discoverObjectInstanceMap.containsKey(instanceHandle)) {
                     if (_debugging) {
                         _hlaDebug("INNER callback: discoverObjectInstance: found an instance class already registered: "
                                 + someName);
@@ -2973,19 +2977,19 @@ public class HlaManager extends AbstractInitializableAttribute
                                     + someName);
 
                 } else {
-                    _discoverObjectInstanceMap.put(objectInstanceId, someName);
+                    _discoverObjectInstanceMap.put(instanceHandle, someName);
                     matchingName = someName;
                 }
 
             }
 
-            // Bind object instance id to class handle.
-            _objectIdToClassHandle.put(objectInstanceId, classHandle);
+            // Bind object instance id (handle) to class handle.
+            _objectHandleToClassHandle.put(instanceHandle, classHandle);
 
             // Joker support
             if (matchingName != null) {
-                // Get classHandle and attributeHandle IDs for each attribute
-                // value to subscribe to (i.e. HlaReflectable). Update the HlaSubcribers.
+                // Get classHandle and attributeHandle for each attribute
+                // value to subscribe to (i.e. HlaReflectable). Update the HlaReflectable.
                 Iterator<Entry<String, Object[]>> it1 = _hlaAttributesToSubscribeTo
                         .entrySet().iterator();
 
@@ -2998,10 +3002,13 @@ public class HlaManager extends AbstractInitializableAttribute
                     // Get corresponding HlaReflectable actor.
                     HlaReflectable sub = (HlaReflectable) ((TypedIOPort) tObj[0])
                             .getContainer();
+                    // Set the instance handle in the data structure
+                    // corresponding to the HlaReflectable actor that matches 
+                    // the jokerFilter.
                     try {
                         if (sub.getHlaInstanceName()
                                 .compareTo(matchingName) == 0) {
-                            sub.setObjectInstanceId(objectInstanceId);
+                            sub.setInstanceHandle(instanceHandle); 
 
                             if (_debugging) {
                                 _hlaDebug("INNER callback: discoverObjectInstance: matchingName="
@@ -3021,7 +3028,7 @@ public class HlaManager extends AbstractInitializableAttribute
             if (_debugging) {
                 _hlaDebug("INNER callback:"
                         + " discoverObjectInstance(): the object"
-                        + " objectInstanceId=" + objectInstanceId
+                        + " instanceHandle=" + instanceHandle
                         + " classHandle=" + classHandle
                         + " classIntanceOrJokerName=" + someName);
             }
@@ -3191,7 +3198,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // For each HlaUpdatable actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to publish.
 
-            // 1. Get classHandle and attributeHandle IDs for each attribute
+            // 1. Get classHandle and attributeHandle for each attribute
             //    value to publish (i.e. HlaUpdatable). Update the HlaPublishers
             //    table with the information.
             Iterator<Entry<String, Object[]>> it = _hlaAttributesToPublish
@@ -3212,8 +3219,9 @@ public class HlaManager extends AbstractInitializableAttribute
                             + pub.getFullName());
                 }
 
-                // Object class handle and attribute handle are IDs that
-                // allow to identify an HLA attribute.
+                // Object class handle and attribute handle are numerical (int)
+                // representation, provided by the RTIA, for object classes 
+                // and object class attributes that appear in the FED file.
 
                 // Retrieve HLA class handle from RTI.
                 int classHandle = Integer.MIN_VALUE;
@@ -3382,7 +3390,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             // 4. Register object instances. Only one registerObjectInstance() call is performed
             //    by class instance (name). Finally, update the hash map of class instance name
-            //    with the returned object instance ID.
+            //    with the returned object instance handle.
             Iterator<Entry<String, LinkedList<String>>> it4 = classInstanceNameHlaPublisherTable
                     .entrySet().iterator();
 
@@ -3403,21 +3411,21 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 if (!_registerObjectInstanceMap
                         .containsKey(classInstanceName)) {
-                    int objectInstanceId = -1;
+                    int instanceHandle = -1;
                     try {
-                        objectInstanceId = rtia.registerObjectInstance(
+                        instanceHandle = rtia.registerObjectInstance(
                                 classHandle, classInstanceName);
 
                         if (_debugging) {
                             _hlaDebug("_setupHlaPublishers() - Register Object Instance: "
                                     + " classHandle = " + classHandle
                                     + " classIntanceName = " + classInstanceName
-                                    + " objectInstanceId = "
-                                    + objectInstanceId);
+                                    + " instanceHandle = "
+                                    + instanceHandle);
                         }
 
                         _registerObjectInstanceMap.put(classInstanceName,
-                                objectInstanceId);
+                                instanceHandle);
                     } catch (ObjectClassNotPublished e) {
                         throw new IllegalActionException(null, e,
                                 "ObjectClassNotPublished: " + e.getMessage());
@@ -3449,8 +3457,8 @@ public class HlaManager extends AbstractInitializableAttribute
             // For each HlaReflectable actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to subscribe to.
 
-            // 1. Get classHandle and attributeHandle IDs for each attribute
-            // value to subscribe (i.e. HlaSubcriber). Update the HlaSubcribers.
+            // 1. Get classHandle and attributeHandle for each attribute
+            // value to subscribe (i.e. HlaSubscriber). Update the HlaSubscribers.
             Iterator<Entry<String, Object[]>> it1 = _hlaAttributesToSubscribeTo
                     .entrySet().iterator();
 
@@ -3469,8 +3477,9 @@ public class HlaManager extends AbstractInitializableAttribute
                             + sub.getFullName());
                 }
 
-                // Object class handle and attribute handle are IDs that
-                // allow to identify an HLA attribute.
+                // Object class handle and attribute handle are numerical (int)
+                // representation, provided by the RTIA, for object classes 
+                // and object class attributes that appear in the FED file.
 
                 // Retrieve HLA class handle from RTI.
                 int classHandle = Integer.MIN_VALUE;

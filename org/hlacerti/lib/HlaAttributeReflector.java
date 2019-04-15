@@ -86,7 +86,15 @@ import ptolemy.kernel.util.Workspace;
  * name chosen by the designer for the instance of the class. It specifies
  * the instance of the specified class whose attribute this actor reflects.
  * <p>
- * If there is no instance with the specified <i>instanceName</i>, then this actor
+ * A federate may not need to know the name of the instances, because all
+ * instances are treated the same way, or because it is not important to know
+ * their names. In these cases, the wildcard  <i>joker_N</i>, N being any integer,
+ * may be used in the parameter <i>instanceName</i>. As the order in which the
+ * instances are discovered is not known before the run, the wildcard must be
+ * used with caution, see the manual and {@link HlaAManager} code.
+ * <p>
+ * If there is no instance with the specified <i>instanceName</i>, or no
+ * updated attribute for the instance binded to a wildcard, then this actor
  * produces no output. If a matching instance is later created, then this
  * actor will begin producing outputs when that instance's attribute is updated.
  * If the specified class does not have an attribute with the specified
@@ -178,7 +186,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         // Set handle to impossible values <= XXX: FIXME: GiL: true ?
         _attributeHandle = Integer.MIN_VALUE;
         _classHandle = Integer.MIN_VALUE;
-        _objectInstanceId = Integer.MIN_VALUE;
+        _instanceHandle = Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -203,7 +211,8 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     public StringParameter className;
 
     /** The name of the instance of the class to whose attribute this actor
-     *  listens for updates.
+     *  listens for updates. If this name does not need to be known, then a
+     *  wildcard can be used.
      *  This defaults to an empty string, but it must be non-empty to run the model.
      */
     public StringParameter instanceName;
@@ -275,7 +284,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         // Set HLA handles to impossible values
         newObject._attributeHandle = Integer.MIN_VALUE;
         newObject._classHandle = Integer.MIN_VALUE;
-        newObject._objectInstanceId = Integer.MIN_VALUE;
+        newObject._instanceHandle = Integer.MIN_VALUE;
 
         return newObject;
     }
@@ -315,7 +324,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     }
 
     /** Put in the Ptolemy queue the token (with time-stamp t) corresponding to
-     *  the RAV (with time-stamp t'=<i>ravTimeStamp<\i> related to the HLA
+     *  the RAV callback, with time-stamp t'=ravTimeStamp, related to the HLA
      *  attribute of an instance (mapped to this actor). The value of t depends
      *  on t' and the time management used (NER or TAR, see {@link HlaManager} code).
      *  @exception IllegalActionException Not thrown here.
@@ -338,26 +347,26 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         if (te.timeStamp.compareTo(currentTime) == 0) {
             // Build token with HLA value.
             Token content = _buildToken((Object[]) te.contents);
-            int fromObjectInstanceId = te.getHlaObjectInstanceId();
+            int fromInstanceHandle = te.getHlaInstanceHandle();
 
             // If the instance matches what we expect, produce an output.
-            if (fromObjectInstanceId == _objectInstanceId) {
+            if (fromInstanceHandle == _instanceHandle) {
                 output.send(0, content);
 
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " Called fire() - An updated value"
                             + " of the HLA attribute \"" + getHlaAttributeName()
-                            + " from " + fromObjectInstanceId
+                            + " from " + fromInstanceHandle
                             + "\" has been sent at \"" + te.timeStamp + "\" ("
                             + content.toString() + ")");
                 }
             } else {
                 throw new InternalErrorException(this, null,
-                        "Unexpected attribute reflected. Instance ID "
-                        + fromObjectInstanceId
-                        + " does not match the ID that this actor is reflecting "
-                        + _objectInstanceId);
+                        "Unexpected attribute reflected. Instance handle "
+                        + fromInstanceHandle
+                        + " does not match the handle that this actor is reflecting "
+                        + _instanceHandle);
             }
             it.remove();
         } else {
@@ -395,12 +404,12 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         return _classHandle;
     }
 
-    /** Returns the HLA object instance.
+    /** Returns the HLA object instance handle.
      * @return The HLA object instance handle.
-     * @see #setObjectInstanceId.
+     * @see #setInstanceHandle.
      */
-    public int getObjectInstanceId() {
-        return _objectInstanceId;
+    public int getInstanceHandle() {
+        return _instanceHandle;
     }
 
     /** FIXME: This should probably not be here. See HlaManager. */
@@ -424,25 +433,27 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         _classHandle = classHandle;
     }
 
-    /** Set the HLA object instance.
-     * @param objectInstanceId The HLA object instance to set.
-     * @see #getObjectInstanceHandle.
+    /** Set the HLA object instance handle only when wildcard (joker_) is used.
+     * @param _instanceHandle The HLA object instance handle to set.
+     * @see #getInstanceHandle.
      */
-    public void setObjectInstanceId(int objectInstanceId) {
-        _objectInstanceId = objectInstanceId;
+    public void setInstanceHandle(int instanceHandle) {
+        _instanceHandle = instanceHandle;
     }
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the token queue. Then, program the next firing time of this actor to
-     *  send the token at its expected time. This method is called by the
-     *  {@link HlaManager} attribute.
+     *  send the token at its expected time t. This method is called by the
+     *  {@link HlaManager} attribute. The timestamp t can be different from 
+     *  the ravTimeStamp if TAR time management is used (see {@link HlaManager}
+     *  code). 
      *  @param event The event containing the new value of the HLA
-     *  attribute and its time-stamp.
+     *  attribute and its time-stamp t.
      *  @exception IllegalActionException Not thrown here.
      */
     public void putReflectedHlaAttribute(HlaTimedEvent event)
             throws IllegalActionException {
-        // Add the update value to the queue.
+        // Add the updated value to the queue.
         _reflectedAttributeValues.add(event);
 
         if (_debugging) {
@@ -458,10 +469,10 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         _fireAt(event.timeStamp);
     }
 
-    /** Indicate if the HLA subscriber actor uses the CERTI message
+    /** Indicate if the HLA attribute reflector actor uses the CERTI message
      *  buffer API.
-     *  @return true if the HLA actor uses the CERTI message and false if
-     *  it doesn't.
+     *  @return true if the HLA actor uses the CERTI message buffer and false
+     *  if it doesn't.
      */
     public boolean useCertiMessageBuffer() {
         return _useCertiMessageBuffer;
@@ -507,7 +518,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     }
 
     /** Manage the correct termination of the {@link HlaAttributeReflector}. Reset
-     *  HLA handles and object instance ID.
+     *  HLA attribute handle, class handle, and instance handle.
      *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
@@ -516,7 +527,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         // Set HLA handles to impossible values
         _attributeHandle = Integer.MIN_VALUE;
         _classHandle = Integer.MIN_VALUE;
-        _objectInstanceId = Integer.MIN_VALUE;
+        _instanceHandle = Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -592,6 +603,6 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
      *  the HLA attribute */
     private int _classHandle;
 
-    /** HLA object instance "ID" provided by the RTI. */
-    private int _objectInstanceId;
+    /** HLA object instance handle provided by the RTI. */
+    private int _instanceHandle;
 }
