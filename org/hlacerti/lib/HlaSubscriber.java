@@ -113,14 +113,14 @@ import ptolemy.kernel.util.Workspace;
  *    from all HlaSubscriber actors that has the same class  <i>C</i>); 
  *    - Receives the HLA callback informing the discovering of an instance of
  *    class <i>C</i> named <i>i</i>:
- *    rtia.discoverObjectInstance(objectInstanceId, classHandle, someName), with 
- *    someName = <i>i</i>; objectInstanceId and classHandle are handles provided
+ *    rtia.discoverObjectInstance(instanceHandle, classHandle, someName), with 
+ *    someName = <i>i</i>; instanceHandle and classHandle are handles provided
  *    by the RTI.
  *    
  * 2. During the simulation loop phase, the {@link HlaManager} receives the RAV
  * callback from the RTI with the new value of an attribute of a class instance. Each 
  * HlaSubscriber  actor is related to one RAV callback:
- * rtia.reflectAttributeValues(objectInstanceId, suppAttributes, tag, ravTimeStamp).
+ * rtia.reflectAttributeValues(instanceHandle, suppAttributes, tag, ravTimeStamp).
  * The RAV callback, with a timestamp t'=<i>ravTimeStamp<\i> is received at the
  * input port of the HlaPublisher actor, during the advance time phase that
  * starts when the federate wants to advanced its time to <i>t<\i> (using NER or
@@ -207,7 +207,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
         // Set handle to impossible values <= XXX: FIXME: GiL: true ?
         _attributeHandle = Integer.MIN_VALUE;
         _classHandle = Integer.MIN_VALUE;
-        _objectInstanceId = Integer.MIN_VALUE;
+        _instanceHandle = Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -304,7 +304,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
 
         newObject._attributeHandle = _attributeHandle;
         newObject._classHandle = _classHandle;
-        newObject._objectInstanceId = Integer.MIN_VALUE;
+        newObject._instanceHandle = Integer.MIN_VALUE;
 
         return newObject;
     }
@@ -369,26 +369,26 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
             Token content = _buildToken((Object[]) te.contents);
 
             // XXX: FIXME: to remove after cleaning ?
-            int fromObjectInstanceId = -1;
+            int fromInstanceHandle = -1;
             if (te instanceof HlaTimedEvent) {
                 HlaTimedEvent he = (HlaTimedEvent) te;
-                fromObjectInstanceId = he.getHlaObjectInstanceId();
+                fromInstanceHandle = he.getHlaInstanceHandle();
             }
 
             // Either it is NOT a HlaTimedEvent and we let it go,
             // either it is and it has to match the HLA object instance
-            // ID of this HlaSubscriber.
+            // handle of this HlaSubscriber.
 
             // XXX: FIXME: what to do if this is not a HlaTimedEvent? (-1 case)
-            if (fromObjectInstanceId == -1
-                    || fromObjectInstanceId == _objectInstanceId) {
+            if (fromInstanceHandle == -1
+                    || fromInstanceHandle == _instanceHandle) {
                 this.outputPortList().get(0).send(0, content);
 
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " Called fire() - An updated value"
                             + " of the HLA attribute \"" + getHlaAttributeName()
-                            + " from " + fromObjectInstanceId
+                            + " from " + fromInstanceHandle
                             + "\" has been sent at \"" + te.timeStamp + "\" ("
                             + content.toString() + ")");
                 }
@@ -427,10 +427,10 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
 
     /** Returns the HLA object instance.
      * @return The HLA object instance handle.
-     * @see #setObjectInstanceId.
+     * @see #setInstanceHandle.
      */
-    public int getObjectInstanceId() {
-        return _objectInstanceId;
+    public int getInstanceHandle() {
+        return _instanceHandle;
     }
 
     /** Set the HLA attribute handle.
@@ -450,11 +450,11 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
     }
 
     /** Set the HLA object instance.
-     * @param objectInstanceId The HLA object instance to set.
-     * @see #getObjectInstanceHandle.
+     * @param instanceHandle The HLA object instance to set.
+     * @see #getInstanceHandle.
      */
-    public void setObjectInstanceId(int objectInstanceId) {
-        _objectInstanceId = objectInstanceId;
+    public void setInstanceHandle(int instanceHandle) {
+        _instanceHandle = instanceHandle;
     }
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
@@ -546,7 +546,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
     }
 
     /** Manage the correct termination of the {@link HlaSubscriber}. Reset
-     *  HLA handles and object instance ID.
+     *  HLA attribute handle, class handler and instance handler.
      *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
@@ -555,7 +555,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
         // Set HLA handles to impossible values
         _attributeHandle = Integer.MIN_VALUE;
         _classHandle = Integer.MIN_VALUE;
-        _objectInstanceId = Integer.MIN_VALUE;
+        _instanceHandle = Integer.MIN_VALUE;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -634,6 +634,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
      *  the HLA attribute */
     private int _classHandle;
 
-    /** HLA object instance "ID" provided by the RTI. */
-    private int _objectInstanceId;
+    /** HLA object instance handle provided by the RTI. */
+    private int _instanceHandle;
 }

@@ -38,10 +38,14 @@ import ptolemy.actor.util.TimedEvent;
 
 /**
  * <p>This class extends the TimedEvent class to add specific information
- * relative to HLA "events" received from HLA/CERTI.
- * The <i>objectInstanceID</i> parameter give information on who
- * is responsible of an UAV (Update Attribute Value). An UAV is an update
- * value of a HLA attribute which belongs to a HLA class instance.
+ * relative to HLA "events" (also called messages) received from HLA/CERTI.
+ * The <i>hlaInstanceHandle</i> is a numeric handle used by the discovering
+ * federate to uniquely refer to the object instance.
+ * The existence of this object instance is informed by the callback 
+ * discoverObjectInstance(className,instanceName) to the federates that
+ * subscribed to className. The updates of an attribute of the
+ * instanceName will be delivered to these federates using the callback
+ * reflectAttributeValues().
  *
  * See the {@link HlaSubscriber} for its usage and more information.
  *
@@ -55,24 +59,24 @@ import ptolemy.actor.util.TimedEvent;
 public class HlaTimedEvent extends TimedEvent {
 
     /** Constructs a HLA event with the specified time stamp, contents
-     *  and HLA object instance ID.
+     *  and HLA instance handle.
      *  @param time The time stamp.
      *  @param obj The contents.
-     *  @param hlaObjectInstanceId The HLA object instance ID.
+     *  @param hlaInstanceHandle The HLA instance handle.
      */
-    public HlaTimedEvent(Time time, Object obj, int hlaObjectInstanceId) {
+    public HlaTimedEvent(Time time, Object obj, int hlaInstanceHandle) {
         super(time, obj);
-        _hlaObjectInstanceId = hlaObjectInstanceId;
+        _hlaInstanceHandle = hlaInstanceHandle;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the HLA object instance ID value.
-     *  @return The HLA object instance ID as int.
+    /** Return the HLA instance handle value.
+     *  @return The HLA instance handle as int.
      */
-    public int getHlaObjectInstanceId() {
-        return _hlaObjectInstanceId;
+    public int getHlaInstanceHandle() {
+        return _hlaInstanceHandle;
     }
 
     /** Check if two HlaTimedEvent objects are equals.
@@ -88,7 +92,7 @@ public class HlaTimedEvent extends TimedEvent {
             // thanks to the check done from the super class (super.equals()).
             HlaTimedEvent event = (HlaTimedEvent) hlaTimedEvent;
 
-            if (_hlaObjectInstanceId == event.getHlaObjectInstanceId()) {
+            if (_hlaInstanceHandle == event.getHlaInstanceHandle()) {
                 return true;
             } else {
                 return false;
@@ -99,6 +103,6 @@ public class HlaTimedEvent extends TimedEvent {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The HLA object instance ID. */
-    private int _hlaObjectInstanceId;
+    /** The HLA instance handle. */
+    private int _hlaInstanceHandle;
 }
