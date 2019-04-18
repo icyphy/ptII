@@ -53,14 +53,14 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * This actor is a kind-of output port that sends the data on its input to the
- * federation through the network. In HLA, the terminology is that this actor
- * "updates" the specified attribute value of the specified instance whenever
- * there is a data on its input. This attribute value will be "reflected" by
- * all federates that have "subscribed" to this attribute.
- * The time stamp of this update depends on the time management parameters of
- * the {@link HlaManager}, as explained in the documentation for that class.
- * This actor assumes that there is exactly one HlaManager in the model
- * that contains this actor.
+ * federation through the RTI (Run Time Infrastructure). In HLA, the 
+ * terminology is that this actor "updates" the specified attribute value of 
+ * the specified instance whenever there is a data on its input. This attribute 
+ * value will be "reflected" by all federates that have "subscribed" to this 
+ * attribute. The time stamp of this update depends on the time management 
+ * parameters of the {@link HlaManager}, as explained in the documentation for 
+ * that class. This actor assumes that there is exactly one HlaManager in the 
+ * model that contains this actor.
  * <p>
  * The attribute of an instance that this actor updates is specified using
  * three parameters: <i>attributeName</i>, <i>className</i>, and <i>instanceName</i>.
@@ -71,21 +71,29 @@ import ptolemy.kernel.util.Workspace;
  * HlaManager. The <i>instanceName</i> is an arbitrary name chosen by the
  * designer for the instance of the class. It specifies the instance of the
  * specified class whose attribute this actor updates. 
+ * <p>
  * If the specified class does not have an attribute with the specified
  * <i>attributeName</i>, as defined in the FED file, or there is no class
  * matching <i>className</i> in the FED file, then an exception will be thrown.
  * An exception is also thrown if the attribute name or the class name or
  * the instance name is empty.
  * <p>
- * If a federate intends to update <i>k</i> attributes of an instance, then it
- * must contains <i>k</i> HlaAttributeUpdater actors with the same
- * <i>instanceName</i>. A federate can update attributes of different instances
- * of a same class.
- * <p>
- * The data type of the attribute value this actor updates is the same as the
- * type of its <i>input</i> port. The data type is used to define the bytes
- * that are transported via the HLA runtime infrastructure (RTI). Currently,
- * only a small set of primitive data types are supported.
+ * If a federate intends to update <i>N</i> attributes of an instance, then it
+ * must contain <i>N</i> HlaAttributeUpdater actors with the same
+ * <i>instanceName</i> and same <i>className</i>. A federate can update 
+ * attributes of <i>M</i> different instances of a same class. In this case,
+ * the federate must contain <i>M</i> HlaAttributeUpdater actors for each
+ * attribute. During initialization, the HlaManager will notify the RTI of this 
+ * intention in two steps:
+ * <p> - it "publishes" a list with all attributes of class by gathering
+ * the parameter <i>attributeName</i> of all HlaAttributeReflectable actors
+ * having the same <i>className</i>,
+ * <p> it "registers" each different <i>instanceName</i> of a class <i>className</i>.
+ * <p>  
+ * The data type of the <i>input</i> port of this actor must have the same type
+ * of the attribute value this actor updates (as defined in the FOM). The data 
+ * type is used to define  the bytes that are transported via the HLA RTI. 
+ * Currently, only a small set of primitive data types are supported.
  * <p>
  * The <i>useCertiMessageBuffer</i> parameter works together with the data type
  * to interpret the bits that are transported over the RTI. Specifically, an
@@ -101,28 +109,16 @@ import ptolemy.kernel.util.Workspace;
  * CERTI can be used.  On the other hand, if the attribute is reflected by a 
  * Ptolemy II model, and the corresponding {@link HlaAttributeReflector} does
  * not not specify to use the CERTI message buffer, then this parameter should
- * be false.
+ * be false. See also {@link MessageProcessing} class.
  * <p>
- * FIXMEjc: took from publisher actor description. Keep it or not?
+ * FIXME: took from publisher actor description. Keep it or not?
  * In a federation implemented only with Ptolemy II federates, 
  * an HlaAttributeUpdater is linked to a unique HlaAttributeReflector. Any data
  * dependencies that the director might assume on a regular "wired" connection
  * will also be assumed across HlaAttributeUpdater-HlaAttributeReflector pairs.
  * Similarly, the type of the HlaAttributeReflector output must match the type
  * of the HlaAttributeUpdater input.
-* <p> 
- * (Check if we can reuse this sentences:) Each class has attributes, and this
- * actor sends updates to an attribute of an instance of a class when it
- * receives data on its input.  If there are instances of {@link HlaAttributeReflector}
- * that refer to the same attribute of the same instance, then those will be
- * notified of the update. 
  * <p> 
- * If an instance with the specified name does not already exist, it will be
- * created during initialization of the model. 
- * 
- * During initialization, the HlaManager will notify the RTI (Run Time
- * Infrastructure) of the intent to update this particular attribute
- * of this particular instance of the class.
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeUpdater.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -155,7 +151,7 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
         // HLA object class in FOM.
         className = new StringParameter(this, "className");
        
-        // HLA class instance name.
+        // HLA class instance name given by the user.
         instanceName = new StringParameter(this, "instanceName");
 
         // CERTI message buffer encapsulation
@@ -291,7 +287,6 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
         for (int i = 0; i < input.getWidth(); ++i) {
             if (input.hasToken(i)) {
                 Token in = input.get(i);
-                // FIXME commenting line below so the file compiles
                 _hlaManager.updateHlaAttribute(this, in);
                 // FIXME: check if the log is correct
                 if (_debugging) {
