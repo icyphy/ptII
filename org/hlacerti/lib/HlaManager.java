@@ -1215,7 +1215,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  being used, the time stamp takes the value (ptIICurrentTime + lookahead)
      *  if ptIICurrentTime &lt; hlaCurrentTime + lookahead, otherwise it takes
      *  the value ptIICurrentTime.
-     *  @param hp The HLA publisher actor (HLA attribute) to update.
+     *  @param hp The HLA updatable actor (HLA attribute) to update.
      *  @param in The updated value of the HLA attribute to update.
      *  @param senderName the name of the federate that sent the attribute.
      *  @exception IllegalActionException If a CERTI exception is raised then
@@ -1302,7 +1302,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     currentTime, _director.getMicrostep(), uavTimeStamp);
         }
 
-        // XXX: FIXME: check if we may add the object instance id to the HLA publisher and remove this.
+        // XXX: FIXME: check if we may add the object instance id to the HLA updatable and remove this.
         int instanceHandle = _registerObjectInstanceMap
                 .get(hp.getHlaInstanceName());
 
@@ -1333,7 +1333,7 @@ public class HlaManager extends AbstractInitializableAttribute
         } catch (InvalidFederationTime e) {
             throw new IllegalActionException(this, e, "InvalidFederationTime: "
                     + e.getMessage() + "    updateHlaAttribute() - sending UAV("
-                    + "HLA publisher=" + hp.getFullName() + ",HLA attribute="
+                    + "HLA updatable=" + hp.getFullName() + ",HLA attribute="
                     + hp.getHlaAttributeName() + ",uavTimeStamp="
                     + uavTimeStamp.getTime() + ",value=" + in.toString() + ")"
                     + " ptII_time=" + currentTime.toString() + " certi_time="
@@ -1552,6 +1552,8 @@ public class HlaManager extends AbstractInitializableAttribute
      * @return Whatever the function returns.
      * @throws Exception
      */
+    //FIXME: this function is no more used: remove it? The pb would be fixed here:
+    // https://savannah.nongnu.org/bugs/?53878
     private static <T> T _callWithTimeout(Callable<T> callable, long timeout, TimeUnit timeUnit) throws Exception {
         final ExecutorService executor = Executors.newSingleThreadExecutor();
         final Future<T> future = executor.submit(callable);
@@ -1578,7 +1580,9 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** Convert Ptolemy time, which has units of seconds, to HLA logical time units.
+    /** Convert Ptolemy time, which has units of seconds, to HLA logical time 
+     *  units. Ptolemy time is implemented using Java classe Time and HLA time
+     *  uses IEEE-754 double.
      *  @param pt The Ptolemy time.
      *  @return The time in units of HLA logical time.
      */
@@ -1586,7 +1590,7 @@ public class HlaManager extends AbstractInitializableAttribute
         return new CertiLogicalTime(pt.getDoubleValue() * _hlaTimeUnitValue);
     }
 
-    /** Convert CERTI (HLA) logical time to Ptolemy time.
+    /** Convert CERTI (HLA) logical time (IEEE-754 double) to Ptolemy time.
      *  @param ct The CERTI (HLA) logical time.
      *  @return the time converted to Ptolemy time.
      *  @exception IllegalActionException If the given double time value does
@@ -1623,6 +1627,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
         // See comments about tick(), tick2() and tick(min,max)
+        // The time unity in CERTI is second.
         double minTickTimeNER = 0.001;
         double maxTickTimeNER = 10000;
         // Custom string representation of proposedTime.
@@ -1684,8 +1689,9 @@ public class HlaManager extends AbstractInitializableAttribute
                             + ") by calling tick(min,max)");
                 }
                 // Do not use tick2() here because it can block the director
-                // if no TAG is received. For avoiding the overload provoked by tick()
-                // then use tick(min,max).               
+                // if no TAG is received, although it is more efficient than
+                // tick(). For avoiding the overload provoked by tick()
+                // tick(min,max) could be used. tick2()=tick(infinity,0).            
                 // _rtia.tick(minTickTimeNER,maxTickTimeNER); 
                 
                 // Instructs the RTI that a TAG callback is expected.
@@ -1719,7 +1725,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     proposedTime = newPtolemyTime;
                 } else { 
                     // However, it could happen that the RAV (and so the TAG)
-                    // received corresponds to an Hla time increased by a 
+                    // received corresponds to an HLA time increased by a 
                     // value epsilon but, because of the time representation 
                     // conversion, it appears as equal to Ptolemy current time t.
                     // In this case, inserting a new event at e(t;HlaUpdater) 
@@ -1732,21 +1738,21 @@ public class HlaManager extends AbstractInitializableAttribute
                 } 
 
                 // Store reflected attributes RAV as events on HlaReflectable actors.
-                _putReflectedAttributesOnHlaSubscribers(proposedTime);
+                _putReflectedAttributesOnHlaReflectables(proposedTime);
 
                 _federateAmbassador.hasReceivedRAV = false;
 
             } // end  if receivedRAV then
 
-        } // algo3: 16: end if
+        } //  end if
 
         return proposedTime;
 
     }
 
-    /** Get the current time in HLA which is advanced after a TAG callback.
+    /** Get the current time in HLA (using double) which is advanced after a TAG callback.
      *  @return the HLA current time converted to a Ptolemy time, which is in
-     *   units of seconds.
+     *   units of seconds (and uses Java class Time).
      */
     
     private Time _getHlaCurrentTime() throws IllegalActionException {
@@ -1754,27 +1760,27 @@ public class HlaManager extends AbstractInitializableAttribute
         return _convertToPtolemyTime(certiCurrentTime);
     }
 
-    /** The method {@link #_getHlaSubscribers()} get all HLA subscriber
+    /** The method {@link #_getHlaReflectables()} get all HLA reflectables
      *  actors across the model.
      *  @param ce the composite entity which may contain HlaReflectables
      *  @return the list of HlaReflectables
      */
-    private List<HlaReflectable> _getHlaSubscribers(CompositeEntity ce) {
-        // The list of HLA subscribers to return.
-        LinkedList<HlaReflectable> hlaSubscribers = new LinkedList<HlaReflectable>();
+    private List<HlaReflectable> _getHlaReflectables(CompositeEntity ce) {
+        // The list of HLA reflectables to return.
+        LinkedList<HlaReflectable> hlaReflectables = new LinkedList<HlaReflectable>();
 
         // List all classes from top level model.
         List<CompositeEntity> entities = ce.entityList();
         for (ComponentEntity classElt : entities) {
             if (classElt instanceof HlaReflectable) {
-                hlaSubscribers.add((HlaReflectable) classElt);
+                hlaReflectables.add((HlaReflectable) classElt);
             } else if (classElt instanceof ptolemy.actor.TypedCompositeActor) {
-                hlaSubscribers
-                        .addAll(_getHlaSubscribers((CompositeEntity) classElt));
+                hlaReflectables
+                        .addAll(_getHlaReflectables((CompositeEntity) classElt));
             }
         }
 
-        return hlaSubscribers;
+        return hlaReflectables;
     }
 
     /** Customized debug message for {@link #HlaManager}.
@@ -1813,7 +1819,8 @@ public class HlaManager extends AbstractInitializableAttribute
             throws IllegalActionException {
         
         // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
-        // See comments about tick(), tick2() and tick(min,max)
+        // See comments about tick(), tick2() and tick(min,max).
+        // The time unity in CERTI is second.
         double minTickTimeTAR = 0.001;
         double maxTickTimeTAR = 10000;
         
@@ -1893,7 +1900,9 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
                 try {
                     // Do not use tick2() here because it can block the director
-                    // if no callback is received.
+                    // if no TAG is received, although it is more efficient than
+                    // tick(). For avoiding the overload provoked by tick()
+                    // tick(min,max) could be used. tick2()=tick(infinity,0).            
                     //_rtia.tick(minTickTimeTAR,maxTickTimeTAR);
                     
                     // Instructs the RTI that a TAG callback is expected.
@@ -1902,7 +1911,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     
                     if (_director.isStopRequested()) {
                         // Not sure what to do here, but we can't just keep waiting.
-                        // FIXME: Why this test is made here, but before tick in the NER case?
+                        // FIXME: Why this test is made here, but before tick() in the NER case?
                         throw new IllegalActionException(this,
                                 "Stop requested while waiting for a time advance grant from the RTIG.");
                     }
@@ -1930,8 +1939,8 @@ public class HlaManager extends AbstractInitializableAttribute
             // stamps will never be smaller than the current HLA time h (neither 
             // larger than nextPointInTime). And proposeTime method must return
             // the same proposed time or a smaller time.
-            // This guarantees that the received time stamp is smaller. So, if
-            // because of the time conversion the newPtolemyTime appears
+            // This guarantees that the received time stamp is smaller. If,
+            // because of the time conversion, the newPtolemyTime appears
             // as bigger than the proposedTime, keep proposedTime. Otherwise
             // update it to newPtolemyTime.
             if (_federateAmbassador.hasReceivedRAV) {
@@ -1954,7 +1963,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // Store reflected attributes RAV as events on HlaReflectable actors.
                 // Notice that proposedTime here is a multiple of _hlaTimeStep.
-                _putReflectedAttributesOnHlaSubscribers(proposedTime);
+                _putReflectedAttributesOnHlaReflectables(proposedTime);
                 
                 // Reinitialize variable
                 _federateAmbassador.hasReceivedRAV = false;
@@ -1987,17 +1996,17 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     /** The method {@link #_populatedHlaValueTables()} populates the tables
-     *  containing information of HLA attributes required to publish and to
-     *  subscribe value attributes in a HLA Federation.
+     *  containing information required to publish and to
+     *  subscribe to attributes of a class in a HLA Federation.
      *  @exception IllegalActionException If a HLA attribute is declared twice.
      */
     private void _populateHlaAttributeTables() throws IllegalActionException {
         CompositeEntity ce = (CompositeEntity) getContainer();
 
-        // HlaPublishers.
+        // HlaUpdatables.
         _hlaAttributesToPublish.clear();
-        List<HlaUpdatable> _hlaPublishers = ce.entityList(HlaUpdatable.class);
-        for (HlaUpdatable hp : _hlaPublishers) {
+        List<HlaUpdatable> _hlaUpdatables = ce.entityList(HlaUpdatable.class);
+        for (HlaUpdatable hp : _hlaUpdatables) {
             // Note: The HLA attribute name is no more associated to the
             // HlaUpdatable actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
@@ -2016,7 +2025,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // and throws an exception if two actors specify the same HLA
             // attribute from a same HLA object class and a same HLA instance
             // class name.
-            for (HlaUpdatable hpIndex : _hlaPublishers) {
+            for (HlaUpdatable hpIndex : _hlaUpdatables) {
                 if ((!hp.getFullName().equals(hpIndex.getFullName())
                         && (hp.getHlaAttributeName()
                                 .compareTo(hpIndex.getHlaAttributeName()) == 0)
@@ -2051,7 +2060,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                     // tObj[0] => input port which receives the token to transform
                     //            as an updated value of a HLA attribute,
-                    // tObj[1] => type of the port (e.g. of the attribute),
+                    // tObj[1] => type of the port; it must be equal to the data type of the attribute,
                     // tObj[2] => object class name of the attribute,
                     // tObj[3] => instance class name
 
@@ -2065,12 +2074,12 @@ public class HlaManager extends AbstractInitializableAttribute
                             hp.getHlaInstanceName() });
         }
 
-        // HlaSubscribers.
+        // HlaReflectables.
         _hlaAttributesToSubscribeTo.clear();
 
-        List<HlaReflectable> _hlaSubscribers = _getHlaSubscribers(ce);
+        List<HlaReflectable> _hlaReflectables = _getHlaReflectables(ce);
 
-        for (HlaReflectable hs : _hlaSubscribers) {
+        for (HlaReflectable hs : _hlaReflectables) {
             // Note: The HLA attribute name is no more associated to the
             // HlaReflectable actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
@@ -2089,7 +2098,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // and throws an exception if two actors specify the same HLA
             // attribute from a same HLA object class and a same HLA instance
             // class name.
-            for (HlaReflectable hsIndex : _hlaSubscribers) {
+            for (HlaReflectable hsIndex : _hlaReflectables) {
                 if ((!hs.getFullName().equals(hsIndex.getFullName())
                         && (hs.getHlaAttributeName()
                                 .compareTo(hsIndex.getHlaAttributeName()) == 0)
@@ -2146,9 +2155,9 @@ public class HlaManager extends AbstractInitializableAttribute
             // Joker wildcard support.
             _usedJoker = false;
 
-            String classInstanceOrJokerName = hs.getHlaInstanceName();
+            String instanceNameOrJokerName = hs.getHlaInstanceName();
 
-            if (classInstanceOrJokerName.contains(_jokerFilter)) {
+            if (instanceNameOrJokerName.contains(_jokerFilter)) {
                 _usedJoker = true;
                 if (_debugging) {
                     _hlaDebug("HLA actor " + hs.getFullName()
@@ -2157,13 +2166,13 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             if (_usedJoker) {
-                if (!classInstanceOrJokerName.contains(_jokerFilter)) {
+                if (!instanceNameOrJokerName.contains(_jokerFilter)) {
                     throw new IllegalActionException(this,
-                            "Cannot mix class instance name and joker filter in HLA Subscribers "
+                            "Cannot mix class instance name and joker filter in HlaReflectable "
                                     + "please check: " + hs.getFullName());
                 } else {
                     // Add a new discovered joker to the joker table.
-                    _usedJokerFilterMap.put(classInstanceOrJokerName, false);
+                    _usedJokerFilterMap.put(instanceNameOrJokerName, false);
                 }
             }
         }
@@ -2176,7 +2185,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  output port of their corresponding {@link HlaReflectable} actors
      *  @exception IllegalActionException If the parent class throws it.
      */
-    private void _putReflectedAttributesOnHlaSubscribers(Time proposedTime)
+    private void _putReflectedAttributesOnHlaReflectables(Time proposedTime)
             throws IllegalActionException {
         // Reflected HLA attributes, i.e., updated values of HLA attributes
         // received by callbacks (from the RTI) from the whole HLA/CERTI
@@ -2186,7 +2195,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_debugging) {
             _hlaDebug("       t_ptII = " + _director.getModelTime().toString()
                     + "; t_hla = " + _federateAmbassador.hlaLogicalTime
-                    + " in _putReflectedAttributesOnHlaSubscribers("
+                    + " in _putReflectedAttributesOnHlaReflectables("
                     + proposedTime.toString() + ")");
         }
 
@@ -2215,14 +2224,15 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 // If any RAV-event received by HlaReflectable actors, RAV(tau),
-                // with tau < ptolemy startTime, they
-                // are put in the event queue with timestamp startTime
+                // with tau < Ptolemy startTime, they
+                // are put in the event queue with timestamp startTime.
+                // Usually startTime=0.
                 if (ravEvent.timeStamp
                         .compareTo(_director.getModelStartTime()) < 0) {
                     ravEvent.timeStamp = _director.getModelStartTime();
                 }
 
-                // Get the HLA subscriber actor to which the event is destined to.
+                // Get the HlaReflectable actor to which the event is destined to.
                 String actorName = elt.getKey();
 
                 TypedIOPort tiop = _getPortFromTab(
@@ -2232,10 +2242,9 @@ public class HlaManager extends AbstractInitializableAttribute
                 hs.putReflectedHlaAttribute(ravEvent);
 
                 if (_debugging) {
-                    _hlaDebug("       _putRAVOnHlaSubs(" + proposedTime.toString()
+                    _hlaDebug("       _putRAVOnHlaReflectable(" + proposedTime.toString()
                             + " ravEvent.timeStamp=" + ravEvent.timeStamp
                             + ") for '" + hs.getHlaAttributeName()
-                            //+ "',timestamp=" + ravEvent.timeStamp //jc: non need
                             + " in HlaSubs=" + hs.getFullName());
                 }
 
@@ -2248,8 +2257,8 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
 
-        // At this point we have handled all events for all registered HlaSubscribers,
-        // so we may clear the receivedRAV boolean.
+        // At this point we have handled all events for all registered,
+        // HlaReflectable actors, so we may clear the receivedRAV boolean.
         _federateAmbassador.hasReceivedRAV = false;
 
         if (_debugging) {
@@ -2294,7 +2303,7 @@ public class HlaManager extends AbstractInitializableAttribute
     /** Indicates the use of the enableTimeRegulation() service. */
     private boolean _isTimeRegulator;
 
-    /** Indicates if the Ptolemy Federate is the creator of the synchronization
+    /** Indicates if the Ptolemy Federate is the register of the synchronization
      *  point. */
     private boolean _isSynchronizationPointRegister;
 
@@ -2316,10 +2325,10 @@ public class HlaManager extends AbstractInitializableAttribute
     private HashMap<Integer, String> _discoverObjectInstanceMap;
 
     /**
-     * Map <Sender actor + HlaPublishers> and registerObjectInstance (ROI) 
-     * handle for an object instance. See HlaPublishers.
+     * Map <Sender actor + HlaUpdatable> and registerObjectInstance (ROI) 
+     * handle for an object instance. See HlaPublisher and HlaAttributeUpdater.
      *
-     * HashMap for HlaPublishers to remember which actor's ID has
+     * HashMap for HlaPublisher to remember which actor's ID has
      * been registered (as an object instance) to the Federation.
      */
     private HashMap<String, Integer> _registerObjectInstanceMap;
@@ -2327,10 +2336,15 @@ public class HlaManager extends AbstractInitializableAttribute
     /** The actual value for hlaTimeUnit parameter. */
     private double _hlaTimeUnitValue;
 
-    /** The reserved keyword to filter HLA subscribers using joker wildcard. */
+    /** 
+     * The reserved keyword to filter HlaReflectable actors using joker
+     * wildcard.
+     */
     private static final String _jokerFilter = "joker_";
 
-    /** Indicates if the 'joker' filter is used for HLA class instance name by HLA subscribers actors. */
+    /** Indicates if the 'joker' filter is used in the classInstanceName 
+     * parameter of a HlaReflectable actor.
+     */
     private boolean _usedJoker;
 
     /** The HLA reporter instance if enabled. */
@@ -2352,8 +2366,8 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private void _doInitialSynchronization() throws IllegalActionException {
         String synchronizationPointName = synchronizeStartTo.stringValue().trim();
-        // If the current Federate registers a synchronization point, then register the
-        // synchronization point.
+        // If the current Federate is the register of a synchronization point,
+        // then register the synchronization point.
         if (_isSynchronizationPointRegister) {
             try {
                 byte[] rfspTag = EncodingHelpers
@@ -2363,7 +2377,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // Wait for synchronization point callback.
                 // This used to hang the model if no federate has registered
-                // a synchronization point. Now it uses tick() instead of tick2().
+                // a synchronization point yet. Now it uses tick() instead of tick2().
                 while (!(_federateAmbassador.synchronizationSuccess)
                         && !(_federateAmbassador.synchronizationFailed)) {
                     _rtia.tick();
@@ -2385,7 +2399,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         } // End block for synchronization point creation case.
 
-        // Wait for synchronization point announcement.
+        // The first launched federates wait for synchronization point announcement.
         while (!(_federateAmbassador.inPause)) {
             try {
                 _rtia.tick();
@@ -2434,9 +2448,13 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** This method enables all time regulating aspect for the federate. After this call
-     *  the federate as stated to the RTI if it is time regulating and/or time regulator
-     *  and has enable asynchronous delivery for RO messages
+    /** This method enables all time regulating aspect for the federate. After 
+     *  this call the federate has stated to the RTI if it is time regulating 
+     *  and/or time regulator. In the current implementation all federates are 
+     *  time regulating and time constrained. This method also enables 
+     *  asynchronous delivery, a service that instructs the rtia "to begin  
+     *  delivering received-ordered (RO) messages even while non time-
+     *  advancement services is in progress" [1]. 
      *  @exception IllegalActionException if the RTI throws it.
      */
     private void _initializeTimeAspects() throws IllegalActionException {
@@ -2518,7 +2536,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             // The following service is required to allow the reception of
-            // callbacks from the RTI when a Federate used the Time management.
+            // callbacks from the RTI when a Federate is time constrained.
             try {
                 _rtia.enableAsynchronousDelivery();
             } catch (RTIexception e) {
@@ -2647,7 +2665,7 @@ public class HlaManager extends AbstractInitializableAttribute
         ////                         public variables                  ////
 
         /** The lookahead value set by the user and used by CERTI to handle
-         *  time management and to order TSO events.
+         *  time management and to order time-stamp-ordered (TSO) events.
          */
         public LogicalTimeInterval effectiveLookAHead;
 
@@ -2737,7 +2755,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             // Configure HlaUpdatable actors from model */
             if (!_hlaAttributesToPublish.isEmpty()) {
-                _setupHlaPublishers(rtia);
+                _setupHlaUpdatables(rtia);
             } else {
                 if (_debugging) {
                     _hlaDebug("INNER initialize: _hlaAttributesToPublish is empty");
@@ -2745,7 +2763,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
             // Configure HlaReflectable actors from model */
             if (!_hlaAttributesToSubscribeTo.isEmpty()) {
-                _setupHlaSubscribers(rtia);
+                _setupHlaReflectables(rtia);
             } else {
                 if (_debugging) {
                     _hlaDebug("INNER initialize: _hlaAttributesToSubscribeTo is empty");
@@ -2802,7 +2820,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // Get the object class handle corresponding to
             // the received "theObject" handle.
             int classHandle = _objectHandleToClassHandle.get(theObject);
-            String classInstanceOrJokerName = _discoverObjectInstanceMap
+            String instanceNameOrJokerName = _discoverObjectInstanceMap
                     .get(theObject);
 
             for (int i = 0; i < theAttributes.size(); i++) {
@@ -2827,20 +2845,20 @@ public class HlaManager extends AbstractInitializableAttribute
                                 + " userSuppliedTag=" + userSuppliedTag
                                 + " theTime=" + theTime
                                 + " classHandle=" + classHandle
-                                + " classInstanceOrJokerName=" + classInstanceOrJokerName
+                                + " instanceNameOrJokerName=" + instanceNameOrJokerName
                                 + " HlaSusbcriber=" + hs.getFullName());
                     }
 
                     // The tuple (attributeHandle, classHandle, classInstanceName)
-                    // allows to identify the object attribute (i.e. one of the HlaSubscribers)
+                    // allows to identify the object attribute (i.e. one of the HlaReflectables)
                     // where the updated value has to be put.
                     try {
                         if (theAttributes.getAttributeHandle(i) == hs
                                 .getAttributeHandle()
                                 && classHandle == hs.getClassHandle()
-                                && (classInstanceOrJokerName != null
+                                && (instanceNameOrJokerName != null
                                         && hs.getHlaInstanceName().compareTo(
-                                                classInstanceOrJokerName) == 0)) {
+                                                instanceNameOrJokerName) == 0)) {
 
                             double timeValue = ((CertiLogicalTime) theTime)
                                     .getTime() / _hlaTimeUnitValue;
@@ -2902,7 +2920,7 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         /** Callback delivered by the RTI (CERTI) to discover attribute instance
-         *  of HLA attribute that the Federate is subscribed to.
+         *  of HLA attribute that the Federate has subscribed to.
          */
         @Override
         public void discoverObjectInstance(int instanceHandle,
@@ -2916,8 +2934,8 @@ public class HlaManager extends AbstractInitializableAttribute
             // guarantees that a joker is always binded to the same
             // instance (for a same set of federates). However, if the wildcard  
             // of the HlaReflectable is binded to an instance that does not 
-            // have the attributeName of this actor updated, then this actor
-            // produces no output. See the manual for details.
+            // have the attributeName of this actor updated later, then this
+            // actor produces no output. See the manual for details.
             String matchingName = null;
 
             if (_usedJoker) {
@@ -2970,7 +2988,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 + someName);
                     }
                     // Note: this case should not happen with the new implementation from CIELE. But as it is
-                    // difficult to test this cas, we raise an exception.
+                    // difficult to test this case, we raise an exception.
                     throw new FederateInternalError(
                             "INNER callback: discoverObjectInstance(): EXCEPTION IllegalActionException: "
                                     + "found an instance class already registered: "
@@ -2983,13 +3001,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
             }
 
-            // Bind object instance id (handle) to class handle.
+            // Bind object instance handle to class handle.
             _objectHandleToClassHandle.put(instanceHandle, classHandle);
 
             // Joker support
             if (matchingName != null) {
                 // Get classHandle and attributeHandle for each attribute
-                // value to subscribe to (i.e. HlaReflectable). Update the HlaReflectable.
+                // value to subscribe to. Update the HlaReflectable.
                 Iterator<Entry<String, Object[]>> it1 = _hlaAttributesToSubscribeTo
                         .entrySet().iterator();
 
@@ -3178,7 +3196,7 @@ public class HlaManager extends AbstractInitializableAttribute
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
 
-        /** Configure the deployed HLA publishers.
+        /** Configure the deployed HLA updatables.
          *  @param rtia
          *  @exception ObjectClassNotDefined
          *  @exception FederateNotExecutionMember
@@ -3190,7 +3208,7 @@ public class HlaManager extends AbstractInitializableAttribute
          *  @exception IllegalActionException
          *  All those exceptions above are from Ptolemy.
          */
-        private void _setupHlaPublishers(RTIambassador rtia)
+        private void _setupHlaUpdatables(RTIambassador rtia)
                 throws ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, SaveInProgress, RestoreInProgress,
                 ConcurrentAccessAttempted, IllegalActionException {
@@ -3199,7 +3217,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // to the HLA/CERTI Federation a HLA attribute to publish.
 
             // 1. Get classHandle and attributeHandle for each attribute
-            //    value to publish (i.e. HlaUpdatable). Update the HlaPublishers
+            //    value to publish. Update the HlaUpdatables
             //    table with the information.
             Iterator<Entry<String, Object[]>> it = _hlaAttributesToPublish
                     .entrySet().iterator();
@@ -3215,7 +3233,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         .getContainer();
 
                 if (_debugging) {
-                    _hlaDebug("_setupHlaPublishers() - HlaUpdatable: "
+                    _hlaDebug("_setupHlaUpdatables() - HlaUpdatable: "
                             + pub.getFullName());
                 }
 
@@ -3231,7 +3249,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             .getObjectClassHandle(pub.getHlaClassName());
 
                     if (_debugging) {
-                        _hlaDebug("_setupHlaPublishers() "
+                        _hlaDebug("_setupHlaUpdatables() "
                                 + "objectClassName (in FOM) = "
                                 + pub.getHlaClassName() + " - classHandle = "
                                 + classHandle);
@@ -3249,7 +3267,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             pub.getHlaAttributeName(), classHandle);
 
                     if (_debugging) {
-                        _hlaDebug("_setupHlaPublishers() " + " attributeHandle = "
+                        _hlaDebug("_setupHlaUpdatables() " + " attributeHandle = "
                                 + attributeHandle);
                     }
                 } catch (NameNotFound e) {
@@ -3265,9 +3283,9 @@ public class HlaManager extends AbstractInitializableAttribute
                 //            as an updated value of a HLA attribute,
                 // tObj[1] => type of the port (e.g. of the attribute),
                 // tObj[2] => object class name of the attribute,
-                // tObj[3] => instance class name
-                // tObj[4] => ID of the object class to handle,
-                // tObj[5] => ID of the attribute to handle
+                // tObj[3] => instance class name to which this attribute belongs,
+                // tObj[4] => object class handle,
+                // tObj[5] => attribute handle.
 
                 // tObj[0 .. 3] are extracted from the Ptolemy model.
                 // tObj[3 .. 5] are provided by the RTI (CERTI).
@@ -3280,9 +3298,9 @@ public class HlaManager extends AbstractInitializableAttribute
                         attributeHandle });
             }
 
-            // 2.1 Create a table of HlaPublishers indexed by their corresponding
+            // 2.1 Create a table of HlaUpdatables indexed by their corresponding
             //     classInstanceName (no duplication).
-            HashMap<String, LinkedList<String>> classInstanceNameHlaPublisherTable = new HashMap<String, LinkedList<String>>();
+            HashMap<String, LinkedList<String>> classInstanceNameHlaUpdatableTable = new HashMap<String, LinkedList<String>>();
 
             Iterator<Entry<String, Object[]>> it21 = _hlaAttributesToPublish
                     .entrySet().iterator();
@@ -3298,19 +3316,19 @@ public class HlaManager extends AbstractInitializableAttribute
                         .getContainer();
                 String classInstanceName = pub.getHlaInstanceName();
 
-                if (classInstanceNameHlaPublisherTable
+                if (classInstanceNameHlaUpdatableTable
                         .containsKey(classInstanceName)) {
-                    classInstanceNameHlaPublisherTable.get(classInstanceName)
+                    classInstanceNameHlaUpdatableTable.get(classInstanceName)
                             .add(elt.getKey());
                 } else {
                     LinkedList<String> list = new LinkedList<String>();
                     list.add(elt.getKey());
-                    classInstanceNameHlaPublisherTable.put(classInstanceName,
+                    classInstanceNameHlaUpdatableTable.put(classInstanceName,
                             list);
                 }
             }
 
-            // 2.2 Create a table of HlaPublishers indexed by their corresponding
+            // 2.2 Create a table of HlaUpdatables indexed by their corresponding
             //     class handle (no duplication).
             HashMap<Integer, LinkedList<String>> classHandleHlaPublisherTable = new HashMap<Integer, LinkedList<String>>();
 
@@ -3345,14 +3363,14 @@ public class HlaManager extends AbstractInitializableAttribute
                 Map.Entry<Integer, LinkedList<String>> elt = it3.next();
                 // elt.getKey()   => HLA class instance name.
                 // elt.getValue() => list of HlaUpdatable actor full names.
-                LinkedList<String> hlaPublishersFullnames = elt.getValue();
+                LinkedList<String> hlaUpdatableFullnames = elt.getValue();
 
                 // The attribute handle set to declare all attributes to publish
                 // for one object class.
                 AttributeHandleSet _attributesLocal = _factory.createAttributeHandleSet();
 
                 // Fill the attribute handle set with all attribute to publish.
-                for (String sPub : hlaPublishersFullnames) {
+                for (String sPub : hlaUpdatableFullnames) {
                     try {
                         _attributesLocal.add(_getAttributeHandleFromTab(
                                 _hlaAttributesToPublish.get(sPub)));
@@ -3362,11 +3380,11 @@ public class HlaManager extends AbstractInitializableAttribute
                     }
                 }
 
-                // At this point, all HlaPublishers have been initialized and own their
+                // At this point, all HlaUpdatables have been initialized and own their
                 // corresponding HLA class handle and HLA attribute handle. Just retrieve
                 // the first from the list to get those information.
                 Object[] tObj = _hlaAttributesToPublish
-                        .get(hlaPublishersFullnames.getFirst());
+                        .get(hlaUpdatableFullnames.getFirst());
                 int classHandle = _getClassHandleFromTab(tObj);
 
                 // Declare to the Federation the HLA attribute(s) to publish.
@@ -3374,7 +3392,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     rtia.publishObjectClass(classHandle, _attributesLocal);
 
                     if (_debugging) {
-                        _hlaDebug("_setupHlaPublishers() - Publish Object Class: "
+                        _hlaDebug("_setupHlaUpdatables() - Publish Object Class: "
                                 + " classHandle = " + classHandle
                                 + " _attributesLocal = "
                                 + _attributesLocal.toString());
@@ -3391,20 +3409,21 @@ public class HlaManager extends AbstractInitializableAttribute
             // 4. Register object instances. Only one registerObjectInstance() call is performed
             //    by class instance (name). Finally, update the hash map of class instance name
             //    with the returned object instance handle.
-            Iterator<Entry<String, LinkedList<String>>> it4 = classInstanceNameHlaPublisherTable
+            Iterator<Entry<String, LinkedList<String>>> it4 = classInstanceNameHlaUpdatableTable
                     .entrySet().iterator();
 
             while (it4.hasNext()) {
                 Map.Entry<String, LinkedList<String>> elt = it4.next();
                 // elt.getKey()   => HLA class instance name.
                 // elt.getValue() => list of HlaUpdatable actor full names.
-                LinkedList<String> hlaPublishersFullnames = elt.getValue();
+                LinkedList<String> hlaUpdatableFullnames = elt.getValue();
 
-                // At this point, all HlaPublishers on the list have been initialized
+                // At this point, all HlaUpdatables on the list have been initialized
                 // and own their class handle and class instance name. Just retrieve
-                // the first from the list to get those information.
+                // the first from the list to get those information for registering
+                // the instance.
                 Object[] tObj = _hlaAttributesToPublish
-                        .get(hlaPublishersFullnames.getFirst());
+                        .get(hlaUpdatableFullnames.getFirst());
 
                 int classHandle = _getClassHandleFromTab(tObj);
                 String classInstanceName = _getHlaInstanceNameFromTab(tObj);
@@ -3417,7 +3436,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 classHandle, classInstanceName);
 
                         if (_debugging) {
-                            _hlaDebug("_setupHlaPublishers() - Register Object Instance: "
+                            _hlaDebug("_setupHlaUpdatables() - Register Object Instance: "
                                     + " classHandle = " + classHandle
                                     + " classIntanceName = " + classInstanceName
                                     + " instanceHandle = "
@@ -3432,12 +3451,12 @@ public class HlaManager extends AbstractInitializableAttribute
                     } catch (ObjectAlreadyRegistered e) {
                         throw new IllegalActionException(null, e,
                                 "ObjectAlreadyRegistered: " + e.getMessage());
-                    } // end catch ...
-                } // end if ...
+                    } 
+                } // end if (!_registerObjectInstanceMap)
             }
         }
 
-        /** Configure the deployed HLA subscribers.
+        /** Configure the deployed HLA Reflectable actors.
          *  @param rtia
          *  @exception ObjectClassNotDefined
          *  @exception FederateNotExecutionMember
@@ -3448,7 +3467,7 @@ public class HlaManager extends AbstractInitializableAttribute
          *  All those exceptions above are from the HLA/CERTI implementation.
          *  @exception IllegalActionException
          *  All those exceptions above are from Ptolemy.         */
-        private void _setupHlaSubscribers(RTIambassador rtia)
+        private void _setupHlaReflectables(RTIambassador rtia)
                 throws ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, SaveInProgress, RestoreInProgress,
                 ConcurrentAccessAttempted, IllegalActionException {
@@ -3458,7 +3477,7 @@ public class HlaManager extends AbstractInitializableAttribute
             // to the HLA/CERTI Federation a HLA attribute to subscribe to.
 
             // 1. Get classHandle and attributeHandle for each attribute
-            // value to subscribe (i.e. HlaSubscriber). Update the HlaSubscribers.
+            // value to subscribe. Update the HlaReflectables.
             Iterator<Entry<String, Object[]>> it1 = _hlaAttributesToSubscribeTo
                     .entrySet().iterator();
 
@@ -3473,7 +3492,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         .getContainer();
 
                 if (_debugging) {
-                    _hlaDebug("_setupHlaSubscribers() - HlaReflectable: "
+                    _hlaDebug("_setupHlaReflectables() - HlaReflectable: "
                             + sub.getFullName());
                 }
 
@@ -3489,7 +3508,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             _getHlaClassNameFromTab(tObj));
 
                     if (_debugging) {
-                        _hlaDebug("_setupHlaSubscribers() "
+                        _hlaDebug("_setupHlaReflectables() "
                                 + "objectClassName (in FOM) = "
                                 + _getHlaClassNameFromTab(tObj)
                                 + " - classHandle = " + classHandle);
@@ -3507,7 +3526,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             sub.getHlaAttributeName(), classHandle);
 
                     if (_debugging) {
-                        _hlaDebug("_setupHlaSubscribers() " + " attributeHandle = "
+                        _hlaDebug("_setupHlaReflectables() " + " attributeHandle = "
                                 + attributeHandle);
                     }
                 } catch (NameNotFound e) {
@@ -3517,21 +3536,22 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 // Subscribe to HLA attribute information (for subscription)
-                // from HLA services. In this case, the tObj[] object as
+                // from HLA services. In this case, the tObj[] object has
                 // the following structure:
-                // tObj[0] => input port which receives the token to transform
-                //            as an updated value of a HLA attribute,
-                // tObj[1] => type of the port (e.g. of the attribute),
-                // tObj[2] => object class name of the attribute,
-                // tObj[3] => instance class name
-                // tObj[4] => ID of the object class to handle,
-                // tObj[5] => ID of the attribute to handle
+                // tObj[0] => output port: produces an output even whenever the
+                //            the attribute of the instance is updated by a
+                //            another federation in the federation,
+                // tObj[1] => type of the port; it must be equal to the data type of the attribute,
+                // tObj[2] => object class name,
+                // tObj[3] => instance class name,
+                // tObj[4] => object class handle,
+                // tObj[5] => attribute handle
 
                 // tObj[0 .. 3] are extracted from the Ptolemy model.
                 // tObj[3 .. 5] are provided by the RTI (CERTI).
 
                 // All these information are required to subscribe/unsubscribe
-                // updated value of a HLA attribute.
+                // HLA attributes.
                 elt.setValue(new Object[] { _getPortFromTab(tObj),
                         _getTypeFromTab(tObj), _getHlaClassNameFromTab(tObj),
                         _getHlaInstanceNameFromTab(tObj), classHandle,
@@ -3541,10 +3561,10 @@ public class HlaManager extends AbstractInitializableAttribute
                 sub.setAttributeHandle(attributeHandle);
             }
 
-            // 2. Create a table of HlaSubscribers indexed by their corresponding
+            // 2. Create a table of HlaReflectables indexed by their corresponding
             //    class handle (no duplication).
-            HashMap<Integer, LinkedList<String>> classHandleHlaSubscriberTable = null;
-            classHandleHlaSubscriberTable = new HashMap<Integer, LinkedList<String>>();
+            HashMap<Integer, LinkedList<String>> classHandleHlaReflectableTable = null;
+            classHandleHlaReflectableTable = new HashMap<Integer, LinkedList<String>>();
 
             Iterator<Entry<String, Object[]>> it22 = _hlaAttributesToSubscribeTo
                     .entrySet().iterator();
@@ -3555,36 +3575,36 @@ public class HlaManager extends AbstractInitializableAttribute
                 // elt.getValue() => tObj[] array.
                 Object[] tObj = elt.getValue();
 
-                // The class handle where the HLA attribute belongs to (see FOM).
+                // The handle of the class to which the HLA attribute belongs to.
                 int classHandle = _getClassHandleFromTab(tObj);
 
-                if (classHandleHlaSubscriberTable.containsKey(classHandle)) {
-                    classHandleHlaSubscriberTable.get(classHandle)
+                if (classHandleHlaReflectableTable.containsKey(classHandle)) {
+                    classHandleHlaReflectableTable.get(classHandle)
                             .add(elt.getKey());
                 } else {
                     LinkedList<String> list = new LinkedList<String>();
                     list.add(elt.getKey());
-                    classHandleHlaSubscriberTable.put(classHandle, list);
+                    classHandleHlaReflectableTable.put(classHandle, list);
                 }
             }
 
             // 3. Declare to the Federation the HLA attributes to subscribe to.
             // If these attributes belongs to the same object class then only
             // one subscribeObjectClass() call is performed.
-            Iterator<Entry<Integer, LinkedList<String>>> it3 = classHandleHlaSubscriberTable
+            Iterator<Entry<Integer, LinkedList<String>>> it3 = classHandleHlaReflectableTable
                     .entrySet().iterator();
 
             while (it3.hasNext()) {
                 Map.Entry<Integer, LinkedList<String>> elt = it3.next();
                 // elt.getKey()   => HLA class instance name.
                 // elt.getValue() => list of HlaReflectable actor full names.
-                LinkedList<String> hlaSubscribersFullnames = elt.getValue();
+                LinkedList<String> hlaReflectableFullnames = elt.getValue();
 
                 // The attribute handle set to declare all subscribed attributes
                 // for one object class.
                 AttributeHandleSet _attributesLocal = _factory.createAttributeHandleSet();
 
-                for (String sSub : hlaSubscribersFullnames) {
+                for (String sSub : hlaReflectableFullnames) {
                     try {
                         _attributesLocal.add(_getAttributeHandleFromTab(
                                 _hlaAttributesToSubscribeTo.get(sSub)));
@@ -3594,11 +3614,11 @@ public class HlaManager extends AbstractInitializableAttribute
                     }
                 }
 
-                // At this point, all HlaSubscribers have been initialized and own their
+                // At this point, all HlaReflectable actors have been initialized and own their
                 // corresponding HLA class handle and HLA attribute handle. Just retrieve
                 // the first from the list to get those information.
                 Object[] tObj = _hlaAttributesToSubscribeTo
-                        .get(hlaSubscribersFullnames.getFirst());
+                        .get(hlaReflectableFullnames.getFirst());
                 int classHandle = _getClassHandleFromTab(tObj);
                 try {
                     _rtia.subscribeObjectClassAttributes(classHandle,
@@ -3609,12 +3629,12 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 if (_debugging) {
-                    _hlaDebug("_setupHlaSubscribers() - Subscribe Object Class Attributes: "
+                    _hlaDebug("_setupHlaReflectables() - Subscribe Object Class Attributes: "
                             + " classHandle = " + classHandle
                             + " _attributesLocal = "
                             + _attributesLocal.toString());
                 }
             }
-        } // end 'private void setupHlaSubscribers(RTIambassador rtia) ...'
+        } // end 'private void _setupHlaReflectables(RTIambassador rtia) ...'
     } // end 'private class PtolemyFederateAmbassadorInner extends NullFederateAmbassador { ...'
 }
