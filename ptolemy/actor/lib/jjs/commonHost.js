@@ -1694,14 +1694,9 @@ Accessor.prototype.provideInput = function (name, value) {
  *  Also invoke the fire function of the accessor, if one has been defined.
  *  If a handler throws an exception, then remove it from the registered
  *  handlers before rethrowing the exception.
- *  @param name The name of the input.
+ *  @param name Name of a specific input to handle.
  */
 Accessor.prototype.react = function (name) {
-    // FIXME: The accessor specification says nothing about a name argument to react()
-    // and this does not appear to be used anywhere. Remove it?
-
-    // console.log(this.accessorName + ": ================== react(" + name + ")");
-
     this.emit('reactStart');
 
     var thiz = this.root;
@@ -1815,6 +1810,12 @@ Accessor.prototype.react = function (name) {
     if (typeof this.exports.fire === 'function') {
         //console.log('commonHost.js react(' + name + '): invoking fire');
         this.exports.fire.call(this);
+    }
+    
+    // Reset the currentValue of all the inputs so that they don't accidentally
+    // become persistent.
+    for (var input in thiz.inputs) {
+        thiz.inputs[input].currentValue = null;
     }
 
     this.emit('reactEnd');
