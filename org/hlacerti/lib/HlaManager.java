@@ -362,21 +362,26 @@ import ptolemy.kernel.util.Workspace;
  * the interaction with the RTI, are also printed to standard out, even if you are
  * listening to the attribute.
  * </p>
- * <p>NOTE FOR DEVELOPPERS:
- * A federate needs to instructs the RTI that it is prepared to receive one or more
+ * <p>NOTE FOR DEVELOPERS:
+ * A federate needs to instruct the RTI that it is prepared to receive one or more
  * callbacks. The way to do it was not in the HLA 1.3 standard and was introduced 
- * in the HLA IEEE 1516. JCERTI, the Java API, is compliant only with DoD HLA 1.3
+ * in the HLA IEEE 1516 standard. JCERTI, the Java API, is compliant only with DoD HLA 1.3
  * even though CERTI (coded with C++) is compliant with both standards. JCERTI
  * provides three different methods for receiving a callback: tick(), 
- * tick(min,max) and tick2(). The tick() method returns immediately and allows the
- * federate to receive all pending callbacks to be delivered. Is the responsibility
- * of the federate to decide what to do if there is no pending callback, for
- * example, to "tick" again until receive it or until some deadline. This can
- * overloads the system. The tick2() was introduced for avoiding this overload,
- * since it returs only if there is a pending callback (only one callback can be
- * received). Unfortunately, if no callback is received the federate is blocked,
- * which is bad. The tick(min,max) is not blocking, but it can be hard to find the
- * value of parameters min and max, and they are dependent of the application.
+ * tick(min,max) and tick2(). When a federate calls the tick() method, any
+ * callbacks that are pending are invoked, and then the tick() returns.
+ * If there are no pending callbacks, then it returns immediately.
+ * This HLAManager, unfortunately, uses a busy wait pattern, where if no
+ * callback occurred, it simply calls tick() again.
+ * The alternative, tick2(), is not an attractive alternative because it
+ * blocks until a callback occurs, and a callback may never occur.
+ * This results in the HLAManager freezing, which freezes the Ptolemy model
+ * and Vergil, the user interface.
+ * There is another method, tick(min, max), that is not documented and we can't
+ * figure out what it does, so we aren't using it. It may be that the min
+ * argument specifies the maximum real time to block waiting for a callback
+ * before returning, and the second argument is not used, but we really can't
+ * be sure without carefully evaluating all the C++ code.
  * HLA IEEE 1516 has two methods, evokeMultipleCallback(min,max) and
  * evokeCallback(min), where the "supplied wall-clock time arguments shall have a
  * precision of at least one millisecond" [9].
