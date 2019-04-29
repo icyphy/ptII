@@ -2786,15 +2786,14 @@ public class HlaManager extends AbstractInitializableAttribute
          */
         public void initializeTimeValues(Double startTime, Double lookAHead)
                 throws IllegalActionException {
-            if (lookAHead <= 0) {
+            if (_hlaLookAHead <= 0) {
                 throw new IllegalActionException(null, null, null,
                         "LookAhead field in HLAManager must be greater than 0.");
             }
             hlaLogicalTime = new CertiLogicalTime(startTime);
             grantedHlaLogicalTime = new CertiLogicalTime(0);
-
-            effectiveLookAHead = new CertiLogicalTimeInterval(
-                    lookAHead * _hlaTimeUnitValue);
+            // The hlaLookAHead is already in  HLA logical time units.
+            effectiveLookAHead = new CertiLogicalTimeInterval(_hlaLookAHead);
             if (_debugging) {
                 _hlaDebug("initializeTimeValues() - Effective HLA lookahead is "
                         + effectiveLookAHead.toString());
