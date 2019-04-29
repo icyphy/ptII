@@ -4,13 +4,13 @@
 <entity name="clockTransmitter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={598, 181, 745, 416}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={824, 182, 745, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 306]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2161952648834713">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.97021484374997, 123.87262584206586}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.97021484374994, 212.67415559505986}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 30.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -74,7 +74,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 110.0]">
         </property>
     </entity>
-    <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaPublisher">
+    <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;clockValue&quot;">
             <display name="Name of the attribute to receive"/>
         </property>
@@ -100,7 +100,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="HlaSubscriber.input" relation="relation2"/>
+    <link port="HlaPublisher.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation2"/>
     <link port="CurrentTime.trigger" relation="relation"/>
 </entity>
