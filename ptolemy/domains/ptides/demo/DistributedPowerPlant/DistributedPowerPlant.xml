@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedPowerPlant" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="41">
@@ -587,7 +587,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 65.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 22, 934, 634}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={27, 23, 934, 634}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
             </property>
@@ -643,7 +643,7 @@
                 </property>
             </port>
             <entity name="Plotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="state, sensor, clock, emergency, warning">
+                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="sensor, emergency, warning">
                 </property>
                 <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={621, 27, 643, 292}, maximized=false}">
                 </property>
@@ -656,7 +656,7 @@
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -665,8 +665,8 @@
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Heartbeat and Plant State Display</title>
-<caption>Plant state indicator: -1=down, -2=startup, -3=normal, -4=shutdown</caption>
+<title>Sensor Data, Warning, and Emergency</title>
+<caption></caption>
 <xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="40.0"/>
@@ -679,7 +679,7 @@
             <entity name="Plotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
                 <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="electricOutput, operatingTarget, fuel">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={593, 331, 671, 271}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={620, 336, 671, 271}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 227]">
                 </property>
@@ -692,7 +692,7 @@
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0, 0.0}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
@@ -848,20 +848,20 @@
                             <display name="last&#10;was&#10;sensor"/>
                             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
-                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                            </property>
                             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 105.0]">
                             </property>
+                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                            </property>
                         </entity>
                         <entity name="last was clock" class="ptolemy.domains.modal.kernel.State">
                             <display name="last&#10;was&#10;clock"/>
-                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                            </property>
                             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 205.0]">
+                            </property>
+                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                             </property>
                         </entity>
                         <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1030,27 +1030,27 @@
                         <entity name="normal" class="ptolemy.domains.modal.kernel.State">
                             <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                             </property>
-                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                            </property>
                             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[294.92534430921154, 148.25447709438916]">
                             </property>
-                        </entity>
-                        <entity name="warning" class="ptolemy.domains.modal.kernel.State">
                             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                             </property>
+                        </entity>
+                        <entity name="warning" class="ptolemy.domains.modal.kernel.State">
                             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 235.0]">
                             </property>
-                        </entity>
-                        <entity name="emergency" class="ptolemy.domains.modal.kernel.State">
                             <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                             </property>
+                        </entity>
+                        <entity name="emergency" class="ptolemy.domains.modal.kernel.State">
                             <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                             </property>
                             <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 320.0]">
+                            </property>
+                            <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                             </property>
                         </entity>
                         <relation name="relation6" class="ptolemy.domains.modal.kernel.Transition">
@@ -1363,44 +1363,44 @@ The controller runs at least every tick of the local clock.</text></svg></config
                         </property>
                         <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 45.0]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <entity name="Startup" class="ptolemy.domains.modal.kernel.State">
                         <display name="Startup -2"/>
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ControlLaw">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 185.0]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <entity name="Normal" class="ptolemy.domains.modal.kernel.State">
                         <display name="Normal -3"/>
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ControlLaw">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 235.0]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <entity name="Shutdown" class="ptolemy.domains.modal.kernel.State">
                         <display name="Shutdown -4"/>
                         <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="ControlLaw">
                         </property>
-                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="false">
-                        </property>
                         <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                         </property>
                         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 235.0]">
+                        </property>
+                        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                         </property>
                     </entity>
                     <relation name="relation2" class="ptolemy.domains.modal.kernel.Transition">
@@ -1875,9 +1875,9 @@ The controller runs at least every tick of the local clock.</text></svg></config
                 <link port="ControlLaw.error" relation="errorRelation"/>
             </entity>
             <entity name="Plotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
-                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="state, sensor, clock, emergency, warning">
+                <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="clock, state">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={622, 614, 643, 292}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={622, 608, 643, 292}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[643, 248]">
                 </property>
@@ -1888,7 +1888,7 @@ The controller runs at least every tick of the local clock.</text></svg></config
                     <property name="multiport"/>
                     <property name="minDelay" class="ptolemy.data.expr.Parameter" value="{0.0, 0.0}">
                     </property>
-                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="Infinity">
+                    <property name="delayOffset" class="ptolemy.data.expr.Parameter" value="0.0">
                     </property>
                     <property name="relativeDeadline" class="ptolemy.data.expr.Parameter" value="Infinity">
                     </property>
