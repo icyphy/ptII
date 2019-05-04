@@ -1,0 +1,386 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AllAttributesJoker" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={693, 67, 1001, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[767, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0528368823224215">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{406.5048828125, 276.4123415827279}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 75.0]">
+        </property>
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 65.0]">
+        </property>
+    </property>
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 100.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Display">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="MyVehicles">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="OneClassVehicle.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender1">
+        </property>
+        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The matching between a wildcard and an instance name&#10;is made when the callback DiscoverObjectInstance (instanceHandle,&#10;classHandle) is received.  As the wildcard is used only if there is &#10;no difference in the computation of different instances, all&#10;attributes of a class must be represented in the model.&#10;Otherwise it is necessary to use the name of the instances in the&#10;HlaSubscribers.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 90.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Choose one of the two ways for updating the vehicles's coordinates:&#10;&#10;1. The two instances (robot and uav) are updated by a unique federate &#10;(the attributes are correctly reflected). &#10;Open the model below and run the models in the indicated order.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 200.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Each instance is updated by a different federate&#10;(the attributes are not correctly reflected). &#10;Open the two models bellow and run the models in the indicated order.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 310.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate UAV updates instance 'uav' (along the wall)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 365.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UAValongTheWall.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Sender1 updates instance 'robot' (on the ground)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 385.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="Robot.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- A federate updates 'robot' and 'uav'">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 280.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OneFederate2Instances.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;x&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_3&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="HlaSub2" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;x&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_2&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 294.93896484375]">
+        </property>
+    </entity>
+    <entity name="HlaSub3" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;y&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_3&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[122.81774139404297, 185.01871490478516]">
+        </property>
+    </entity>
+    <entity name="HlaSub4" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;z&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_2&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 399.93896484375]">
+        </property>
+    </entity>
+    <entity name="HlaSub5" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;z&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_3&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="HlaSub6" class="org.hlacerti.lib.HlaSubscriber">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;y&quot;">
+            <display name="Name of the attribute to receive"/>
+        </property>
+        <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;Vehicle&quot;">
+            <display name="Object class in FOM"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;joker_2&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 349.93896484375]">
+        </property>
+    </entity>
+    <entity name="Avehicle" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x,y,z">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={716, 223, 307, 224}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[307, 180]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 190.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Avehicle</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.01" max="2.0100000000000002"/>
+<yRange min="2.0" max="8.0"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="AnotherVehicle" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x,y,z">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={716, 448, 307, 214}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[307, 170]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[244.0, 349.93896484375]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>AnotherVehicle</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.01" max="3.0100000000000002"/>
+<yRange min="1.0" max="12.0"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="HlaSub.output" relation="relation"/>
+    <link port="HlaSub2.output" relation="relation4"/>
+    <link port="HlaSub3.output" relation="relation2"/>
+    <link port="HlaSub4.output" relation="relation6"/>
+    <link port="HlaSub5.output" relation="relation3"/>
+    <link port="HlaSub6.output" relation="relation5"/>
+    <link port="Avehicle.input" relation="relation"/>
+    <link port="Avehicle.input" relation="relation2"/>
+    <link port="Avehicle.input" relation="relation3"/>
+    <link port="AnotherVehicle.input" relation="relation4"/>
+    <link port="AnotherVehicle.input" relation="relation5"/>
+    <link port="AnotherVehicle.input" relation="relation6"/>
+</entity>

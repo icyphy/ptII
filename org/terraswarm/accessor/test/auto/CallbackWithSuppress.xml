@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
@@ -29,19 +29,19 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: This illustrates that, erroneously, sending to my own&#10;inputs triggers two firings: One coincident with the callback&#10;being invoked and one due to the sending to my own input.&#10;But one coincident with the callback should not be seeing the&#10;output value produced in that callback!  There should be&#10;a microstep delay before that output becomes visible.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This illustrates that sending to my own input is delayed by one&#10;microstep. The suppress input with value true occurs at time (5.0,0),&#10;but the produce inputs all occur at microstep 1. So the suppress&#10;inputs never have any effect.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 265.0}">
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 10.0, 11.0, 12.0, 13.0, 14.0, 20.0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{475.0, 190.0}">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

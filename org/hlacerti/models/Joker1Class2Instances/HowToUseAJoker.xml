@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HowToUseAJoker" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 59, 675, 731}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[441, 621]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0653988536554633">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{206.2716649831219, 330.74707031249994}">
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate 'Display' (with all attributes) and instructions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 515.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="AllAttributesJoker.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A correct use of the wildcards: open the model and follow&#10;the instructions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 475.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;-------------------------------------------&#10;Feature: HLA multi instance with Joker wildcard.&#10;Goal: Show a bad use and a correct use of wildcards.&#10;-------------------------------------------&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;A federation with  two instances of class Vehicle:&#10;- robot: a vehicle moving on the ground (x,y), and &#10;- uav, a vehicle moving along the wall (x,z).&#10;&#10;There is only one federate 'Display' that displays&#10;the coordinates of both vehicles. But the instances&#10;can be updated by using only one federate, or&#10;using two federates.&#10;&#10;The way the instances are updated would not change&#10;the simulation results. This is true when using the&#10;instance names in the HlaSubscribers of 'Display', but&#10;can be false when using wildcards. This means that&#10;the model is wrong.&#10;&#10;The order the instances are discovered is not known&#10;before the execution, but Ptolemy topological sort&#10;guarantees that a joker is always binded to the same&#10;instance (for a same set of federates). ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 125.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A bad use of the wildcards: open the model and follow&#10;the instructions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 555.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate 'Display' (with some attributes) and instructions">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 600.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SomeAttributesJoker.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances2Jokers/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+</entity>
