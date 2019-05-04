@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 160, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 23, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
@@ -268,7 +268,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="host" class="ptolemy.data.expr.Parameter" value="wessel.eecs.berkeley.edu:7200">
+        <property name="host" class="ptolemy.data.expr.Parameter" value="wessel.eecs.berkeley.edu">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -284,7 +284,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{50.0, 330.0}">
         </property>
         <property name="authenticate" class="ptolemy.data.expr.Parameter" value="false">
         </property>
