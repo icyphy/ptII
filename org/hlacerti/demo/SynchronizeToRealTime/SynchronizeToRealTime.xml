@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 165.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 1244, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={74, 247, 1244, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 522]">
     </property>
@@ -23,9 +23,9 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{547.1349650846814, 364.122742748357}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockHLA federate is the creator of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate has to be launched &#10;last (its firing actor has to be the last created).&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockHLA federate (see ClockHLA.xml model). This action will speed up the&#10;execution of the other two federates.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The ClockDisplayer federate is the first one to be launched: it launches the RTIG&#10;process.&#10;&#10;The ClockHLA federate is the register of the synchronization point used during the &#10;initialization of the simulation to synchronize all federates. This federate must be the&#10;last one to be launched.&#10;&#10;During the execution of this simulation, you can remove the synchronizeToRealTime attribute&#10;deployed in the ClockHLA federate (see ClockHLA.xml model). This action will speed up the&#10;execution of the other two federates.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 275.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -35,7 +35,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 435.0]">
         </property>
     </property>
     <property name="Director" class="ptolemy.actor.Director">
@@ -70,7 +70,7 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 310.0]">
         </property>
     </entity>
     <entity name="clockHla" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -82,7 +82,7 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 370.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">

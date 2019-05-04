@@ -1,0 +1,18 @@
+;; Federation with one class and three attributes
+	(Fed
+	 (Federation MyVehicles) ;; the name is not used by the RTI
+	 (FedVersion v1.3)
+	 (Spaces)
+	 (Objects
+	  (Class ObjectRoot
+	   (Attribute privilegeToDelete reliable timestamp)
+	   (Class RTIprivate)
+	   (Class Vehicle
+		(Attribute x RELIABLE TIMESTAMP)
+		(Attribute y RELIABLE TIMESTAMP)
+                (Attribute z RELIABLE TIMESTAMP)))
+	 )
+	 (Interactions
+	  (Class InteractionRoot BEST_EFFORT RECEIVE
+	   (Class RTIprivate BEST_EFFORT RECEIVE)))
+	)

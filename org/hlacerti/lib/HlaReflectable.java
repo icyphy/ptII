@@ -64,11 +64,11 @@ public interface HlaReflectable extends Nameable {
      */
     public int getClassHandle();
 
-    /** Returns the HLA object instance.
+    /** Returns the HLA object instance handle.
      * @return The HLA object instance handle.
-     * @see #setObjectInstanceId.
+     * @see #setInstanceHandle.
      */
-    public int getObjectInstanceId();
+    public int getInstanceHandle();
     
     /** FIXME: This should probably not be here. See HlaManager. */
     public TypedIOPort getOutputPort();
@@ -85,11 +85,12 @@ public interface HlaReflectable extends Nameable {
      */
     public void setClassHandle(int classHandle);
 
-    /** Set the HLA object instance.
-     * @param objectInstanceId The HLA object instance to set.
-     * @see #getObjectInstanceHandle.
+    /** Set the HLA object instance handle only when wildcard (joker_) is used.
+     * 
+     * @param instanceHandle The HLA object instance to set.
+     * @see #getInstanceHandle.
      */
-    public void setObjectInstanceId(int objectInstanceId);
+    public void setInstanceHandle(int instanceHandle);
 
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the token queue. Then, program the next firing time of this actor to
