@@ -371,20 +371,15 @@ import ptolemy.kernel.util.Workspace;
  * tick(min,max) and tick2(). When a federate calls the tick() method, any
  * callbacks that are pending are invoked, and then the tick() returns.
  * If there are no pending callbacks, then it returns immediately.
- * This HLAManager, unfortunately, uses a busy wait pattern, where if no
- * callback occurred, it simply calls tick() again.
+ * This HLAManager, uses tick(min, max), which is not documented and we can't
+ * be sure what it does, but it seems that the min argument specifies the
+ * maximum real time to block waiting for a callback
+ * before returning, and the second argument is not used. But we really can't
+ * be sure without carefully evaluating all the C++ code.
  * The alternative, tick2(), is not an attractive alternative because it
  * blocks until a callback occurs, and a callback may never occur.
  * This results in the HLAManager freezing, which freezes the Ptolemy model
  * and Vergil, the user interface.
- * There is another method, tick(min, max), that is not documented and we can't
- * figure out what it does, so we aren't using it. It may be that the min
- * argument specifies the maximum real time to block waiting for a callback
- * before returning, and the second argument is not used, but we really can't
- * be sure without carefully evaluating all the C++ code.
- * HLA IEEE 1516 has two methods, evokeMultipleCallback(min,max) and
- * evokeCallback(min), where the "supplied wall-clock time arguments shall have a
- * precision of at least one millisecond" [9].
  * </p>
  * <p><b>References</b>:</p>
  *
@@ -1107,11 +1102,6 @@ public class HlaManager extends AbstractInitializableAttribute
             // service for optimization, it could be possible to have events
             // from the Federation in the Federate's priority timestamp queue,
             // so we tick() to get these events (if they exist).
-            /*   if (_debugging) {
-                _hlaDebug("       proposeTime(" + strProposedTime
-                       + "): currentTime t_ptII = proposedTime: tick() one time");  //-> returning currentTime");
-            }
-             */ 
             try {
                 _rtia.tick();
 
@@ -1630,11 +1620,6 @@ public class HlaManager extends AbstractInitializableAttribute
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted,
             SpecifiedSaveLabelDoesNotExist {
 
-        // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
-        // See comments about tick(), tick2() and tick(min,max)
-        // The time unity in CERTI is second.
-        double minTickTimeNER = 0.001;
-        double maxTickTimeNER = 10000;
         // Custom string representation of proposedTime.
         String strProposedTime = proposedTime.toString();
 
@@ -1683,6 +1668,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             while (!(_federateAmbassador.timeAdvanceGrant)) {
                 if (_director.isStopRequested()) {
+                    // Stop is requested by the user.
                     // Not sure what to do here, but we can't just keep waiting.
                     throw new IllegalActionException(this,
                             "Stop requested while waiting for a time advance grant from the RTIG.");
@@ -1691,17 +1677,19 @@ public class HlaManager extends AbstractInitializableAttribute
                     _hlaDebug("        proposeTime(t(lastFoundEvent)="
                             + strProposedTime + ") - _eventsBasedTimeAdvance("
                             + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
-                            + ") by calling tick(min,max)");
+                            + ") by calling tick(MAX_BLOCKING_TIME, 0)");
                 }
+                // Wait for a callback. This will return immediately if there
+                // is already a callback pending (and before returning, it will
+                // call that callback). If there is no callback pending, it will
+                // wait up to MAX_BLOCKING_TIME and then return even if there is
+                // no callback.
                 // Do not use tick2() here because it can block the director
-                // if no TAG is received, although it is more efficient than
-                // tick(). For avoiding the overload provoked by tick()
-                // tick(min,max) could be used. tick2()=tick(infinity,0).            
-                // _rtia.tick(minTickTimeNER,maxTickTimeNER); 
-                
-                // Instructs the RTI that a TAG callback is expected.
-                // RAV callbacks can also be received in this loop.
-                _rtia.tick();  
+                // if no callback is received. Also, do not use tick() because it
+                // results in a busy wait.
+                // NOTE: The second argument, which the API confusingly calls "max"
+                // but is usually less than "min", appears to not be used.
+                _rtia.tick(MAX_BLOCKING_TIME, 0);  
                 
                 // HLA Reporter support.
                 if (_enableHlaReporter) {
@@ -1817,18 +1805,14 @@ public class HlaManager extends AbstractInitializableAttribute
      *  times <i>hlaTimeStep</i>. See [6], algorithm 4.
      *  
      *  @param proposedTime time stamp of last found event
-     *  @return a valid time to advance to
+     *  @return A valid time to advance to.
+     *  @throws IllegalActionException If the user requests that the execution
+     *   stop while we are waiting for time-advance callbacks from the RTI.
      */
 
     private Time _timeSteppedBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException {
-        
-        // Chose minTickTime and maxTickTime for evoke RAV and TAG callbacks
-        // See comments about tick(), tick2() and tick(min,max).
-        // The time unity in CERTI is second.
-        double minTickTimeTAR = 0.001;
-        double maxTickTimeTAR = 10000;
-        
+                
         // HLA Reporter support.
         if (_enableHlaReporter) {
             _hlaReporter.storeTimes("TAR()", proposedTime,
@@ -1899,28 +1883,28 @@ public class HlaManager extends AbstractInitializableAttribute
             }
 
             while (!(_federateAmbassador.timeAdvanceGrant)) {
+                if (_director.isStopRequested()) {
+                    // Stop is requested by the user.
+                    // Not sure what to do here, but we can't just keep waiting.
+                    throw new IllegalActionException(this,
+                            "Stop requested while waiting for a time advance grant from the RTIG.");
+                }
                 if (_debugging) {
-                    _hlaDebug("      waiting TAG(" // + nextPointInTime.getTime() 
-                            + ") by calling tick() in " + headMsg);
+                    _hlaDebug("      waiting for callbacks in " + headMsg);
                 }
                 try {
+                    // Wait for a callback. This will return immediately if there
+                    // is already a callback pending (and before returning, it will
+                    // call that callback). If there is no callback pending, it will
+                    // wait up to MAX_BLOCKING_TIME and then return even if there is
+                    // no callback.
                     // Do not use tick2() here because it can block the director
-                    // if no TAG is received, although it is more efficient than
-                    // tick(). For avoiding the overload provoked by tick()
-                    // tick(min,max) could be used. tick2()=tick(infinity,0).            
-                    //_rtia.tick(minTickTimeTAR,maxTickTimeTAR);
+                    // if no callback is received. Also, do not use tick() because it
+                    // results in a busy wait.
+                    // NOTE: The second argument, which the API confusingly calls "max"
+                    // but is usually less than "min", appears to not be used.
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
                     
-                    // Instructs the RTI that a TAG callback is expected.
-                    // RAV callbacks can also be received in this loop.
-                    _rtia.tick();
-                    
-                    if (_director.isStopRequested()) {
-                        // Not sure what to do here, but we can't just keep waiting.
-                        // FIXME: Why this test is made here, but before tick() in the NER case?
-                        throw new IllegalActionException(this,
-                                "Stop requested while waiting for a time advance grant from the RTIG.");
-                    }
-
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
                         _hlaReporter._numberOfTicks2++;
@@ -2381,17 +2365,27 @@ public class HlaManager extends AbstractInitializableAttribute
                         synchronizationPointName, rfspTag);
 
                 // Wait for synchronization point callback.
-                // This used to hang the model if no federate has registered
-                // a synchronization point yet. Now it uses tick() instead of tick2().
                 while (!(_federateAmbassador.synchronizationSuccess)
                         && !(_federateAmbassador.synchronizationFailed)) {
-                    _rtia.tick();
-                    _logOtherTicks();
                     if (_director.isStopRequested()) {
-                        // Return to finish initialization so that we proceed to wrapup
-                        // and resign the federation.
+                        // Stop is requested by the user.
+                        // Since this is called at the end of initialize(), it is safe
+                        // just return. The director will proceed directly to wrapup().
                         return;
                     }
+                    // Wait for a callback. This will return immediately if there
+                    // is already a callback pending (and before returning, it will
+                    // call that callback). If there is no callback pending, it will
+                    // wait up to MAX_BLOCKING_TIME and then return even if there is
+                    // no callback.
+                    // Do not use tick2() here because it can block the director
+                    // if no callback is received. Also, do not use tick() because it
+                    // results in a busy wait.
+                    // NOTE: The second argument, which the API confusingly calls "max"
+                    // but is usually less than "min", appears to not be used.
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
+
+                    _logOtherTicks();
                 }
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
@@ -2406,17 +2400,29 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // The first launched federates wait for synchronization point announcement.
         while (!(_federateAmbassador.inPause)) {
+            if (_director.isStopRequested()) {
+                // Stop is requested by the user.
+                // Not sure what to do here, but we can't just keep waiting.
+                throw new IllegalActionException(this,
+                        "Stop requested while waiting for a time advance grant from the RTIG.");
+            }
             try {
-                _rtia.tick();
+                // Wait for a callback. This will return immediately if there
+                // is already a callback pending (and before returning, it will
+                // call that callback). If there is no callback pending, it will
+                // wait up to MAX_BLOCKING_TIME and then return even if there is
+                // no callback.
+                // Do not use tick2() here because it can block the director
+                // if no callback is received. Also, do not use tick() because it
+                // results in a busy wait.
+                // NOTE: The second argument, which the API confusingly calls "max"
+                // but is usually less than "min", appears to not be used.
+                _rtia.tick(MAX_BLOCKING_TIME, 0);  
+
                 _logOtherTicks();
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
-            }
-            if (_director.isStopRequested()) {
-                // Return to finish initialization so that we proceed to wrapup
-                // and resign the federation.
-                return;
             }
         }
 
@@ -2434,21 +2440,32 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Wait for federation synchronization.
         while (_federateAmbassador.inPause) {
+            if (_director.isStopRequested()) {
+                // Return to finish initialization so that we proceed to wrapup
+                // and resign the federation.
+                return;
+            }
             if (_debugging) {
                 _hlaDebug("_doInitialSynchronization() - initialize() - Waiting for simulation phase");
             }
 
             try {
-                _rtia.tick();
+                // Wait for a callback. This will return immediately if there
+                // is already a callback pending (and before returning, it will
+                // call that callback). If there is no callback pending, it will
+                // wait up to MAX_BLOCKING_TIME and then return even if there is
+                // no callback.
+                // Do not use tick2() here because it can block the director
+                // if no callback is received. Also, do not use tick() because it
+                // results in a busy wait.
+                // NOTE: The second argument, which the API confusingly calls "max"
+                // but is usually less than "min", appears to not be used.
+                _rtia.tick(MAX_BLOCKING_TIME, 0);  
+
                 _logOtherTicks();
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e,
                         "RTIexception: " + e.getMessage());
-            }
-            if (_director.isStopRequested()) {
-                // Return to finish initialization so that we proceed to wrapup
-                // and resign the federation.
-                return;
             }
         }
     }
@@ -2493,8 +2510,23 @@ public class HlaManager extends AbstractInitializableAttribute
         // method to receive callbacks from the RTI.
         if (_isTimeRegulator && _isTimeConstrained) {
             while (!(_federateAmbassador.timeConstrained)) {
+                if (_director.isStopRequested()) {
+                    // Return to finish initialization so that we proceed to wrapup
+                    // and resign the federation.
+                    return;
+                }
                 try {
-                    _rtia.tick();
+                    // Wait for a callback. This will return immediately if there
+                    // is already a callback pending (and before returning, it will
+                    // call that callback). If there is no callback pending, it will
+                    // wait up to MAX_BLOCKING_TIME and then return even if there is
+                    // no callback.
+                    // Do not use tick2() here because it can block the director
+                    // if no callback is received. Also, do not use tick() because it
+                    // results in a busy wait.
+                    // NOTE: The second argument, which the API confusingly calls "max"
+                    // but is usually less than "min", appears to not be used.
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2504,17 +2536,27 @@ public class HlaManager extends AbstractInitializableAttribute
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e,
                             "RTIexception: " + e.getMessage());
-                }
-                if (_director.isStopRequested()) {
-                    // Return to finish initialization so that we proceed to wrapup
-                    // and resign the federation.
-                    return;
                 }
             }
 
             while (!(_federateAmbassador.timeRegulator)) {
+                if (_director.isStopRequested()) {
+                    // Return to finish initialization so that we proceed to wrapup
+                    // and resign the federation.
+                    return;
+                }
                 try {
-                    _rtia.tick();
+                    // Wait for a callback. This will return immediately if there
+                    // is already a callback pending (and before returning, it will
+                    // call that callback). If there is no callback pending, it will
+                    // wait up to MAX_BLOCKING_TIME and then return even if there is
+                    // no callback.
+                    // Do not use tick2() here because it can block the director
+                    // if no callback is received. Also, do not use tick() because it
+                    // results in a busy wait.
+                    // NOTE: The second argument, which the API confusingly calls "max"
+                    // but is usually less than "min", appears to not be used.
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2524,11 +2566,6 @@ public class HlaManager extends AbstractInitializableAttribute
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e,
                             "RTIexception: " + e.getMessage());
-                }
-                if (_director.isStopRequested()) {
-                    // Return to finish initialization so that we proceed to wrapup
-                    // and resign the federation.
-                    return;
                 }
             }
 
@@ -2655,6 +2692,14 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         constants                         ////
+
+    /** The maximum amount of time that a blocking call to tick() will
+     *  wait for callbacks to occur.
+     */
+    private static double MAX_BLOCKING_TIME = 1.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
