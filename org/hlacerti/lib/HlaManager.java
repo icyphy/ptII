@@ -169,8 +169,10 @@ import ptolemy.kernel.util.Workspace;
  * name, then a federation with that name will be automatically created.
  * Otherwise, the federate will join the pre-existing federation.
  * </p><p>
- * Federates can exchange information using the {@link HlaUpdatable}
- * and {@link HlaReflectable} actors. When a time-stamped event in one
+ * Federates can exchange information using actors that implement
+ * the {@link HlaUpdatable} and {@link HlaReflectable} interfaces,
+ * such as {@link HlaAttributeUpdater} and {@link HlaAttributeReflector},
+ * respectively. When a time-stamped event in one
  * federate is fed into an HlaUpdatable, then a corresponding time-stamped
  * event will pop out of any HlaReflectable elsewhere in the federation
  * if the parameters of that HlaReflectable match those of the
@@ -260,10 +262,12 @@ import ptolemy.kernel.util.Workspace;
  * In HLA, the data that is sent from one federate to another through
  * the RTI is viewed
  * as an update to an attribute of an instance of a class.
- * {@link HlaUpdatable} and {@link HlaReflectable} actors specify
+ * Actors implementing the
+ * {@link HlaUpdatable} and {@link HlaReflectable} interfaces specify
  * which attribute of which instance of which class they update
  * or are notified of updates.
- * See the documentation for those two actors.
+ * See the documentation for {@link HlaAttributeUpdater} and
+ * {@link HlaAttributeReflector}.
  * </p><p>
  * A Federation requires a Federation Execution Data (FED) file [7],
  * which defines classes and specifies which attributes a class contains.
@@ -276,7 +280,7 @@ import ptolemy.kernel.util.Workspace;
  * By default, <i>fedFileOnRTIG</i> is set to "$fedFile", which
  * makes it the same as whatever you specify in the <i>fedFile</i>
  * parameter. This will usually work if the RTIG is being run
- * on the same machine as the federate, and will always work
+ * on the same machine as the federate, and will always work if
  * the federate itself launches the RTIG by setting the
  * <i>launchRTIG</i> parameter.
  * </p>
@@ -310,7 +314,7 @@ import ptolemy.kernel.util.Workspace;
  * When a Ptolemy II federate starts executing, this HlaManager attempts
  * to connect to an RTIG running on the host specified by CERT_HOST.
  * If this fails, and if <i>launchRTIG</i>
- * is set to true and CERT_HOST is either "localhost" or "127.0.0.1",
+ * is set to true, and CERT_HOST is either "localhost" or "127.0.0.1",
  * then this HlaManager will attempt to launch an RTIG on the local
  * machine.  This will require that the rtig executable be in your
  * PATH and that CERTI_HOME be specified, as explained above.
@@ -595,7 +599,7 @@ public class HlaManager extends AbstractInitializableAttribute
     public Parameter hlaLookAHead;
     
     /** If true, kill the HLA runtime infrastructure gateway (RTIG)
-     *  in wrapup that was created in preinitialize. If no RTIG was created
+     *  in wrapup() that was created in preinitialize. If no RTIG was created
      *  in preinitialize, then ignore this.  This is a boolean that
      *  defaults to the value of launchRTIG.
      */
@@ -1040,20 +1044,25 @@ public class HlaManager extends AbstractInitializableAttribute
      *  returned always equals the proposedTime no matter which service is
      *  used, NER or TAR. 
      *  <p>
-     *  In fact, this method deals with two timelines: the Ptolemy timeline
-     *  ptolemyTime and the HLA timeline hlaLogicalTime. Ptolemy wants to
-     *  advance to a ptolemyTime t, and the RTI will grant with a 
-     *  hlaLogicalTime h. As the time representation in CERTI and Ptolemy
-     *  are different, a conversion is needed: f converts double to Time, and
-     *  g converts Time to double. The values of the pair (t,h) in a federate
-     *  depends on whether TAR or NER is being used and also whether some 
-     *  attribute was reflected when this method is blocked waiting for a TAG.
-     *  More details in _eventsBasedTimeAdvance and _timeSteppedBasedTimeAdvance.
+     *  In fact, this method deals with two timelines: the Ptolemy timeline,
+     *  where a time value is represented by an instance of the Time class,
+     *  and HLA timeline, where time is represented by a double. When this
+     *  method is called with some Time value t, this method will convert this
+     *  to a double using HLA time units, which may result in some loss of
+     *  precision. The RTI will respond by granting an HLA logical time h,
+     *  a double, which is less than or equal to the proposed time.
+     *  It will be less than if some other event from some other federate has
+     *  occurred with a time less than the proposed time (depending on NER, TAR,
+     *  and many other factors). If the granted time matches the proposed time
+     *  (in HLA's double representation of time), then this method will return
+     *  the exact proposedTime Time object, thereby avoiding the quantization
+     *  errors of conversion. In other words, if the HLA grants the proposed time,
+     *  this method returns the proposedTime with no quantization error.
      *  
-     *  @param proposedTime The proposed time g(t'), hlaLogicalTime.
-     *  @return The proposed time or a smaller time t', ptolemyTime.
-     *  @exception IllegalActionException If this attribute is not
-     *  contained by an Actor.
+     *  @param proposedTime The proposed time in Ptolemy time.
+     *  @return The proposed time or a smaller time t', in Ptolemy time.
+     *  @exception IllegalActionException If an RTI internal error occurs or
+     *   a concurrent access occurs while waiting for a response from the RTI.
      */
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
@@ -1199,22 +1208,14 @@ public class HlaManager extends AbstractInitializableAttribute
         return null;
     }
 
-    /** Update the HLA attribute <i>attributeName</i> with the containment of
+    /** Update the HLA attribute <i>attributeName</i> to the value given by
      *  the token <i>in</i>. The updated attribute is sent to the HLA/CERTI
      *  Federation. The time stamp provided by this method depends on whether
-     *  TAR or NER is being used. A federate promises that no events will be
-     *  sent before hlaCurrentTime + lookahead, lookahead > 0. Recall that a
-     *  federate has two time lines, ptolemyTime and the hlaLogicalTime.
-     *  If NER is being used, the time stamp takes always the value 
-     *  ptIICurrentTime + lookahead, ptIICurrentTime=g(currentTime). If TAR is
-     *  being used, the time stamp takes the value (ptIICurrentTime + lookahead)
-     *  if ptIICurrentTime &lt; hlaCurrentTime + lookahead, otherwise it takes
-     *  the value ptIICurrentTime.
-     *  @param hp The HLA updatable actor (HLA attribute) to update.
-     *  @param in The updated value of the HLA attribute to update.
-     *  @param senderName the name of the federate that sent the attribute.
-     *  @exception IllegalActionException If a CERTI exception is raised then
-     *  displayed it to the user.
+     *  TAR or NER is being used. See the class documentation.
+     *  @param hp The HLA updatable actor (HLA attribute) doing the update
+     *   (the actor that calls this method).
+     *  @param in The updated value.
+     *  @exception IllegalActionException If a CERTI exception is raised.
      */
     public void updateHlaAttribute(HlaUpdatable hp, Token in)
             throws IllegalActionException {
