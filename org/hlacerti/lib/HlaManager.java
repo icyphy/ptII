@@ -38,13 +38,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.NoSuchElementException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -1208,16 +1201,16 @@ public class HlaManager extends AbstractInitializableAttribute
         return null;
     }
 
-    /** Update the HLA attribute <i>attributeName</i> to the value given by
-     *  the token <i>in</i>. The updated attribute is sent to the HLA/CERTI
-     *  Federation. The time stamp provided by this method depends on whether
+    /** Update the HLA attribute specified by the <i>updater</i> argument
+     *  to the value given by the <i>in</i> argument. This method is called
+     *  by the updater. The updated attribute is sent to the HLA/CERTI
+     *  Federation. The time stamp for the update depends on whether
      *  TAR or NER is being used. See the class documentation.
-     *  @param hp The HLA updatable actor (HLA attribute) doing the update
-     *   (the actor that calls this method).
+     *  @param updater The HLA updater actor.
      *  @param in The updated value.
      *  @exception IllegalActionException If a CERTI exception is raised.
      */
-    public void updateHlaAttribute(HlaUpdatable hp, Token in)
+    public void updateHlaAttribute(HlaUpdatable updater, Token in)
             throws IllegalActionException {
 
         // Get current model time.
@@ -1227,10 +1220,10 @@ public class HlaManager extends AbstractInitializableAttribute
         // to use the updateAttributeValues() (UAV) service provided by HLA/CERTI.
 
         // Retrieve information of the HLA attribute to publish.
-        Object[] tObj = _hlaAttributesToPublish.get(hp.getFullName());
+        Object[] tObj = _hlaAttributesToPublish.get(updater.getFullName());
 
         // Encode the value to be sent to the CERTI.
-        byte[] bAttributeValue = MessageProcessing.encodeHlaValue(hp, in);
+        byte[] bAttributeValue = MessageProcessing.encodeHlaValue(updater, in);
         if (_debugging) {
             _hlaDebug("      start updateHlaAttribute() t_ptII = " + currentTime
                     + "; t_hla = " + _federateAmbassador.hlaLogicalTime);
@@ -1244,9 +1237,6 @@ public class HlaManager extends AbstractInitializableAttribute
                     "RTIinternalError: " + e.getMessage());
         }
         suppAttributes.add(_getAttributeHandleFromTab(tObj), bAttributeValue);
-
-        // Note: this information is not used in the current implementation.
-        byte[] tag = EncodingHelpers.encodeString(hp.getFullName());
 
         // Create a representation of uav-event timestamp for CERTI.
         // UAV timestamp sent by a HlaUpdatable
@@ -1278,7 +1268,7 @@ public class HlaManager extends AbstractInitializableAttribute
             CertiLogicalTime hlaCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
 
             // Calculate the end of the forbidden interval (i.e., earliest value
-            // of the uavTimeStamp
+            // of the uavTimeStamp).
             CertiLogicalTime minimalNextUAVTime = new CertiLogicalTime(
                     hlaCurrentTime.getTime() + _hlaLookAHead);
 
@@ -1294,21 +1284,23 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // HLA Reporter support.
         if (_enableHlaReporter) {
-            _hlaReporter.updateUAVsInformation(hp, in, _getHlaCurrentTime(),
+            _hlaReporter.updateUAVsInformation(updater, in, _getHlaCurrentTime(),
                     currentTime, _director.getMicrostep(), uavTimeStamp);
         }
 
         // XXX: FIXME: check if we may add the object instance id to the HLA updatable and remove this.
         int instanceHandle = _registerObjectInstanceMap
-                .get(hp.getHlaInstanceName());
+                .get(updater.getHlaInstanceName());
 
         try {
             if (_debugging) {
-                _hlaDebug("      * UAV '" + hp.getHlaAttributeName()
+                _hlaDebug("      * UAV '" + updater.getHlaAttributeName()
                         + "', uavTimeStamp=" + uavTimeStamp.getTime()
                         + ", value=" + in.toString() + ", HlaPub="
-                        + hp.getFullName());
+                        + updater.getFullName());
             }
+            // Name to pass to the RTI Ambassador for logging.
+            byte[] tag = EncodingHelpers.encodeString(updater.getFullName());
             // Call HLA service UAV
             _rtia.updateAttributeValues(instanceHandle, suppAttributes, tag,
                     uavTimeStamp);
@@ -1319,18 +1311,18 @@ public class HlaManager extends AbstractInitializableAttribute
 
         } catch (ObjectNotKnown e) {
             throw new IllegalActionException(this, e,
-                    "ObjectNotKnown: " + hp.getHlaInstanceName() + ": "+ e.getMessage());
+                    "ObjectNotKnown: " + updater.getHlaInstanceName() + ": "+ e.getMessage());
         } catch (AttributeNotDefined e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotDefined: " + hp.getHlaAttributeName() + ": " + e.getMessage());
+                    "AttributeNotDefined: " + updater.getHlaAttributeName() + ": " + e.getMessage());
         } catch (AttributeNotOwned e) {
             throw new IllegalActionException(this, e,
-                    "AttributeNotOwned: " + hp.getHlaAttributeName() + ": " + e.getMessage());
+                    "AttributeNotOwned: " + updater.getHlaAttributeName() + ": " + e.getMessage());
         } catch (InvalidFederationTime e) {
             throw new IllegalActionException(this, e, "InvalidFederationTime: "
                     + e.getMessage() + "    updateHlaAttribute() - sending UAV("
-                    + "HLA updatable=" + hp.getFullName() + ",HLA attribute="
-                    + hp.getHlaAttributeName() + ",uavTimeStamp="
+                    + "HLA updatable=" + updater.getFullName() + ",HLA attribute="
+                    + updater.getHlaAttributeName() + ",uavTimeStamp="
                     + uavTimeStamp.getTime() + ",value=" + in.toString() + ")"
                     + " ptII_time=" + currentTime.toString() + " certi_time="
                     + _federateAmbassador.hlaLogicalTime);
@@ -1354,10 +1346,10 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Manage the correct termination of the {@link HlaManager}. Call the
      *  HLA services to: unsubscribe to HLA attributes, unpublish HLA attributes,
-     *  resign a Federation and destroy a Federation if the current Federate is
+     *  resign a Federation, and destroy a Federation if the current Federate is
      *  the last participant.
      *  @exception IllegalActionException If the parent class throws it
-     *  of if a CERTI exception is raised then displayed it to the user.
+     *  of if a CERTI exception is raised.
      */
     @Override
     public void wrapup() throws IllegalActionException {
@@ -1431,9 +1423,6 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         // Destroy federation execution.
                         try {
-                            // CERTI seems to require some time for resigning the
-                            // federation, done above, to settle.
-                            // Thread.sleep(3000L);
                             _hlaDebug("wrapup() - Destroying the federation.");
                             _rtia.destroyFederationExecution(_federationName);
                             federationIsActive = false;
@@ -1539,42 +1528,6 @@ public class HlaManager extends AbstractInitializableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Call a function, but don't let it run more than the specified amount of
-     *  time.
-     * @param callable The function to call.
-     * @param timeout The timeout.
-     * @param timeUnit The time units
-     * @return Whatever the function returns.
-     * @throws Exception
-     */
-    //FIXME: this function is no more used: remove it? The pb would be fixed here:
-    // https://savannah.nongnu.org/bugs/?53878
-    private static <T> T _callWithTimeout(Callable<T> callable, long timeout, TimeUnit timeUnit) throws Exception {
-        final ExecutorService executor = Executors.newSingleThreadExecutor();
-        final Future<T> future = executor.submit(callable);
-        executor.shutdown(); // This does not cancel the already-scheduled task.
-        try {
-            return future.get(timeout, timeUnit);
-        }
-        catch (TimeoutException e) {
-            //remove this if you do not want to cancel the job in progress
-            //or set the argument to 'false' if you do not want to interrupt the thread
-            future.cancel(true);
-            throw e;
-        }
-        catch (ExecutionException e) {
-            //unwrap the root cause
-            Throwable t = e.getCause();
-            if (t instanceof Error) {
-                throw (Error) t;
-            } else if (t instanceof Exception) {
-                throw (Exception) t;
-            } else {
-                throw new IllegalStateException(t);
-            }
-        }
-    }
 
     /** Convert Ptolemy time, which has units of seconds, to HLA logical time 
      *  units. Ptolemy time is implemented using Java classe Time and HLA time
@@ -1996,12 +1949,12 @@ public class HlaManager extends AbstractInitializableAttribute
         // HlaUpdatables.
         _hlaAttributesToPublish.clear();
         List<HlaUpdatable> _hlaUpdatables = ce.entityList(HlaUpdatable.class);
-        for (HlaUpdatable hp : _hlaUpdatables) {
+        for (HlaUpdatable updater : _hlaUpdatables) {
             // Note: The HLA attribute name is no more associated to the
             // HlaUpdatable actor name. As Ptolemy do not accept two actors
             // of the same name at a same model level the following test is no
             // more required.
-            //if (_hlaAttributesToPublish.get(hp.getFullName()) != null) {
+            //if (_hlaAttributesToPublish.get(updater.getFullName()) != null) {
             //    throw new IllegalActionException(this,
             //            "A HLA attribute with the same name is already "
             //                    + "registered for publication.");
@@ -2015,34 +1968,32 @@ public class HlaManager extends AbstractInitializableAttribute
             // and throws an exception if two actors specify the same HLA
             // attribute from a same HLA object class and a same HLA instance
             // class name.
-            for (HlaUpdatable hpIndex : _hlaUpdatables) {
-                if ((!hp.getFullName().equals(hpIndex.getFullName())
-                        && (hp.getHlaAttributeName()
-                                .compareTo(hpIndex.getHlaAttributeName()) == 0)
-                        && (hp.getHlaClassName()
-                                .compareTo(hpIndex.getHlaClassName()) == 0)
-                        && (hp.getHlaInstanceName().compareTo(
-                                hpIndex.getHlaInstanceName()) == 0))
-                        || (!hp.getFullName().equals(hpIndex.getFullName())
-                                && (!hp.getHlaClassName()
-                                        .equals(hpIndex.getHlaClassName()))
-                                && (hp.getHlaInstanceName().compareTo(hpIndex
+            for (HlaUpdatable updaterIndex : _hlaUpdatables) {
+                if ((!updater.getFullName().equals(updaterIndex.getFullName())
+                        && (updater.getHlaAttributeName()
+                                .compareTo(updaterIndex.getHlaAttributeName()) == 0)
+                        && (updater.getHlaClassName()
+                                .compareTo(updaterIndex.getHlaClassName()) == 0)
+                        && (updater.getHlaInstanceName().compareTo(
+                                updaterIndex.getHlaInstanceName()) == 0))
+                        || (!updater.getFullName().equals(updaterIndex.getFullName())
+                                && (!updater.getHlaClassName()
+                                        .equals(updaterIndex.getHlaClassName()))
+                                && (updater.getHlaInstanceName().compareTo(updaterIndex
                                         .getHlaInstanceName()) == 0))) {
 
-                    // FIXME: XXX: Highlight the faulty HlaUpdatable actor here, see UCB for API.
-
-                    throw new IllegalActionException(this, "A HlaUpdatable '"
-                            + hpIndex.getFullName()
+                    throw new IllegalActionException(updater, "A HlaUpdatable '"
+                            + updaterIndex.getFullName()
                             + "' with the same HLA information specified by the "
-                            + "HlaUpdatable '" + hp.getFullName()
+                            + "HlaUpdatable '" + updater.getFullName()
                             + "' \nis already registered for publication.");
                 }
             }
 
             // Only one input port is allowed per HlaUpdatable actor.
-            TypedIOPort tIOPort = hp.getInputPort();
+            TypedIOPort tIOPort = updater.getInputPort();
 
-            _hlaAttributesToPublish.put(hp.getFullName(),
+            _hlaAttributesToPublish.put(updater.getFullName(),
 
                     // XXX: FIXME: simply replace Object[] by a HlaUpdatable instance ?
 
@@ -2060,8 +2011,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     // tObj[0 .. 3] are extracted from the Ptolemy model.
                     // tObj[3 .. 5] are provided by the RTI (CERTI).
                     new Object[] { tIOPort, tIOPort.getType(),
-                            hp.getHlaClassName(),
-                            hp.getHlaInstanceName() });
+                            updater.getHlaClassName(),
+                            updater.getHlaInstanceName() });
         }
 
         // HlaReflectables.
