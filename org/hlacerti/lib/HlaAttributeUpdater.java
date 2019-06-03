@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * This actor is a kind-of output port that sends the data on its input to the
- * federation through the RTI (Run Time Infrastructure). In HLA, the 
+ * HLA federation through the RTI (Run Time Infrastructure). In HLA, the 
  * terminology is that this actor "updates" the specified attribute value of 
  * the specified instance whenever there is a data on its input. This attribute 
  * value will be "reflected" by all federates that have "subscribed" to this 

@@ -280,18 +280,20 @@ import ptolemy.kernel.util.Workspace;
  * <h2>Environment Variables</h2>
  * <p>
  * CERTI, which is the implementation of HLA that Ptolemy II uses,
- * relies on some environment variables to execute: 
- * - CERTI_HOST, which provides the IP address of the machine that hosts the RTIG, 
- * - CERTI_HOME, which provides the path to your installation of CERTI,
- * - CERTI_FOM_PATH which provides the default directory where the FED files are.
+ * relies on some environment variables in order to execute:
+ * <ul>
+ * <li> CERTI_HOST, which provides the IP address of the machine that hosts the RTIG, 
+ * <li> CERTI_HOME, which provides the path to your installation of CERTI,
+ * <li> CERTI_FOM_PATH which provides the default directory where the FED files are.
  *   This variable is needed if the FED file is not in the directory where the
  *   RTIG is launched. 
- * - PATH must be updated with $CERTI_HOME/bin, so the binaries can be found,
+ * <li> PATH must be updated with $CERTI_HOME/bin, so the binaries can be found,
  *   e.g., rtig and rtia.
- * - LD_LIBRARY_PATH and DYLD_LIBRARY_PATH must be updated with $CERTI_HOME/lib, 
+ * <li> LD_LIBRARY_PATH and DYLD_LIBRARY_PATH must be updated with $CERTI_HOME/lib, 
  *   the directory where the libRTI, libFedTime, libCERTId libraries are
  *   implemented.
- * CERTI provides the script <i>myCERTI_env.sh<i> that set all the above
+ * </ul>
+ * CERTI provides a script <i>myCERTI_env.sh<i> that set all the above
  * environment variables. The script is located in $CERTI_HOME/share/scripts and
  * must be run before a federation simulation.
  * 
@@ -303,7 +305,7 @@ import ptolemy.kernel.util.Workspace;
  *    export CERTI_HOST=IP_address
  * </pre>
  * </p><p>
- * The second environment variable is CERTI_HOME, but this one is required
+ * The environment variable CERTI_HOME is required
  * only if you wish the federate to launch an RTIG, something you specify
  * with the <i>launchRTIG</i> parameter.  If you wish the federate to launch
  * an RTIG, then you must set CERTI_HOME equal to the path to your
@@ -1524,6 +1526,10 @@ public class HlaManager extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    // FIXME: A better design for the following would have _hlaAttributesToPublish
+    // be a LinkedHashMap<HlaUpdater,HLAAttribute>, where 
+    // HLAAttribute is an inner class with the three items
+    // provided by the RTI.
     /** Table of HLA attributes (and their HLA information) that are published
      *  by the current {@link HlaManager} to the HLA/CERTI Federation. This
      *  table is indexed by the {@link HlaUpdatable} actors present in the model.
@@ -1974,24 +1980,11 @@ public class HlaManager extends AbstractInitializableAttribute
         _hlaAttributesToPublish.clear();
         List<HlaUpdatable> _hlaUpdatables = ce.entityList(HlaUpdatable.class);
         for (HlaUpdatable updater : _hlaUpdatables) {
-            // Note: The HLA attribute name is no more associated to the
-            // HlaUpdatable actor name. As Ptolemy do not accept two actors
-            // of the same name at a same model level the following test is no
-            // more required.
-            //if (_hlaAttributesToPublish.get(updater.getFullName()) != null) {
-            //    throw new IllegalActionException(this,
-            //            "A HLA attribute with the same name is already "
-            //                    + "registered for publication.");
-            //}
-
-            // Note: asked by JC on 20171128, the current implementation is not
-            // optimized and may slow the model initialization step if there is
-            // a lot of actors.
-            // The HLA attribute is no more associated to the HlaUpdatable
-            // actor name but instead to the attribute name parameter. Checks
-            // and throws an exception if two actors specify the same HLA
-            // attribute from a same HLA object class and a same HLA instance
-            // class name.
+            // FIXME: This is a terrible way to check for name collisions.
+            // If there are N updaters, it makes N^2 checks.
+            // _hlaUpdatables should be a LinkedHashSet, and before adding
+            // any updater to it, check to see whether there is one already contained
+            // with the same name. If there is, throw an exception.
             for (HlaUpdatable updaterIndex : _hlaUpdatables) {
                 if ((!updater.getFullName().equals(updaterIndex.getFullName())
                         && (updater.getHlaAttributeName()
@@ -3314,6 +3307,8 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // tObj[0 .. 3] are extracted from the Ptolemy model.
                 // tObj[3 .. 5] are provided by the RTI (CERTI).
+                
+                // FIXME: See FIXME below for a better design.
 
                 // All these information are required to publish/unpublish
                 // updated value of a HLA attribute.
