@@ -280,16 +280,28 @@ import ptolemy.kernel.util.Workspace;
  * <h2>Environment Variables</h2>
  * <p>
  * CERTI, which is the implementation of HLA that Ptolemy II uses,
- * relies on some environment variables to execute. The first and most
- * important is CERTI_HOST, which provides the location of the machine
- * that hosts the RTIG. To set it, before launching Ptolemy II,
- * you can execute a command like:
+ * relies on some environment variables to execute: 
+ * - CERTI_HOST, which provides the IP address of the machine that hosts the RTIG, 
+ * - CERTI_HOME, which provides the path to your installation of CERTI,
+ * - CERTI_FOM_PATH which provides the default directory where the FED files are.
+ *   This variable is needed if the FED file is not in the directory where the
+ *   RTIG is launched. 
+ * - PATH must be updated with $CERTI_HOME/bin, so the binaries can be found,
+ *   e.g., rtig and rtia.
+ * - LD_LIBRARY_PATH and DYLD_LIBRARY_PATH must be updated with $CERTI_HOME/lib, 
+ *   the directory where the libRTI, libFedTime, libCERTId libraries are
+ *   implemented.
+ * CERTI provides the script <i>myCERTI_env.sh<i> that set all the above
+ * environment variables. The script is located in $CERTI_HOME/share/scripts and
+ * must be run before a federation simulation.
+ * 
+ * By default, the script <i>myCERTI_env.sh<i> set CERTI_HOST=localhost. This 
+ * specifies that the RTIG host is the local machine. If you are connecting to
+ * a remote RTIG, you need to specify the IP address or domain name of that machine.
+ * To set it, before launching Ptolemy II, you can execute a command like:
  * <pre>
- *    export CERTI_HOST=localhost
+ *    export CERTI_HOST=IP_address
  * </pre>
- * This specifies that the RTIG host is the local machine.
- * If you are connecting to a remote RTIG, you can instead specify the
- * IP address or domain name of that machine.
  * </p><p>
  * The second environment variable is CERTI_HOME, but this one is required
  * only if you wish the federate to launch an RTIG, something you specify
@@ -298,6 +310,10 @@ import ptolemy.kernel.util.Workspace;
  * installation of CERTI, and you must set your PATH environment variable
  * to include the share/scripts and bin directories of your CERTI installation.
  * </p><p>
+ * Notice that if the script <i>myCERTI_env.sh<i> is executed, all environment
+ * variables are set and the RTIG can be launched executing a command line
+ * (like <i>rtig<i>) or by the Ptolemy federate as explained above.
+ * </p><p>
  * Sometime in the future, these environment variables may be replaced
  * or supplemented by parameters added to this HlaManager.
  * See also the {@link CertiRtig} class.
@@ -305,9 +321,9 @@ import ptolemy.kernel.util.Workspace;
  * <h2>Lifecycle of Execution of a Federate</h2>
  * <p>
  * When a Ptolemy II federate starts executing, this HlaManager attempts
- * to connect to an RTIG running on the host specified by CERT_HOST.
+ * to connect to an RTIG running on the host specified by CERTI_HOST.
  * If this fails, and if <i>launchRTIG</i>
- * is set to true, and CERT_HOST is either "localhost" or "127.0.0.1",
+ * is set to true, and CERTI_HOST is either "localhost" or "127.0.0.1",
  * then this HlaManager will attempt to launch an RTIG on the local
  * machine.  This will require that the rtig executable be in your
  * PATH and that CERTI_HOME be specified, as explained above.
@@ -994,6 +1010,11 @@ public class HlaManager extends AbstractInitializableAttribute
                 } catch (InterruptedException ex) {
                     // Ignore
                 }
+                // The environment variable $CERTI_HOME must be set for creating
+                // the RTI Ambassador. Quoting [7], "Within libRTI, the class 
+                // RTIambassador bundles the services provided by the RTI. All
+                // requests made by a federate on the RTI take the form of an
+                // RTIambassador method call.
                 try {
                     _hlaDebug("Creating RTI Ambassador");
                     _rtia = (CertiRtiAmbassador) _factory.createRtiAmbassador();
@@ -1301,6 +1322,9 @@ public class HlaManager extends AbstractInitializableAttribute
             }
             // Name to pass to the RTI Ambassador for logging.
             byte[] tag = EncodingHelpers.encodeString(updater.getFullName());
+            if (_debugging) {
+                _hlaDebug(" tag " + tag);
+            }
             // Call HLA service UAV
             _rtia.updateAttributeValues(instanceHandle, suppAttributes, tag,
                     uavTimeStamp);
