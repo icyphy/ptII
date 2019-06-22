@@ -237,6 +237,7 @@ $Id$
               <!-- See ~jenkins/.certpw on terra.eecs.berkeley.edu -->
               <storepass>${keystore.store.password}</storepass>
               <keypass>${keystore.key.password}</keypass>
+              <tsa>http://timestamp.comodoca.com/rfc3161</tsa>
             </configuration>
           </plugin>
         </plugins>
