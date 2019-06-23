@@ -156,21 +156,6 @@ install:
   - sudo ln -s `which node` /usr/local/bin/node
   - ssh localhost  npm --version || true
 
-# Update the cache early in case OpenCV was rebuilt, which will take up so much time that
-# the ant build will not complete.
-# See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching
-# See https://docs.travis-ci.com/user/caching
-cache:
-  directories:
-    - $PTII/vendors/adm/gen-11.1/node
-    - $CERTI_HOME_TRAVIS
-    - $PTII/vendors/installer
-    - $PTII/vendors/jai-1_1_2_01
-    - $PTII/vendors/JMF-2.1.1e
-    - $PTII/vendors/jogl
-    - $PTII/vendors/misc/sphinx4
-    - $PTII/vendors/opencv
-
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
@@ -222,6 +207,19 @@ jobs:
     - stage: report
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_JUNITREPORT=true
+
+# "Travis CI uploads the cache after the script phase of the build, but before either after_success or after_failure."
+# See https://docs.travis-ci.com/user/caching
+cache:
+  directories:
+    - $PTII/vendors/adm/gen-11.1/node
+    - $CERTI_HOME_TRAVIS
+    - $PTII/vendors/installer
+    - $PTII/vendors/jai-1_1_2_01
+    - $PTII/vendors/JMF-2.1.1e
+    - $PTII/vendors/jogl
+    - $PTII/vendors/misc/sphinx4
+    - $PTII/vendors/opencv
 
 deploy:
   # If PT_TRAVIS_TEST_CORE2_XML == true, then copy the SpaceCadet files
