@@ -2,9 +2,7 @@
 #
 # @Authors: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 1997-2019 The Regents of the University of California.
+# @Copyright (c) 2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -30,17 +28,15 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/util/test
+ME =		ptolemy/util/test/travis
 
 # PTJUNIT_DIR is set to junit in ptII.mk by configure if JUnit is found.
 DIRS =		$(PTJUNIT_DIR)
 
 # Root of the Ptolemy II directory
-ROOT =		../../..
+ROOT =		../../../..
 
-# Jar used in FileUtilities.tcl
-PDFSAMPLE = $(ROOT)$(ME)/PDFSample.jar
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SAXON_JAR)$(CLASSPATHSEPARATOR)$(PDFSAMPLE)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -60,23 +56,13 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = \
-	InnerClassTest.java \
-	RecorderMessageHandler.java \
-	ThreadStreamExec.java \
-	WatchDog.java
+JSRCS =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	CancelException.tcl \
-	ClassUtilities.tcl \
-	FileUtilities.tcl \
-	MessageHandler.tcl \
-	StreamExec.tcl \
-	StringUtilities.tcl \
-	XSLTUtilities.tcl
+	TravisTimeout.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -86,26 +72,15 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	PDFSample.jar \
-	test.xml \
-	copy.xsl \
-	addMarkers.xsl \
-        ptjacl.policy \
 	#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl  junit \
-	extractJarFileTest.jar \
-	junit \
-	policy
+MISC_FILES =	alljtests.tcl 
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	travis \
-	'InnerClassTest$$InnerClass.class' \
-	'WatchDog$$1.class'
+OPTIONAL_FILES =
 
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
@@ -120,30 +95,6 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl
-
-
-# Rule to run a $(SCRIPT) with a security policy
-# We have a rule here so that we can get AUXCLASSPATH for code coverage
-test_policy:
-	@"$(JAVA)" \
-            -Djava.security.manager "-Djava.security.policy=ptjacl.policy" \
-	    -classpath \
-	    "$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"  \
-	    "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) \
-	    tcl.lang.Shell $(SCRIPT)
-
-
-
-# Test running with ptolemy.ptII.dir containing cygrdrive.
-# We have a rule here so that we can get AUXCLASSPATH for code coverage
-test_cygdrive:
-	@"$(JAVA)" \
-	    -Dptolemy.ptII.dir=/cygdrive/c/ptII \
-	    -classpath \
-	    "$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)"  \
-	    $(JTCLSHFLAGS) \
-	    tcl.lang.Shell ptolemy_ptII_dir.tcl
-
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
