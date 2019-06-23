@@ -81,6 +81,18 @@ else
     if [ $# -eq 1 ]; then
         echo "$0: Using $1 as current seconds since the start of the job."
         SECONDS=$1
+
+        # Check to see if the current seconds is so large that the build will likely
+        # time out.  This can occur if OpenCV was rebuilt, which takes lots of time
+        maximumStartTimeSeconds = 1200
+        if [ "$SECONDS" -gt $maximumStartTimeSeconds ]; then
+            echo "$0: $SECONDS is greater than $maximumStartTimeSeconds."
+            echo "Perhaps OpenCV was rebuilt?  There is probably not enough time to run the"
+            echo "rest of the tests."
+            echo "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching"
+            buildWillProbablyTimeOut=yes
+        fi
+
         maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     else
         echo "$0: SECONDS environment variable not present or less than 100 and no argument passed."
@@ -213,6 +225,12 @@ runTarget () {
     # Exit if we are not running a Travis cron job and RUN_TESTS is not set to true.
     exitIfNotCron
 
+    if [ "$buildWillProbablyTimeOut" = "yes" ]; then
+        echo "$0: The build started late, which indicates that OpenCV probably was built"
+        echo "The build will probably time out."
+        echo "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching"
+    fi
+
     # Download the codeDoc*.jar files so that the docManager.tcl test will pass.
     jars="codeDoc.jar codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar"
     for jar in $jars
@@ -243,8 +261,27 @@ runTarget () {
     timeout=$maxTimeout
     echo "$0: Output will appear in $log with timeout $timeout"
     
-    # Run the command and log the output.
-    $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v "$SECRET_REGEX" > $log
+    if [ "$buildWillProbablyTimeOut" = "yes" ]; then
+        echo "The build started late, which indicates that OpenCV probably was built"
+        echo "The build will probably time out."
+        echo "The fix is to edit $0, look in the runTarget() shell function"
+        echo "and prevent ant from running temporarily"g
+        echo "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching"
+    fi
+
+    skipRun=no
+    # If the run is timing out, then uncomment the next if clause so that ant is not
+    # run and the cache can be updated.  Don't forget to recomment this clause
+    #if [ "$buildWillProbablyTimeOut" = "yes" ]; then
+    #    skipRun=yes
+    #fi
+
+    if [ "skipRun" = "yes" ]; then
+        echo "$0: SKIPPING RUN because the build started too late"
+    else
+        # Run the command and log the output.
+        $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v "$SECRET_REGEX" > $log
+    fi
 
     # Get the return value of the ant command and exit if it is non-zero.
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
@@ -256,6 +293,15 @@ runTarget () {
             echo "######################################################"
             echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
             echo "See https://github.com/travis-ci/travis-ci/issues/4192"
+
+            if [ "$buildWillProbablyTimeOut" = "yes" ]; then
+                echo "The build started late, which indicates that OpenCV probably was built"
+                echo "The build will probably time out."
+                echo "The fix is to edit $0, look in the runTarget() shell function"
+                echo "and prevent ant from running temporarily"g
+                echo "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching"
+            fi
+
             echo "######################################################"
         else
             if [ $status = 124 ]; then
