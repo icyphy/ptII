@@ -266,22 +266,22 @@ runTarget () {
     echo "$0: Output will appear in $log with timeout $timeout"
     
     if [ "$buildWillProbablyTimeOut" = "yes" ]; then
+        echo "###################"
+        echo "###################"
+        echo "###################"
+        echo "###################"
         echo "The build started late, which indicates that OpenCV probably was built"
         echo "The build will probably time out."
-        echo "The fix is to edit $0, look in the runTarget() shell function"
-        echo "and prevent ant from running temporarily"g
+        echo "Rather than running tests that will timeout, we will run one test that"
+        echo "will fail and hopefully the cache will be updated this time."
         echo "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching"
-    fi
-
-    skipRun=no
-    # If the run is timing out, then uncomment the next if clause so that ant is not
-    # run and the cache can be updated.  Don't forget to recomment this clause
-    #if [ "$buildWillProbablyTimeOut" = "yes" ]; then
-    #    skipRun=yes
-    #fi
-
-    if [ "skipRun" = "yes" ]; then
-        echo "$0: SKIPPING RUN because the build started too late"
+        echo "###################"
+        echo "###################"
+        echo "###################"
+        echo "###################"
+        echo "########## NOT RUNNING $target ###########"
+        echo "Running test.travis.timeout.fail instead"
+        $TIMEOUTCOMMAND $timeout ant build test.travis.timeout.fail 2>&1 | egrep -v "$SECRET_REGEX" > $log
     else
         # Run the command and log the output.
         $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v "$SECRET_REGEX" > $log
