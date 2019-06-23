@@ -73,6 +73,10 @@ fi
 # ant
 # core3 timed out 150 seconds, so increase the remaining time after the build to 180 seconds.
 timeAfterBuild=180
+
+# buildWillProbablyTimeOut is set to yes if the build starts late
+buildWillProbablyTimeOut=no
+
 if [ ! -z "$SECONDS" -a "$SECONDS" -gt 100 ]; then
     echo "$0: SECONDS environment variable is $SECONDS."
 
@@ -84,8 +88,8 @@ else
 
         # Check to see if the current seconds is so large that the build will likely
         # time out.  This can occur if OpenCV was rebuilt, which takes lots of time
-        maximumStartTimeSeconds = 1200
-        if [ "$SECONDS" -gt $maximumStartTimeSeconds ]; then
+        maximumStartTimeSeconds=1200
+        if [ "$SECONDS" -gt "$maximumStartTimeSeconds" ]; then
             echo "$0: $SECONDS is greater than $maximumStartTimeSeconds."
             echo "Perhaps OpenCV was rebuilt?  There is probably not enough time to run the"
             echo "rest of the tests."
