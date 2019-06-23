@@ -409,6 +409,10 @@
     <exclude name="**/ptolemy/util/test/junit/ModelTests.*" />
     <exclude name="**/ptolemy/util/test/junit/TclTests.*" />
 
+    <!-- Exlude util/travis/test because it is used to indicate
+         timeout problems and always fails -->
+    <exclude name="**/ptolemy/util/test/travis/junit/JUnitTclTest.*" />
+
     <exclude name="**/lbnl/actor/lib/test/junit/JUnitTclTest.*" />
 
     <exclude name="**/ptserver/test/junit/FileDownloadTest.*" />
@@ -2726,6 +2730,45 @@ For example:
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
       <test todir="${junit.output.dir}"
 	    name="${test.name}" />
+    </junit>
+  </target>
+
+  <target name="test.travis.timeout.fail"
+	  description="Run a test that will fail, indicating a timeout problem with Travis.">
+    <echo>
+      ==test.travis.timeout.fail==
+      This target runs a test that will fail, indicating a timeout problem with Travis.
+
+      If the Travis continuous integration system needs to update the OpenCV cache,
+      then there is a chance that building OpenCV will take up too much time and the
+      rest of the build will fail.
+
+      If too much time is taken up, then we should skip running the tests, but
+      then we need to have a test failure that indicates that the other tests did not run.
+
+    </echo>
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.short}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <!-- Set filtertrace to off so that we see the junit stackframes -->
+      <batchtest filtertrace="off">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <include name="**/ptolemy/util/test/travis/junit/JUnitTclTest.java"/>
+	</fileset>
+      </batchtest>
+      <formatter type="plain" usefile="${usefile}" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
   </target>
 
