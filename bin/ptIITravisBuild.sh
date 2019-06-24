@@ -41,6 +41,7 @@
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE3_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE6_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
@@ -72,7 +73,8 @@ fi
 # out, then bump this up, but look out for a return code of 137 from
 # ant
 # core3 timed out 150 seconds, so increase the remaining time after the build to 180 seconds.
-timeAfterBuild=180
+# core2 timed out 180 seconds, so increase the remaining time after the build to 240 seconds.
+timeAfterBuild=240
 
 # buildWillProbablyTimeOut is set to yes if the build starts late
 buildWillProbablyTimeOut=no
@@ -604,6 +606,11 @@ fi
 # Run the fifth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE5_XML" ]; then
     runTarget test.core5.xml
+fi
+
+# Run the sixth batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE6_XML" ]; then
+    runTarget test.core6.xml
 fi
 
 # Run the first batch of export demo tests.

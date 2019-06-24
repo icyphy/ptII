@@ -270,7 +270,6 @@
     <include name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/math/**/test/junit/JUnitTclTest.java" />
     <include name="**/ptolemy/media/**/test/junit/JUnitTclTest.java" />
-    <include name="**/doc/**/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core2.excludes">
@@ -278,7 +277,6 @@
     <exclude name="**/ptolemy/kernel/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/math/**/test/junit/JUnitTclTest.*" />
     <exclude name="**/ptolemy/media/**/test/junit/JUnitTclTest.*" />
-    <exclude name="**/doc/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, third batch. -->
@@ -329,6 +327,17 @@
 
   <patternset id="test.core5.excludes">
     <exclude name="**/ptolemy/configs/**/test/junit/JUnitTclTest.*" />
+  </patternset>
+
+  <!-- Tests of the core, sixth batch. -->
+  <patternset id="test.core6.includes">
+    <include name="**/ptolemy/domains/csp/test/junit/JUnitTclTest.java" />
+    <include name="**/doc/**/test/junit/JUnitTclTest.java" />
+  </patternset>
+
+  <patternset id="test.core6.excludes">
+    <exclude name="**/ptolemy/domains/csp/test/junit/JUnitTclTest.*" />
+    <exclude name="**/doc/**/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the export demos -->
@@ -1528,6 +1537,7 @@ For example:
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.core5.excludes" />
+	  <patternset refid="test.core6.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1569,6 +1579,7 @@ For example:
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.core5.excludes" />
+	  <patternset refid="test.core6.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1610,6 +1621,7 @@ For example:
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core4.excludes" />
 	  <patternset refid="test.core5.excludes" />
+	  <patternset refid="test.core6.excludes" />
 	  <patternset refid="test.excludes" />
           <!-- Don't exclude adm/** here because we want to run adm/test. -->
 	</fileset>
@@ -1651,6 +1663,7 @@ For example:
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core5.excludes" />
+	  <patternset refid="test.core6.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
@@ -1692,6 +1705,48 @@ For example:
 	  <patternset refid="test.core2.excludes" />
 	  <patternset refid="test.core3.excludes" />
 	  <patternset refid="test.core4.excludes" />
+	  <patternset refid="test.excludes" />
+	  <exclude name="adm/**" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.core6.xml" depends="initReports"
+	  description="Run the sixth batch of core tests with xml output.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.core6.xml ==
+      This target runs the sixth batch of core tests
+      and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+           maxmemory="${java.maxmemory.large}"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <batchtest todir="${junit.output.dir}">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <patternset refid="test.core6.includes" />
+	  <patternset refid="test.capecode1.excludes" />
+	  <patternset refid="test.capecode2.excludes" />
+	  <patternset refid="test.capecode3.excludes" />
+	  <patternset refid="test.core1.excludes" />
+	  <patternset refid="test.core2.excludes" />
+	  <patternset refid="test.core3.excludes" />
+	  <patternset refid="test.core4.excludes" />
+	  <patternset refid="test.core5.excludes" />
 	  <patternset refid="test.excludes" />
 	  <exclude name="adm/**" />
 	</fileset>
