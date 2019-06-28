@@ -65,20 +65,22 @@ node_js:
 addons:
   ssh_known_hosts: localhost
 
-services:
-  - xvfb
-
 # Need X11 to create the DOP Center map and for testing.
 before_install:
-  - export DISPLAY=:99.0
   # The following broke as of June, 2019, and is replaced with the services entry.
+  # - export DISPLAY=:99.0
   # - sh -e /etc/init.d/xvfb start
   # Add npm to path for AccessorSSHCodeGenerator.tcl
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bashrc
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}" >> ~/.bash_profile
   - cat ~/.bashrc
   - cat ~/.bash_profile
-  
+
+# The following recommended solution does not seem
+dist: xenial
+services:
+  - xvfb
+
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
