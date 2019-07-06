@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2015-2018 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -136,7 +136,7 @@
  *  
  *  @module @accessors-hosts/common/deterministicTemporalSemantics
  *  @author Chadlia Jerad and Edward A. Lee
- *  @version $$Id$$   
+ *  @version $$Id: deterministicTemporalSemantics.js 2017-05-03 11:11:30Z chadlia.jerad $$   
  */
 
 // Save the default engine's setTimeout, setInterval, clearTimeout and clearInterval 
@@ -259,7 +259,7 @@ function computeNextSceduledTick() {
 /** This function implements callbacks execution and update. It is called only by the
  *  host's setTimeout function. 
  *  All delayed callbacks with next execution time less than the current time will be 
- *  executing. Consequently, in case the system has cumulated some delay due, or example,
+ *  executing. Consequently, in case the system has accumulated some delay due, or example,
  *  to an over running program, all late callbacks will execute, but with respect to the 
  *  order and atomicity set by the definitions.
  *  Next, the list is cleaned from no-more triggerable callbacks. 
@@ -282,7 +282,7 @@ var executeAndSetNextTick = function() {
         // Execute callbacks
         executeCallbacks();
         
-        // Check that there are still call backs in the list
+        // Check that there are still callbacks in the list
         if (!delayedCallbacks || (callbackQueue.length === 0)) {
             reset();
             return;
@@ -291,7 +291,7 @@ var executeAndSetNextTick = function() {
         // Update the next scheduled tick 
         nextScheduledTick = computeNextSceduledTick();
         
-        // Upadte current time
+        // Update current time
         currentTime = Date.now();
     }
     
