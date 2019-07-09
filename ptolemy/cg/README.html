@@ -20,6 +20,7 @@
         <li><a href="#Hints">Hints about working with the tree</a>
         <li><a href="#AddActor">How to add an actor</a>
         <li><a href="#Targets">Supporting different targets</a>
+        <li><a href="#Languages">Supporting different languages</a>
       </ul>
       <p><i>See <a href="../configs/doc/completeDemos.htm#cg">Code Generation section of the Complete Demos page</a> for more demos.</i></p>
 
@@ -254,5 +255,36 @@ done
        $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.duktape $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
       </pre>
       
+      <h2><a name="Languages">Supporting different languages</a></h2>
+
+      <p>Adding a new language like Maude would be a bit tricky.</p>
+      <p>Probably the place to start is to replicate the cg html code generator by looking in:</p>
+
+<br/><code>ptolemy/cg/adapter/generic/html</code> and
+
+<br/><code>ptolemy/cg/kernel/generic/html</code>
+
+<p>One would create</p>
+
+<br/><code>ptolemy/cg/adapter/generic/maude</code> and
+
+<br/><code>ptolemy/cg/kernel/generic/maude</code>
+
+<p>ptolemy/cg/kernel/generic/GenericCodeGenerator.java contains a mapping from language names to package names:</p>
+<pre>
+     private static String[][] _languages = {
+             { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
+             { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" },
+             { "accessor", "ptolemy.cg.kernel.generic.accessor" },
+             { "html", "ptolemy.cg.kernel.generic.html" },
+             { "java", "ptolemy.cg.kernel.generic.program.procedural.java" } };
+</pre>
+<p>so you would add a line there for maude</p>
+<pre>
+  {"maude", "ptolemy.cg.kernel.generic.maude"},
+</pre>
+
+<p>Then, to invoke the new code generator, see <a href="#Java Command Line Demo">Java Command Line Demo</a> above, where one would use <code>-language maude</code> instead of <code>-language java</code>.</p>
+
   </body>
 </html>
