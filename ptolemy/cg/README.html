@@ -54,7 +54,7 @@
 	is separate from generic code.</p>   
 
       <p>The main entry point is
-	$PTII/ptolemy/cg/kernel/generic/GenericCodeGenerator.java.
+	<a href="kernel/generic/GenericCodeGenerator.java#in_browser"><code>$PTII/ptolemy/cg/kernel/generic/GenericCodeGenerator.java</code></a>.
 	This file is invoked by <code>$PTII/bin/ptcg</code>.  To get the complete list
 	of options, run <code>$PTII/bin/ptcg -help</code>.</p>
 
@@ -64,37 +64,42 @@
 
       <p>The ptolemy/cg directory has these subdirectories:</p>
       <dl>
-	<dt> ptolemy/cg/adapter</dt>
+	<dt><a href="adapter/#in_browser"><code>ptolemy/cg/adapter</code></a></dt>
 	<dd> Language specific adapters classes that correspond with
 	  regular Ptolemy II classes.
 	  <dl> 
-	    <dt> ptolemy/cg/adapter/generic/program/procedural/</dt>
+	    <dt><a href="adapter/generic/program/procedural/#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/</code></a></dt>
 	    <dd> The classes for the procedural languages (C and Java)
               <dl>
-		<dt> ptolemy/cg/adapter/generic/program/procedural/adapters</dt>
-		<dd> The adapter definitions that are shared between the procedural languages.  For example, the Display adapter is at ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui/Display.java</dd>
-		<dt> ptolemy/cg/adapter/generic/program/procedural/adapters/c</dt>
+		<dt><a href="adapter/generic/program/procedural/adapters/#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/adapters</code></a></dt>
+		<dd> The adapter definitions that are shared between the procedural languages.  For example, the Display adapter is at
+                  <a href="adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui/Display.java#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui/Display.java</code></a>
+                </dd>
+		<dt><a href="adapter/generic/program/procedural/c/adapters/#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/c/adapters/</code></a></dt>
 		<dd> The adapters for actors that generate C.  In general, the Java class extends the shared adapter
 		  and contains only a constructor.  There is an optional <code>.c</code> file that contains
 		  C-specific blocks of code used in code generation.
-		  For example, we have ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.java
-		  and ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.c
+		  For example, we have
+                  <a href="adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.java#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.java</code></a>
+		  and
+                  <a href="adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.c#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/Display.c</code></a>
 		</dd>
+		<dt><a href="adapter/generic/program/procedural/java/adapters/#in_browser"><code>ptolemy/cg/adapter/generic/program/procedural/java/adapters/</code></a></dt>
 		<dd> The adapters for actors that generate Java.  The layout is similar to the C version, except the
 		  <code>.j</code> file contains the Java template blocks.  The file is named .j so that it does not get compiled.
 		</dd>
               </dl>
 	  </dl>
 	</dd>
-	<dt> ptolemy/cg/gui</dt>
+	<dt><a href="gui#in_browser"><code>ptolemy/cg/gui</code></a></dt>
 	<dd>Graphical User Interface (gui) code.  If a model has a
 	  ptolemy.cg.gui.CodeGeneratorGUIFactory attribute in it, then
 	  double clicking on that attribute brings up the code generator gui.
 	</dd>
-	<dt> ptolemy/cg/kernel</dt>
+	<dt><a href="kernel#in_browser"><code>ptolemy/cg/kernel</code></a></dt>
 	<dd>Non-language specific code generation classes and language-specific
 	  type information.</dd>
-	<dt>ptolemy/cg/lib</dt>
+	<dt><a href="lib#in_browser"><code>ptolemy/cg/lib</code></a></dt>
 	<dd>Modular code generation work and syntactic code generation
 	  work</dd>
       </dl>
@@ -142,9 +147,9 @@
 	  <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/</code>
 
 	<li>The C or Java specific code is in
-	  <br/><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>c</b>/adapters/ptolemy/actor/lib/</code>
+	  <br/><a href="adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/#in_browser"><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>c</b>/adapters/ptolemy/actor/lib/</code></a>
 	  or
-	  <br/><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>java</b>/adapters/ptolemy/actor/lib/</code>
+	  <br/><a href="adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/#in_browser"><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/<b>java</b>/adapters/ptolemy/actor/lib/</code></a>
 	  <br/>These directories contain corresponding <code>.c</code> or <code>.j</code> files that define the blocks
 	  used in the generated code.
 	  <br/>These directories also contain a <code>test/auto/</code> directory that contains the test models.
@@ -167,7 +172,9 @@
       </pre>
       <p>This defines a block that puts the value of the value parameter on the output port.  The type will be that of the output port.</p>
       
-      <p>The default block names are defined in <code>ptolemy/cg/kernel/generic/program/ProgramCodeGeneratorAdapter.java</code>.  The default blocks appear in the .c template file as follows:
+      <p>The default block names are defined in
+        <a href="kernel/generic/program/ProgramCodeGeneratorAdapter.java#in_browser"><code>ptolemy/cg/kernel/generic/program/ProgramCodeGeneratorAdapter.java</code></a>.
+         The default blocks appear in the .c template file as follows:
       <ul>
         <li><code>/*** preinitBlock ***/</code></li>
         <li><code>/*** initBlock ***/</code></li>
@@ -216,8 +223,12 @@
       <h3>Adding a new target</h3>
 
       <h4>Creating the adapter directory</h4>
-      <p>Adapters for C are in <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/c/</code>, so create
-        your C target adapter there.  Other languages are in <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/</code>.</p>
+      <p>Adapters for C are in
+        <a href="adapter/generic/program/procedural/c/#in_browser"><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/c/</code></a>,
+        so create
+        your C target adapter there.  Other languages are in
+        <a href="adapter/generic/program/procedural/#in_browser"><code>$PTII/ptolemy/cg/adapter/generic/program/procedural/</code></a>.
+      </p>
       <pre>
         mkdir $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape
       </pre>
@@ -260,9 +271,11 @@ done
       <p>Adding a new language like Maude would be a bit tricky.</p>
       <p>Probably the place to start is to replicate the cg html code generator by looking in:</p>
 
-<br/><code>ptolemy/cg/adapter/generic/html</code> and
+      <br/>
+      <a href="adapter/generic/html/#in_browser"><code>ptolemy/cg/adapter/generic/html</code></a> and
 
-<br/><code>ptolemy/cg/kernel/generic/html</code>
+      <br/>
+      <a href="kernel/generic/html/#in_browser"><code>ptolemy/cg/kernel/generic/html</code></a>
 
 <p>One would create</p>
 
@@ -270,7 +283,8 @@ done
 
 <br/><code>ptolemy/cg/kernel/generic/maude</code>
 
-<p>ptolemy/cg/kernel/generic/GenericCodeGenerator.java contains a mapping from language names to package names:</p>
+      <p><a href="kernel/generic/GenericCodeGenerator.java#in_browser"><code>$PTII/ptolemy/cg/kernel/generic/GenericCodeGenerator.java</code></a>
+        contains a mapping from language names to package names:</p>
 <pre>
      private static String[][] _languages = {
              { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
