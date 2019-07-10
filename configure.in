@@ -3085,6 +3085,7 @@ else
         if test -f  "$jar"; then
             if "$JAVAC" -classpath "$jar" JavaFXTest.java ; then
                 PTJAVAFX_JAR="$jar"
+                updateClasspath "$PTJAVAFX_JAR"
                 PT_MSG_RESULT(JavaFX found at $PTJAVAFX_JAR)
                 # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
                 PTJAVAFX_DIR=audio
