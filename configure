@@ -1005,6 +1005,7 @@ with_openideutillookup
 with_netbeansapivisual
 with_jcerti
 with_javamail
+with_javafx_jar
 with_jna_jar
 with_joystick_jar
 with_ptjacl_jar
@@ -1714,6 +1715,8 @@ Optional Packages:
                           defaults to \$PTII/lib/jcerti.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/lib
+  --with-javafx-jar=JARFILE         use the jfxrt.jar from JARFILE,
+                          defaults to /usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
   --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
@@ -8846,24 +8849,40 @@ $as_echo "$JAVAFX_USER_DIR is not present,
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX" >&5
 $as_echo_n "checking for JavaFX... " >&6; }
+
+# Check whether --with-javafx-jar was given.
+if test "${with_javafx_jar+set}" = set; then :
+  withval=$with_javafx_jar; JAVAFX_JAR=$withval
+else
+  JAVAFX_JAR=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
+fi
+
+
+    # Under Ubuntu, "apt install openjfx" creates
+    # /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
+    JAVAFX_DIRS="$JAVAFX_JAR /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
+
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JavaFXTest.java ; then
-        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JavaFX found in the default classpath" >&5
-$as_echo "JavaFX found in the default classpath" >&6; }; fi
-        # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
-        PTJAVAFX_DIR=audio
-        # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
-        PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+    if test "${PTVERBOSE:-none}" = "none"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX at $JAVAFX_DIRS" >&5
+$as_echo_n "checking for JavaFX at $JAVAFX_DIRS... " >&6; }
     else
-        PTJAVAFX_JAR_TMP=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
-        if test -f  "$JAVAFX_JAR_TMP"; then
-            if "$JAVAC" JavaFXTest.java ; then
-                PTJAVAFX_JAR="$PTJAVAFX_JAR_TMP"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX" >&5
+$as_echo_n "checking for JavaFX... " >&6; }
+    fi
+    for jar in $JAVAFX_DIRS
+    do
+        if test "${PTVERBOSE:-none}" = "none"; then
+            $PT_ECHO $ECHO_N "."
+        else
+            $PT_ECHO $ECHO_N "$jar "
+        fi
+        if test -f  "$jar"; then
+            if "$JAVAC" -classpath "$jar" JavaFXTest.java ; then
+                PTJAVAFX_JAR="$jar"
                 if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JavaFX found at $PTJAVAFX_JAR" >&5
 $as_echo "JavaFX found at $PTJAVAFX_JAR" >&6; }; fi
@@ -8871,19 +8890,57 @@ $as_echo "JavaFX found at $PTJAVAFX_JAR" >&6; }; fi
                 PTJAVAFX_DIR=audio
                 # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
                 PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
-            fi
+             fi
+        fi
+    done
+
+    if test -z "$PTJAVAFX_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: JavaFX not yet found" >&5
+$as_echo "$as_me: WARNING: JavaFX not yet found" >&2;}
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for JavaFX in the default classpath" >&5
+$as_echo_n "checking checking for JavaFX in the default classpath... " >&6; }
+        # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+        if "$JAVAC" JavaFXTest.java ; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JavaFX found in the default classpath" >&5
+$as_echo "JavaFX found in the default classpath" >&6; }; fi
+            # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+            PTJAVAFX_DIR=audio
+            # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+            PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
         fi
     fi
 
+
     if test -z "$PTJAVAFX_DIR"; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JavaFXTest.java' failed.
-    perhaps you are running an OpenJDK JDK instead of an
-    Oracle JDK?
-    This means that the audio accessors will not work under CapeCode." >&5
-$as_echo "$as_me: WARNING: '\"$JAVAC\" JavaFXTest.java' failed.
-    perhaps you are running an OpenJDK JDK instead of an
-    Oracle JDK?
-    This means that the audio accessors will not work under CapeCode." >&2;}
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JavaFXTest.java' failed and
+    jfxrt.jar was not found in $JAVAFX_DIRS
+
+    Perhaps you are running an OpenJDK JDK instead of an Oracle JDK?
+    Or, perhaps you are using an Oracle JDK later than JDK 10 that
+    no longer includes JavaFX.
+    To download JavaFX, see https://openjfx.io/
+
+    The ./configure script searches for $JAVAFX_DIRS
+    so please install OpenFX at one of those locations or use
+    --with-javafx-jar=JARFILE
+
+    If OpenFX is not present, then the audio accessors will not work under CapeCode.
+    " >&5
+$as_echo "$as_me: WARNING: '\"$JAVAC\" JavaFXTest.java' failed and
+    jfxrt.jar was not found in $JAVAFX_DIRS
+
+    Perhaps you are running an OpenJDK JDK instead of an Oracle JDK?
+    Or, perhaps you are using an Oracle JDK later than JDK 10 that
+    no longer includes JavaFX.
+    To download JavaFX, see https://openjfx.io/
+
+    The ./configure script searches for $JAVAFX_DIRS
+    so please install OpenFX at one of those locations or use
+    --with-javafx-jar=JARFILE
+
+    If OpenFX is not present, then the audio accessors will not work under CapeCode.
+    " >&2;}
        updateExcludes "ptolemy/actor/lib/jjs/modules/audio/"
     fi
 
