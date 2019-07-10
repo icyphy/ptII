@@ -1772,8 +1772,8 @@ Optional Packages:
                           defaults to JRE java.home property with lib/rt.jar appended
   --with-mysql=/path/to/mysql.jar  path to mysql.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
-  --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
+  --with-ojdbc=/path/to/ojdbcN.jar  path to $OJDBC_TARGET_JAR
+                          defaults to \$PTII/ptolemy/actor/lib/database/$OJDBC_TARGET_JAR
   --with-sphinx-data-jar=/path/to/sphinx4-data-5prealpha.jar  path to
                           defaults to \$PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar
   --with-sphinx-core-jar=/path/to/sphinx4-core-5prealpha.jar path to
@@ -8867,11 +8867,11 @@ fi
     startdir=$PTII
     cd "$srcdir/config"
     if test "${PTVERBOSE:-none}" = "none"; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX at $JAVAFX_DIRS" >&5
-$as_echo_n "checking for JavaFX at $JAVAFX_DIRS... " >&6; }
-    else
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX" >&5
 $as_echo_n "checking for JavaFX... " >&6; }
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JavaFX at $JAVAFX_DIRS" >&5
+$as_echo_n "checking for JavaFX at $JAVAFX_DIRS... " >&6; }
     fi
     for jar in $JAVAFX_DIRS
     do
@@ -8971,8 +8971,8 @@ if test ! -d "$JMF_USER_DIR"; then
 $as_echo "$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Media Framework (JMF)" >&5
-$as_echo_n "checking for Java Media Framework (JMF)... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java Media Framework (JMF) in the default classpath" >&5
+$as_echo_n "checking for Java Media Framework (JMF) in the default classpath... " >&6; }
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
     startdir=$PTII
@@ -8984,6 +8984,10 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JMF 
 $as_echo "JMF found in the default classpath." >&6; }; fi
         PTJMF_OK=1
     else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: JMF not found in the default classpath, will check elsewhere next." >&5
+$as_echo "$as_me: WARNING: JMF not found in the default classpath, will check elsewhere next." >&2;}
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JMF in $PTII/vendors/JMF*" >&5
+$as_echo_n "checking for JMF in $PTII/vendors/JMF*... " >&6; }
         TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
         if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
             if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
@@ -9865,6 +9869,24 @@ $as_echo "$as_me: WARNING: $PTNODE was found, but \"$PTNODE --version\" returned
         fi
     fi
 
+    case "`uname -s`" in
+        Darwin) npmArch=darwin;;
+        CYGWIN*) npmArch=win;;
+        Linux) npmArch=linux;;
+        *) npmArch=FIXME-Insert-Your-Architecture-Here;;
+    esac
+
+    NODE7_INSTRUCTIONS="To install Node 7.x:
+
+    mkdir \$PTII/vendors/node
+    cd \$PTII/vendors/node
+
+    wget https://nodejs.org/download/release/v7.10.1/node-v7.10.1-$npmArch-x64.tar.gz
+    tar -zxf node-v7.10.1-$npmArch-x64.tar.gz
+
+    cd \$PTII
+    export PATH=$PTII/bin:\${PATH}"
+
     if test "${PTNODE:-none}" = "none"; then
            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
@@ -9878,7 +9900,9 @@ $as_echo "$as_me: WARNING: $PTNODE was found, but \"$PTNODE --version\" returned
 
     Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
-    will only work if the node executable is the path." >&5
+    will only work if the node executable is the path.
+
+    $NODE7_INSTRUCTIONS" >&5
 $as_echo "$as_me: WARNING: Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
 
@@ -9891,7 +9915,12 @@ $as_echo "$as_me: WARNING: Failed to find the node executable, which means that 
 
     Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
-    will only work if the node executable is the path." >&2;}
+    will only work if the node executable is the path.
+
+    $NODE7_INSTRUCTIONS" >&2;}
+
+    FINAL_WARNING="$FINAL_WARNING
+node was not found, which means that accessors probably won't work.  See above."
 
     else
        if test -f "$PTNODE" ; then
@@ -10049,13 +10078,7 @@ However, node and npm are used to build the JavaScript docs, so you
 may want to install Node 7.x if you want to view the CapeCode
 JavaScript documentation.  Building the documentation is optional.
 
-To install Node 7.x:
-    cd \$PTII/vendors
-    mkdir node
-    wget https://nodejs.org/download/release/v7.10.1/node-v7.10.1-$npmArch-x64.tar.gz
-    tar -zxf node-v7.10.1-$npmArch-x64.tar.gz
-    cd \$PTII
-    export PATH=$PTII/bin:\${PATH}"
+$NODE7_INSTRUCTIONS"
 
 
           fi
@@ -10200,6 +10223,26 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Open
 $as_echo "OpenCVTest failed to compile using $TMP_OPENCV_JAR." >&6; }; fi
             fi
          done
+         if ! test -f "$OPENCV_JAR"; then
+	     if ! test -z "$OPENCV_JARS"; then
+	         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Checked $OPENCV_JARS,
+    but the OpenCV test program failed to compile or run.
+
+    Under Linux, try:
+
+    export LD_LIBRARY_PATH=\${PTII}/vendors/opencv/lib:\${PTII}/vendors/opencv/share/OpenCV/java:\${LD_LIBRARY_PATH}
+    ./configure
+    " >&5
+$as_echo "$as_me: WARNING: Checked $OPENCV_JARS,
+    but the OpenCV test program failed to compile or run.
+
+    Under Linux, try:
+
+    export LD_LIBRARY_PATH=\${PTII}/vendors/opencv/lib:\${PTII}/vendors/opencv/share/OpenCV/java:\${LD_LIBRARY_PATH}
+    ./configure
+    " >&2;}
+             fi
+         fi
      fi
 
     if ! test -f "$OPENCV_JAR"; then
@@ -12962,11 +13005,8 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MYS
 $as_echo "$MYSQL_JAR" >&6; }; fi
     fi
     OJDBC_TARGET_JAR=ojdbc6.jar
-    if test "$JAVA1_6_OR_LATER" != "yes"; then
-        OJDBC_TARGET_JAR=ojdbc5.jar
-    fi
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for ojdbc.jar" >&5
-$as_echo_n "checking for ojdbc.jar... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $OJDBC_TARGET_JAR" >&5
+$as_echo_n "checking for $OJDBC_TARGET_JAR... " >&6; }
 
 # Check whether --with-ojdbc was given.
 if test "${with_ojdbc+set}" = set; then :
@@ -12985,14 +13025,14 @@ $as_echo "$ORACLE_OJDBC_JAR" >&6; }; fi
     but only necessary to use database actors with Oracle.
     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
     To install ojdbc5.jar or ojdbc6.jar,
-    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    download it from https://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html
     copy it to ptolemy/actor/lib/database
     and rerun ./configure" >&5
 $as_echo "$as_me: WARNING: $OJDBC_TARGET_JAR not found,
     but only necessary to use database actors with Oracle.
     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
     To install ojdbc5.jar or ojdbc6.jar,
-    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    download it from https://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html
     copy it to ptolemy/actor/lib/database
     and rerun ./configure" >&2;}
 
