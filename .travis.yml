@@ -84,7 +84,7 @@ services:
 # Xenial defaults to openjdk11, which does not have JavaFX, which is required by the
 # audio accessor, so we require oraclejdk.
 # See https://docs.travis-ci.com/user/reference/xenial/#jvm-clojure-groovy-java-scala-support
-# JDK 11 does not include JavaFX, see https://www.infoworld.com/article/3305073/removed-from-jdk-11-javafx-11-arrives-as-a-standalone-module.html
+# oraclejdk11 does not include JavaFX, see https://www.infoworld.com/article/3305073/removed-from-jdk-11-javafx-11-arrives-as-a-standalone-module.html
 jdk:
   - oraclejdk10
 
