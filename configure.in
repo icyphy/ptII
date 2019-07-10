@@ -3071,9 +3071,9 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     if test "${PTVERBOSE:-none}" = "none"; then
-        AC_MSG_CHECKING([for JavaFX at $JAVAFX_DIRS])
-    else
         AC_MSG_CHECKING([for JavaFX])
+    else
+        AC_MSG_CHECKING([for JavaFX at $JAVAFX_DIRS])
     fi
     for jar in $JAVAFX_DIRS
     do
@@ -3151,7 +3151,7 @@ if test ! -d "$JMF_USER_DIR"; then
     PT_MSG_STATUS([$JMF_USER_DIR is not present,
     so we need not find the JMF - The Java Media Framework.])
 else
-    AC_MSG_CHECKING([for Java Media Framework (JMF)])
+    AC_MSG_CHECKING([for Java Media Framework (JMF) in the default classpath])
     # We need to run javac in the config directory so that javac
     # from jdk1.1.6 under NT and cygwin works properly
     startdir=$PTII
@@ -3161,6 +3161,8 @@ else
         PT_MSG_RESULT(JMF found in the default classpath.)
         PTJMF_OK=1
     else
+        AC_MSG_WARN([JMF not found in the default classpath, will check elsewhere next.])
+        AC_MSG_CHECKING([for JMF in $PTII/vendors/JMF*])
         TMP_JMF_DIR=`find $PTII/vendors -type d \( -name "JMF*" -o -name "jmf*" \) -print  | head -1`
         if test -f "$TMP_JMF_DIR/lib/jmf.jar"; then
             if "$JAVAC" -classpath "$TMP_JMF_DIR/lib/jmf.jar" JMFTest.java ; then
@@ -3757,6 +3759,24 @@ else
         fi
     fi
 
+    case "`uname -s`" in
+        Darwin) npmArch=darwin;;
+        CYGWIN*) npmArch=win;;
+        Linux) npmArch=linux;;
+        *) npmArch=FIXME-Insert-Your-Architecture-Here;;
+    esac
+
+    NODE7_INSTRUCTIONS="To install Node 7.x:
+
+    mkdir \$PTII/vendors/node
+    cd \$PTII/vendors/node
+
+    wget https://nodejs.org/download/release/v7.10.1/node-v7.10.1-$npmArch-x64.tar.gz
+    tar -zxf node-v7.10.1-$npmArch-x64.tar.gz
+
+    cd \$PTII
+    export PATH=$PTII/bin:\${PATH}"
+    
     if test "${PTNODE:-none}" = "none"; then
            AC_MSG_WARN([Failed to find the node executable, which means that the Node.js Accessor Host
     To install Node.js, see https://nodejs.org/en/download/
@@ -3770,7 +3790,12 @@ else
     
     Without Node, it is still possible to run the CapeCode Accessor Host,
     but generating Swarmlets and running them using Node
-    will only work if the node executable is the path.])
+    will only work if the node executable is the path.
+
+    $NODE7_INSTRUCTIONS])
+
+    FINAL_WARNING="$FINAL_WARNING
+node was not found, which means that accessors probably won't work.  See above."
 
     else
        if test -f "$PTNODE" ; then
@@ -3864,13 +3889,7 @@ However, node and npm are used to build the JavaScript docs, so you
 may want to install Node 7.x if you want to view the CapeCode
 JavaScript documentation.  Building the documentation is optional.
 
-To install Node 7.x:
-    cd \$PTII/vendors
-    mkdir node
-    wget https://nodejs.org/download/release/v7.10.1/node-v7.10.1-$npmArch-x64.tar.gz
-    tar -zxf node-v7.10.1-$npmArch-x64.tar.gz
-    cd \$PTII
-    export PATH=$PTII/bin:\${PATH}"
+$NODE7_INSTRUCTIONS"
    
 
           fi
@@ -3987,6 +4006,18 @@ else
                 PT_MSG_RESULT(OpenCVTest failed to compile using $TMP_OPENCV_JAR.)
             fi
          done
+         if ! test -f "$OPENCV_JAR"; then
+	     if ! test -z "$OPENCV_JARS"; then
+	         AC_MSG_WARN([Checked $OPENCV_JARS,
+    but the OpenCV test program failed to compile or run.
+
+    Under Linux, try:
+
+    export LD_LIBRARY_PATH=\${PTII}/vendors/opencv/lib:\${PTII}/vendors/opencv/share/OpenCV/java:\${LD_LIBRARY_PATH}
+    ./configure
+    ])
+             fi
+         fi
      fi
 
     if ! test -f "$OPENCV_JAR"; then
@@ -5735,12 +5766,9 @@ else
        PT_MSG_RESULT([$MYSQL_JAR])
     fi    
     OJDBC_TARGET_JAR=ojdbc6.jar
-    if test "$JAVA1_6_OR_LATER" != "yes"; then
-        OJDBC_TARGET_JAR=ojdbc5.jar
-    fi
-    AC_MSG_CHECKING([for ojdbc.jar])
-    AC_ARG_WITH(ojdbc, [  --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
-                          defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR],
+    AC_MSG_CHECKING([for $OJDBC_TARGET_JAR])
+    AC_ARG_WITH(ojdbc, [  --with-ojdbc=/path/to/ojdbcN.jar  path to $OJDBC_TARGET_JAR
+                          defaults to \$PTII/ptolemy/actor/lib/database/$OJDBC_TARGET_JAR],
 	    ORACLE_OJDBC_JAR=$withval,
 	    ORACLE_OJDBC_JAR=$PTII/ptolemy/actor/lib/database/$OJDBC_TARGET_JAR)
 
@@ -5751,7 +5779,7 @@ else
     but only necessary to use database actors with Oracle.
     If the mysql jar file is present, then the Oracle Java Database Connector is not necessary
     To install ojdbc5.jar or ojdbc6.jar,
-    download it from http://www.oracle.com/technetwork/apps-tech/jdbc-111060-084321.html
+    download it from https://www.oracle.com/technetwork/database/features/jdbc/jdbc-drivers-12c-download-1958347.html
     copy it to ptolemy/actor/lib/database
     and rerun ./configure])
     
