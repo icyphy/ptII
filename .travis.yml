@@ -157,6 +157,7 @@ install:
   # Display environment variables
   - env | sort
   - which java || true
+  - ls /usr/local/lib/jvm || true
   - java -version || true
 
   - ./configure --enable-verbose
