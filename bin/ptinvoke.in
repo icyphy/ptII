@@ -179,7 +179,7 @@ fi
 #### JavaFX, used by the Audio accessor
 PTJAVAFX_JAR=
 PTJAVAFX_JAR_TMP="@PTJAVAFX_JAR@"
-if [ -e "$PTJAVAFX_JAR_TMP" ];
+if [ -f "$PTJAVAFX_JAR_TMP" ]; then
    PTJAVAFX_JAR="${CLASSPATHSEPARATOR}$PTJAVAFX_JAR_TMP"
 fi
 
