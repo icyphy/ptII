@@ -156,6 +156,9 @@ install:
 
   # Display environment variables
   - env | sort
+  - which java || true
+  - java -version || true
+
   - ./configure --enable-verbose
 
   # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
@@ -165,7 +168,7 @@ install:
   - sudo ln -s `which npm` /usr/local/bin/npm
   - sudo ln -s `which node` /usr/local/bin/node
   - ssh localhost  npm --version || true
-
+  
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
