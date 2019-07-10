@@ -42,7 +42,9 @@ env:
     - PT_NO_NET=true
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
     - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
-    - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
+
+    # Place openjdk10 in the path so that we find JavaFX so that the audio accessor works.
+    - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:/usr/local/lib/jvm/openjdk10/bin:${PATH}
 
     # Heartbeat
     - secure: "yFRoAj3VTJs0ue19oKxJ8qxjM/LbthiJFx/iTJiUK1PPVWeOQpBlraXnhSEtefxNq7KXnXJY1OjQpTbr+j9hFipxOjoGgAGU7rv3iOCKP9ttdlnzUrsyu7iXSx/xoyQPRpnCiJBrgl839PzpolzF0dGeTfwtjXKO0d4YF8YUn7a9QJesqh0vxjnmxcHcdfJnaufzw9uUQpggrJInrtnp8B+WWH24RJpeJhlE/cOzi1SZIlhsCBaNGr11N6iJWoUvyv/lkw1fbVJRgUIRP5kN9bwAUQ7azcXB0cpgpa3RHP8fybBGGM2yVhR+RNwxuLKwF6Zqm38qq3ty1YVSWprgX/HGvAeyC0voFyuj3XhvFqMKSICNB7kjIfjbnjRrPgbIiCDCXukFejII+jvJ7bXgmZqgk7SBP8FtugEX4hIMy6PoxUf9pLPRyUAugqPGbNg5SSE2zLUKGtnT/VizeMeHZjd0tArlKdZkN6s1+oO3EmG5LtyYtwczVIsc6YxXunyXxZfNxI1GBfUDHyAKRMhK0JXBIrj/aLSs11KmkNOytU3qghXl8oChLbnV2YnkwPl2J6qCcYNlubVpHlsQgO51LuPaU3tpvxp4TZ0qZhTPvmGucqfD/tjL/ztK+t0FtvElOZZd981wy9Irok9m1X19tavY4dsaiVTDzehQZUeaxaY="
