@@ -3057,36 +3057,72 @@ if test ! -d "$JAVAFX_USER_DIR"; then
     so we need not check for JavaFX.])
 else
     AC_MSG_CHECKING([for JavaFX])
+    AC_ARG_WITH(javafx-jar, [  --with-javafx-jar=JARFILE         use the jfxrt.jar from JARFILE,
+                          defaults to /usr/share/java/openjfx/jre/lib/ext/jfxrt.jar],
+        JAVAFX_JAR=$withval,
+        JAVAFX_JAR=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar)
+
+    # Under Ubuntu, "apt install openjfx" creates
+    # /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
+    JAVAFX_DIRS="$JAVAFX_JAR /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
+
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" JavaFXTest.java ; then
-        PT_MSG_RESULT(JavaFX found in the default classpath)
-        # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
-        PTJAVAFX_DIR=audio
-        # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
-        PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+    if test "${PTVERBOSE:-none}" = "none"; then
+        AC_MSG_CHECKING([for JavaFX at $JAVAFX_DIRS])
     else
-        PTJAVAFX_JAR_TMP=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
-        if test -f  "$JAVAFX_JAR_TMP"; then
-            if "$JAVAC" JavaFXTest.java ; then
-                PTJAVAFX_JAR="$PTJAVAFX_JAR_TMP"
+        AC_MSG_CHECKING([for JavaFX])
+    fi
+    for jar in $JAVAFX_DIRS
+    do
+        if test "${PTVERBOSE:-none}" = "none"; then
+            $PT_ECHO $ECHO_N "."
+        else
+            $PT_ECHO $ECHO_N "$jar "
+        fi
+        if test -f  "$jar"; then
+            if "$JAVAC" -classpath "$jar" JavaFXTest.java ; then
+                PTJAVAFX_JAR="$jar"
                 PT_MSG_RESULT(JavaFX found at $PTJAVAFX_JAR)
                 # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
                 PTJAVAFX_DIR=audio
                 # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
                 PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
-            fi
+             fi
+        fi
+    done
+
+    if test -z "$PTJAVAFX_DIR"; then
+        AC_MSG_WARN([JavaFX not yet found])
+        AC_MSG_CHECKING([checking for JavaFX in the default classpath])
+        # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+        if "$JAVAC" JavaFXTest.java ; then
+            PT_MSG_RESULT(JavaFX found in the default classpath)
+            # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+            PTJAVAFX_DIR=audio
+            # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+            PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
         fi
     fi
 
+
     if test -z "$PTJAVAFX_DIR"; then
-        AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed.
-    perhaps you are running an OpenJDK JDK instead of an
-    Oracle JDK?
-    This means that the audio accessors will not work under CapeCode.])
+        AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed and
+    jfxrt.jar was not found in $JAVAFX_DIRS
+    
+    Perhaps you are running an OpenJDK JDK instead of an Oracle JDK?
+    Or, perhaps you are using an Oracle JDK later than JDK 10 that
+    no longer includes JavaFX.
+    To download JavaFX, see https://openjfx.io/
+
+    The ./configure script searches for $JAVAFX_DIRS
+    so please install OpenFX at one of those locations or use
+    --with-javafx-jar=JARFILE
+
+    If OpenFX is not present, then the audio accessors will not work under CapeCode.
+    ])
        updateExcludes "ptolemy/actor/lib/jjs/modules/audio/"
     fi
 
