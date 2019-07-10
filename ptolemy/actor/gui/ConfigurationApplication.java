@@ -232,8 +232,15 @@ public class ConfigurationApplication implements ExecutionListener {
 
         _initializeApplication();
 
-        StringUtilities.addPtolemyLibraryDirectoryToJavaLibraryPath();
-
+        try {
+            StringUtilities.addPtolemyLibraryDirectoryToJavaLibraryPath();
+        } catch (Throwable throwable) {
+            // Java 12 no longer has ClassLoader.usr_paths.
+            System.err.println("ConfigurationApplication(): Could not add the ptolemy "
+                               + "library directory to the Java library path: "
+                               + throwable);
+            throwable.printStackTrace();
+        }
         _basePath = basePath;
 
         // Create a parser to use.
