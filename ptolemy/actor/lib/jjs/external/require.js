@@ -436,7 +436,7 @@
             }
             // FIXME: Temporarily include the stack so that we can debug
             // an ExceptionInInitializerError with audio under Travis. (cxh 7/19)
-            var stack = exception.stack;
+            var stack = e.stack;
             if (typeof stack === 'undefined') {
                 try {
                     // This code is CapeCode/Nashorn Host-specific because it uses Java.
@@ -444,10 +444,10 @@
                         PrintWriter = java.io.PrintWriter;
                     var stringWriter = new StringWriter();
                     var printWriter = new PrintWriter(stringWriter);
-                    exception.printStackTrace(printWriter);
+                    e.printStackTrace(printWriter);
                     stack = "\n" + stringWriter.toString();
                 } catch (exception2) {
-                    stack = 'localFunctions.js: hostStackTrace(): Internal error? The stack of the JavaScript exception ' + exception +
+                    stack = 'localFunctions.js: hostStackTrace(): Internal error? The stack of the JavaScript exception ' + e +
                         'was undefined and the getting the stack trace as a Java exception failed with: ' + exception2;
                 }
             }
