@@ -81,6 +81,12 @@ dist: xenial
 services:
   - xvfb
 
+# Xenial defaults to openjdk11, which does not have JavaFX, which is required by the
+# audio accessor, so we require oraclejdk.
+# See https://docs.travis-ci.com/user/reference/xenial/#jvm-clojure-groovy-java-scala-support
+jdk:
+  - oraclejdk11
+
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
