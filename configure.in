@@ -704,6 +704,8 @@ fi
 # See https://bugs.openjdk.java.net/browse/JDK-8190556
 # If you get messages about "javac: invalid target release:", then check that JAVA_HOME
 # is set to same JDK as the one that is in your path.
+AC_MSG_CHECKING([for Java version for use with -target and by Ant in build.xml])
+
 changequote(<<, >>)dnl
 JVERSION_TARGET=`echo "$JVERSION" |
     awk -F . '{ if ($1 > 8) {
@@ -713,6 +715,8 @@ JVERSION_TARGET=`echo "$JVERSION" |
                 }
               }'`
 changequote([, ])dnl
+
+PT_MSG_RESULT([$JVERSION_TARGET])
 
 cd "$startdir"
 
@@ -3065,12 +3069,27 @@ else
         # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
         PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
     else
-       AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed.
+        PTJAVAFX_JAR_TMP=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
+        if test -f  "$JAVAFX_JAR_TMP"; then
+            if "$JAVAC" JavaFXTest.java ; then
+                PTJAVAFX_JAR="$PTJAVAFX_JAR_TMP"
+                PT_MSG_RESULT(JavaFX found at $PTJAVAFX_JAR)
+                # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+                PTJAVAFX_DIR=audio
+                # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+                PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+            fi
+        fi
+    fi
+
+    if test -z "$PTJAVAFX_DIR"; then
+        AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed.
     perhaps you are running an OpenJDK JDK instead of an
     Oracle JDK?
     This means that the audio accessors will not work under CapeCode.])
        updateExcludes "ptolemy/actor/lib/jjs/modules/audio/"
     fi
+
     cd "$startdir"
 
 fi
@@ -7204,6 +7223,9 @@ AC_SUBST(PTJAVA3D_DIR)
 
 # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
 AC_SUBST(PTJAVAFX_DIR)
+
+# PTJAVAFX_JAR is used in ptolemy/actor/lib/jjs/modules
+AC_SUBST(PTJAVAFX_JAR)
 
 # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTJAVAFX_PACKAGES)

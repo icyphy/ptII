@@ -757,6 +757,7 @@ PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
 PTJAVAFX_PACKAGES
+PTJAVAFX_JAR
 PTJAVAFX_DIR
 PTJAVA3D_DIR
 PTJAVA32_DIR
@@ -3805,6 +3806,9 @@ fi
 # See https://bugs.openjdk.java.net/browse/JDK-8190556
 # If you get messages about "javac: invalid target release:", then check that JAVA_HOME
 # is set to same JDK as the one that is in your path.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for Java version for use with -target and by Ant in build.xml" >&5
+$as_echo_n "checking for Java version for use with -target and by Ant in build.xml... " >&6; }
+
 JVERSION_TARGET=`echo "$JVERSION" |
     awk -F . '{ if ($1 > 8) {
                    print $1
@@ -3812,6 +3816,10 @@ JVERSION_TARGET=`echo "$JVERSION" |
 		   print $1 "." $2
                 }
               }'`
+
+if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JVERSION_TARGET" >&5
+$as_echo "$JVERSION_TARGET" >&6; }; fi
 
 cd "$startdir"
 
@@ -8852,7 +8860,23 @@ $as_echo "JavaFX found in the default classpath" >&6; }; fi
         # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
         PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
     else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JavaFXTest.java' failed.
+        PTJAVAFX_JAR_TMP=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar
+        if test -f  "$JAVAFX_JAR_TMP"; then
+            if "$JAVAC" JavaFXTest.java ; then
+                PTJAVAFX_JAR="$PTJAVAFX_JAR_TMP"
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: JavaFX found at $PTJAVAFX_JAR" >&5
+$as_echo "JavaFX found at $PTJAVAFX_JAR" >&6; }; fi
+                # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+                PTJAVAFX_DIR=audio
+                # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+                PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+            fi
+        fi
+    fi
+
+    if test -z "$PTJAVAFX_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JavaFXTest.java' failed.
     perhaps you are running an OpenJDK JDK instead of an
     Oracle JDK?
     This means that the audio accessors will not work under CapeCode." >&5
@@ -8862,6 +8886,7 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" JavaFXTest.java' failed.
     This means that the audio accessors will not work under CapeCode." >&2;}
        updateExcludes "ptolemy/actor/lib/jjs/modules/audio/"
     fi
+
     cd "$startdir"
 
 fi
@@ -14778,6 +14803,9 @@ fi
 
 
 # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+
+
+# PTJAVAFX_JAR is used in ptolemy/actor/lib/jjs/modules
 
 
 # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
