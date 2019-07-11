@@ -58,4 +58,6 @@ echo "javachdir: pwd: `pwd`  Invoking with -Djava.net.preferIPv4Stack=true"
 #   free -m
 #fi   
 
-java -Djava.net.preferIPv4Stack=true $@
+# Temporarily add -Djavafx.verbose=true -Dprism.verbose=true so that we get
+# debugging messages.
+java -Djava.net.preferIPv4Stack=true -Djavafx.verbose=true -Dprism.verbose=true $@
