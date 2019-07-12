@@ -239,7 +239,6 @@ public class ConfigurationApplication implements ExecutionListener {
             System.err.println("ConfigurationApplication(): Could not add the ptolemy "
                                + "library directory to the Java library path: "
                                + throwable);
-            throwable.printStackTrace();
         }
         _basePath = basePath;
 
