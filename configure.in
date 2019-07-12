@@ -3058,9 +3058,10 @@ else
     startdir=$PTII
     cd "$srcdir/config"
     
-    TMP_JAVAFX_DIR="`find "$PTII/vendors/javafx" -type d -depth 1 | head -1`"
+    TMP_JAVAFX_DIR="`ls -d $PTII/vendors/javafx/* | head -1`"
 
     echo "TMP_JAVAFX_DIR=$TMP_JAVAFX_DIR"
+    echo "$PTII/vendors/javafx: `ls -l $PTII/vendors/javafx`"
 
     if [ test -z "$TMP_JAVAFX_DIR" ]; then
        TMP_JAVAFX_DIR=$PTII/vendors/javafx
