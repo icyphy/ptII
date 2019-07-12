@@ -236,9 +236,13 @@ JAVAC = 	@JAVAC@
 # Flags to pass to javac.  Usually something like '-g -depend'
 JDEBUG =	-g
 JOPTIMIZE =	-O
-# JAVAC_MODULES is used by Java 9
-JAVAC_MODULES =	@JAVAC_MODULES@
-JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) $(JAVAC_MODULES)
+
+# Modules are used in Java 9 and later and are used by JavaFX, which is needed
+# by the audio accessors.
+PTMODULE_PATH_COMMAND_LINE =	@PTMODULE_PATH_COMMAND_LINE@
+PTADD_MODULES_COMMAND_LINE =	@PTADD_MODULES_COMMAND_LINE@
+
+JFLAGS = 	$(JDEBUG) $(JOPTIMIZE) $(PTMODULE_PATH_COMMAND_LINE) $(PTADD_MODULES_COMMAND_LINE
 
 # The javadoc binary, used to create html documentation of java classes.
 JAVADOC = 	@JAVADOC@

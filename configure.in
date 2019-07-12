@@ -1265,14 +1265,10 @@ changequote([, ])dnl
 status=$?
 if test "$status" = "1" ; then
     PT_MSG_RESULT([Java version is $JVERSION, so Java 9 or later is not present])
+    MODULE_SYSTEM=no
 else
     PT_MSG_RESULT([Java version is $JVERSION, Java 9 or later present, so certain internal sun.* packages are not accessible])
-    # We use to need to add a module so that
-    # javax.xml.bind.DatatypeConverter can be found.
-    # However, we no longer need that class.
-
-    # ANT_JAVAC_COMPILERARG='     <compilerarg line="--add-modules java.xml.bind"/>';
-    # JAVAC_MODULES="--add-modules java.xml.bind"
+    MODULE_SYSTEM=yes
     PTVIEWER_DIR=
     PTVIEWER_PACKAGES=
     updateExcludes "ptolemy/copernicus/applet/"
@@ -3056,62 +3052,66 @@ if test ! -d "$JAVAFX_USER_DIR"; then
     PT_MSG_STATUS([$JAVAFX_USER_DIR is not present,
     so we need not check for JavaFX.])
 else
-    AC_MSG_CHECKING([for JavaFX])
-    AC_ARG_WITH(javafx-jar, [  --with-javafx-jar=JARFILE         use the jfxrt.jar from JARFILE,
-                          defaults to /usr/share/java/openjfx/jre/lib/ext/jfxrt.jar],
-        JAVAFX_JAR=$withval,
-        JAVAFX_JAR=/usr/share/java/openjfx/jre/lib/ext/jfxrt.jar)
-
-    # Under Ubuntu, "apt install openjfx" creates
-    # /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
-    JAVAFX_DIRS="$JAVAFX_JAR /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar"
-
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
+        
+    # We need to run javac in the config directory so that javac
+    # from jdk1.1.6 under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
-    if test "${PTVERBOSE:-none}" = "none"; then
-        AC_MSG_CHECKING([for JavaFX])
-    else
-        AC_MSG_CHECKING([for JavaFX at $JAVAFX_DIRS])
+    
+    TMP_JAVAFX_DIR=`find $PTII/vendors/javafx -type d -depth 1 | head -1`
+    if [ test -z "$TMP_JAVAFX_DIR" ]; then
+       TMP_JAVAFX_DIR=$PTII/vendors/javafx
     fi
-    for jar in $JAVAFX_DIRS
-    do
-        if test "${PTVERBOSE:-none}" = "none"; then
-            $PT_ECHO $ECHO_N "."
-        else
-            $PT_ECHO $ECHO_N "$jar "
-        fi
-        if test -f  "$jar"; then
-            if "$JAVAC" -classpath "$jar" JavaFXTest.java ; then
-                PTJAVAFX_JAR="$jar"
-                updateClasspath "$PTJAVAFX_JAR"
-                PT_MSG_RESULT(JavaFX found at $PTJAVAFX_JAR)
-                # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
-                PTJAVAFX_DIR=audio
-                # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
-                PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
-             fi
-        fi
-    done
 
-    if test -z "$PTJAVAFX_DIR"; then
+    AC_MSG_CHECKING([for JavaFX])
+    AC_ARG_WITH(javafx-jar, [  --with-javafx=PATH         use JavaFX from PATH,
+                          defaults to $TMP_JAVAFX_DIR]
+        JAVAFX_DIR=$withval,
+        JAVAFX_DIR=$TMP_JAVAFX_DIR)
+
+    AC_MSG_CHECKING([checking for JavaFX in the default classpath])
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JavaFXTest.java ; then
+       PT_MSG_RESULT(JavaFX found in the default classpath)
+       # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
+       PTJAVAFX_DIR=audio
+       # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
+       PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+    fi
+
+    if test "$MODULE_SYSTEM" = "yes" -a -z "$PTJAVAFX_DIR" -a -d "$TMP_JAVAFX_DIR/lib"; then
         AC_MSG_WARN([JavaFX not yet found])
-        AC_MSG_CHECKING([checking for JavaFX in the default classpath])
+        AC_MSG_CHECKING([checking for JavaFX in a module])
         # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-        if "$JAVAC" JavaFXTest.java ; then
-            PT_MSG_RESULT(JavaFX found in the default classpath)
+
+        JAVAFX_ADD_MODULES="javafx.controls,javafx.swing,javafx.media"
+        JAVAFX_MODULE_PATH="$TMP_JAVAFX_DIR/lib"
+
+        if "$JAVAC" --module-path $JAVAFX_MODULE_PATH --add-modules $JAVAFX_ADD_MODULES JavaFXTest.java ; then
+            PT_MSG_RESULT($JAVAFX_MODULE_PATH)
             # PTJAVAFX_DIR is used in ptolemy/actor/lib/jjs/modules
             PTJAVAFX_DIR=audio
             # PTJAVAFX_PACKAGES is used in ptII/doc/makefile
             PTJAVAFX_PACKAGES=ptolemy.actor.lib.jjs.modules
+
+            if test -z "$PTADD_MODULES"; then
+                PTADD_MODULES="$JAVAFX_ADD_MODULES,$PTADD_MODULES"
+            else
+                PTADD_MODULES="$JAVAFX_ADD_MODULES"
+            fi
+
+            if test -z "$PTMODULE_PATH"; then
+                PTMODULE_PATH="$JAVAFX_MODULE_PATH$CLASSPATHSEPARATOR$PTMODULE_PATH"
+            else
+                PTMODULE_PATH="$JAVAFX_MODULE_PATH"
+            fi
+
         fi
     fi
 
 
     if test -z "$PTJAVAFX_DIR"; then
-        AC_MSG_WARN(['"$JAVAC" JavaFXTest.java' failed and
-    jfxrt.jar was not found in $JAVAFX_DIRS
+        AC_MSG_WARN([Failed to find JavaFX.
     
     Perhaps you are running an OpenJDK JDK instead of an Oracle JDK?
     Or, perhaps you are using an Oracle JDK later than JDK 10 that
@@ -6764,9 +6764,6 @@ fi
 
 # Keep these substitutions alphabetical, with a description
 
-# Ant directive for JavaC 9 to add --add-modules.
-AC_SUBST(ANT_JAVAC_COMPILERARG) 
-
 # Path to the ant binary, stored in lib/ptII.properteries, used while importing accessors in org/terraswarm/accessor/JSAccessor.java
 AC_SUBST(ANT_PATH)
 
@@ -6891,9 +6888,6 @@ AC_SUBST(JAVAC)
 
 # javacc binary
 AC_SUBST(JAVACC)
-
-# Java 9 --add-modules directive for javax.xml.bind.DatatypeConverter.
-AC_SUBST(JAVAC_MODULES)
 
 # javacc command line arguments, -STATIC=false if javacc is 5.0 or later.
 AC_SUBST(JAVACC_OPTIONS)
@@ -7033,6 +7027,22 @@ AC_SUBST(PSDF_DIR)
 
 # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
 AC_SUBST(PTACCESSOR_DIR)
+
+# The value of the --add-modules argument, used in JDK 9 and later to find JavaFX
+AC_SUBST(PTADD_MODULES)
+
+# The value of the addmodule argument for Ant and make
+if test ! -z "$PTADD_MODULES"; then
+   PTADD_MODULES_ANT="<jvmarg line=\"--add-modules $PTADD_MODULES\"/>"
+   AC_SUBST(PTADD_MODULES_ANT)
+
+   # Really? Ant javac task has no way to specify --add-modules?
+   PTADD_MODULES_ANT_JAVAC="<compilerarg line=\"--add-modules $PTADD_MODULES\"/>"
+   AC_SUBST(PTADD_MODULES_ANT_JAVAC)
+
+   PTADD_MODULES_COMMAND_LINE="--add-modules $PTADD_MODULES"
+   AC_SUBST(PTADD_MODULES_COMMAND_LINE)
+fi
 
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)
@@ -7491,6 +7501,17 @@ AC_SUBST(PTMETROII_DIR)
 
 # PTMETROII_PACKAGES is used in doc/makefile
 AC_SUBST(PTMETROII_PACKAGES)
+
+# The value of the --module-path argument, used in JDK 9 and later to find JavaFX
+AC_SUBST(PTMODULE_PATH)
+
+# The value of the modulepath argument for Ant
+if test ! -z "$PTMODULE_PATH"; then
+   PTMODULE_PATH_ANT="modulepath=\"$PTMODULE_PATH\""
+   AC_SUBST(PTMODULE_PATH_ANT)
+   PTMODULE_PATH_COMMAND_LINE="--module-path $PTMODULE_PATH"
+   AC_SUBST(PTMODULE_PATH_COMMAND_LINE)
+fi
 
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found

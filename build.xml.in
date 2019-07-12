@@ -722,9 +722,10 @@ For example:
 	   fork="true"
 	   memoryinitialsize="256m"
 	   memorymaximumsize="${java.maxmemory}"
+           @PTMODULE_PATH_ANT@
 	   source="${source}"
 	   target="${target}">
-      @ANT_JAVAC_COMPILERARG@
+      @PTADD_MODULES_ANT_JAVAC@
       <src path="${basedir}" />
       <!-- @ANT_WEBSENSOR_SRC@ -->
       <patternset refid="ptII.excludes" />
@@ -959,7 +960,9 @@ For example:
     <java classname="ptolemy.moml.filter.ActorIndex"
 	  fork="true"
 	  maxmemory="${java.maxmemory.large}"
+          @PTMODULE_PATH_ANT@
 	  >
+      @PTADD_MODULES_ANT@
       <arg line="doc/codeDoc/allNamedObjs.txt ptolemy/configs/doc/models.txt doc/codeDoc"/>
       <classpath>
 	<path refid="ptII.classpath" />
@@ -2851,7 +2854,10 @@ For example:
 	  description="Invoke the Ptolemy II User Interface.  To run a model, use ant vergil -Dmodel=model.xml"
 	  >
     <java classname="ptolemy.vergil.VergilApplication"
-	  fork="true">
+	  fork="true"
+          @PTMODULE_PATH_ANT@
+          >
+      @PTADD_MODULES_ANT@
       <classpath>
 	<pathelement location="/Users/cxh/ptII" />
 	<path refid="ptII.classpath"/>
