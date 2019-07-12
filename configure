@@ -8855,7 +8855,10 @@ else
     startdir=$PTII
     cd "$srcdir/config"
 
-    TMP_JAVAFX_DIR=`find $PTII/vendors/javafx -type d -depth 1 | head -1`
+    TMP_JAVAFX_DIR="`find "$PTII/vendors/javafx" -type d | sort | head -1`"
+
+    echo "TMP_JAVAFX_DIR=$TMP_JAVAFX_DIR"
+
     if  test -z "$TMP_JAVAFX_DIR" ; then
        TMP_JAVAFX_DIR=$PTII/vendors/javafx
     fi
@@ -8885,8 +8888,8 @@ $as_echo "JavaFX found in the default classpath" >&6; }; fi
     if test "$MODULE_SYSTEM" = "yes" -a -z "$PTJAVAFX_DIR" -a -d "$TMP_JAVAFX_DIR/lib"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: JavaFX not yet found" >&5
 $as_echo "$as_me: WARNING: JavaFX not yet found" >&2;}
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for JavaFX in a module" >&5
-$as_echo_n "checking checking for JavaFX in a module... " >&6; }
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for JavaFX in a module $TMP_JAVAFX_DIR/lib" >&5
+$as_echo_n "checking checking for JavaFX in a module $TMP_JAVAFX_DIR/lib... " >&6; }
         # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 
         JAVAFX_ADD_MODULES="javafx.controls,javafx.swing,javafx.media"
