@@ -2,9 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id$
-#
-# @Copyright (c) 2003-2005 The Regents of the University of California.
+# @Copyright (c) 2003-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -51,10 +49,12 @@ test PtArrayList1.1 {Construct a PtArrayList} {
     set arrayToken [java::new {ptolemy.data.ArrayToken} $valueArray]
     set arrayList [java::new ptolemy.caltrop.util.PtArrayList $arrayToken]
     catch {$arrayList get 3} errMsg
+    # Check only the first part of the error message because it changed
+    # between JDK1.8 and JDK11.
     list \
 	    [$arrayList size] \
 	    [[$arrayList get 0] toString] \
 	    [[$arrayList get 1] toString] \
-	    $errMsg
+	    [string range $errMsg 0 41]
 
-} {2 {"AB"} {"CD"} {java.lang.ArrayIndexOutOfBoundsException: 3}}
+} {2 {"AB"} {"CD"} {java.lang.ArrayIndexOutOfBoundsException: }}
