@@ -8889,8 +8889,8 @@ $as_echo "JavaFX found in the default classpath" >&6; }; fi
     if test "$MODULE_SYSTEM" = "yes" -a -z "$PTJAVAFX_DIR" -a -d "$TMP_JAVAFX_DIR/lib"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: JavaFX not yet found" >&5
 $as_echo "$as_me: WARNING: JavaFX not yet found" >&2;}
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for JavaFX in a module $TMP_JAVAFX_DIR/lib" >&5
-$as_echo_n "checking checking for JavaFX in a module $TMP_JAVAFX_DIR/lib... " >&6; }
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking checking for JavaFX in a module" >&5
+$as_echo_n "checking checking for JavaFX in a module... " >&6; }
         # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 
         JAVAFX_ADD_MODULES="javafx.controls,javafx.swing,javafx.media"
@@ -15391,7 +15391,7 @@ fi
 
 
 # Files we substitute in
-ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32"
+ac_config_files="$ac_config_files mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir ptolemy/util/test/junit/javachdir32"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -16110,6 +16110,7 @@ do
     ".classpath") CONFIG_FILES="$CONFIG_FILES .classpath" ;;
     "bin/comm.policy") CONFIG_FILES="$CONFIG_FILES bin/comm.policy" ;;
     "lib/ptII.properties") CONFIG_FILES="$CONFIG_FILES lib/ptII.properties" ;;
+    "ptolemy/util/test/junit/javachdir") CONFIG_FILES="$CONFIG_FILES ptolemy/util/test/junit/javachdir" ;;
     "ptolemy/util/test/junit/javachdir32") CONFIG_FILES="$CONFIG_FILES ptolemy/util/test/junit/javachdir32" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 
@@ -16530,7 +16531,7 @@ $as_echo "$as_me: executing $ac_file commands" >&6;}
 
 
   case $ac_file$ac_mode in
-    "default":C) chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir32 ;;
+    "default":C) chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir ptolemy/util/test/junit/javachdir32 ;;
 
   esac
 done # for ac_tag
