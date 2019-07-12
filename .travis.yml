@@ -40,11 +40,10 @@ env:
 
     - LD_LIBRARY_PATH=/usr/lib/jni:/usr/local/share/OpenCV/java/:/usr/share/OpenCV/java:${LD_LIBRARY_PATH}
     - PT_NO_NET=true
+
     # CERTI_HOME is set by org/hlacerti/build-certi.sh below, so we use a slightly different variable here.
     - CERTI_HOME_TRAVIS=${HOME}/pthla/certi-tools
-
-    # Place openjdk10 in the path so that we find JavaFX so that the audio accessor works.
-    - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:/usr/local/lib/jvm/openjdk10/bin:${PATH}
+    - PATH=${PTII}/bin:${CERTI_HOME_TRAVIS}/bin:${PATH}
 
     # Heartbeat
     - secure: "yFRoAj3VTJs0ue19oKxJ8qxjM/LbthiJFx/iTJiUK1PPVWeOQpBlraXnhSEtefxNq7KXnXJY1OjQpTbr+j9hFipxOjoGgAGU7rv3iOCKP9ttdlnzUrsyu7iXSx/xoyQPRpnCiJBrgl839PzpolzF0dGeTfwtjXKO0d4YF8YUn7a9QJesqh0vxjnmxcHcdfJnaufzw9uUQpggrJInrtnp8B+WWH24RJpeJhlE/cOzi1SZIlhsCBaNGr11N6iJWoUvyv/lkw1fbVJRgUIRP5kN9bwAUQ7azcXB0cpgpa3RHP8fybBGGM2yVhR+RNwxuLKwF6Zqm38qq3ty1YVSWprgX/HGvAeyC0voFyuj3XhvFqMKSICNB7kjIfjbnjRrPgbIiCDCXukFejII+jvJ7bXgmZqgk7SBP8FtugEX4hIMy6PoxUf9pLPRyUAugqPGbNg5SSE2zLUKGtnT/VizeMeHZjd0tArlKdZkN6s1+oO3EmG5LtyYtwczVIsc6YxXunyXxZfNxI1GBfUDHyAKRMhK0JXBIrj/aLSs11KmkNOytU3qghXl8oChLbnV2YnkwPl2J6qCcYNlubVpHlsQgO51LuPaU3tpvxp4TZ0qZhTPvmGucqfD/tjL/ztK+t0FtvElOZZd981wy9Irok9m1X19tavY4dsaiVTDzehQZUeaxaY="
@@ -83,13 +82,6 @@ dist: xenial
 services:
   - xvfb
 
-# Xenial defaults to openjdk11, which does not have JavaFX, which is required by the
-# audio accessor, so we require oraclejdk.
-# See https://docs.travis-ci.com/user/reference/xenial/#jvm-clojure-groovy-java-scala-support
-# oraclejdk11 does not include JavaFX, see https://www.infoworld.com/article/3305073/removed-from-jdk-11-javafx-11-arrives-as-a-standalone-module.html
-jdk:
-  - oraclejdk10
-
 install:
   # We keep logs in a directory to avoid the 10k line problem.
   - mkdir -p $PTII/logs $PTII/reports/junit
@@ -107,15 +99,19 @@ install:
   #   eclipse and eclipse-rcp for backtracking.
   #   Java3D
   #   libv4l for  Bridj for the camera.
-  #   libopenjfx-java is for JavaFX so that the audio accessors work.
-  #   openjfx for JavaFX so that the audio accessors work.
   #   p7zip-full for installing jogl as part of the installers.
   #   pdflatex for the DOP Center image.
-  - sudo apt-get install -y coreutils genisoimage eclipse eclipse-rcp libjava3d-java libopenjfx-java libv4l-dev openjfx p7zip-full texlive-latex-base || true
+  - sudo apt-get install -y coreutils genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
 
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
 
+  # Install JavaFX.  If the wget fails, then don't stop the build.
+  # This is the JavaFX for openjdk11.  If the version of Java changes, then
+  # change JavaFX as well
+  - ls $PTII/vendors/javafx
+  - if [ ! -d $PTII/vendors/javafx ]; then mkdir $PTII/vendors/javafx;  wget --quiet -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; if [ -f /tmp/javafx.zip ] ; then (cd vendors/javafx; unzip /tmp/javafx.zip) fi; fi
+ 
   # Install JMF.  If the wget fails, then don't stop the build.
   - ls $PTII/vendors/JMF-2.1.1e || true
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
@@ -234,6 +230,7 @@ cache:
     - $CERTI_HOME_TRAVIS
     - $PTII/vendors/installer
     - $PTII/vendors/jai-1_1_2_01
+    - $PTII/vendors/javafx
     - $PTII/vendors/JMF-2.1.1e
     - $PTII/vendors/jogl
     - $PTII/vendors/misc/sphinx4
