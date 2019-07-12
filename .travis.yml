@@ -110,7 +110,7 @@ install:
   # This is the JavaFX for openjdk11.  If the version of Java changes, then
   # change JavaFX as well
   - ls $PTII/vendors/javafx || true
-  - if [ ! -d $PTII/vendors/javafx ]; then mkdir $PTII/vendors/javafx;  wget --quiet -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; if [ -f /tmp/javafx.zip ] ; then (cd vendors/javafx; unzip /tmp/javafx.zip) fi; fi
+  - if [ ! -d $PTII/vendors/javafx ]; then echo "Creating $PTII/vendors/javafx"; mkdir $PTII/vendors/javafx;  wget -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; if [ -f /tmp/javafx.zip ] ; then (cd vendors/javafx; unzip /tmp/javafx.zip) fi; fi
   - ls $PTII/vendors/javafx || true
 
   # Install JMF.  If the wget fails, then don't stop the build.
