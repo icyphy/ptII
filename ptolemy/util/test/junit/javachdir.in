@@ -62,8 +62,8 @@ echo "javachdir: pwd: `pwd`  Invoking with -Djava.net.preferIPv4Stack=true"
 # These values are set in configure
 # The audio accessor tests require this
 
-PTMODULE_PATH_COMMAND_LINE="--module-path /Users/cxh/src/ptII11.1.devel/vendors/javafx/javafx-sdk-12.0.1/lib:"
-PTADD_MODULES_COMMAND_LINE="--add-modules javafx.controls,javafx.swing,javafx.media,"
+PTMODULE_PATH_COMMAND_LINE="@PTMODULE_PATH_COMMAND_LINE@"
+PTADD_MODULES_COMMAND_LINE="@PTADD_MODULES_COMMAND_LINE@"
 
 # Temporarily add -Djavafx.verbose=true -Dprism.verbose=true so that we get
 # debugging messages.

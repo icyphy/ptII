@@ -357,7 +357,7 @@ JOYSTICK_JAR =	@JOYSTICK_JAR@
 JUNIT_JARS =	@JUNIT_JARS@
 
 # Arguments passed to Java when we run the JUnit tests.
-JUNIT_JAVA_ARGS = -Dptolemy.ptII.doNotExit=true
+JUNIT_JAVA_ARGS = -Dptolemy.ptII.doNotExit=true $(PTMODULE_PATH_COMMAND_LINE) $(PTADD_MODULES_COMMAND_LINE)
 
 # Jython home directory that contains jython.jar, see http://www.jython.org
 JYTHON_DIR =    @JYTHON_DIR@
@@ -373,6 +373,7 @@ OPENCV_JAR =	@OPENCV_JAR@
 
 # PTOMC_DIR is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
 PTOMC_DIR=	@PTOMC_DIR@
+
 
 # PTOPENMODELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
 PTOPENMODELICA_DIR=	@PTOPENMODELICA_DIR@

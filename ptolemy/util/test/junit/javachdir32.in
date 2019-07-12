@@ -44,5 +44,13 @@ done
 cd $directory
 echo "javachdir: `pwd`"
 echo $@
+
+# JavaFX was removed from the JDK, so with more recent JDKs, we use JavaFX via modules.
+# These values are set in configure
+# The audio accessor tests require this
+PTMODULE_PATH_COMMAND_LINE="@PTMODULE_PATH_COMMAND_LINE@"
+PTADD_MODULES_COMMAND_LINE="@PTADD_MODULES_COMMAND_LINE@"
+
 # PTJAVA32_DIR is set by configure.  ptolemy/util/test/junit/javachdir32.in is read by configure and javachdir32 is created.
-@PTJAVA32_DIR@/bin/java -d32 $@
+@PTJAVA32_DIR@/bin/java -d32 $PTMODULE_PATH_COMMAND_LINE $PTADD_MODULES_COMMAND_LINE $@
+

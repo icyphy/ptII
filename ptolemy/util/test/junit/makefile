@@ -82,7 +82,6 @@ TCL_SRCS =
 
 # Shell scripts that should be made executable
 SCRIPTS = \
-	javachdir \
 	updateJUnitCGJavaTest \
 	updateJUnitTclTest
 
@@ -95,6 +94,7 @@ EXTRA_SRCS =	$(JAVA_SRCS) $(TCL_SRCS) $(SCRIPTS) \
 # want make checkjunk to barf on them.
 MISC_FILES = \
 	JUnitTclTest.java.in \
+	javachdir.in \
 	javachdir32.in
 
 # make checkjunk will not report OPTIONAL_FILES as trash
@@ -109,6 +109,7 @@ OPTIONAL_FILES = \
 	'ModelTests$$2.class' \
 	'TclTests$$1.class' \
 	'TclTests$$2.class' \
+	javachdir \
 	javachdir32
 
 

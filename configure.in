@@ -3085,7 +3085,7 @@ else
 
     if test "$MODULE_SYSTEM" = "yes" -a -z "$PTJAVAFX_DIR" -a -d "$TMP_JAVAFX_DIR/lib"; then
         AC_MSG_WARN([JavaFX not yet found])
-        AC_MSG_CHECKING([checking for JavaFX in a module $TMP_JAVAFX_DIR/lib])
+        AC_MSG_CHECKING([checking for JavaFX in a module])
         # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 
         JAVAFX_ADD_MODULES="javafx.controls,javafx.swing,javafx.media"
@@ -7775,5 +7775,5 @@ AC_SUBST(WABA_DIR)
 AC_SUBST(PTWEBSOCKET_DIR)
 
 # Files we substitute in
-AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir32, chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir32)
+AC_OUTPUT(mk/ptII.mk bin/ptinvoke build.xml .classpath bin/comm.policy lib/ptII.properties ptolemy/util/test/junit/javachdir ptolemy/util/test/junit/javachdir32, chmod a+x bin/ptinvoke ptolemy/util/test/junit/javachdir ptolemy/util/test/junit/javachdir32)
 
