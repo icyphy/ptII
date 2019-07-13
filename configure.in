@@ -4495,9 +4495,9 @@ else
 			  Java3D under Mac OS with JDK 1.7 and later requires Jogl.
 			  Usually Jogl is installed in $PTII/vendors/jogl],
 	        JOGL_DIR=$withval,
-	        JOGL_DIR=)
+	        JOGL_DIR=$PTII/vendors/jogl)
 
-	    if test -z "$JOGL_DIR" ; then
+	    if test -d "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/lib`
                 if test -d "$directory"; then
        	            JOGL_JAR_DIR="$directory"
