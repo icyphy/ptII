@@ -94,7 +94,7 @@ test SetVariable-3.1 {changeFailed} {
                    [java::new Exception {Test exception for SetVariable.changeFailed()}]} errMsg
     } results
     list [string range $results 0 89] "\n" $errMsg
-} {{java.lang.Exception: Test exception for SetVariable.changeFailed()
-	at sun.reflect.NativeC} {
+} {{Failed to set variable.
+java.lang.Exception: Test exception for SetVariable.changeFailed()} {
 } {java.lang.RuntimeException: java.lang.Exception: Test exception for SetVariable.changeFailed()}}
 
