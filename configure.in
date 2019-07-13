@@ -4489,7 +4489,7 @@ else
     if "$JAVAC" -classpath "$Java3DClasspath" java3dTest.java ; then
         PT_MSG_RESULT($Java3DClasspath)
 
-	if test "`uname -s`" = "Darwin"; then 
+	if test "`uname -s`" = "Darwin"; then
  	    AC_MSG_CHECKING([for Jogl])
             AC_ARG_WITH(jogl, [  --with-jogl=DIR       use jogl-all.jar and gluegen.jar from DIR,
 			  Java3D under Mac OS with JDK 1.7 and later requires Jogl.
@@ -4504,8 +4504,8 @@ else
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
 		if test -f "$JOGL_JAR_DIR/jogamp-fat.jar" ; then
-		     PT_MSG_RESULT($JOGL_JAR_DIR)
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/jogamp-fat.jar"
+		     PT_MSG_RESULT($JOGL_JAR_DIR/jogamp-fat.jar)
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$JOGL_JAR_DIR/jogamp-fat.jar"
 		    updateClasspath "$JOGL_JAR_DIR/jogamp-fat.jar"
 		else
 		    AC_MSG_WARN([Could not find the Jogl directory.
@@ -4530,6 +4530,56 @@ else
            fi
        fi
        
+	if test "`uname -s`" = "Linux"; then
+ 	    AC_MSG_CHECKING([for Jogl])
+            AC_ARG_WITH(jogl, [  --with-jogl=DIR       use Jogl from DIR
+			  Java3D under Linux with JDK 9 or 10 and later requires Jogl.],
+	        JOGL_DIR=$withval,
+	        JOGL_DIR=$PTII/vendors/jogl)
+
+	    if test -d "$JOGL_DIR" ; then
+                JOGL_JAR_DIR="$JOGL_DIR"
+    	        #PTJOGL_DIR is used in ptinvoke.in to set the Mac DYLD_LIBRARY_PATH
+		#PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
+
+		jars=`ls -d $JOGL_DIR/lib/*.jar`
+		for jar in $jars
+		do
+		     if test -f "$jar" ; then
+		         PT_MSG_RESULT($jar)
+		         JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$jar"
+		         updateClasspath "$jar"
+                     fi
+		done
+
+		jars=`ls -d $JOGL_DIR/lib/natives/linux-amd64/*.jar`
+		for jar in $jars
+		do
+		     if test -f "$jar" ; then
+		         PT_MSG_RESULT($jar)
+		         JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$jar"
+		         updateClasspath "$jar"
+                     fi
+		done
+             fi
+
+	     if test -z "$JOGL_JAR_DIR"; then
+	         AC_MSG_WARN([Could not find the Jogl directory.
+   This could be a problem under Linux and JDK 9 or 10 and later
+
+   To install, 
+       mkdir -p $PTII/vendors/jogl/lib/natives/linux-amd64
+       cd $PTII/vendors/jogl/lib/natives/linux-amd64
+       wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all-natives-linux-amd64.jar
+       wget https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar
+
+       cd $PTII
+       ./configure
+
+       ])
+
+             fi
+       fi
 
        PTJAVA3D_DIR=gr
        PTGRDOMAIN_JAR=gr/gr.jar
