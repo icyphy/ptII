@@ -965,7 +965,6 @@ infodir
 docdir
 oldincludedir
 includedir
-runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -1101,7 +1100,6 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
-runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1354,15 +1352,6 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
-  -runstatedir | --runstatedir | --runstatedi | --runstated \
-  | --runstate | --runstat | --runsta | --runst | --runs \
-  | --run | --ru | --r)
-    ac_prev=runstatedir ;;
-  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
-  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
-  | --run=* | --ru=* | --r=*)
-    runstatedir=$ac_optarg ;;
-
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1500,7 +1489,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir runstatedir
+		libdir localedir mandir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1653,7 +1642,6 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
-  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -10846,7 +10834,8 @@ fi
        # bin/Vergil.app/Contents/Info.plist refers to vendors/j3d/lib
        # and not /usr/share/java/j3d*.
 
-       directory=`ls -d $PTII/vendors/j3d/lib`
+       systemName="`uname -s`"
+       directory=`ls -d $PTII/vendors/j3d/lib/$systemName`
 
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
@@ -10959,22 +10948,22 @@ $as_echo_n "checking for Jogl... " >&6; }
 if test "${with_jogl+set}" = set; then :
   withval=$with_jogl; JOGL_DIR=$withval
 else
-  JOGL_DIR=
+  JOGL_DIR=$PTII/vendors/jogl
 fi
 
 
-	    if test -z "$JOGL_DIR" ; then
+	    if test -d "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/lib`
                 if test -d "$directory"; then
        	            JOGL_JAR_DIR="$directory"
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_JAR_DIR/jogamp-fat.jar" ; then
+		if test -f "$JOGL_JAR_DIR/Darwin/jogamp-fat.jar" ; then
 		     if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JOGL_JAR_DIR/jogamp-fat.jar" >&5
-$as_echo "$JOGL_JAR_DIR/jogamp-fat.jar" >&6; }; fi
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$JOGL_JAR_DIR/jogamp-fat.jar"
-		    updateClasspath "$JOGL_JAR_DIR/jogamp-fat.jar"
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JOGL_JAR_DIR/Darwin/jogamp-fat.jar" >&5
+$as_echo "$JOGL_JAR_DIR/Darwin/jogamp-fat.jar" >&6; }; fi
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$JOGL_JAR_DIR/Darwin/jogamp-fat.jar"
+		    updateClasspath "$JOGL_JAR_DIR/Darwin/jogamp-fat.jar"
 		else
 		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
@@ -11032,7 +11021,7 @@ fi
     	        #PTJOGL_DIR is used in ptinvoke.in to set the Mac DYLD_LIBRARY_PATH
 		#PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
 
-		jars=`ls -d $JOGL_DIR/lib/*.jar`
+		jars=`ls -d $JOGL_DIR/lib/Linux/*.jar`
 		for jar in $jars
 		do
 		     if test -f "$jar" ; then
