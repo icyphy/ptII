@@ -4421,7 +4421,8 @@ else
        # bin/Vergil.app/Contents/Info.plist refers to vendors/j3d/lib
        # and not /usr/share/java/j3d*.
 
-       directory=`ls -d $PTII/vendors/j3d/lib`
+       systemName="`uname -s`"
+       directory=`ls -d $PTII/vendors/j3d/lib/$systemName`
 
        if test -d "$directory"; then
        	  JAVA3D_DIR="$directory"
@@ -4503,10 +4504,10 @@ else
        	            JOGL_JAR_DIR="$directory"
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_JAR_DIR/jogamp-fat.jar" ; then
-		     PT_MSG_RESULT($JOGL_JAR_DIR/jogamp-fat.jar)
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$JOGL_JAR_DIR/jogamp-fat.jar"
-		    updateClasspath "$JOGL_JAR_DIR/jogamp-fat.jar"
+		if test -f "$JOGL_JAR_DIR/Darwin/jogamp-fat.jar" ; then
+		     PT_MSG_RESULT($JOGL_JAR_DIR/Darwin/jogamp-fat.jar)
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATHSEPARATOR}$JOGL_JAR_DIR/Darwin/jogamp-fat.jar"
+		    updateClasspath "$JOGL_JAR_DIR/Darwin/jogamp-fat.jar"
 		else
 		    AC_MSG_WARN([Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
@@ -4542,7 +4543,7 @@ else
     	        #PTJOGL_DIR is used in ptinvoke.in to set the Mac DYLD_LIBRARY_PATH
 		#PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
 
-		jars=`ls -d $JOGL_DIR/lib/*.jar`
+		jars=`ls -d $JOGL_DIR/lib/Linux/*.jar`
 		for jar in $jars
 		do
 		     if test -f "$jar" ; then
