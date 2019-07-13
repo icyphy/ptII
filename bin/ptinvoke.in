@@ -380,6 +380,7 @@ if [ "$PTJAVACV_DIR" = "javacv" ]; then
     JAVACV_JARS="${CLASSPATHSEPARATOR}${JAVACV_JAR}"
 fi
 
+
 #### JavaMail is a Java interface to that sends email
 # PTJAVACMAIL_DIR is set to mail if configure found mail.jar
 PTJAVAMAIL_DIR=@PTJAVAMAIL_DIR@
@@ -568,7 +569,7 @@ if [ "$PTRTOOL_DIR" = "r" ]; then
 fi    
 
 PTSERVLET_JAR="@PTSERVLET_JAR@"
-if [ ! -z "$PTSERVLET_JAR" ]; then
+if [ -f "$PTSERVLET_JAR" ]; then
     PTSERVLET_JARS="${CLASSPATHSEPARATOR}${PTSERVLET_JAR}"
 fi
 #### Soot..  Java compiler and optimizer package.
