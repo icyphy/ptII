@@ -106,6 +106,8 @@ install:
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_2_01/lib/jai_core.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jai/1.1.2_01-fcs/jai-1_1_2_01-lib-linux-i586.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; tar -zxvf /tmp/jai.tar.gz) fi; fi
 
+
+  #######
   # Install JavaFX.  If the wget fails, then don't stop the build.
   # This is the JavaFX for openjdk11.  If the version of Java changes, then
   # change JavaFX as well
@@ -115,27 +117,30 @@ install:
   - if [ ! -d $PTII/vendors/javafx/javafx-sdk-11.0.2 ]; then wget --quiet -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; if [ -f /tmp/javafx.zip ] ; then (cd vendors/javafx; unzip /tmp/javafx.zip) fi; fi
   - ls -l $PTII/vendors/javafx || true
 
+  #######
+  # Install Jogl, which is needed for Java3D.
   - ls -l $PTII/vendors/jogl/lib || true
-
-  - if [ ! -f $PTII/vendors/jogl/lib/gluegen-rt.jar ]; then wget --quiet -O vendors/jogl/lib/gluegen-rt.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt.jar || true; fi
-
-  - if [ ! -f $PTII/vendors/jogl/lib/jogl-all.jar ];   then wget --quiet -O vendors/jogl/lib/jog-all.jar wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all.jar || true; fi
 
   - if [ ! -d $PTII/vendors/jogl/lib/natives/linux-amd64 ]; then mkdir -p $PTII/vendors/jogl/lib/natives/linux-amd64; fi
   
   - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar || true; fi 
+
+  # FIXME: We must unjar so that the shared libraries are found.
   - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar || true
 
   - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all-natives-linux-amd64.jar || true; fi
 
+  # FIXME: We must unjar so that the shared libraries are found.
   - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar || true
 
   - ls -lR $PTII/vendors/jogl || true
 
+  #######
   # Install JMF.  If the wget fails, then don't stop the build.
   - ls $PTII/vendors/JMF-2.1.1e || true
   - if [ ! -f $PTII/vendors/JMF-2.1.1e/lib/jmf.jar ]; then wget --quiet --no-cookies --header Cookie:\ oraclelicense=accept-securebackup-cookie http://download.oracle.com/otn-pub/java/jmf/2.1.1e/jmf-2_1_1e-alljava.zip -O /tmp/jmf.zip || true; if [ -f /tmp/jmf.zip ] ; then (cd vendors; unzip /tmp/jmf.zip) fi; fi
 
+  #######
   # Install Sphinx for the speech recognition accessor
   - if [ ! -d $PTII/vendors/misc/sphinx4 ]; then mkdir $PTII/vendors/misc/sphinx4; fi
   - if [ ! -f $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar ]; then wget --quiet -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar' || true; fi
