@@ -448,10 +448,13 @@
             <file src="../dists/ptII11.1.devel/jar_dist/lib/svgSalamander.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
+            <!-- JAI no longer runs under JDKs later than JDK 9.
+		 See https://wiki.eecs.berkeley.edu/ptexternal/Main/JAI
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/jai/jai.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
+            targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
+	    ==>
 
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/jjs/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/demo"/>
