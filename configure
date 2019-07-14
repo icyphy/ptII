@@ -965,6 +965,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -1100,6 +1101,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1352,6 +1354,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1489,7 +1500,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1642,6 +1653,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -8564,7 +8576,7 @@ $as_echo "JAI found in the default classpath" >&6; }; fi
 $as_echo "$as_me: WARNING: JAI not found in the default classpath" >&2;}
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JAI in $PTII/vendors" >&5
 $as_echo_n "checking for JAI in $PTII/vendors... " >&6; }
-        TMP_JAI_DIR=`find $PTII/vendors -type d -name "jai*"  | head -1`
+        TMP_JAI_DIR="`find $PTII/vendors -type d -name "jai*" | sort -nr | grep -v imageio | head -1`"
         if test -f "$TMP_JAI_DIR/lib/jai_core.jar"; then
             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Found jai* directory $TMP_JAI_DIR" >&5
@@ -8589,21 +8601,30 @@ $as_echo "$as_me: WARNING: JAI not found in $TMP_JAI_DIR" >&2;}
         # PTJAI_PACKAGES is used in ptII/doc/makefile
         PTJAI_PACKAGES=ptolemy.actor.lib.jai
 
+
         { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the JAI jar files, possibly again" >&5
 $as_echo_n "checking for the JAI jar files, possibly again... " >&6; }
-	if "$JAVAC" FindClass.java ; then
-	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
-	    if test -f "$JAI_JAR" ; then
-	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
-	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
-	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if "$JAVAC" FindClass.java ; then
+            # Usually jai-core.jar will be in the CLASSPATH
+            JAI_JAR=`"$JAVA" -classpath "$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib/*" FindClass javax.media.jai.RenderedOp`
+            if test -f "$JAI_JAR" ; then
+                JAI_JARS_DIR=`dirname "$JAI_JAR"`
+                jars=`ls $JAI_JARS_DIR/*.jar`
+                for jar in $jars
+                do
+                    JAI_JARS="$jar${CLASSPATHSEPARATOR}${JAI_JARS}"
+                    updateClasspath "$jar"
+                done
+                if test -z "$JAI_JARS"; then
+                    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Found $JAI_JARS_DIR, but no jars were found in lib/?" >&5
+$as_echo "$as_me: WARNING: Found $JAI_JARS_DIR, but no jars were found in lib/?" >&2;}
+                else
+                    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JAI_JARS" >&5
 $as_echo "$JAI_JARS" >&6; }; fi
-               updateClasspath "$JAI_JARS_DIR/jai_core.jar"
-               updateClasspath "$JAI_JARS_DIR/jai_codec.jar"
-	    else
-       	       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Either we could not find
+                fi
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Either we could not find
     javax.media.jai.RenderOp or else it was already in the JRE.
     Searching for jai-core.jar returned:
       $JAI_JAR
@@ -8621,10 +8642,11 @@ $as_echo "$as_me: WARNING: Either we could not find
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the JAI files
     without problems" >&2;}
-	       JAI_JAR=
+                JAI_JAR=
             fi
-	else
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" -classpath \"$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib\" FindClass javax.media.jai.RenderedOp\`
+
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" -classpath \"$PTII/config${CLASSPATHSEPARATOR}${JAI_DIR}/lib\" FindClass javax.media.jai.RenderedOp\`
     failed.
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse" >&5
@@ -8633,25 +8655,40 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" -classpath \"$PTII/config${CLASSPATHSEPAR
     This means that Eclipse might not be able to find the JAI files.
     This is only a problem if you are using Eclipse" >&2;}
         fi
+
     else
-       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JAITest.java' failed.
+       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" JAITest.java' failed and JAI jars were not found
+    in $PTII/vendors
     perhaps the Java Advanced Imaging API is not installed?
+
+    Note that JAI does not work in Java 9 and later because Java 9 removed
+    internal classes used by JAI.
+    See https://wiki.eecs.berkeley.edu/ptexternal/Main/JAI
+
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
     http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html" >&5
-$as_echo "$as_me: WARNING: '\"$JAVAC\" JAITest.java' failed.
+$as_echo "$as_me: WARNING: '\"$JAVAC\" JAITest.java' failed and JAI jars were not found
+    in $PTII/vendors
     perhaps the Java Advanced Imaging API is not installed?
+
+    Note that JAI does not work in Java 9 and later because Java 9 removed
+    internal classes used by JAI.
+    See https://wiki.eecs.berkeley.edu/ptexternal/Main/JAI
+
     You need not download Jai unless you plan on using the video
     actors in $JAI_USER_DIR
     The JAI API can be downloaded from
     http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-java-client-419417.html" >&2;}
     fi
+
     cd "$startdir"
 fi
 
 if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
+   updateExcludeTests "**/ptolemy/actor/lib/jai/*"
 fi
 
 #--------------------------------------------------------------------
