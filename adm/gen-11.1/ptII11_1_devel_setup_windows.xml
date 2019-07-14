@@ -454,7 +454,7 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
             targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai/demo"/>
-	    ==>
+	    -->
 
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/jjs/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/demo"/>
