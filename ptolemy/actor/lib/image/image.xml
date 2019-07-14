@@ -8,7 +8,8 @@
   <doc>Image processing actors</doc>  
 
 <input source="ptolemy/actor/lib/image/generic.xml"/>
-<input source="ptolemy/actor/lib/jai/jai.xml"/>
+
+<!-- JAI does not work in JDK9 and later <input source="ptolemy/actor/lib/jai/jai.xml"/> -->
 <input source="ptolemy/actor/lib/jmf/jmf.xml"/>
 <input source="ptolemy/domains/sdf/lib/vq/sdfvqentities.xml"/>
 
