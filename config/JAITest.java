@@ -27,6 +27,9 @@ COPYRIGHTENDKEY
 */
 import javax.media.jai.*;
 
+// Java 9 removed com.sun.image.codec.jpeg.JPEGCodec.  See
+// https://wiki.eecs.berkeley.edu/ptexternal/Main/JAI
+import com.sun.image.codec.jpeg.JPEGCodec;
 
 /** Simple class used by configure to test whether the Java Advanced Imaging
     is present.
