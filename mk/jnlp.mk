@@ -995,8 +995,13 @@ KEYALIAS = ptolemy
 # make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=c:/cygwin/users/ptII/adm/certs/ptkeystore
 #
 
-STOREPASSWORD = -storepass this.is.the.storePassword,change.it
-KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
+# In recent versions of the JDK, the store and key passwords must be the same?
+# Otherwise, during key creation, we see:
+# "Warning:  Different store and key passwords not supported for PKCS12 KeyStores. Ignoring user-specified -keypass value."
+# And at runtime, we see:
+# "Caused by: java.security.UnrecoverableKeyException: Get Key failed: Given final block not properly padded. Such issues can arise if a bad key is used during decryption."
+STOREPASSWORD = -storepass this.is.the.storeAndKeyPassword,change.it
+KEYPASSWORD = -keypass this.is.the.storeAndKeyPassword,change.it
 
 # Use a timestamp and avoid:
 #
