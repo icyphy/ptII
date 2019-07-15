@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2009 The Regents of the University of California.
+# @Copyright (c) 2004-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jai/demo
 
-DIRS =		AdaptiveMedian ImageReconstruction VQSequenceDisplay
+DIRS =		AdaptiveMedian ImageReconstruction JMFJAI VQSequenceDisplay
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -50,6 +50,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	AdaptiveMedian/AdaptiveMedian.jar \
 	ImageReconstruction/ImageReconstruction.jar \
+	JMFJAI/JMFJAI.jar \
 	VQSequenceDisplay/VQSequenceDisplay.jar 
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

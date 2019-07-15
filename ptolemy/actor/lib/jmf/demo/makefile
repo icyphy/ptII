@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2004-2009 The Regents of the University of California.
+# @Copyright (c) 2004-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jmf/demo
 
-DIRS =		JMFJAI VideoCapture
+DIRS =		VideoCapture
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -48,7 +48,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	JMFJAI/JMFJAI.jar \
 	VideoCapture/VideoCapture.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
