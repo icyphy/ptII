@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="FFT" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="PthalesDirector" class="ptolemy.domains.pthales.kernel.PthalesDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={487, 22, 834, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={487, 23, 834, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 524]">
     </property>
@@ -85,7 +85,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 50}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 22, 1282, 469}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={47, 23, 1303, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1069, 359]">
         </property>
@@ -167,6 +167,8 @@
             <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = $produceRows">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[915.0, 230.0]">
+            </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[]">
             </property>
         </port>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -304,13 +306,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 396, 985, 504}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 268, 1006, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 394]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 197.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 261.0}">
         </property>
         <property name="rows" class="ptolemy.data.expr.Parameter" value="produceRows">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -370,38 +372,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
             </property>
         </entity>
-        <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1098, 518, 128, 172}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-            </property>
-            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 128]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 200.0]">
-            </property>
-        </entity>
-        <entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
-            <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                    <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
-                    </property>
-                    <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
-                    </property>
-                    <property name="float" class="ptolemy.kernel.util.StringAttribute" value="float">
-                    </property>
-                    <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
-                    </property>
-                    <property name="short" class="ptolemy.kernel.util.StringAttribute" value="short">
-                    </property>
-                    <property name="ushort" class="ptolemy.kernel.util.StringAttribute" value="ushort">
-                    </property>
-                </property>
-            </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 200.0]">
-            </property>
-        </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in / (2 ^ columns)">
             </property>
@@ -427,11 +397,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 120.0]">
             </property>
         </entity>
+        <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={402, 449, 454, 448}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 404]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="rows">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="columns">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 200.0]">
+            </property>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -441,17 +419,17 @@
             <vertex name="vertex1" value="{300.0, 200.0}">
             </vertex>
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="port_0" relation="relation3"/>
         <link port="SequenceToMatrix.input" relation="relation6"/>
-        <link port="SequenceToMatrix.output" relation="relation5"/>
+        <link port="SequenceToMatrix.output" relation="relation"/>
         <link port="AbsoluteValue.input" relation="relation3"/>
         <link port="AbsoluteValue.output" relation="relation4"/>
-        <link port="ImageDisplay.input" relation="relation2"/>
-        <link port="DoubleMatrixToJAI.input" relation="relation5"/>
-        <link port="DoubleMatrixToJAI.output" relation="relation2"/>
         <link port="Expression.output" relation="relation6"/>
         <link port="Expression.in" relation="relation4"/>
         <link port="Display.input" relation="relation6"/>
+        <link port="MatrixViewer.input" relation="relation"/>
     </entity>
     <entity name="FFTofRows" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 185.0]">
@@ -462,7 +440,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 45}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 329, 813, 510}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={180, 268, 834, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -482,6 +460,8 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 200.0]">
             </property>
             <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = $produceColumns, y = 1">
+            </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[]">
             </property>
         </port>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
@@ -529,6 +509,8 @@
             </property>
             <property name="pattern" class="ptolemy.data.expr.StringParameter" value="x = 1, y = $produceRows">
             </property>
+            <property name="size" class="ptolemy.data.expr.Parameter" value="[]">
+            </property>
         </port>
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
             <property name="order" class="ptolemy.data.expr.Parameter" value="roundToInt(log2(produceRows))">
@@ -556,13 +538,13 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 60.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 396, 985, 504}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 268, 1006, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 394]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[772, 522]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 197.0}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.0, 261.0}">
         </property>
         <property name="rows" class="ptolemy.data.expr.Parameter" value="produceRows">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -622,38 +604,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 200.0]">
             </property>
         </entity>
-        <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1098, 518, 128, 172}, maximized=false}">
-            </property>
-            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-            </property>
-            <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[128, 128]">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 200.0]">
-            </property>
-        </entity>
-        <entity name="DoubleMatrixToJAI" class="ptolemy.actor.lib.jai.DoubleMatrixToJAI">
-            <property name="dataFormat" class="ptolemy.kernel.util.StringAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
-                    <property name="byte" class="ptolemy.kernel.util.StringAttribute" value="byte">
-                    </property>
-                    <property name="double" class="ptolemy.kernel.util.StringAttribute" value="double">
-                    </property>
-                    <property name="float" class="ptolemy.kernel.util.StringAttribute" value="float">
-                    </property>
-                    <property name="int" class="ptolemy.kernel.util.StringAttribute" value="int">
-                    </property>
-                    <property name="short" class="ptolemy.kernel.util.StringAttribute" value="short">
-                    </property>
-                    <property name="ushort" class="ptolemy.kernel.util.StringAttribute" value="ushort">
-                    </property>
-                </property>
-            </property>
-            <property name="scale" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 200.0]">
-            </property>
-        </entity>
         <entity name="Expression" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="in / (2.0 ^ columns)">
             </property>
@@ -679,11 +629,19 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 120.0]">
             </property>
         </entity>
+        <entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 446, 454, 448}, maximized=false}">
+            </property>
+            <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[454, 404]">
+            </property>
+            <property name="width" class="ptolemy.data.expr.Parameter" value="rows">
+            </property>
+            <property name="height" class="ptolemy.data.expr.Parameter" value="columns">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 200.0]">
+            </property>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -693,17 +651,17 @@
             <vertex name="vertex1" value="{300.0, 200.0}">
             </vertex>
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
         <link port="port_0" relation="relation3"/>
         <link port="SequenceToMatrix.input" relation="relation6"/>
-        <link port="SequenceToMatrix.output" relation="relation5"/>
+        <link port="SequenceToMatrix.output" relation="relation"/>
         <link port="AbsoluteValue.input" relation="relation3"/>
         <link port="AbsoluteValue.output" relation="relation4"/>
-        <link port="ImageDisplay.input" relation="relation2"/>
-        <link port="DoubleMatrixToJAI.input" relation="relation5"/>
-        <link port="DoubleMatrixToJAI.output" relation="relation2"/>
         <link port="Expression.output" relation="relation6"/>
         <link port="Expression.in" relation="relation4"/>
         <link port="Display.input" relation="relation6"/>
+        <link port="MatrixViewer.input" relation="relation"/>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
