@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ExecRunDemos" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="6.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 65.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 62, 825, 628}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 62, 944, 730}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 512]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[710, 620]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{305.0, 256.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 310.0}">
     </property>
     <property name="numberOfModelsToRun" class="ptolemy.data.expr.Parameter" value="5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -40,7 +40,7 @@
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model invokes separate Ptolemy processes&#10;for several .xml files contained in a directory.&#10;&#10;If you want to run vergil, then invoke&#10;ptolemy.actor.gui.PtExecuteApplication -full&#10;instead of&#10;ptolemy.actor.gui.MoMLSimpleApplication">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 475.0]">
         </property>
     </property>
     <property name="fileParameter" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/test/auto/">
@@ -205,8 +205,17 @@
         </property>
     </entity>
     <entity name="Exec" class="ptolemy.actor.lib.Exec">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="echo &quot;Hello world.&quot;">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 255.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
@@ -224,16 +233,11 @@
             <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
             </property>
         </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
-            </property>
-            <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
     </entity>
     <entity name="StringMatches" class="ptolemy.actor.lib.string.StringMatches">
         <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value=".*Memory:.*Free:">
+        </property>
+        <property name="matchString" class="ptolemy.actor.parameters.PortParameter" value="">
         </property>
         <doc>Determine if a string matches a regular expression</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 380.0]">
@@ -242,7 +246,7 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;, &quot;&quot;}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 305.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -270,7 +274,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 435.0]">
         </property>
     </entity>
     <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
@@ -282,6 +286,12 @@
         </property>
     </entity>
     <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
         <doc>Replace the patterns that match a regular expression</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 150.0]">
         </property>
@@ -355,25 +365,44 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[78.93173217773438, 348.0488586425781]">
         </property>
     </entity>
+    <entity name="StringReplace2" class="ptolemy.actor.lib.string.StringReplace">
+        <property name="pattern" class="ptolemy.actor.parameters.PortParameter" value="WARNING: An illegal reflective access operation has occurred.*(?:[ \r\n\t].*)+.*">
+        </property>
+        <property name="replacement" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="">
+        </property>
+        <doc>Replace the patterns that match a regular expression</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 305.0]">
+        </property>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
         <vertex name="vertex1" value="[290.0, 295.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[405.0, 305.0]">
-        </vertex>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[500.0, 245.0]">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <vertex name="vertex1" value="[410.0, 325.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
@@ -411,6 +440,10 @@
         <property name="width" class="ptolemy.data.expr.Parameter" value="1">
         </property>
     </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DirectoryListing.output" relation="relation16"/>
     <link port="ArrayToSequence.input" relation="relation"/>
     <link port="ArrayToSequence.output" relation="relation6"/>
@@ -419,9 +452,9 @@
     <link port="AddSubtract.plus" relation="relation15"/>
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation7"/>
-    <link port="Exec.command" relation="relation7"/>
-    <link port="Exec.error" relation="relation3"/>
     <link port="Exec.output" relation="relation2"/>
+    <link port="Exec.command" relation="relation7"/>
+    <link port="Exec.error" relation="relation18"/>
     <link port="StringMatches.matchString" relation="relation2"/>
     <link port="StringMatches.output" relation="relation5"/>
     <link port="Test.input" relation="relation3"/>
@@ -444,4 +477,6 @@
     <link port="Const1.output" relation="relation13"/>
     <link port="ArraySort.input" relation="relation16"/>
     <link port="ArraySort.output" relation="relation10"/>
+    <link port="StringReplace2.stringToEdit" relation="relation18"/>
+    <link port="StringReplace2.output" relation="relation3"/>
 </entity>
