@@ -111,7 +111,7 @@ import ptolemy.util.StringUtilities;
  <li>Generate keys using keytool, which is included
  in the JDK
  <pre>
- keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword
+ keytool -genkey -alias claudius -keystore $PTII/ptKeystore -keypass myStoreAndKeyPassword -storepass myStoreAndKeyPassword
  </pre>
  You will be prompted for information about yourself.
  <li>Optional: Generate a Certificate Signing Request (CSR), send
@@ -119,7 +119,7 @@ import ptolemy.util.StringUtilities;
  are using a self signed certificate, this step is option.
  <li> Export the certificate
  <pre>
- keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass myKeyPassword -storepass myStorePassword -file claudius.cer -rfc
+ keytool -alias claudius -export -keystore $PTII/ptKeystore -keypass myStoreAndKeyPassword -storepass myStoreAndKeyPassword -file claudius.cer -rfc
  </pre>
  <li> Send the output file (claudius.cer) to the recipient
  <li>Create a Ptolemy model that uses the
@@ -216,7 +216,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         keyPassword = new PortParameter(this, "keyPassword");
         keyPassword.setTypeEquals(BaseType.STRING);
         keyPassword.setStringMode(true);
-        keyPassword.setExpression("this.is.the.keyPassword,change.it");
+        keyPassword.setExpression("this.is.the.storeAndKeyPassword,change.it");
 
         // Add the possible keystore types.
         keyStoreType = new StringParameter(this, "keyStoreType");
@@ -243,7 +243,7 @@ public class KeyStoreActor extends TypedAtomicActor {
         storePassword = new PortParameter(this, "storePassword");
         storePassword.setTypeEquals(BaseType.STRING);
         storePassword.setStringMode(true);
-        storePassword.setExpression("this.is.the.storePassword,change.it");
+        storePassword.setExpression("this.is.the.storeAndKeyPassword,change.it");
         _storePassword = storePassword.getExpression();
     }
 
