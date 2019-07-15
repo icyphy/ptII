@@ -295,6 +295,7 @@ public class ExportModelJUnitTest {
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
         String[] skip = {
+            "jai/demo", // Skip jai demos because the don't run in JDK9 and later.
 	    "ModularCG.xml", // Prompted for save of unamed on close?
 	    "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
 	    "ptolemy/domains/ptinyos/demo",
