@@ -293,11 +293,11 @@ import ptolemy.kernel.util.Workspace;
  *   the directory where the libRTI, libFedTime, libCERTId libraries are
  *   implemented.
  * </ul>
- * CERTI provides a script <i>myCERTI_env.sh<i> that set all the above
+ * CERTI provides a script <i>myCERTI_env.sh</i> that set all the above
  * environment variables. The script is located in $CERTI_HOME/share/scripts and
  * must be run before a federation simulation.
  * 
- * By default, the script <i>myCERTI_env.sh<i> set CERTI_HOST=localhost. This 
+ * By default, the script <i>myCERTI_env.sh</i> set CERTI_HOST=localhost. This 
  * specifies that the RTIG host is the local machine. If you are connecting to
  * a remote RTIG, you need to specify the IP address or domain name of that machine.
  * To set it, before launching Ptolemy II, you can execute a command like:
@@ -312,9 +312,9 @@ import ptolemy.kernel.util.Workspace;
  * installation of CERTI, and you must set your PATH environment variable
  * to include the share/scripts and bin directories of your CERTI installation.
  * </p><p>
- * Notice that if the script <i>myCERTI_env.sh<i> is executed, all environment
+ * Notice that if the script <i>myCERTI_env.sh</i> is executed, all environment
  * variables are set and the RTIG can be launched executing a command line
- * (like <i>rtig<i>) or by the Ptolemy federate as explained above.
+ * (like <i>rtig</i>) or by the Ptolemy federate as explained above.
  * </p><p>
  * Sometime in the future, these environment variables may be replaced
  * or supplemented by parameters added to this HlaManager.
