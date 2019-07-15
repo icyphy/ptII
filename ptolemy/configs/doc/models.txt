@@ -71,6 +71,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/SemanticRepository.xm
 $CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/SemanticYelpSensorUpdateExample.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/SPARQLQueries.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/SPARQLUpdates.xml
+$CLASSPATH/org/terraswarm/accessor/demo/SemanticRepository/TemperatureAdapters.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
@@ -140,6 +141,7 @@ $CLASSPATH/ptolemy/actor/lib/io/demo/ReadExpressionsCommandLine/ReadExpressionsC
 $CLASSPATH/ptolemy/actor/lib/io/demo/ReadStdIn/ReadStdIn.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/AdaptiveMedian/AdaptiveMedian.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xml
+$CLASSPATH/ptolemy/actor/lib/jai/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
@@ -255,7 +257,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketLog/WebSocketLo
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml
-$CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
 $CLASSPATH/ptolemy/actor/lib/mail/demo/ExceptionEmailer/ExceptionEmailer.xml
 $CLASSPATH/ptolemy/actor/lib/mail/demo/SendMail/SendMail.xml
