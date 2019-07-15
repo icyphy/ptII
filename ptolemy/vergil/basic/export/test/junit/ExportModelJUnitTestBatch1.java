@@ -66,9 +66,9 @@ import junitparams.JUnitParamsRunner;
 @RunWith(JUnitParamsRunner.class)
 public class ExportModelJUnitTestBatch1 extends ExportModelJUnitTestBatch {
 
-    /** Run demos 1 through 150. */
+    /** Run demos 1 through 140. */
     @Override
     public Object[] demos() throws IOException {
-        return super.demos(1, 150);
+        return super.demos(1, 140);
     }
 }
