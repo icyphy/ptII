@@ -485,6 +485,7 @@ foreach i $configs {
     } {{}}
 
     puts "[java::call ptolemy.actor.Manager timeAndMemory 0]"
+    puts "[date]"
 
     puts "Setting containers of atomic entities to null"
     set entityList [$configuration allAtomicEntityList]
