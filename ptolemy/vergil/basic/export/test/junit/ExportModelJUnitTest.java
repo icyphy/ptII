@@ -297,6 +297,7 @@ public class ExportModelJUnitTest {
         String[] skip = {
             "jai/demo", // Skip jai demos because the don't run in JDK9 and later.
 	    "ModularCG.xml", // Prompted for save of unamed on close?
+            "pthales/demo/FFT/FFT.xml", // Skip JAI demo.
 	    "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
 	    "ptolemy/domains/ptinyos/demo",
 	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
@@ -329,12 +330,14 @@ public class ExportModelJUnitTest {
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "AudioRecorder.xml", // Wrong Audio Hardware on the test machine.
                 "AudioSynthesis.xml", // Wrong Audio Hardware on the test machine.
+                "BouncingBall.xml", // Java3d internal error
                 "AugmentedReality.xml", // Has links to other models.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
+                "Gravitation.xml", // Java3d internal error
                 "gt/demo/BouncingBallX2/BouncingBallX2.xml", //Hangs during wrapup, probably a threading bug with Java3D/jogamp.
                 // If hlacerti models are hanging, see
                 // AutoTests.delayIfNecessary() and consider
