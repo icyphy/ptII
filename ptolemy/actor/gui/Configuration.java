@@ -421,7 +421,7 @@ public class Configuration extends CompositeEntity
         long startTime = (new java.util.Date()).getTime();
         while (entities.hasNext()) {
             Object entity = entities.next();
-            // System.out.println("Configuration.check: entity: " + entity + " " + ptolemy.actor.Manager.timeAndMemory(startTime));
+            System.out.println("Configuration.check: entity: " + entity + " " + ptolemy.actor.Manager.timeAndMemory(startTime));
             System.out.print("#");
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
