@@ -294,9 +294,12 @@ public class ExportModelJUnitTest {
      */
     private boolean _openModel(String modelPath) {
         // Pathnames that should be skipped
-        String[] skip = { "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
-                "ptolemy/domains/ptinyos/demo", "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-                "SimplePassPointer", // Only works on 32-bit
+        String[] skip = {
+	    "ModularCG.xml", // Prompted for save of unamed on close?
+	    "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+	    "ptolemy/domains/ptinyos/demo",
+	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+	    "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
