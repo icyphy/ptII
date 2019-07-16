@@ -1429,6 +1429,24 @@ public class Manager extends NamedObj implements Runnable {
         return timeAndMemory(startTime, totalMemory, freeMemory);
     }
 
+    /** Return a string with the elapsed time since startTime, and
+     *  the amount of memory used.
+     *  This method takes a java.lang.Long object so that ptjacl
+     *  can properly pass a long number:
+     *  <pre>
+     *  set currentTime  [java::call -noconvert java.lang.System currentTimeMillis]
+     *  java::call ptolemy.actor.Manager timeAndMemoryLong $x
+     *  </pre>
+     *  @param startTime The start time in milliseconds.  For example,
+     *  the value returned by <code>(new Date()).getTime()</code>.
+     *  @return A string with the elapsed time since startTime, and
+     *  the amount of memory used.
+     */
+    public static String timeAndMemoryLong(Long startTime) {
+
+        return timeAndMemory(startTime.longValue());
+    }
+
     /** Return a string with the elapsed time since startTime,
      *  and the amount of memory used.
      *  the value returned by <code>(new Date()).getTime()</code>.
