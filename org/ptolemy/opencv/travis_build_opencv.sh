@@ -56,7 +56,7 @@ if [ ! -d $INSTALL_FLAG ]; then
 	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
             echo "$0: Downloading $OPENCV_CONTRIB_TAR"
-	    wget -quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
+	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	    echo "$0: Done downloading $OPENCV_CONTRIB_TAR"
 	fi
 
