@@ -119,16 +119,16 @@ install:
 
   #######
   # Install Jogl, which is needed for Java3D.
-  - ls -l $PTII/vendors/jogl/lib || true
+  # - ls -l $PTII/vendors/jogl/lib || true
 
-  - if [ ! -d $PTII/vendors/jogl/lib/natives/linux-amd64 ]; then mkdir -p $PTII/vendors/jogl/lib/natives/linux-amd64; fi
+  # - if [ ! -d $PTII/vendors/jogl/lib/natives/linux-amd64 ]; then mkdir -p $PTII/vendors/jogl/lib/natives/linux-amd64; fi
   
-  - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar || true; fi 
+  # - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar || true; fi 
 
   # FIXME: We must unjar so that the shared libraries are found.
   - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar || true
 
-  - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all-natives-linux-amd64.jar || true; fi
+  # - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all-natives-linux-amd64.jar || true; fi
 
   # FIXME: We must unjar so that the shared libraries are found.
   - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar || true
@@ -258,7 +258,6 @@ cache:
     - $PTII/vendors/jai-1_1_2_01
     - $PTII/vendors/javafx
     - $PTII/vendors/JMF-2.1.1e
-    - $PTII/vendors/jogl
     - $PTII/vendors/misc/sphinx4
     - $PTII/vendors/opencv
 
