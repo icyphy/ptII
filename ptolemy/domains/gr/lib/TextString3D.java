@@ -249,10 +249,22 @@ public class TextString3D extends GRShadedShape {
 	    _textGeometry.setCapability(Text3D.ALLOW_STRING_WRITE);
 	} catch (IllegalArgumentException ex) {
 	    // 7/19: Recent version of Java3D is throwing: TriangleArray: illegal vertexCount
-	    throw new IllegalActionException(this, ex,
+	    // Try with a default font.
+	    Font3D previousFont3D = font3D;
+
+	    try {
+		System.err.println(getFullName() + ": Failed to create the Text3D."
+				   + "  Trying with the default font.");
+		font3D = new Font3D(new Font(null, Font.PLAIN, 1), extrusion);
+		_textGeometry = new Text3D(font3D, textValue);
+		_textGeometry.setCapability(Text3D.ALLOW_STRING_WRITE);
+	    } catch (Throwable ex2) {
+		throw new IllegalActionException(this, ex,
 					     "Failed to create Text3D for font \""
-					     + font3D + "\" and \""
+					     + previousFont3D + "\" "
+					     + previousFont3D.getFont() + " and \""
 					     + textValue + "\".");
+	    }
 	}
 
         String alignmentValue = alignment.stringValue();
