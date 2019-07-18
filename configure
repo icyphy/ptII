@@ -8690,7 +8690,7 @@ fi
 if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
    updateExcludeTests "**/ptolemy/actor/lib/jai/*"
-   updateExcludeTests "**/ptolemy/actor/lib/jai/test/junit/JunitTclTest.*"
+   updateExcludeTests "**/ptolemy/actor/lib/jai/test/junit/JUnitTclTest.*"
 fi
 
 #--------------------------------------------------------------------
