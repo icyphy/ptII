@@ -440,10 +440,10 @@ $(PTIIDIST): $(IZPACK_DIR) $(TAR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARW
 	# Jogl (for the Mac)
 	mkdir -p $(PTIIDIST)/vendors/jogl
 	cp $(PTIIHOME)/vendors/jogl/*.txt $(PTIIDIST)/vendors/jogl
-	mkdir -p $(PTIIDIST)/vendors/jogl/lib
-	-ls $PTII/vendors/jogl
-	-ls $PTII/vendors/jogl/lib
-	cp $(PTIIHOME)/vendors/jogl/lib/*.jar $(PTIIDIST)/vendors/jogl/lib
+	mkdir -p $(PTIIDIST)/vendors/jogl/lib/Darwin
+	-ls $(PTII)/vendors/jogl
+	-ls $(PTII)/vendors/jogl/lib/Darwin
+	cp $(PTIIHOME)/vendors/jogl/lib/Darwin/*.jar $(PTIIDIST)/vendors/jogl/lib/Darwin
 	cp -r $(PTIIHOME)/vendors/jogl/lib/natives $(PTIIDIST)/vendors/jogl/lib
 	# Vergil.app needs the shared libraries to appear in bin/natives.
 	cp -r $(PTIIHOME)/vendors/jogl/lib/natives $(PTIIDIST)/bin/
@@ -463,6 +463,7 @@ $(PTIIDIST): $(IZPACK_DIR) $(TAR) izpackFix $(L4J_DIR) $(OPENCV_DLL) $(NODE_DARW
 	# Joystick
 	mkdir -p $(PTIIDIST)/vendors/misc/joystick/
 	cp $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
+	-ls -l $(PTIIHOME)/vendors/misc/joystick/Joystick.jar $(PTIIDIST)/vendors/misc/joystick/
 	# Tools used to build installers.
 	ln -s $(PTIIHOME)/vendors/izpack $(PTIIDIST)/vendors/izpack
 	- ls -l $(PTIIHOME)/vendors
