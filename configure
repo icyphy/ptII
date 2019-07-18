@@ -4713,6 +4713,7 @@ $as_echo "Java version is $JVERSION, Java 9 or later present, so certain interna
     PTVIEWER_PACKAGES=
     updateExcludes "ptolemy/copernicus/applet/"
     updateExcludes "ptolemy/media/viewer/"
+    updateExcludeTests "**/ptolemy/media/**/test/junit/JUnitTclTest.*"
 fi
 
 
@@ -8689,6 +8690,7 @@ fi
 if test -z "$PTJAI_DIR"; then
    updateExcludes "ptolemy/actor/lib/jai/"
    updateExcludeTests "**/ptolemy/actor/lib/jai/*"
+   updateExcludeTests "**/ptolemy/actor/lib/jai/test/junit/JunitTclTest.*"
 fi
 
 #--------------------------------------------------------------------
