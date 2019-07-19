@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Pendulum" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
@@ -41,7 +41,7 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 15.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 815, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 798, 625}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -125,48 +125,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 265.0}">
         </property>
     </entity>
-    <entity name="Text" class="ptolemy.domains.gr.lib.TextString3D">
-        <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Pendulum Model">
-        </property>
-        <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0}">
-        </property>
-        <property name="shininess" class="ptolemy.actor.parameters.DoubleRangeParameter" value="20.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 105.0">
-        </property>
-    </entity>
-    <entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
-        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="0.15">
-        </property>
-        <property name="xScale" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="yScale" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="zScale" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="BaseX" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="BaseY" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="BaseZ" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 115.0">
-        </property>
-    </entity>
-    <entity name="Translate2" class="ptolemy.domains.gr.lib.Translate3D">
-        <property name="accumulate" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="initialXTranslation" class="ptolemy.data.expr.Parameter" value="0.3">
-        </property>
-        <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.55">
-        </property>
-        <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="318.0000009536743, 185.0">
-        </property>
-    </entity>
     <entity name="damped pendulum ODE" class="ptolemy.actor.TypedCompositeActor">
         <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -182,8 +140,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
             <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
             </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
-            </property>
-            <property name="timeResolution" class="ptolemy.actor.parameters.SharedParameter" value="1.0E-10">
             </property>
             <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
             </property>
@@ -484,10 +440,6 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation0" class="ptolemy.actor.TypedIORelation">
@@ -496,26 +448,18 @@ the 3-D graphics and ODE capabilities of Ptolemy II</text></svg></configure>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Sphere.sceneGraphOut" relation="relation4"/>
     <link port="Translate.sceneGraphIn" relation="relation4"/>
     <link port="Translate.sceneGraphOut" relation="relation11"/>
     <link port="ViewScreen.sceneGraphIn" relation="relation0"/>
-    <link port="ViewScreen.sceneGraphIn" relation="relation3"/>
     <link port="ViewScreen.sceneGraphIn" relation="relation5"/>
     <link port="Cylinder.sceneGraphOut" relation="relation2"/>
     <link port="Rotate.sceneGraphIn" relation="relation11"/>
     <link port="Rotate.sceneGraphIn" relation="relation2"/>
     <link port="Rotate.sceneGraphOut" relation="relation5"/>
     <link port="Rotate.angle" relation="relation"/>
-    <link port="Text.sceneGraphOut" relation="relation17"/>
-    <link port="Scale3D.sceneGraphIn" relation="relation17"/>
-    <link port="Scale3D.sceneGraphOut" relation="relation20"/>
-    <link port="Translate2.sceneGraphIn" relation="relation20"/>
-    <link port="Translate2.sceneGraphOut" relation="relation3"/>
     <link port="damped pendulum ODE.output" relation="relation"/>
     <link port="Stage.output" relation="relation0"/>
 </entity>

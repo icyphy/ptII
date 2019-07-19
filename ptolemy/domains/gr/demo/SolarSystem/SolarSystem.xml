@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SolarSystem" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1000, 761}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 983, 754}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[766, 651]">
     </property>
@@ -153,7 +153,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 110.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, -23, 815, 518}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={174, 0, 817, 599}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
@@ -755,62 +755,6 @@
             </port>
         </entity>
     </entity>
-    <entity name="TextString3D" class="ptolemy.domains.gr.lib.TextString3D">
-        <property name="text" class="ptolemy.actor.parameters.PortParameter" value="Pluto">
-        </property>
-        <property name="fontSize" class="ptolemy.data.expr.Parameter" value="0.5">
-        </property>
-        <property name="extrusionDepth" class="ptolemy.data.expr.Parameter" value="0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 500.0]">
-        </property>
-    </entity>
-    <entity name="InstanceOfOrbit11" class="Orbit">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 245.0]">
-        </property>
-        <property name="orbitRadius" class="ptolemy.data.expr.Parameter" value="5.9E9 * orbitScaleFactor">
-        </property>
-        <property name="frequency" class="ptolemy.data.expr.Parameter" value="0.00008">
-        </property>
-        <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave">
-            <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 80.0}">
-                </property>
-            </port>
-            <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 120.0}">
-                </property>
-            </port>
-        </entity>
-        <entity name="Sinewave2" class="ptolemy.actor.lib.Sinewave">
-            <port name="frequency" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 80.0}">
-                </property>
-            </port>
-            <port name="phase" class="ptolemy.actor.parameters.ParameterPort">
-                <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 120.0}">
-                </property>
-            </port>
-        </entity>
-    </entity>
-    <entity name="Scale3D" class="ptolemy.domains.gr.lib.Scale3D">
-        <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="0.04">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 320.0]">
-        </property>
-    </entity>
-    <entity name="Translate3D" class="ptolemy.domains.gr.lib.Translate3D">
-        <property name="initialYTranslation" class="ptolemy.data.expr.Parameter" value="0.15">
-        </property>
-        <property name="initialZTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 405.0]">
-        </property>
-    </entity>
     <entity name="Scale3D2" class="ptolemy.domains.gr.lib.Scale3D">
         <property name="scaleFactor" class="ptolemy.data.expr.Parameter" value="121E3 * diameterScaleFactor * 50.0">
         </property>
@@ -849,12 +793,6 @@
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
@@ -880,8 +818,6 @@
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation23" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -919,13 +855,6 @@
     <link port="Pluto.sceneGraphOut" relation="relation20"/>
     <link port="InstanceOfOrbit10.output" relation="relation21"/>
     <link port="InstanceOfOrbit10.input" relation="relation20"/>
-    <link port="TextString3D.sceneGraphOut" relation="relation25"/>
-    <link port="InstanceOfOrbit11.output" relation="relation23"/>
-    <link port="InstanceOfOrbit11.input" relation="relation22"/>
-    <link port="Scale3D.sceneGraphIn" relation="relation24"/>
-    <link port="Scale3D.sceneGraphOut" relation="relation22"/>
-    <link port="Translate3D.sceneGraphIn" relation="relation25"/>
-    <link port="Translate3D.sceneGraphOut" relation="relation24"/>
     <link port="Scale3D2.sceneGraphIn" relation="relation26"/>
     <link port="Scale3D2.sceneGraphOut" relation="relation14"/>
     <link port="Scale3D3.sceneGraphIn" relation="relation"/>
@@ -939,7 +868,6 @@
     <link port="Scale3D3.sceneGraphIn" relation="relation17"/>
     <link port="Scale3D3.sceneGraphIn" relation="relation19"/>
     <link port="Scale3D3.sceneGraphIn" relation="relation21"/>
-    <link port="Scale3D3.sceneGraphIn" relation="relation23"/>
     <link port="Scale3D3.sceneGraphOut" relation="relation27"/>
     <link port="Rotate3D.sceneGraphIn" relation="relation27"/>
     <link port="Rotate3D.sceneGraphOut" relation="relation28"/>
