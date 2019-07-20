@@ -293,8 +293,7 @@ runTarget () {
     # See https://unix.stackexchange.com/questions/14270/get-exit-status-of-process-thats-piped-to-another
     status=${PIPESTATUS[0]}
     if [ $status -ne 0 ]; then
-        echo "$0: `date`: At $SECONDS, ant build $target returned $status, which is non-zero."
-        tail -$lastLines $log
+        echo "$0: WARNING: `date`: At $SECONDS, ant build $target returned $status, which is non-zero."
         if [ $status = 137 ]; then
             echo "######################################################"
             echo "$0: WARNING! `date`: Ant probably times out because status = $status, which is 128 + 9. Consider updating timeAfterBuild, which is currently $timeAfterBuild seconds."
@@ -312,11 +311,14 @@ runTarget () {
         else
             if [ $status = 124 ]; then
                 echo "######################################################"
-                echo "$0: WARNING! `date`: Ant probably times out because status = $status, which https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html says that the command timed out.  This probably occurred because we are using the Ubuntu timeout command, which sends a kill signal after 20 seconds and returns 124.  See http://manpages.ubuntu.com/manpages/trusty/man1/timeout.1.html.  A timeout can happen if the a cache, such as the OpenCV cache, failed to download and rebuilding the cache caused the ptII ant job to be killed by the timeout command.  Usually the cache will be rebuilt and the next run of the Travis job will succeed."
+                echo "$0: WARNING! `date`: Ant probably times out because status = $status, which https://www.gnu.org/software/coreutils/manual/html_node/timeout-invocation.html says that the command timed out.  This proba
+bly occurred because we are using the Ubuntu timeout command, which sends a kill signal after 20 seconds and returns 124.  See http://manpages.ubuntu.com/manpages/trusty/man1/timeout.1.html.  A timeout can happen if the a cache, such as the OpenCV cache, failed to download and rebuilding the cache caused the ptII ant job to be killed by the timeout command.  Usually the cache will be rebuilt and the next run of the Travis job will succeed."
                 echo "See also https://github.com/travis-ci/travis-ci/issues/4192"
                 echo "######################################################"
             fi
         fi
+        echo "$0: Running a test that always fails so that the timeout is recorded."
+        ant test.single -Dtest.name=ptolemy.util.test.travis.junit.JUnitTclTest 2>&1 | egrep -v "$SECRET_REGEX" > $log
     else
         echo "$0: `date`: ant build $target returned $status"
     fi
