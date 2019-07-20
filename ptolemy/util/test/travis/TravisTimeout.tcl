@@ -49,8 +49,9 @@ test TravisTimeout-1.1 {Fail a test signifying a timeout problem with Travis} {
 	set name [$names next]
         if {[string first {PT_TRAVIS_TEST} $name] != -1} {
             set travisTest $name
+            break
         }
-	puts "$name=[$envs get $name]"
+	# puts "$name=[$envs get $name]"
     }
 
     error "$travisTest timed out!\n    This test always fails.  It is called by $PTII/bin/ptIITravisBuild.sh to signify that Travis is having timeout problems.  Typically this is caused by OpenCV being rebuilt.  The problem should go away with the next build after OpenCV is updated in the cache.  See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching_2"
