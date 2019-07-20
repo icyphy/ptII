@@ -318,7 +318,7 @@ bly occurred because we are using the Ubuntu timeout command, which sends a kill
             fi
         fi
         echo "$0: Running a test that always fails so that the timeout is recorded."
-        ant test.single -Dtest.name=ptolemy.util.test.travis.junit.JUnitTclTest 2>&1 | egrep -v "$SECRET_REGEX" > $log
+        ant build test.travis.timeout.fail 2>&1 | egrep -v "$SECRET_REGEX" >> $log
     else
         echo "$0: `date`: ant build $target returned $status"
     fi
@@ -335,12 +335,15 @@ bly occurred because we are using the Ubuntu timeout command, which sends a kill
 
     updateGhPages $PTII/reports/junit reports/
 
-    if [ $status -ne 0 ]; then
-        echo "$0: `date`: 'ant build $target' returned $status, which is non-zero."
-        echo "Exit delayed so that the log can be added to the repository."
-        echo "Now exiting with a value of $status"
-        exit $status
-    fi
+    # We used to exit here, but now that we report a test error for non-zero status, we no longer exit.
+    # If we exit here, then we won't process the test error.
+    # if [ $status -ne 0 ]; then
+    #     echo "$0: `date`: 'ant build $target' returned $status, which is non-zero."
+    #     echo "Exit delayed so that the log can be added to the repository."
+    #     echo "Now exiting with a value of $status"
+    #     exit $status
+    # fi
+
 }
 
 # Copy the file or directory named by
