@@ -43,14 +43,14 @@ test TravisTimeout-1.1 {Fail a test signifying a timeout problem with Travis} {
     set travisTest {Unknown}
     puts "Below are the system properties. To determine which Travis test is failing, look for a property that starts with PT_TRAVIS_TEST"
 
-    set props [java::call System getProperties]
-    set names [$props propertyNames]
-    while { [$names hasMoreElements] } {
-	set name [$names nextElement]
+    set envs [java::call System getenv]
+    set names [[$envs keySet] iterator]
+    while { [$names hasNext] } {
+	set name [$names next]
         if {[string first {PT_TRAVIS_TEST} $name] != -1} {
             set travisTest $name
         }
-	puts "$name=[$props getProperty $name]"
+	puts "$name=[$envs get $name]"
     }
 
     error "$travisTest timed out!\n    This test always fails.  It is called by $PTII/bin/ptIITravisBuild.sh to signify that Travis is having timeout problems.  Typically this is caused by OpenCV being rebuilt.  The problem should go away with the next build after OpenCV is updated in the cache.  See https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Caching_2"
