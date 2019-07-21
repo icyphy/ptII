@@ -2795,10 +2795,10 @@ For example:
     </junit>
   </target>
 
-  <target name="test.travis.timeout.fail"
+  <target name="test.travis.timeout.fail.xml"
 	  description="Run a test that will fail, indicating a timeout problem with Travis.">
     <echo>
-      ==test.travis.timeout.fail==
+      ==test.travis.timeout.fail.xml==
       This target runs a test that will fail, indicating a timeout problem with Travis.
 
       If the Travis continuous integration system needs to update the OpenCV cache,
@@ -2828,7 +2828,7 @@ For example:
 	  <include name="**/ptolemy/util/test/travis/junit/JUnitTclTest.java"/>
 	</fileset>
       </batchtest>
-      <formatter type="plain" usefile="${usefile}" />
+      <formatter type="${junit.formatter}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
