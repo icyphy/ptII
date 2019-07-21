@@ -2822,7 +2822,8 @@ For example:
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
       </classpath>
       <!-- Set filtertrace to off so that we see the junit stackframes -->
-      <batchtest filtertrace="off">
+      <batchtest filtertrace="off"
+                 todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
 	  <include name="**/ptolemy/util/test/travis/junit/JUnitTclTest.java"/>
