@@ -528,8 +528,9 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # jar files that are slightly out of date.
 
     # Echo status messages so that Travis knows we are alive.
-    # If you need to get status about available memory, insert "free -m" inside the loop.
-    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; free -m; top -b -n 1 -o %MEM | head -20; done &
+    # If you need to get status about available memory, insert "free -m" inside the loop while building docs.
+    # See $PTII/.travis.yml to print messages for other builds
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
     echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
