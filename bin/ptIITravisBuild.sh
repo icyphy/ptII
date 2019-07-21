@@ -42,6 +42,7 @@
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE4_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE5_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_CORE6_XML=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_TEST_CORE7_XML=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
@@ -618,6 +619,11 @@ fi
 # Run the sixth batch of core tests.
 if [ ! -z "$PT_TRAVIS_TEST_CORE6_XML" ]; then
     runTarget test.core6.xml
+fi
+
+# Run the seventh batch of core tests.
+if [ ! -z "$PT_TRAVIS_TEST_CORE7_XML" ]; then
+    runTarget test.core7.xml
 fi
 
 # Run the first batch of export demo tests.
