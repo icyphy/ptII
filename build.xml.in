@@ -335,11 +335,11 @@
 
   <!-- Tests of the core, sixth batch. -->
   <patternset id="test.core6.includes">
-    <include name="**/ptolemy/configs/test/constraints/junit/JUnitTclTest.java" />
+    <include name="**/ptolemy/configs/test/constraints/test/junit/JUnitTclTest.java" />
   </patternset>
 
   <patternset id="test.core6.excludes">
-    <exclude name="**/ptolemy/configs/test/constraints/junit/JUnitTclTest.*" />
+    <exclude name="**/ptolemy/configs/test/constraints/test/junit/JUnitTclTest.*" />
   </patternset>
 
   <!-- Tests of the core, seventh batch. -->
