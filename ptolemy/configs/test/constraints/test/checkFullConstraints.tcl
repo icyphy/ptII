@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# @Copyright (c) 2000-2018 The Regents of the University of California.
+# @Copyright (c) 2000-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@ if {[string compare test [info procs test]] == 1} then {
 #set VERBOSE 1
 
 if {[string compare test [info procs parseConfiguration]] == 1} then {
-    source configurationTools.tcl
+    source ../../configurationTools.tcl
 } {}
 
 puts "FIXME FIXME FIXME FIXME FIXME FIXME" 
