@@ -282,8 +282,8 @@ runTarget () {
         echo "###################"
         echo "###################"
         echo "########## NOT RUNNING $target ###########"
-        echo "Running test.travis.timeout.fail instead"
-        $TIMEOUTCOMMAND $timeout ant build test.travis.timeout.fail 2>&1 | egrep -v "$SECRET_REGEX" > $log
+        echo "Running test.travis.timeout.fail.xml instead"
+        $TIMEOUTCOMMAND $timeout ant build test.travis.timeout.fail.xml 2>&1 | egrep -v "$SECRET_REGEX" > $log
     else
         # Run the command and log the output.
         $TIMEOUTCOMMAND $timeout ant build $target 2>&1 | egrep -v "$SECRET_REGEX" > $log
@@ -318,7 +318,7 @@ bly occurred because we are using the Ubuntu timeout command, which sends a kill
             fi
         fi
         echo "$0: Running a test that always fails so that the timeout is recorded."
-        ant build test.travis.timeout.fail 2>&1 | egrep -v "$SECRET_REGEX" >> $log
+        ant build test.travis.timeout.fail.xml 2>&1 | egrep -v "$SECRET_REGEX" >> $log
     else
         echo "$0: `date`: ant build $target returned $status"
     fi
