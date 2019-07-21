@@ -204,7 +204,7 @@ script:
 
   # Echo status messages so that Travis knows we are alive.
   # If you need to get status about available memory, insert "free -m" inside the loop.
-  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+  - while sleep 1m; do echo "=====[ $SECONDS seconds still running ]====="; free -m; top -b -n 1 -o %MEM | head -20; done &
 
   - echo "About to call ptIITravisBuild.sh at $SECONDS seconds."
 
