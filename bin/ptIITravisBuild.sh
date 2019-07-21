@@ -317,14 +317,15 @@ bly occurred because we are using the Ubuntu timeout command, which sends a kill
                 echo "######################################################"
             fi
         fi
+        echo "$0: Start of last $lastLines lines of $log"
+        tail -$lastLines $log
         echo "$0: Running a test that always fails so that the timeout is recorded."
         ant build test.travis.timeout.fail.xml 2>&1 | egrep -v "$SECRET_REGEX" >> $log
     else
         echo "$0: `date`: ant build $target returned $status"
+        echo "$0: Start of last $lastLines lines of $log"
+        tail -$lastLines $log
     fi
-
-    echo "$0: Start of last $lastLines lines of $log"
-    tail -$lastLines $log
 
     date
 
@@ -528,7 +529,7 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
 
     # Echo status messages so that Travis knows we are alive.
     # If you need to get status about available memory, insert "free -m" inside the loop.
-    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; free -m; top -b -n 1 -o %MEM | head -20; done &
 
     echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
