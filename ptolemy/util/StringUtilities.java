@@ -160,6 +160,8 @@ public class StringUtilities {
      */
     public static void addPtolemyLibraryDirectoryToJavaLibraryPath()
             throws IOException {
+        // The rxtx serial i/o library needs to be able
+        // to find its shared libraries.
         String ptIIProperty = "ptolemy.ptII.dir";
         String ptII = StringUtilities.getProperty(ptIIProperty);
         if (ptII.length() > 0) {

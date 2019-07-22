@@ -233,12 +233,15 @@ public class ConfigurationApplication implements ExecutionListener {
         _initializeApplication();
 
         try {
+            // The rxtx serial i/o library needs to be able
+            // to find its shared libraries.
             StringUtilities.addPtolemyLibraryDirectoryToJavaLibraryPath();
         } catch (Throwable throwable) {
+            // Ignore this for now.
             // Java 12 no longer has ClassLoader.usr_paths.
-            System.err.println("ConfigurationApplication(): Could not add the ptolemy "
-                               + "library directory to the Java library path: "
-                               + throwable);
+            //System.err.println("ConfigurationApplication(): Could not add the ptolemy "
+            //                   + "library directory to the Java library path: "
+            //                   + throwable);
         }
         _basePath = basePath;
 
