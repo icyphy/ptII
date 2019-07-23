@@ -34,10 +34,10 @@
        under 32-bit Windows.  See
        http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html
 
-       Too large a value here, such as 4000 will cause Travis to fail
+       Too large a value here, such as 3500 will cause Travis to fail
        with a message about being unable to fork.
   -->
-  <property name="java.maxmemory.large" value="3500m" />
+  <property name="java.maxmemory.large" value="3200m" />
 
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
