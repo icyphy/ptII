@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2015-2017 The Regents of the University of California.
+# @Copyright (c) 2015-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -36,7 +36,11 @@ DIRS = \
 	AugmentedReality \
 	AugmentedRealityVideoSOHO \
 	AugmentedRealityVideoTerra \
+	ConnectedCar \
+	DynamicTopologyUpdate \
 	Hue \
+	IndoorLocationAwareDiscovery \
+	SemanticRepository \
 	Lifx \
 	NaturalLanguage \
 	Scarab \
@@ -64,7 +68,11 @@ PTCLASSALLJARS = \
 	AugmentedReality/AugmentedReality.jar \
 	AugmentedRealityVideoSOHO/AugmentedRealityVideoSOHO.jar \
 	AugmentedRealityVideoTerra/AugmentedRealityVideoTerra.jar \
+	ConnectedCar/ConnectedCar.jar \
+	DynamicTopologyUpdate/DynamicTopologyUpdate.jar \
 	Hue/Hue.jar \
+	IndoorLocationAwareDiscovery/IndoorLocationAwareDiscovery.jar \
+	SemanticRepository/SemanticRepository.jar \
 	Lifx/Lifx.jar \
 	NaturalLanguage/NaturalLanguage.jar \
 	Scarab/Scarab.jar \

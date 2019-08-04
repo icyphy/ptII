@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013-2018 The Regents of the University of California.
+# @Copyright (c) 2013-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -58,6 +58,7 @@ OTHER_FILES_TO_BE_JARED = \
 	INSTALL_CERTI.txt \
 	INSTALL_JCERTI.txt \
 	INSTALL_VergilCERTI.txt \
+	manual-ptii-hla.pdf \
 	README_HLAPtides.txt 
 
 EXTRA_SRCS =    $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
