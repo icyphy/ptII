@@ -1,6 +1,6 @@
 /* This attribute implements a HLA Manager to cooperate with a HLA/CERTI Federation.
 
-@Copyright (c) 2013-2018 The Regents of the University of California.
+@Copyright (c) 2013-2019 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -413,7 +413,7 @@ import ptolemy.kernel.util.Workspace;
  *     Simulation Framework", In: Principles of Modeling. Springer International 
  *     Publishing Switzerland, 122-142. ISBN 978-3-319-95245-1. </p>
  * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure 
- *     Programmer’s Guide RTI 1.3 Version 6, March 1999</p>
+ *     Programmer's Guide RTI 1.3 Version 6, March 1999</p>
  * <p>[8] R. Fujimoto, "Time Management in The High Level Architecture",
  *     https://doi.org/10.1177/003754979807100604</p>
  * <p>[9] IEEE Standard for Modeling and Simulation HLA: Federate Interface Specification,
