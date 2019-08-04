@@ -41,7 +41,7 @@ import ptolemy.actor.util.TimedEvent;
  * relative to HLA "events" (also called messages) received from HLA/CERTI.
  * The <i>hlaInstanceHandle</i> is a numeric handle used by the discovering
  * federate to uniquely refer to the object instance.
- * The existence of this object instance is informed by the callback 
+ * The existence of this object instance is informed by the callback
  * discoverObjectInstance(className,instanceName) to the federates that
  * subscribed to className. The updates of an attribute of the
  * instanceName will be delivered to these federates using the callback

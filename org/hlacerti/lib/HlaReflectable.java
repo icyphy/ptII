@@ -69,10 +69,10 @@ public interface HlaReflectable extends Nameable {
      * @see #setInstanceHandle.
      */
     public int getInstanceHandle();
-    
+
     /** FIXME: This should probably not be here. See HlaManager. */
     public TypedIOPort getOutputPort();
-    
+
     /** Set the HLA attribute handle.
      * @param attributeHandle The attributeHandle to set.
      * @see #getAttributeHandle.
@@ -86,7 +86,7 @@ public interface HlaReflectable extends Nameable {
     public void setClassHandle(int classHandle);
 
     /** Set the HLA object instance handle only when wildcard (joker_) is used.
-     * 
+     *
      * @param instanceHandle The HLA object instance to set.
      * @see #getInstanceHandle.
      */
@@ -114,7 +114,7 @@ public interface HlaReflectable extends Nameable {
      *  @exception IllegalActionException If the class name is empty.
      */
     public String getHlaClassName() throws IllegalActionException;
-    
+
     /** Return the value of the <i>instanceName</i> parameter.
      *  @return The value of the <i>instanceName</i> parameter.
      *  @exception IllegalActionException If the class name is empty.

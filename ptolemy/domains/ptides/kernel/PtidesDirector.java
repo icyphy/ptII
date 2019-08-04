@@ -122,7 +122,7 @@ import ptolemy.kernel.util.Workspace;
  *  actors, which means this director cannot be used inside of an
  *  actor that performs fix point iteration, which includes (currently),
  *  Continuous, CT and SR. For more details, please refer
- *  to Edward A. Lee, Haiyang Zheng. 
+ *  to Edward A. Lee, Haiyang Zheng.
  *  <a href="https://ptolemy.berkeley.edu/projects/chess/pubs/430.html#in_browser" target="_top">Leveraging
  *  Synchronous Language Principles for Heterogeneous Modeling
  *  and Design of Embedded Systems</a>, Proceedings of the
@@ -159,7 +159,7 @@ import ptolemy.kernel.util.Workspace;
  *
  *  <p> The implementation is based on the operational semantics
  *  of Ptides, as described in: Jia Zou, Slobodan Matic, Edward
- *  A. Lee, Thomas Huining Feng, Patricia Derler. 
+ *  A. Lee, Thomas Huining Feng, Patricia Derler.
  *  <a href="https://ptolemy.berkeley.edu/projects/chess/pubs/529.html#in_browser" target="_top">Execution
  *  Strategies for Ptides, a Programming Model for Distributed
  *  Embedded Systems</a>, 15th IEEE Real-Time and Embedded Technology
