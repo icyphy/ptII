@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Default Ptolemy AOC Provider for Triquetrum
+Bundle-SymbolicName: org.ptolemy.triquetrum.aoc.provider
+Bundle-Version: 11.1.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-Vendor: Ptolemy Project, Berkeley, California
+Import-Package: org.osgi.framework;version="1.8.0",
+ org.ptolemy.classloading;version="11.1.0",
+ org.ptolemy.commons;version="11.0.0",
+ org.slf4j;version="1.7.2"
+Service-Component: OSGI-INF/PtolemyAocProvider.xml
+Bundle-ActivationPolicy: lazy
+Require-Bundle: ptolemy.actor.lib;bundle-version="11.1.0",
+ ptolemy.actor.lib.gui;bundle-version="11.0.0",
+ ptolemy.core;bundle-version="11.1.0",
+ ptolemy.gui;bundle-version="11.1.0",
+ ptolemy.moml;bundle-version="11.1.0"

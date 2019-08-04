@@ -1,6 +1,6 @@
 /* Utilities used to manipulate strings.
 
- Copyright (c) 2002-2014 The Regents of the University of California.
+ Copyright (c) 2002-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -99,7 +99,7 @@ public class StringUtilities {
      *  looks for native shared libraries.  It is typically read once
      *  when the JVM is started and no longer read after that.
      *  <p>This code may only work on certain JVMs</p>
-     * 
+     *
      *  <p>Based on code from http://forums.sun.com/thread.jspa?threadID=707176
      *  and http://stackoverflow.com/questions/5419039/is-djava-library-path-equivalent-to-system-setpropertyjava-library-path</p>
      *
@@ -117,7 +117,7 @@ public class StringUtilities {
             ArrayList<String> libraryPaths = new ArrayList<String>(Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
-            } 
+            }
             libraryPaths.add(directoryName);
             usrPathsField.set(null, libraryPaths.toArray(new String[libraryPaths.size()]));
             System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + directoryName);
@@ -153,7 +153,7 @@ public class StringUtilities {
                     + "could not get the value of the " + ptIIProperty
                     + ".  This means that loading shared libraries like the Serial I/O "
                     + "interface could fail. ");
-        }                   
+        }
     }
 
     /** Return a string with a maximum line length of <i>length</i>
@@ -482,8 +482,8 @@ public class StringUtilities {
 
                         // FIXME: How do we get from a URL to a pathname?
                         if (namedObjFileName.startsWith("file:")) {
-                            if (namedObjFileName.startsWith("file:/")
-                                    || namedObjFileName.startsWith("file:\\")) {
+                            if (namedObjFileName.startsWith("file://")
+                                    || namedObjFileName.startsWith("file:\\\\")) {
                                 // We get rid of either file:/ or file:\
                                 namedObjFileName = namedObjFileName
                                         .substring(6);
@@ -695,6 +695,13 @@ public class StringUtilities {
     }
 
     /** Return the preferences directory, creating it if necessary.
+     *  If the PTOLEMYII_DOT environment variable is set, then
+     *  that value is used, otherwise the Java user.home property
+     *  is used
+     *
+     *  The PTOLEMYII_DOT environment variable is used to support
+     *  invoking multiple Kepler processes.
+     *
      *  @return A string naming the preferences directory.  The last
      *  character of the string will have the file.separator character
      *  appended.
@@ -702,10 +709,22 @@ public class StringUtilities {
      *  @see #PREFERENCES_DIRECTORY
      */
     public static String preferencesDirectory() throws IOException {
-        String preferencesDirectoryName = StringUtilities
-                .getProperty("user.home")
-                + File.separator
-                + StringUtilities.PREFERENCES_DIRECTORY + File.separator;
+        String baseDirectory = System.getProperty("user.home");
+        try {
+            if (System.getenv("PTOLEMYII_DOT") != null) {
+                baseDirectory = System.getenv("PTOLEMYII_DOT");
+                if (baseDirectory.endsWith(File.separator)) {
+                    baseDirectory = baseDirectory.substring(0, baseDirectory.length() - 1);
+                }
+            }
+        } catch (SecurityException ex) {
+            // Ignore, we are probably in an applet.
+        }
+        String preferencesDirectoryName =
+            baseDirectory +
+            File.separator +
+            StringUtilities.PREFERENCES_DIRECTORY + File.separator; 
+
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {

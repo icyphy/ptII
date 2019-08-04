@@ -167,7 +167,7 @@ public class RecordDisassembler extends TypedAtomicActor {
                 // output ports, some fields may not have a corresponding
                 // output port.
                 if (port != null) {
-                    port.broadcast(value);
+                    port.send(0, value);
                 }
             }
         }

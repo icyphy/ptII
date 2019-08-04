@@ -1,0 +1,6 @@
+<svg x="-30" y="-15" style="overflow: visible">
+<rect x="-30" y="-15" width="60" height="30" style="fill:white;stroke:black"/>
+<polyline points="-30,-10, -10,-10, -10,0" style="stroke:grey;fill:none"/>
+<polyline points="-30,10, 10,10, 10,0" style="stroke:grey;fill:none"/>
+</svg>
+

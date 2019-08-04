@@ -1,0 +1,10 @@
+# files for terraswarm-accessors
+org/terraswarm/accessors/AccessorLibrary.java
+org/terraswarm/accessors/JSAccessor.java
+ptolemy/actor/lib/conversions/json/JSONToToken.java
+ptolemy/actor/lib/conversions/json/TokenToJSON.java
+ptolemy/actor/lib/jjs/HelperBase.java
+ptolemy/actor/lib/jjs/JSUtils.java
+ptolemy/actor/lib/jjs/JavaScript.java
+ptolemy/actor/lib/jjs/RestrictedJavaScriptInterface.java
+ptolemy/actor/lib/jjs/VertxHelperBase.java

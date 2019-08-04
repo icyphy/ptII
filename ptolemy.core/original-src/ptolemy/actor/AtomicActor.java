@@ -1,6 +1,6 @@
 /* An executable entity.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -169,11 +169,27 @@ Actor, FiringsRecordable {
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
+
+        // When super.clone() is called below, attributes that are
+        // contained in this actor are also cloned, which includes
+        // calling methods on these attributes such as setContainer().
+        // These methods may add themselves to the firing listeners
+        // or initializables lists in the newObject clone, so we do
+        // not want to clear these lists in newObject after super.clone().
+        // Instead, save this instance's lists here and restore them after
+        // call super.clone().
+        LinkedList<ActorFiringListener> oldActorFiringListeners = _actorFiringListeners;
+        _actorFiringListeners = null;
+        Set<Initializable> oldInitializables = _initializables;
+        _initializables = null;
+
         @SuppressWarnings("unchecked")
         AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
+        _initializables = oldInitializables;
+        _actorFiringListeners = oldActorFiringListeners;
+
         // Reset to force reinitialization of cache.
-        newObject._initializables = null;
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         newObject._cachedInputPorts = null;

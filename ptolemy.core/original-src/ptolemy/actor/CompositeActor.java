@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997-2015 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -278,6 +278,8 @@ FiringsRecordable {
         _director = null;
         Set<Executable> oldPiggybacks = _piggybacks;
         _piggybacks = null;
+        LinkedList<ActorFiringListener> oldActorFiringListeners = _actorFiringListeners;
+        _actorFiringListeners = null;
 
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
 
@@ -286,6 +288,7 @@ FiringsRecordable {
         _publisherRelations = oldPublisherRelations;
         _director = oldDirector;
         _piggybacks = oldPiggybacks;
+        _actorFiringListeners = oldActorFiringListeners;
 
         newObject._actorFiringListeners = null;
         newObject._notifyingActorFiring = false;
@@ -2030,7 +2033,7 @@ FiringsRecordable {
         if (getManager() != null && change.isStructuralChange()) {
             stopFire();
         }
-        
+
         // If there is a waiting thread (e.g. synchronizeToRealTime),
         // then interrupt it so it can handle change requests.
         Manager manager = getManager();

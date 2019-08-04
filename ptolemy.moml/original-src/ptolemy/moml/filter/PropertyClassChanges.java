@@ -702,5 +702,21 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         _actorsWithPropertyClassChanges.put(
                 "org.terraswarm.accessor.JSAccessor",
                 jsAccessorClassChanges);
+
+        // Rhino JavaScript
+        HashMap jsJavaScriptClassChanges = new HashMap();
+
+        // Key = property name, Value = new class name
+
+        // Needed by: org/ptolemy/ptango/demo/Exception/Exception.xml 
+
+        jsJavaScriptClassChanges.put("script",
+                "ptolemy.actor.parameters.PortParameter");
+
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.jjs.JavaScript",
+                jsJavaScriptClassChanges);
+
+
     }
 }

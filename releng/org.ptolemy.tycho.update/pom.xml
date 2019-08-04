@@ -3,10 +3,9 @@
   <parent>
     <groupId>org.ptolemy.tycho</groupId>
     <artifactId>org.ptolemy.tycho.releng</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>11.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>org.ptolemy.tycho.update</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
   <build>
   <plugins>

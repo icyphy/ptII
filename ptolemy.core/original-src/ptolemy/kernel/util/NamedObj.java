@@ -1,6 +1,6 @@
 /* Base class for objects with a name and a container.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -487,11 +487,15 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
             newObject._changeLock = new SerializableObject();
             newObject._changeRequests = null;
-            
+
             // The clone should have its own listeners, otherwise
             // debug messages from the clone will go to the master.
             // See 8.1.0 in NamedObj.tcl. Credit: Colin Endicott
             newObject._debugListeners = null;
+
+            // Since _debugListeners is null, _debugging should be
+            // false to avoid error message in _debug()
+            newObject._debugging = false;
 
             // During the cloning process, change requests might
             // be issued (e.g. in an actor's _addEntity() method).
@@ -540,6 +544,32 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
                     try {
                         newParameter.setContainer(newObject);
+                        // PortParameters are
+                        // AbstractInitializableParameters that end up
+                        // adding HierarchyListeners to the
+                        // initializable container of the actor.  This
+                        // results in a memory leak, so we remove
+                        // parameters that are HierarchyListeners.
+                        // See https://projects.ecoinformatics.org/ecoinfo/issues/7190
+                        if (newParameter instanceof HierarchyListener) {
+                            if (newParameter.getContainer() != null) {
+                                NamedObj newContainerContainer = newParameter.getContainer().getContainer();
+                                NamedObj oldContainer = getContainer();
+                                // FIXME: This is probably a serious
+                                // problem that the container of the
+                                // container of the parameter in the
+                                // clone is the same as the container
+                                // of original master NamedObj.  Part
+                                // of the issue here is that NamedObj
+                                // does not have setContainer().  What
+                                // we would really like to do is to
+                                // set the container to null during
+                                // cloning.
+                                if (newContainerContainer != null && newContainerContainer == oldContainer) {
+                                    newContainerContainer.removeHierarchyListener((HierarchyListener)newParameter);
+                                }
+                            }
+                        }
                     } catch (KernelException exception) {
                         throw new CloneNotSupportedException(
                                 "Failed to clone attribute "

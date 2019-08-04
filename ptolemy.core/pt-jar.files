@@ -359,6 +359,7 @@
 /ptolemy/kernel/util/LazyComposite.java
 /ptolemy/kernel/util/Locatable.java
 /ptolemy/kernel/util/Location.java
+/ptolemy/kernel/util/LoggerListener.java
 /ptolemy/kernel/util/ModelErrorHandler.java
 /ptolemy/kernel/util/MoMLExportable.java
 /ptolemy/kernel/util/Moveable.java

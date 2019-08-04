@@ -1,6 +1,6 @@
 /* The type of base token classes.
 
- Copyright (c) 1997-2015 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -154,7 +154,10 @@ public abstract class BaseType implements Type {
     }
 
     /** Return an instance of this class with the specified name,
-     *  or null if none exists.
+     *  or null if none exists. Note that this does not recognize
+     *  all the types that have symbolic names. It is better to
+     *  use ptolemy.data.expr.Constants.types() to map a name
+     *  to a type.
      *  @param name The name of the type.
      *  @return An instance of BaseType.
      */
