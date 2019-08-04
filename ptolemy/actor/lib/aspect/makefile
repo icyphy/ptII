@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013-2014 The Regents of the University of California.
+# @Copyright (c) 2013-2019 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -54,6 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	CommunicationResponsePortIcon.xml \
 	CompositeCommunicationAspectIcon.xml \
 	CompositeExecutionAspectIcon.xml \
+	DecorationParameters.java \
 	DynamicCoreAssignmentSchedulerIcon.xml \
 	EDFSchedulerIcon.xml \
 	ExecutionRequestPortIcon.xml \
