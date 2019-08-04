@@ -1,6 +1,6 @@
 /* This actor provides information to subscribe, discover and reflect updated
  * values in the Ptolemy-HLA/CERTI framework.
- 
+
 @Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
@@ -121,7 +121,7 @@ import ptolemy.kernel.util.Workspace;
  * types supported by CERTI can be used.  On the other hand, if the attribute
  * is updated by a Ptolemy II model, and that update does not not specify
  * to use the CERTI message buffer, then this parameter should be false.
- *  
+ *
  *  @author Gilles Lasnier, Janette Cardoso, Edward A. Lee. Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeReflector.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
@@ -444,9 +444,9 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     /** Store each updated value of the HLA attribute (mapped to this actor) in
      *  the token queue. Then, program the next firing time of this actor to
      *  send the token at its expected time t. This method is called by the
-     *  {@link HlaManager} attribute. The timestamp t can be different from 
+     *  {@link HlaManager} attribute. The timestamp t can be different from
      *  the ravTimeStamp if TAR time management is used (see {@link HlaManager}
-     *  code). 
+     *  code).
      *  @param event The event containing the new value of the HLA
      *  attribute and its time-stamp t.
      *  @exception IllegalActionException Not thrown here.
@@ -533,7 +533,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Build the corresponding typed token from the contents of 
+    /** Build the corresponding typed token from the contents of
      *  {@link TimedEvent}s stored in the reflectedAttributeValues queue. The
      *  structure of the contents is an array object <i>obj</i> where:
      *  obj[0] is the expected data type and; obj[1] is the object buffer
@@ -577,7 +577,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
                     "The current type is not supported by this implementation or JCERTI");
             // FIXME: as defined in jcerti.src.hla.rti.jlc.EncodingHelpers.java used in
             // {@link MessageProcessing} ?
-            
+
         }
 
         return value;

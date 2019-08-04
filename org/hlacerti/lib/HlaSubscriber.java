@@ -1,6 +1,6 @@
 /* This actor provides information to subscribe, discover and reflect updated
  * values in the Ptolemy-HLA/CERTI framework.
- 
+
 @Copyright (c) 2013-2018 The Regents of the University of California.
 All rights reserved.
 
@@ -68,22 +68,22 @@ import ptolemy.kernel.util.Workspace;
  * This actor provides information to subscribe, discover and reflect (i.e.,
  * receive) updated values in the Ptolemy-HLA/CERTI framework.
  *
- * <p> This actor is associated with a unique HLA attribute of a given object 
+ * <p> This actor is associated with a unique HLA attribute of a given object
  * instance. Reflected values of this HLA attribute are received from the HLA
- * Federation by the {@link HlaManager} attribute deployed in the same model. 
- * The {@link HlaManager} invokes the putReflectedAttribute() to put the 
- * received value in the HlaSubscriber actor token queue and to program its 
+ * Federation by the {@link HlaManager} attribute deployed in the same model.
+ * The {@link HlaManager} invokes the putReflectedAttribute() to put the
+ * received value in the HlaSubscriber actor token queue and to program its
  * firing time, using the _fireAt() method.
- * 
+ *
  *  </p><p>
  * Parameters <i>classObjectName</i> and <i>attributeName</i> need to match the
- * name of the class and the name of the attribute defined in the Federate 
+ * name of the class and the name of the attribute defined in the Federate
  * Object Model (FOM) specified for the Federation and indicated in the FED file.
  * The data type of the output port of this actor must have the same type of the
- * HLA attribute (defined in the FOM, not present in the FED file). 
+ * HLA attribute (defined in the FOM, not present in the FED file).
  * </p><p>
- * The parameter <i>classInstanceName</i> is chosen by the user. 
- * 
+ * The parameter <i>classInstanceName</i> is chosen by the user.
+ *
  * </p><p>
  * Entering in more details:
  * This actor provides 3 information: a class name <i>C</i>, an attribute
@@ -93,32 +93,32 @@ import ptolemy.kernel.util.Workspace;
  * Let us recall some terms:
  * - FOM: Federation Object Model
  * - FED: Federation Execution Data, contains classes and attributes defined
- *   in the FOM and, for each attribute, if it is timestamped and its QoS 
+ *   in the FOM and, for each attribute, if it is timestamped and its QoS
  * - RTI: Run-Time Infrastructure. The RTI has a Central RTI Component (CRC)
- *   and one or more Local RTI Components (LRC). The LRC has a numerical 
+ *   and one or more Local RTI Components (LRC). The LRC has a numerical
  *   representation (handle) for all object classes and object class attributes
  *   contained in the FED file.
- * 
+ *
  * The information supplied in this actor by the user is used in the following
  * way by the {@link HlaManager} attribute (deployed in the same model):
- * 
- * 1. During the initialization phase, the {@link HlaManager}: 
+ *
+ * 1. During the initialization phase, the {@link HlaManager}:
  *  - Subscribes to all the <i>k</i attributes <i>attr-k</i of a class  <i>C</i>
  *    (gathered from <i>k</i HlaSubscriber actors) by calling
- *    _rtia.subscribeObjectClassAttributes(classHandle, _attributesLocal), 
- *    where <i>classHandle</i is obtained by calling the HLA service 
+ *    _rtia.subscribeObjectClassAttributes(classHandle, _attributesLocal),
+ *    where <i>classHandle</i is obtained by calling the HLA service
  *    rtia.getObjectClassHandle() for  <i>C</i>;
  *    _attributesLocal is the set constructed by calling rtia.getAttributeHandle()
  *    for each <i>attr</i in this Ptolemy federate  model (the set is obtained
- *    from all HlaSubscriber actors that has the same class  <i>C</i>); 
+ *    from all HlaSubscriber actors that has the same class  <i>C</i>);
  *    - Receives the HLA callback informing the discovering of an instance of
  *    class <i>C</i> named <i>i</i>:
- *    rtia.discoverObjectInstance(instanceHandle, classHandle, someName), with 
+ *    rtia.discoverObjectInstance(instanceHandle, classHandle, someName), with
  *    someName = <i>i</i>; instanceHandle and classHandle are handles provided
  *    by the RTI.
- *    
+ *
  * 2. During the simulation loop phase, the {@link HlaManager} receives the RAV
- * callback from the RTI with the new value of an attribute of a class instance. Each 
+ * callback from the RTI with the new value of an attribute of a class instance. Each
  * HlaSubscriber  actor is related to one RAV callback:
  * rtia.reflectAttributeValues(instanceHandle, suppAttributes, tag, ravTimeStamp).
  * The RAV callback, with a timestamp t'=<i>ravTimeStamp<\i> is received at the
@@ -127,8 +127,8 @@ import ptolemy.kernel.util.Workspace;
  * TAR time management, see {@link HlaManager} code).
  * The optional parameter <i>tag</i> is not used in the current implementation.
  * </p><p>
- * 
- * 
+ *
+ *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaSubscriber.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
@@ -539,7 +539,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
         }
         return name;
     }
-    
+
     /** FIXME: This should probably not be here. See HlaManager. */
     public TypedIOPort getOutputPort() {
         return output;
@@ -561,7 +561,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Build the corresponding typed token from the contents of 
+    /** Build the corresponding typed token from the contents of
      *  {@link TimedEvent}s stored in the reflectedAttributeValues queue. The
      *  structure of the contents is an array object <i>obj</i> where:
      *  obj[0] is the expected data type and; obj[1] is the object buffer
@@ -605,7 +605,7 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
                     "The current type is not supported by this implementation or JCERTI");
             // FIXME: as defined in jcerti.src.hla.rti.jlc.EncodingHelpers.java used in
             // {@link MessageProcessing} ?
-            
+
         }
 
         return value;

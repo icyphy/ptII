@@ -122,9 +122,9 @@ import ptolemy.kernel.util.Workspace;
 //// HlaManager
 
 /**
- * The Ptolemy-HLA co-simulation framework leverages two open source tools: 
+ * The Ptolemy-HLA co-simulation framework leverages two open source tools:
  * Ptolemy II and HLA/CERTI to enable construction in Ptolemy II of an HLA
- * federate. 
+ * federate.
  * </p>
  * <h2>About HLA</h2>
  * <p>
@@ -216,7 +216,7 @@ import ptolemy.kernel.util.Workspace;
  * the time stamp. Specifically, if the sender has an event
  * with time stamp equal to or greater than
  * <i>N</i> times <i>hlaTimeStep</i> and less than
- * <i>N</i> times <i>hlaTimeStep</i> plus <i>hlaLookahead</i>, 
+ * <i>N</i> times <i>hlaTimeStep</i> plus <i>hlaLookahead</i>,
  * for any integer <i>N</i>, then the
  * time stamp will be modified by the sender to equal
  * <i>N</i> times <i>hlaTimeStep</i> plus <i>hlaLookahead</i>.
@@ -282,22 +282,22 @@ import ptolemy.kernel.util.Workspace;
  * CERTI, which is the implementation of HLA that Ptolemy II uses,
  * relies on some environment variables in order to execute:
  * <ul>
- * <li> CERTI_HOST, which provides the IP address of the machine that hosts the RTIG, 
+ * <li> CERTI_HOST, which provides the IP address of the machine that hosts the RTIG,
  * <li> CERTI_HOME, which provides the path to your installation of CERTI,
  * <li> CERTI_FOM_PATH which provides the default directory where the FED files are.
  *   This variable is needed if the FED file is not in the directory where the
- *   RTIG is launched. 
+ *   RTIG is launched.
  * <li> PATH must be updated with $CERTI_HOME/bin, so the binaries can be found,
  *   e.g., rtig and rtia.
- * <li> LD_LIBRARY_PATH and DYLD_LIBRARY_PATH must be updated with $CERTI_HOME/lib, 
+ * <li> LD_LIBRARY_PATH and DYLD_LIBRARY_PATH must be updated with $CERTI_HOME/lib,
  *   the directory where the libRTI, libFedTime, libCERTId libraries are
  *   implemented.
  * </ul>
  * CERTI provides a script <i>myCERTI_env.sh</i> that set all the above
  * environment variables. The script is located in $CERTI_HOME/share/scripts and
  * must be run before a federation simulation.
- * 
- * By default, the script <i>myCERTI_env.sh</i> set CERTI_HOST=localhost. This 
+ *
+ * By default, the script <i>myCERTI_env.sh</i> set CERTI_HOST=localhost. This
  * specifies that the RTIG host is the local machine. If you are connecting to
  * a remote RTIG, you need to specify the IP address or domain name of that machine.
  * To set it, before launching Ptolemy II, you can execute a command like:
@@ -344,7 +344,7 @@ import ptolemy.kernel.util.Workspace;
  * point with the HLA. In that case, this federate should be last one launched.
  * All other federates that name this federate in their
  * <i>synchronizeStartTo</i> parameters will be waiting for
- * a message from the RTIG when all federates have reached this point, 
+ * a message from the RTIG when all federates have reached this point,
  * and now the coordinated simulation can begin.
  * <b>NOTE:</b> If any federate fails to reach this synchronization point,
  * then the entire federation will be frozen in its initialization.
@@ -379,10 +379,10 @@ import ptolemy.kernel.util.Workspace;
  * </p>
  * <p>NOTE FOR DEVELOPERS:
  * A federate needs to instruct the RTI that it is prepared to receive one or more
- * callbacks. The way to do it was not in the HLA 1.3 standard and was introduced 
+ * callbacks. The way to do it was not in the HLA 1.3 standard and was introduced
  * in the HLA IEEE 1516 standard. JCERTI, the Java API, is compliant only with DoD HLA 1.3
  * even though CERTI (coded with C++) is compliant with both standards. JCERTI
- * provides three different methods for receiving a callback: tick(), 
+ * provides three different methods for receiving a callback: tick(),
  * tick(min,max) and tick2(). When a federate calls the tick() method, any
  * callbacks that are pending are invoked, and then the tick() returns.
  * If there are no pending callbacks, then it returns immediately.
@@ -410,9 +410,9 @@ import ptolemy.kernel.util.Workspace;
  * <p>[5] Y. Li, J. Cardoso, and P. Siron, "A distributed Simulation Environment for
  *     Cyber-Physical Systems", Sept 2015.</p>
  * <p>[6] J. Cardoso, and P. Siron, "Ptolemy-HLA: a Cyber-Physical System Distributed
- *     Simulation Framework", In: Principles of Modeling. Springer International 
+ *     Simulation Framework", In: Principles of Modeling. Springer International
  *     Publishing Switzerland, 122-142. ISBN 978-3-319-95245-1. </p>
- * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure 
+ * <p>[7] Dpt. of Defense. High Level Architecture Run-Time Infrastructure
  *     Programmer's Guide RTI 1.3 Version 6, March 1999</p>
  * <p>[8] R. Fujimoto, "Time Management in The High Level Architecture",
  *     https://doi.org/10.1177/003754979807100604</p>
@@ -420,8 +420,8 @@ import ptolemy.kernel.util.Workspace;
  *     IEEE Std 1516.1-2010, 18 August 2010. </p>
  * <p>[10] Chaudron, Jean-Baptiste and Siron, Pierre and Adelantado, Martin. Analysis and
  *     Optimization of time-management services in CERTI 4.0. (2018) In: 2018 Fall
- *     Simulation Innovation Workshop (SIW), 10-14 September 2018 (Orlando, United 
- *     States). </p>    
+ *     Simulation Innovation Workshop (SIW), 10-14 September 2018 (Orlando, United
+ *     States). </p>
  *
  *  @author Gilles Lasnier, Janette Cardoso, and Edward A. Lee. Contributors: Patricia Derler, David Come, Yanxuan LI
  *  @version $Id: HlaManager.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -477,7 +477,7 @@ public class HlaManager extends AbstractInitializableAttribute
         new Parameter(fedFile, "allowFiles", BooleanToken.TRUE);
         new Parameter(fedFile, "allowDirectories", BooleanToken.FALSE);
         fedFile.setExpression("HLAFederation.fed");
-        
+
         fedFileOnRTIG = new StringParameter(this, "fedFileOnRTIG");
         fedFileOnRTIG.setExpression("$fedFile");
 
@@ -526,11 +526,11 @@ public class HlaManager extends AbstractInitializableAttribute
         new Parameter(hlaReportPath, "allowFiles", BooleanToken.FALSE);
         new Parameter(hlaReportPath, "allowDirectories", BooleanToken.TRUE);
         hlaReportPath.setExpression("$HOME/HLATestResults");
-        
+
         launchRTIG = new Parameter(this, "launchRTIG");
         launchRTIG.setTypeEquals(BaseType.BOOLEAN);
         launchRTIG.setExpression("false");
-        
+
         killRTIG = new Parameter(this, "killRTIG");
         killRTIG.setTypeEquals(BaseType.BOOLEAN);
         killRTIG.setExpression("launchRTIG");
@@ -558,7 +558,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @see fedFileOnRTIG
      */
     public FileParameter fedFile;
-    
+
     /** Name or path and name of the FED file on the machine that is running the
      *  RTIG. Unfortunately, that file may not be the same as the FED file
      *  on the local machine, pointed to by the fedFile parameter. By
@@ -608,19 +608,19 @@ public class HlaManager extends AbstractInitializableAttribute
      *  when using TAR.
      */
     public Parameter hlaLookAHead;
-    
+
     /** If true, kill the HLA runtime infrastructure gateway (RTIG)
      *  in wrapup() that was created in preinitialize. If no RTIG was created
      *  in preinitialize, then ignore this.  This is a boolean that
      *  defaults to the value of launchRTIG.
      */
     public Parameter killRTIG;
-    
+
     /** If true, launch an HLA runtime infrastructure gateway (RTIG) in preinitialize.
      *  This is a boolean that defaults to false.
      */
     public Parameter launchRTIG;
-    
+
     /** Choice of time advancement service. This is a string that is one of
      *  "Next Event Request (NER)" or "Time Advancement Request (TAR)".
      *  If TAR is selected, then you need to also provide a time step
@@ -662,7 +662,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  defaults to "$HOME/HLATestResults".
      */
     public FileParameter hlaReportPath;
-    
+
     /** The name of a synchronization point to which this federate should
      *  synchronize its start. If the name given here is the name of this
      *  federate, then this federate registers itself as a
@@ -673,7 +673,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  then this federate starts right away without waiting for any other
      *  federate.  This parameter defaults to an empty string, indicating
      *  that there is no synchronization.
-     *  
+     *
      *  NOTE: All federates in a federation must use the same name here.
      *  If two federates use two different names, then both will block
      *  on initialization. If any one federate uses a blank here, then it
@@ -980,7 +980,7 @@ public class HlaManager extends AbstractInitializableAttribute
             _hlaDebug("preinitialize() - **** No RTI running.");
             // If set to create one, the create one.
             if (((BooleanToken)launchRTIG.getToken()).booleanValue()) {
-                
+
                 // Request to launch a local RTI.
                 // Check for a compatible CERTI_HOST environment variable.
                 String certiHost = System.getenv("CERTI_HOST");
@@ -1013,7 +1013,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     // Ignore
                 }
                 // The environment variable $CERTI_HOME must be set for creating
-                // the RTI Ambassador. Quoting [7], "Within libRTI, the class 
+                // the RTI Ambassador. Quoting [7], "Within libRTI, the class
                 // RTIambassador bundles the services provided by the RTI. All
                 // requests made by a federate on the RTI take the form of an
                 // RTIambassador method call.
@@ -1044,7 +1044,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  This method implements the TimeRegulator
      *  interface by calling the HLA/CERTI Time Management services for
      *  a time advance request. The time advance phase in HLA is a two-step
-     *  process: 1) a federate sends a time advance request service and 
+     *  process: 1) a federate sends a time advance request service and
      *  2) waits for the time to be granted by the timeAdvanceGrant
      *  (TAG) service. Two services, both with  lookahead &gt; 0 are implemented:
      *  - timeAdvanceRequest() (TAR) for implementing time-stepped Federates;
@@ -1053,12 +1053,12 @@ public class HlaManager extends AbstractInitializableAttribute
      *  reflected with a time stamp less than the proposed time. In this case,
      *  the time returned by this method depends on whether TAR or NER is being
      *  used. If NER is being used, the time returned by this method will equal
-     *  the value of that time stamp. If TAR is being used, the time returned 
+     *  the value of that time stamp. If TAR is being used, the time returned
      *  always equals the proposedTime. This allows the director to properly
      *  handle that reflected attribute value at the time of its time stamp. If
      *  no attribute is reflected while this method is blocked, the time
      *  returned always equals the proposedTime no matter which service is
-     *  used, NER or TAR. 
+     *  used, NER or TAR.
      *  <p>
      *  In fact, this method deals with two timelines: the Ptolemy timeline,
      *  where a time value is represented by an instance of the Time class,
@@ -1074,7 +1074,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  the exact proposedTime Time object, thereby avoiding the quantization
      *  errors of conversion. In other words, if the HLA grants the proposed time,
      *  this method returns the proposedTime with no quantization error.
-     *  
+     *
      *  @param proposedTime The proposed time in Ptolemy time.
      *  @return The proposed time or a smaller time t', in Ptolemy time.
      *  @exception IllegalActionException If an RTI internal error occurs or
@@ -1083,7 +1083,7 @@ public class HlaManager extends AbstractInitializableAttribute
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
         // CERTI offers also the Null Prime Message Protocol that improves
-        // the performance of the distributed simulation, see [10]. 
+        // the performance of the distributed simulation, see [10].
         // When compiling set to ON the option CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL.
 
         Time currentTime = _director.getModelTime();
@@ -1105,7 +1105,7 @@ public class HlaManager extends AbstractInitializableAttribute
         }
 
         // If the proposedTime exceeds the simulation stop time, the simulation
-        // must stop. The federate shall not ask to advance to this 
+        // must stop. The federate shall not ask to advance to this
         // proposedTime and must return the _stopTime. Notice that no RAV
         // callback with time stamp bigger than the previous received TAG will
         // be evoked.
@@ -1113,7 +1113,7 @@ public class HlaManager extends AbstractInitializableAttribute
         if (proposedTime.compareTo(_stopTime) > 0) {
             if (_debugging) {
                 _hlaDebug("   proposeTime(" + strProposedTime + ") "
-                        + "  > stopTime(" + _stopTime 
+                        + "  > stopTime(" + _stopTime
                         + "): returns proposeTime("+ _stopTime+ "), skip RTI.");
             }
             return _stopTime;
@@ -1148,7 +1148,7 @@ public class HlaManager extends AbstractInitializableAttribute
             return currentTime;
         }
 
-        // If the HLA Time Management is required, ask to the RTI the 
+        // If the HLA Time Management is required, ask to the RTI the
         // authorization to advance its time by invoking TAR or NER service
         // as chosen by the user in the HlaManager interface.
         if (_isTimeRegulator && _isTimeConstrained) {
@@ -1265,7 +1265,7 @@ public class HlaManager extends AbstractInitializableAttribute
         // UAV timestamp sent by a HlaUpdatable
         CertiLogicalTime uavTimeStamp = null;
 
-        // Convert Ptolemy time t (Time) to HLA time (double), 
+        // Convert Ptolemy time t (Time) to HLA time (double),
         // g(t) = _convertToCertiLogicalTime(t), where t=Ptolemy currentTime
         CertiLogicalTime ptIICurrentTime = _convertToCertiLogicalTime(
                 currentTime);
@@ -1273,16 +1273,16 @@ public class HlaManager extends AbstractInitializableAttribute
         if (_eventBased) {
             // When the time management NER is used, the time stamp takes always
             // the value ptIICurrentTime + lookahead since HLA says that a
-            // federate must promise that no event will be sent before 
-            // hlaCurrentTime + lookahead. Notice that when using NER, 
+            // federate must promise that no event will be sent before
+            // hlaCurrentTime + lookahead. Notice that when using NER,
             // ptIICurrentTime = hlaCurrentTime.
             uavTimeStamp = new CertiLogicalTime(
                     ptIICurrentTime.getTime() + _hlaLookAHead);
         } else {
             // If the time management is TAR (_timeStepped case) the value of
             // uavTimeStamp depends whether (Ptolemy) currentTime is inside or
-            // outside the forbidden region [hlaCurrentTime, hlaCurrentTime + 
-            // lookahead]. If it is inside, uavTimeStamp takes the value 
+            // outside the forbidden region [hlaCurrentTime, hlaCurrentTime +
+            // lookahead]. If it is inside, uavTimeStamp takes the value
             // (hlaCurrentTime + lookahead), otherwise uavTimeStamp takes the
             // value ptIICurrentTime. Notice that when using TAR, the values
             // of hlaCurrentTime and ptIICurrentTime can be different.
@@ -1295,7 +1295,7 @@ public class HlaManager extends AbstractInitializableAttribute
             CertiLogicalTime minimalNextUAVTime = new CertiLogicalTime(
                     hlaCurrentTime.getTime() + _hlaLookAHead);
 
-            // g(t) <  h + lah 
+            // g(t) <  h + lah
             if (minimalNextUAVTime.isGreaterThan(ptIICurrentTime)) {
                 // UAV(h + lah)
                 uavTimeStamp = minimalNextUAVTime;
@@ -1498,7 +1498,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                         // HLA Reporter support.
                         _hlaReporter = null;
-                        
+
                         // Close the connection socket connection between jcerti (the Java
                         // proxy for the ambassador) and certi.
                         // Sadly, this nondeterministically triggers an IOException:
@@ -1527,7 +1527,7 @@ public class HlaManager extends AbstractInitializableAttribute
     ////                         protected variables               ////
 
     // FIXME: A better design for the following would have _hlaAttributesToPublish
-    // be a LinkedHashMap<HlaUpdater,HLAAttribute>, where 
+    // be a LinkedHashMap<HlaUpdater,HLAAttribute>, where
     // HLAAttribute is an inner class with the three items
     // provided by the RTI.
     /** Table of HLA attributes (and their HLA information) that are published
@@ -1559,7 +1559,7 @@ public class HlaManager extends AbstractInitializableAttribute
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Convert Ptolemy time, which has units of seconds, to HLA logical time 
+    /** Convert Ptolemy time, which has units of seconds, to HLA logical time
      *  units. Ptolemy time is implemented using Java classe Time and HLA time
      *  uses IEEE-754 double.
      *  @param pt The Ptolemy time.
@@ -1585,7 +1585,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  in a HLA simulation. The federate wants to advance to
      *  <i>proposedTime</i> but if a RAV(t'') is received in this time advance
      *  phase, then <i>proposeTime</i> returns t'', the time granted by the RTI.
-     *  All RAV received are put in the HlaReflectable actors. 
+     *  All RAV received are put in the HlaReflectable actors.
      *  Eventually a new NER(t') will be called until t' will be granted. See [6],
      *  algorithm 3.
      *  A federate has two timelines: the Ptolemy timeline ptolemyTime and the
@@ -1618,7 +1618,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     + " proposedTime=" + proposedTime.toString()
                     + " - calling CERTI NER()");
         }
-        
+
         // The director global time resolution may be used later in the
         // particular case where HLA time advances but Ptolemy times does not.
         Double r = _director.getTimeResolution();
@@ -1673,8 +1673,8 @@ public class HlaManager extends AbstractInitializableAttribute
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                _rtia.tick(MAX_BLOCKING_TIME, 0);  
-                
+                _rtia.tick(MAX_BLOCKING_TIME, 0);
+
                 // HLA Reporter support.
                 if (_enableHlaReporter) {
                     _hlaReporter._numberOfTicks2++;
@@ -1695,24 +1695,24 @@ public class HlaManager extends AbstractInitializableAttribute
                 Time newPtolemyTime = _convertToPtolemyTime(
                         (CertiLogicalTime) _federateAmbassador.grantedHlaLogicalTime);
 
-                // True in the general case. If several RAV callbacks are received  
-                // with the same time stamp, the microsteps of the corresponding 
+                // True in the general case. If several RAV callbacks are received
+                // with the same time stamp, the microsteps of the corresponding
                 // Ptolemy events are increased in the order of the RAV reception.
                 if (newPtolemyTime.compareTo(ptolemyTime) > 0) {
                     proposedTime = newPtolemyTime;
-                } else { 
+                } else {
                     // However, it could happen that the RAV (and so the TAG)
-                    // received corresponds to an HLA time increased by a 
-                    // value epsilon but, because of the time representation 
+                    // received corresponds to an HLA time increased by a
+                    // value epsilon but, because of the time representation
                     // conversion, it appears as equal to Ptolemy current time t.
-                    // In this case, inserting a new event at e(t;HlaUpdater) 
+                    // In this case, inserting a new event at e(t;HlaUpdater)
                     // can be a problem to the director, since all existing
                     // events e(t;HlaSubs) have already been treated.
                     // In order to advance the Ptolemy time, the time resolution
                     // is added to the current time t, since it is the shortest
                     // value that can be add for advancing the time beyond t.
                     proposedTime = ptolemyTime.add(r);
-                } 
+                }
 
                 // Store reflected attributes RAV as events on HlaReflectable actors.
                 _putReflectedAttributesOnHlaReflectables(proposedTime);
@@ -1731,7 +1731,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *  @return the HLA current time converted to a Ptolemy time, which is in
      *   units of seconds (and uses Java class Time).
      */
-    
+
     private Time _getHlaCurrentTime() throws IllegalActionException {
         CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.hlaLogicalTime;
         return _convertToPtolemyTime(certiCurrentTime);
@@ -1780,14 +1780,14 @@ public class HlaManager extends AbstractInitializableAttribute
      *  in a HLA simulation. The federate wants to advance to
      *  <i>proposedTime</i> and it returns t' (if granted by the RTI) even if
      *  RAV(t''), t'' &lt;  t', are received in this time advance
-     *  phase. All RAV received are put in the HlaReflectable actors. 
+     *  phase. All RAV received are put in the HlaReflectable actors.
      *  If <i>proposedTime</i> is equal to or greater than <i>N</i> times
-     *  <i>hlaTimeStep</i> and less than <i>(N + 1)</i> times <i>hlaTimeStep</i>, 
+     *  <i>hlaTimeStep</i> and less than <i>(N + 1)</i> times <i>hlaTimeStep</i>,
      *  for any integer <i>N</i>, then TAR will be called <i>N</i> times.
      *  This is why, when TAR is used, the time lines can be different: Ptolemy
-     *  time is equal to <i>proposedTime</i> but HLA time is equal to <i>N</i> 
+     *  time is equal to <i>proposedTime</i> but HLA time is equal to <i>N</i>
      *  times <i>hlaTimeStep</i>. See [6], algorithm 4.
-     *  
+     *
      *  @param proposedTime time stamp of last found event
      *  @return A valid time to advance to.
      *  @throws IllegalActionException If the user requests that the execution
@@ -1796,7 +1796,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
     private Time _timeSteppedBasedTimeAdvance(Time proposedTime)
             throws IllegalActionException {
-                
+
         // HLA Reporter support.
         if (_enableHlaReporter) {
             _hlaReporter.storeTimes("TAR()", proposedTime,
@@ -1812,7 +1812,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     + proposedTime.toString());
         }
 
-        // Convert proposedTime to double so it can be compared with HLA time 
+        // Convert proposedTime to double so it can be compared with HLA time
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(
                 proposedTime);
 
@@ -1887,8 +1887,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
-                    
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);
+
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
                         _hlaReporter._numberOfTicks2++;
@@ -1901,7 +1901,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 } catch (ConcurrentAccessAttempted | RTIinternalError e) {
                     throw new IllegalActionException(this, e, e.getMessage());
-                } 
+                }
 
             } //  end while
 
@@ -1909,7 +1909,7 @@ public class HlaManager extends AbstractInitializableAttribute
             _federateAmbassador.hlaLogicalTime = nextPointInTime;
 
             // If one or more RAV are received, HLA guarantees that their time
-            // stamps will never be smaller than the current HLA time h (neither 
+            // stamps will never be smaller than the current HLA time h (neither
             // larger than nextPointInTime). And proposeTime method must return
             // the same proposed time or a smaller time.
             // This guarantees that the received time stamp is smaller. If,
@@ -1923,7 +1923,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         (CertiLogicalTime) _federateAmbassador.hlaLogicalTime);
 
                 // In the general case newPtolemyTime is smaller than proposedTime
-                // and proposedTime is updated to newPtolemyTime. This value will 
+                // and proposedTime is updated to newPtolemyTime. This value will
                 // be the time stamp on the output of the HlaReflectable actor.
                 if (newPtolemyTime.compareTo(proposedTime) < 0) {
                     if (_debugging) {
@@ -1932,12 +1932,12 @@ public class HlaManager extends AbstractInitializableAttribute
                                 + " @line 10 in algo 4 " + headMsg);
                     }
                     proposedTime = newPtolemyTime;
-                } 
+                }
 
                 // Store reflected attributes RAV as events on HlaReflectable actors.
                 // Notice that proposedTime here is a multiple of _hlaTimeStep.
                 _putReflectedAttributesOnHlaReflectables(proposedTime);
-                
+
                 // Reinitialize variable
                 _federateAmbassador.hasReceivedRAV = false;
 
@@ -1956,7 +1956,7 @@ public class HlaManager extends AbstractInitializableAttribute
             nextPointInTime = new CertiLogicalTime(
                     hlaLogicaltime.getTime() + _hlaTimeStep);
 
-        } // end while: 
+        } // end while:
 
         if (_debugging) {
             _hlaDebug("returns proposedTime=" + proposedTime.toString() + "from "
@@ -2105,7 +2105,7 @@ public class HlaManager extends AbstractInitializableAttribute
                             hs.getHlaInstanceName() });
 
             // The events list to store updated values of HLA attribute,
-            // (received by callbacks) from the RTI, is indexed by the 
+            // (received by callbacks) from the RTI, is indexed by the
             // HlaReflectable actors present in the model.
             _fromFederationEvents.put(hs.getFullName(),
                     new LinkedList<TimedEvent>());
@@ -2251,7 +2251,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Time step in units of HLA logical time. */
     private double _hlaTimeStep;
-    
+
     /** Marker that this federate is the one that created the federation. */
     private boolean _isFederationCreator = false;
 
@@ -2267,7 +2267,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** RTI factory, set up in preinitialize(). */
     private RtiFactory _factory;
-    
+
     /** The simulation stop time. */
     private Time _stopTime;
 
@@ -2283,7 +2283,7 @@ public class HlaManager extends AbstractInitializableAttribute
     private HashMap<Integer, String> _discoverObjectInstanceMap;
 
     /**
-     * Map <Sender actor + HlaUpdatable> and registerObjectInstance (ROI) 
+     * Map <Sender actor + HlaUpdatable> and registerObjectInstance (ROI)
      * handle for an object instance. See HlaPublisher and HlaAttributeUpdater.
      *
      * HashMap for HlaPublisher to remember which actor's ID has
@@ -2294,13 +2294,13 @@ public class HlaManager extends AbstractInitializableAttribute
     /** The actual value for hlaTimeUnit parameter. */
     private double _hlaTimeUnitValue;
 
-    /** 
+    /**
      * The reserved keyword to filter HlaReflectable actors using joker
      * wildcard.
      */
     private static final String _jokerFilter = "joker_";
 
-    /** Indicates if the 'joker' filter is used in the classInstanceName 
+    /** Indicates if the 'joker' filter is used in the classInstanceName
      * parameter of a HlaReflectable actor.
      */
     private boolean _usedJoker;
@@ -2310,7 +2310,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
     /** Indicates if the HLA reporter is enabled or not. */
     private boolean _enableHlaReporter;
-    
+
     /** Indicator that we are trying to use a preexisting RTI when we expected to launch our own. */
     private boolean _preexistingRTI;
 
@@ -2352,7 +2352,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);
 
                     _logOtherTicks();
                 }
@@ -2386,7 +2386,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                _rtia.tick(MAX_BLOCKING_TIME, 0);  
+                _rtia.tick(MAX_BLOCKING_TIME, 0);
 
                 _logOtherTicks();
             } catch (RTIexception e) {
@@ -2429,7 +2429,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                _rtia.tick(MAX_BLOCKING_TIME, 0);  
+                _rtia.tick(MAX_BLOCKING_TIME, 0);
 
                 _logOtherTicks();
             } catch (RTIexception e) {
@@ -2439,13 +2439,13 @@ public class HlaManager extends AbstractInitializableAttribute
         }
     }
 
-    /** This method enables all time regulating aspect for the federate. After 
-     *  this call the federate has stated to the RTI if it is time regulating 
-     *  and/or time regulator. In the current implementation all federates are 
-     *  time regulating and time constrained. This method also enables 
-     *  asynchronous delivery, a service that instructs the rtia "to begin  
+    /** This method enables all time regulating aspect for the federate. After
+     *  this call the federate has stated to the RTI if it is time regulating
+     *  and/or time regulator. In the current implementation all federates are
+     *  time regulating and time constrained. This method also enables
+     *  asynchronous delivery, a service that instructs the rtia "to begin
      *  delivering received-ordered (RO) messages even while non time-
-     *  advancement services is in progress" [1]. 
+     *  advancement services is in progress" [1].
      *  @exception IllegalActionException if the RTI throws it.
      */
     private void _initializeTimeAspects() throws IllegalActionException {
@@ -2495,7 +2495,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2525,7 +2525,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    _rtia.tick(MAX_BLOCKING_TIME, 0);  
+                    _rtia.tick(MAX_BLOCKING_TIME, 0);
 
                     // HLA Reporter support.
                     if (_enableHlaReporter) {
@@ -2661,7 +2661,7 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         constants                         ////
 
@@ -2945,13 +2945,13 @@ public class HlaManager extends AbstractInitializableAttribute
                 int classHandle, String someName) throws CouldNotDiscover,
                 ObjectClassNotKnown, FederateInternalError {
             // Special attention must be taken when the wildcard "joker_" is
-            // used. The wildcard can be used only if all instances are treated 
+            // used. The wildcard can be used only if all instances are treated
             // the same way, or if it is not important to know their names.
-            // Recall that the  order in which the instances will be discovered 
+            // Recall that the  order in which the instances will be discovered
             // is not known before the run, but Ptolemy topological sort
             // guarantees that a joker is always binded to the same
-            // instance (for a same set of federates). However, if the wildcard  
-            // of the HlaReflectable is binded to an instance that does not 
+            // instance (for a same set of federates). However, if the wildcard
+            // of the HlaReflectable is binded to an instance that does not
             // have the attributeName of this actor updated later, then this
             // actor produces no output. See the manual for details.
             String matchingName = null;
@@ -3039,12 +3039,12 @@ public class HlaManager extends AbstractInitializableAttribute
                     HlaReflectable sub = (HlaReflectable) ((TypedIOPort) tObj[0])
                             .getContainer();
                     // Set the instance handle in the data structure
-                    // corresponding to the HlaReflectable actor that matches 
+                    // corresponding to the HlaReflectable actor that matches
                     // the jokerFilter.
                     try {
                         if (sub.getHlaInstanceName()
                                 .compareTo(matchingName) == 0) {
-                            sub.setInstanceHandle(instanceHandle); 
+                            sub.setInstanceHandle(instanceHandle);
 
                             if (_debugging) {
                                 _hlaDebug("INNER callback: discoverObjectInstance: matchingName="
@@ -3256,7 +3256,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 // Object class handle and attribute handle are numerical (int)
-                // representation, provided by the RTIA, for object classes 
+                // representation, provided by the RTIA, for object classes
                 // and object class attributes that appear in the FED file.
 
                 // Retrieve HLA class handle from RTI.
@@ -3307,7 +3307,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // tObj[0 .. 3] are extracted from the Ptolemy model.
                 // tObj[3 .. 5] are provided by the RTI (CERTI).
-                
+
                 // FIXME: See FIXME below for a better design.
 
                 // All these information are required to publish/unpublish
@@ -3471,7 +3471,7 @@ public class HlaManager extends AbstractInitializableAttribute
                     } catch (ObjectAlreadyRegistered e) {
                         throw new IllegalActionException(null, e,
                                 "ObjectAlreadyRegistered: " + e.getMessage());
-                    } 
+                    }
                 } // end if (!_registerObjectInstanceMap)
             }
         }
@@ -3517,7 +3517,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 }
 
                 // Object class handle and attribute handle are numerical (int)
-                // representation, provided by the RTIA, for object classes 
+                // representation, provided by the RTIA, for object classes
                 // and object class attributes that appear in the FED file.
 
                 // Retrieve HLA class handle from RTI.

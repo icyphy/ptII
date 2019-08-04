@@ -60,18 +60,18 @@ import ptolemy.kernel.util.Workspace;
  * notified of the update. The HlaSubscriber will produce an output event with
  * the same data and a time stamp that depends on the time management parameters
  * of the {@link HlaManager}.
- * 
+ *
  * This actor requires that there be an instance of {@link HlaManager} in the
  * same model. That instance references the FED file that is required to
  * define the class referred to in this HlaPublisher, and that class is
  * required to have an attribute with a name matching the name given here.
- * 
+ *
  * The name of the instance is arbitrary. If an instance with the specified
  * name does not already exist, it will be created during initialization of
  * the model. If two instances of this HlaPublisher actor refer to the
  * same instance name, then they will send updates to the same HLA instance,
  * but they are required to update distinct attributes of that instance.
- * 
+ *
  * During initialization, the HlaManager will notify the RTI (Run Time
  * Infrastructure) of the intent to update this particular attribute
  * of this particular instance of the class.

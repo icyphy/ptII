@@ -63,7 +63,7 @@ public interface HlaUpdatable extends Nameable {
      *  @exception IllegalActionException If the class name is empty.
      */
     public String getHlaClassName() throws IllegalActionException;
-    
+
     /** Return the value of the <i>instanceName</i> parameter.
      *  @return The value of the <i>instanceName</i> parameter.
      *  @exception IllegalActionException If the class name is empty.
