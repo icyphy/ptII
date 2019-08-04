@@ -1,0 +1,5 @@
+<svg x="0" y="-40" style="overflow: visible">
+<polygon points="0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0" style="fill:pink;stroke:red"/>
+<text x="35" y="10" style="font-size:30;fill:red">!</text>
+</svg>
+

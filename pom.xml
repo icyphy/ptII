@@ -6,32 +6,47 @@
       For osgi-2-0 specific instructions, see
       https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0
 
-      For general information, see
-      http://www.vogella.com/tutorials/EclipseTycho/article.html
+For general information, see
+http://www.vogella.com/tutorials/EclipseTycho/article.html
 
-      $Id$
+$Id$
   -->
   
   <properties>
-    <target-version>0.1.0-SNAPSHOT</target-version>
-    <tycho-version>0.24.0</tycho-version>
-    <tycho.extras.version>0.24.0</tycho.extras.version>
+    <target-version>11.1.0-SNAPSHOT</target-version>
+    <tycho-version>1.0.0</tycho-version>
+    <tycho-extras-version>1.0.0</tycho-extras-version>
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.ptolemy.tycho</groupId>
   <artifactId>org.ptolemy.tycho.root</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>11.1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
-    <module>features</module>
     <module>diva</module>
+    <!-- org.json is not a module
+    <module>org.json</module>
+    -->
+
+    <!-- These test bundles have not yet passed the Eclipse IP process. -->
     <module>org.ptolemy.actor.gui.test</module>
-    <module>org.ptolemy.commons</module>
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
+    <module>org.ptolemy.core.test.command</module>
     <module>org.ptolemy.testsupport</module>
+
+
+    <module>org.ptolemy.commons</module>
+
+
+    <!-- exclude org.terraswarm.accessor for now
+         <module>org.terraswarm.accessor</module>
+    -->
+    <!-- org.vertx.core is not a module
+    <module>org.vertx.core</module>
+    -->
     <module>ptolemy.actor.lib</module>
     <module>ptolemy.actor.lib.gui</module>
     <module>ptolemy.core</module>
@@ -39,16 +54,29 @@
     <module>ptolemy.domains.sdf</module>
     <module>ptolemy.gui</module>
     <module>ptolemy.moml</module>
+    <module>org.ptolemy.triquetrum.aoc.provider</module>
+    <module>org.ptolemy.triquetrum.editor.palette</module>
+    <module>features</module>
     <module>releng</module>
   </modules>
+
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>3.3.3</version>
+    </dependency>
+  </dependencies>
 
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
     <repository>
-      <id>eclipse-neon</id>
-      <url>http://download.eclipse.org/releases/neon</url>
+      <id>eclipse-2019-06</id>
+      <url>http://download.eclipse.org/releases/2019-06</url>
       <layout>p2</layout>
     </repository>
+
   </repositories>
   
   <build>
@@ -61,6 +89,7 @@
         <artifactId>target-platform-configuration</artifactId>
         <version>${tycho-version}</version>
         <configuration>
+          <pomDependencies>consider</pomDependencies>
           <environments>
             <environment>
               <os>linux</os>
@@ -117,7 +146,11 @@
         </configuration>
       </plugin>
 
-      <!-- To create source bundles, run mvn org.eclipse.tycho:tycho-source-plugin:plugin-source
+
+      <!-- To create source bundles, run
+           mvn org.eclipse.tycho:tycho-source-plugin:plugin-source
+           or
+           mvn verify
 	   See https://eclipse.org/tycho/sitedocs/tycho-source-plugin/plugin-info.html
 	-->
       <plugin>
@@ -138,7 +171,7 @@
       <plugin>
         <groupId>org.eclipse.tycho.extras</groupId>
         <artifactId>tycho-source-feature-plugin</artifactId>
-        <version>${tycho.extras.version}</version>
+        <version>${tycho-extras-version}</version>
 
         <executions>
           <execution>
@@ -166,7 +199,49 @@
         </executions>
       </plugin>
 
-    </plugins>
 
+    </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <!-- Sign the Ptolemy jars.
+           https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0#Signing_the_Ptolemy_II_osgi-2-0_Jar_Files
+      -->
+      
+      <id>codesigning</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jarsigner-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <!-- storetype etc. are defined in ~/.m2/settings.xml.
+                   See http://stackoverflow.com/questions/3598424/jar-signing-strategy-in-maven-projects
+                   mvn -Pcodesigning -Dkeystore.password=`cat ~/.certpw` package
+              -->
+              <storetype>${keystore.type}</storetype>
+              <!-- See /users/ptII/adm/certs/ptkeystore on terra.eecs.berkeley.edu -->
+              <keystore>${keystore.path}</keystore>
+              <!-- Use 'keytool -list -keystore ptkeystore -storepass xxxx' to get the alias. -->
+              <alias>${keystore.alias}</alias>
+              <!-- See ~jenkins/.certpw on terra.eecs.berkeley.edu -->
+              <storepass>${keystore.store.password}</storepass>
+              <keypass>${keystore.key.password}</keypass>
+              <tsa>http://timestamp.comodoca.com/rfc3161</tsa>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

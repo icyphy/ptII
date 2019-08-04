@@ -1,0 +1,24 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="JavaScript" class="ptolemy.moml.EntityLibrary">
+  <configure>
+    <?moml
+      <group>
+	    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+	      <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+          </property>
+	      <property name="script">
+	      	<property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+	      	  <property name="note" value="NOTE: To see the script, invoke Open Actor"/>
+	      	</property>
+	      </property>
+        </entity>
+      </group>
+    ?>
+  </configure>
+</entity>

@@ -1,6 +1,6 @@
 /* An actor that produces an array that lists the contents of a directory.
 
-   @Copyright (c) 2003-2015 The Regents of the University of California.
+   @Copyright (c) 2003-2017 The Regents of the University of California.
    All rights reserved.
 
    Permission is hereby granted, without written agreement and without
@@ -57,6 +57,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.RecursiveFileFilter;
 
 ///////////////////////////////////////////////////////////////////
@@ -363,6 +364,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         if (_debugging) {
             _debug("Reading URL: " + sourceURL);
         }
+
+        // Follow redirects such as http -> https.
+        sourceURL = FileUtilities.followRedirects(sourceURL);
 
         List<StringToken> resultsList = new LinkedList<StringToken>();
 

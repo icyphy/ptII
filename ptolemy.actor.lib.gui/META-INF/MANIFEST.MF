@@ -2,11 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GUI-related actors
 Bundle-SymbolicName: ptolemy.actor.lib.gui
-Bundle-Version: 11.0.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Version: 11.0.1.qualifier
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-RegisterBuddy: ptolemy.moml, ptolemy.gui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Import-Package: org.osgi.framework;version="1.3.0",
+Import-Package: javax.swing,
+ javax.swing.border,
+ javax.swing.text,
+ org.osgi.framework;version="1.3.0",
  org.ptolemy.classloading;version="11.0.0",
  org.ptolemy.classloading.osgi;version="11.0.0",
  org.ptolemy.commons;version="11.0.0",
@@ -25,3 +28,4 @@ Import-Package: org.osgi.framework;version="1.3.0",
 Require-Bundle: ptolemy.moml;bundle-version="11.0.0"
 Bundle-Activator: ptolemy.actor.lib.gui.activator.Activator
 Export-Package: ptolemy.actor.lib.gui;version="11.0.0"
+Bundle-ActivationPolicy: lazy

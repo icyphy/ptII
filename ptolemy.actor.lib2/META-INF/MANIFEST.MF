@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Another actor library
+Bundle-SymbolicName: ptolemy.actor.lib2
+Bundle-Version: 11.0.0.qualifier
+Bundle-Activator: ptolemy.actor.lib2.activator.Activator
+Eclipse-RegisterBuddy: ptolemy.moml
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.osgi.framework;version="1.7.0",
+ org.ptolemy.classloading;version="11.0.0",
+ org.ptolemy.classloading.osgi;version="11.0.0",
+ org.ptolemy.commons;version="11.0.0",
+ ptolemy.actor;version="11.0.0",
+ ptolemy.actor.lib;version="11.0.0",
+ ptolemy.actor.parameters;version="11.0.0",
+ ptolemy.actor.util;version="11.0.0",
+ ptolemy.data;version="11.0.0",
+ ptolemy.data.expr;version="11.0.0",
+ ptolemy.data.type;version="11.0.0",
+ ptolemy.graph;version="11.0.0",
+ ptolemy.kernel;version="11.0.0",
+ ptolemy.kernel.util;version="11.0.0",
+ ptolemy.math;version="11.0.0",
+ ptolemy.util;version="11.0.0"
+Require-Bundle: ptolemy.moml;bundle-version="11.0.0"
+Export-Package: ptolemy.actor.lib2
+Bundle-ActivationPolicy: lazy

@@ -1,7 +1,7 @@
 /* A variable is an attribute that contains a token and can be referenced
  in expressions.
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -456,6 +456,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _parseIfNecessary();
 
             ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+            // hoc/test/auto/RunCompositeActor4.xml was throwing a NPE here.
+            if (_parseTree == null) {
+                throw new InternalErrorException(this, null,
+                        "getFreeIdentifiers(): failed to set _parseTree? _parseTree is null, "
+                        + "_parseTreeValid is " + _parseTreeValid);
+            }
             return collector.collectFreeVariables(_parseTree);
         } finally {
             workspace().doneReading();
@@ -1459,7 +1465,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public String stringRepresentation() {
         return getExpression();
     }
-    
+
     /** Return a string representation of the current evaluated variable value.
      *  @return A string representing the class and the current token.
      */
@@ -1879,7 +1885,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     || (!(ex instanceof UndefinedConstantOrIdentifierException))
                     && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
-                        "Error evaluating expression:\n" 
+                        "Error evaluating expression:\n"
                                 + StringUtilities.truncateString(_currentExpression, 80, 1));
             }
         } finally {
@@ -2593,7 +2599,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     // Flag indicating that _propagate() is in progress.
     private boolean _propagating;
-    
+
     // The token contained by this variable.
     private ptolemy.data.Token _token;
 

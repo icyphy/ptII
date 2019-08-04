@@ -76,7 +76,7 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
 
   public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
     CompositeEntity result = null;
-    
+    ClassNotFoundException cnfe = new ClassNotFoundException(className);
     for(ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
       try {
         result=classProvider.getActorOrientedClass(className, versionSpec);
@@ -85,12 +85,13 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
         }
       } catch (ClassNotFoundException e) {
         // just means the provider doesn't know about this one
+        cnfe.addSuppressed(e);
       }
     }
     if(result!=null) {
       return result;
     } else {
-      throw new ClassNotFoundException(className);
+      throw cnfe;
     }
   }
 
@@ -103,11 +104,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the entry was added successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
+  public void addModelElementClassProvider(ModelElementClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _modelElementClassProviders.add(classProvider);
+    _modelElementClassProviders.add(classProvider);
   }
   
   /**
@@ -117,11 +118,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the set of registered providers contained the given instance and it was removed successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
+  public void removeModelElementClassProvider(ModelElementClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _modelElementClassProviders.remove(classProvider);
+    _modelElementClassProviders.remove(classProvider);
   }
   
   /**
@@ -139,11 +140,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the entry was added successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+  public void addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _actorOrientedClassProviders.add(classProvider);
+    _actorOrientedClassProviders.add(classProvider);
   }
 
   /**
@@ -153,8 +154,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the set of registered providers contained the given instance and it was removed successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
-    return _actorOrientedClassProviders.remove(classProvider);
+  public void removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+    _actorOrientedClassProviders.remove(classProvider);
   }
 
   /**

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy SDF domain
 Bundle-SymbolicName: ptolemy.domains.sdf
 Bundle-Version: 11.0.0.qualifier
-Bundle-Vendor: CHESS
+Bundle-Vendor: Ptolemy Project, Berkeley, California
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.7.0",
  org.ptolemy.commons;version="11.0.0",
@@ -24,3 +24,4 @@ Import-Package: org.osgi.framework;version="1.7.0",
 Export-Package: ptolemy.domains.sdf.kernel;version="11.0.0",
  ptolemy.domains.sdf.lib;version="11.0.0"
 Bundle-Activator: ptolemy.domains.sdf.activator.Activator
+Bundle-ActivationPolicy: lazy

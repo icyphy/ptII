@@ -1,6 +1,6 @@
 /* A parser for MoML (modeling markup language)
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,6 +58,10 @@ import org.ptolemy.classloading.ClassLoadingStrategy;
 import org.ptolemy.classloading.SimpleClassLoadingStrategy;
 import org.ptolemy.commons.VersionSpecification;
 
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -89,12 +93,10 @@ import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
+import ptolemy.util.FileUtilities;
+import ptolemy.util.FileUtilities.StreamAndURL;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLParser
@@ -207,7 +209,7 @@ import com.microstar.xml.XmlParser;
  master exports MoML.
 
  @see MoMLChangeRequest
- @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Hylands
+ @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Brooks, Erwin de Ley.
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (eal)
@@ -257,9 +259,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpec, ClassLoader loader) {
+    /** Construct a parser that creates entities in the specified workspace
+     *  with a default verisoin specification.
+     *  If the workspace argument is null, then
+     *  create a new workspace with an empty name. Classes will be
+     *  created using the classloader that created this class.
+     *  @param workspace The workspace into which to place entities.
+     *  @param defaultVersionSpecification The default version specification
+     *  @param loader The class loader that will be used to create classes,
+     *  or null if the the bootstrap class loader is to be used.
+     */
+
+    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpecification, ClassLoader loader) {
       this(workspace, loader);
-      this._defaultVersionSpec = defaultVersionSpec;
+      this._defaultVersionSpecification = defaultVersionSpecification;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1288,9 +1301,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // user clicks "Cancel".
             String protocol = result.getProtocol();
 
+            // To test this code:
+            // $PTII/bin/vergil $PTII/ptolemy/moml/demo/Networked/Networked.xml
             if (protocol != null
-                    && protocol.trim().toLowerCase(Locale.getDefault())
-                    .equals("http")) {
+                    && (protocol.trim().toLowerCase(Locale.getDefault())
+                        .equals("http")
+                        ||
+                        protocol.trim().toLowerCase(Locale.getDefault())
+                        .equals("https"))) {
+
                 SecurityManager security = System.getSecurityManager();
                 boolean withinUntrustedApplet = false;
 
@@ -1346,7 +1365,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            input = result.openStream();
+
+            // Get the InputStream and possibly redirected url.
+
+            // This method returns an object that contains the
+            // InputStream and URL which means we don't need to follow
+            // redirects twice.
+
+            StreamAndURL streamAndURL = FileUtilities.openStreamFollowingRedirectsReturningBoth(result);
+            result = streamAndURL.url();
+            input = streamAndURL.stream();
+
         } catch (IOException ioException) {
             errorMessage.append("-- " + ioException.getMessage() + "\n");
 
@@ -1604,6 +1633,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      */
     public NamedObj parse(URL base, String systemID, Reader reader)
             throws Exception {
+	base = FileUtilities.followRedirects(base);
         _base = base;
 
         // Invoking a Vertx demo and then a Nashorn demo can result in
@@ -1642,7 +1672,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 try {
-                    _xmlParser.parse(base.toExternalForm(), null, buffered);
+		    _xmlParser.parse(FileUtilities.followRedirects(base).toExternalForm(), null, buffered);
                 } finally {
                     if (xmlFileWasNull) {
                         _setXmlFile(null);
@@ -2089,15 +2119,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /**
      * Set the static default class loading strategy that will be used by all instances of this class.
-     * @param classLoadingStrategy
+     * @param classLoadingStrategy The class loading strategy.
+     * @see #getDefaultClassLoadingStrategy()
      */
     public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
       _defaultClassLoadingStrategy = classLoadingStrategy;
     }
 
-    /**
+    /** Get the the current static _defaultClassLoadingStrategy instance.
      *
-     * @return the current static _defaultClassLoadingStrategy instance
+     * @return the current static _defaultClassLoadingStrategy instance.
+     * @see #setDefaultClassLoadingStrategy(ClassLoadingStrategy)
      */
     public static ClassLoadingStrategy getDefaultClassLoadingStrategy() {
       return _defaultClassLoadingStrategy;
@@ -3023,6 +3055,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         String inputFileName = (String) inputFileNames.next();
 
                         if (source.endsWith(inputFileName)) {
+                            if (!_printedMacOSSkippingMessage
+                                    && inputFileName.equals("backtrack.xml")
+                                    && System.getProperty("os.name").equals("Mac OS X")) {
+                                _printedMacOSSkippingMessage = true;
+                                System.out.println("MoMLParser: Skipping"
+                                        + source + " under Mac OS X.  "
+                                        + "This message is printed only printed once per run.");
+                            }
                             skip = true;
                             break;
                         }
@@ -3889,7 +3929,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  They are included here for backward compatibility.  See the MoML
      *  chapter of the Ptolemy II design document for a view of the
      *  current (nondeprecated) DTD.
-   *  CHANGE from Triquetrum : add version attributes for director, entity & property
+     *  CHANGE from Triquetrum : add version attributes for director, entity &amp; property
      */
     public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*> <!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED> <!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*> <!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED> <!ELEMENT configure (#PCDATA)> <!ATTLIST configure source CDATA #IMPLIED> <!ELEMENT deleteEntity EMPTY> <!ATTLIST deleteEntity name CDATA #REQUIRED> <!ELEMENT deletePort EMPTY> <!ATTLIST deletePort name CDATA #REQUIRED> <!ELEMENT deleteProperty EMPTY> <!ATTLIST deleteProperty name CDATA #REQUIRED> <!ELEMENT deleteRelation EMPTY> <!ATTLIST deleteRelation name CDATA #REQUIRED> <!ELEMENT director (configure | doc | property)*> <!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED version CDATA #IMPLIED> <!ELEMENT display EMPTY> <!ATTLIST display name CDATA #REQUIRED> <!ELEMENT doc (#PCDATA)> <!ATTLIST doc name CDATA #IMPLIED> <!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*> <!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED version CDATA #IMPLIED> <!ELEMENT group ANY> <!ATTLIST group name CDATA #IMPLIED> <!ELEMENT import EMPTY> <!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED> <!ELEMENT input EMPTY> <!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED> <!ELEMENT link EMPTY> <!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #IMPLIED relation CDATA #IMPLIED relation1 CDATA #IMPLIED relation2 CDATA #IMPLIED vertex CDATA #IMPLIED> <!ELEMENT location EMPTY> <!ATTLIST location value CDATA #REQUIRED> <!ELEMENT port (configure | display | doc | property | rename)*> <!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED> <!ELEMENT property (configure | display | doc | property | rename)*> <!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED version CDATA #IMPLIED> <!ELEMENT relation (configure | display | doc | property | rename | vertex)*> <!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED> <!ELEMENT rename EMPTY> <!ATTLIST rename name CDATA #REQUIRED> <!ELEMENT rendition (configure | location | property)*> <!ATTLIST rendition class CDATA #REQUIRED> <!ELEMENT unlink EMPTY> <!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED> <!ELEMENT vertex (configure | display | doc | location | property | rename)*> <!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
 
@@ -3906,7 +3946,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  element names a file name that should _not_ be loaded if
      *  it is encountered in an input statement.
      */
-    public static List inputFileNamesToSkip = null;
+    public static List<String> inputFileNamesToSkip = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -3960,7 +4000,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // From Triquetrum : also consider loading actor classes via the pluggable _classLoadingStrategy,
         // to allow OSGi-based dynamic loading strategies.
         try {
-          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
           reference = _defaultClassLoadingStrategy.loadActorOrientedClass(className, _vSpec);
         } catch (Exception e) {
           // ignore here, just means we need to look further to find the moml class
@@ -4154,7 +4194,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      * @param version in some text format, e.g. 11.0.1
      * @return the parsed version specification
-     * @throws XmlException if the version string is not in a supported format
+     * @exception XmlException if the version string is not in a supported format
      */
     private VersionSpecification _buildVersionSpecification(String version) throws XmlException {
       VersionSpecification versionSpec = null;
@@ -6333,12 +6373,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
       // If no specific version info was in the model's MOML, and a default version spec was set, we need to use that one.
       // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
       // between a related "group" of MOMLs (the parent models and their submodels).
-      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
       try {
         return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
       } catch (ClassNotFoundException e) {
   //      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
-        if(_classLoader!=null) {
+        if (_classLoader!=null) {
           return _classLoader.loadClass(className);
         } else {
           throw e;
@@ -6372,8 +6412,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return false;
         }
 
-        InputStream input = xmlFile.openStream();
-
+	InputStream input = FileUtilities.openStreamFollowingRedirects(xmlFile);
+	
         // Read the external file in the current context, but with
         // a new parser.  I'm not sure why the new parser is needed,
         // but the "input" element handler does the same thing.
@@ -6516,8 +6556,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         InputStream input = null;
 
         try {
-            input = _xmlFile.openStream();
-
+	    input = FileUtilities.openStreamFollowingRedirects(_xmlFile);
             try {
                 NamedObj toplevel = parser.parse(_xmlFile, input);
                 input.close();
@@ -7552,7 +7591,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The optional default version specification to be used for loading java & actor-oriented classes,
     // in cases where this concept is supported by the class loading strategy.
-    private VersionSpecification _defaultVersionSpec;
+    private VersionSpecification _defaultVersionSpecification;
 
     // Count of configure tags so that they can nest.
     private int _configureNesting = 0;
@@ -7680,6 +7719,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // List of missing actors.
     private Set<String> _missingClasses;
+
+    // True if we have printed the message about backtrack.xml being skipped.
+    private static boolean _printedMacOSSkippingMessage = false;
 
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
@@ -7847,6 +7889,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         @Override
         public String toString() {
             return "unlink " + _portName + " from " + _relationName;
+        }
+    }
+
+    // Under Mac OS X, skip backtrack.xml.  See
+    // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and
+    // follow the 'Problems with Eclipse and Ptolemy on the Mac' link.
+    static {
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            inputFileNamesToSkip = new LinkedList<String>();
+            inputFileNamesToSkip.add("backtrack.xml");
         }
     }
 }

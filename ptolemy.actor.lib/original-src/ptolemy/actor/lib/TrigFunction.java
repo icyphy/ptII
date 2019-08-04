@@ -1,6 +1,6 @@
 /* An actor that outputs a specified trigonometric function of the input.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  argument is NaN, then the returned value is NaN.
  </li>
  <li> <b>asin</b>: The arc sine of an angle.  The returned value
- is between -pi/2 through pi/2. 
+ is between -pi/2 through pi/2.
  If the absolute value of the argument is greater than one or if the
  argument is NaN, then the returned value is NaN.
  If the argument is positive zero, then the returned value is positive
@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  zero.
  </li>
  </ul>
- The following functions in java.lang.Math are implemented elsewhere:</p>
+ <p> The following functions in java.lang.Math are implemented elsewhere:</p>
  <ul>
  <li> <b>abs</b>: AbsoluteValue actor.
  </li><li> <b>atan2</b>: CartesianToPolar actor.
