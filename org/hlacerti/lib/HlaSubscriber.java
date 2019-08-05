@@ -1,7 +1,7 @@
 /* This actor provides information to subscribe, discover and reflect updated
  * values in the Ptolemy-HLA/CERTI framework.
 
-@Copyright (c) 2013-2018 The Regents of the University of California.
+@Copyright (c) 2013-2019 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
