@@ -6,13 +6,9 @@
 # a list of files and then run this script on that over and over
 # again until all the bogus copyrights have been found
 
-# 0. Check that ~/.subversion/configs has
-#    use-commit-times = yes
-#
 # 1. Check out a fresh tree in a separate directory with all the history so that we can adjust the mod times.
 #
-#    PtII:  cd ~/tmp; git git clone --branch=master --single-branch https://github.com/icyphy/ptII
-#    Metro: cd ~/tmp; cvs -d  :ext:ic:/projects/hwsw/hwsw/common/src co metro)
+#    PtII:  cd ~/tmp; git clone --branch=master --single-branch https://github.com/icyphy/ptII
 #
 # 2. Remove ptII/vendors
 #    PtII: cd ptII; export PTII=`pwd`; ./configure; make cleanDerivedJavaFiles clean_shipping
@@ -24,8 +20,7 @@
 #    find . -name "fmi*.[ch]" -print -exec rm {} \;
 #
 # 3. Generate a list of text files
-#    Ptolemy: cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
-#    Metro: cd metro; $METRO/adm/bin/metrotxtfiles > /tmp/f
+#    cd $PTII; $PTII/adm/bin/ptIItxtfiles > /tmp/f
 #
 # 4. Find files modified since the start of the year
 #
@@ -35,12 +30,16 @@
 #    Download it and run it to update the mod times.
 #
 #    cd $PTII
-#    wget https://raw.githubusercontent.com/MestreLion/git-tools/master/git-restore-mtime-core
-#    chmod a+x git-restore-mtime-core
-#    ./git-restore-mtime-core
+#    sudo apt install git-restore-mtime
+#
+#    Restore the deleted files:
+#    git stash
+#    ./configure
+#
+#    git restore-mtime
 #
 #    cd $PTII/org/terraswarm/accessor/accessors/
-#    $PTII/git-restore-mtime-core
+#    git restore-mtime
 #
 #    cd $PTII
 #    find . -name .git -prune -o -name adm -prune -o -type f -a -mtime -`date +%j` | egrep -v "\.xml$" | egrep -v copyright | egrep -v license | sort > /tmp/new
@@ -58,8 +57,7 @@
 #    - Update the year regex in the lines marked 'EVERY_YEAR' below
 #
 # 6. Run the script in testing mode:
-#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
-#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright -n >& /tmp/fc.txt
+#    cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright -n >& /tmp/fc.txt
 #
 # 7. Check the output in /tmp/fc.txt.  
 #    Look for files that are copyrighted by others, but are being updated:
@@ -67,15 +65,14 @@
 #    Update step 2 if necessary with files that should be removed.
 #
 # 8. Run it for real:
-#    PtII:  cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
-#    Metro: cat /tmp/f.new | xargs $METRO/adm/bin/fixcopyright >& /tmp/fc2.txt
+#    cat /tmp/f.new | xargs $PTII/adm/copyright/fixcopyright >& /tmp/fc2.txt
 #
 # 9. Do a clean checkout somewhere and rebuild and test
-#    PtII: mkdir ~/tmp2; cd ~/tmp_2; git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII
-#    PtII: cd ptII; export PTII=`pwd`; ./configure; ant
+#    mkdir ~/tmp2; cd ~/tmp_2; git clone --depth=50 --branch=master --single-branch https://github.com/icyphy/ptII
+#    cd ptII; export PTII=`pwd`; ./configure; ant
 #
 # 10. Go back and check the changes in
-#    PtII: cd ~/tmp/ptII; svn commit -m "Updated copyrights"
+#    cd ~/tmp/ptII; git commit -m "Updated copyrights"
 
 printonly=no
 
@@ -112,8 +109,8 @@ do
 	doit
 	if [ "$printonly" = "no" ]; then
 	    cp /tmp/fixcopyright.tmp $file
-            echo "Not running svn commit, just copying"
-	    #svn commit -m "Removing tabs" $file
+            echo "Not running commit, just copying"
+	    #git commit -m "Removing tabs" $file
 	    echo $fullfile >> $filesupdated
 	else
 	    echo "Would update and commit"
@@ -147,7 +144,7 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2018/' \
+    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2019/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -155,14 +152,14 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 199[0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2018"
+LOGMESSAGE="Changed copyright to 2019"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2018 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2019 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -170,7 +167,7 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2018"
+LOGMESSAGE="Changed copyright to 2019"
 
 search $@
 
@@ -187,30 +184,30 @@ search $@
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2018 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2019 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 200[0-9] "
-LOGMESSAGE="Changed copyright to 2018"
+EGREPMATCH="Copyright \(c\) 20[01][0-9] "
+LOGMESSAGE="Changed copyright to 2019"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(201[01234567]\) /Copyright (c) \1-2018 /' \
+    sed 's/Copyright (c) \(201[012345679]\) /Copyright (c) \1-2019 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[01234567] "
-LOGMESSAGE="Changed copyright to 2018"
+EGREPMATCH="Copyright \(c\) 201[01234568] "
+LOGMESSAGE="Changed copyright to 2019"
 
 search $@
 
