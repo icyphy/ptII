@@ -11,6 +11,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.dll$' \
 	| egrep -v '\.dll.a$' \
         | egrep -v '\.doc$' \
+        | egrep -v '\.docx$' \
         | egrep -v '\.dmg$' \
         | egrep -v '\.dSYM/' \
         | egrep -v '\.DS_Store$/' \
@@ -19,7 +20,9 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.fmu$' \
 	| egrep -v '\.fm$'  |egrep -v '\.fig$' \
         | egrep -v '\.ec3$' \
-	| egrep -v '\.eps$' |egrep -v '\.exe$' \
+	| egrep -v '\.epf$' \
+	| egrep -v '\.eps$' \
+	| egrep -v '\.exe$' \
         | egrep -v '\.gz$'  |egrep -v '\.gif$' \
         | egrep -v '\.GIF$' \
         | egrep -v '\.git' \
@@ -53,6 +56,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '/node_modules/' \
 	| egrep -v '\.nqc$' \
         | egrep -v '\.o$' \
+        | egrep -v '\.odg$' \
         | egrep -v '\.opt$' \
 	| egrep -v '\.pem$' \
 	| egrep -v '\.pfx$' \
@@ -63,6 +67,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.pdf$' |egrep -v '\.plt$' \
         | egrep -v '\.pnproj$' | egrep -v '\.pnps$' \
         | egrep -v '\.psd$' |egrep -v '\.ppt$' \
+	| egrep -v '\.pptx$' \
 	| egrep -v '\.qcf$' \
         | egrep -v '\.ser$' \
         | egrep -v '\.skp$' \
