@@ -1,7 +1,7 @@
 /* An AWT and Swing implementation of the the DisplayInterface
  that displays input data in a text area on the screen.
 
- @Copyright (c) 1998-2014 The Regents of the University of California.
+ @Copyright (c) 1998-2019 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
