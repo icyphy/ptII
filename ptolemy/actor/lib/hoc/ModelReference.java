@@ -660,9 +660,9 @@ public class ModelReference extends TypedAtomicActor
             }
         }
     }
-    
+
     /** Reset the state.
-     *  @throws IllegalActionException If the parent class throws it.
+     *  @exception IllegalActionException If the parent class throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {

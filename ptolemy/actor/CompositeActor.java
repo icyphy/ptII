@@ -2692,10 +2692,10 @@ public class CompositeActor extends CompositeEntity
 
         try {
             _workspace.getReadAccess();
-            
+
             // Collect exceptions during wrapup.
             LinkedList<Throwable> throwables = new LinkedList<Throwable>();
-            
+
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
@@ -2772,7 +2772,7 @@ public class CompositeActor extends CompositeEntity
                     message.append("\n======\n");
                 }
                 throw new IllegalActionException(this, throwables.get(0),
-                        "Multiple exceptions thrown during wrapup:\n" 
+                        "Multiple exceptions thrown during wrapup:\n"
                         + message.toString());
             }
         } finally {

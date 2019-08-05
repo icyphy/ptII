@@ -805,7 +805,7 @@ public class Simulator extends SDFTransformer {
         firstFire = true;
 
         // set flagWri to 0, as in normal operation
-        flagWri = 0; 
+        flagWri = 0;
 
         //////////////////////////////////////////////////////////////
         // New code since 2008-01-05

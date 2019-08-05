@@ -1790,7 +1790,7 @@ public class HlaManager extends AbstractInitializableAttribute
      *
      *  @param proposedTime time stamp of last found event
      *  @return A valid time to advance to.
-     *  @throws IllegalActionException If the user requests that the execution
+     *  @exception IllegalActionException If the user requests that the execution
      *   stop while we are waiting for time-advance callbacks from the RTI.
      */
 
@@ -2568,7 +2568,7 @@ public class HlaManager extends AbstractInitializableAttribute
     private boolean _checkSynchronizationPointNameMatch(String synchronizationPointLabel) {
         try {
             String mySynchronizationPoint = synchronizeStartTo.stringValue();
-            if(!synchronizationPointLabel.equals(mySynchronizationPoint)) {
+            if (!synchronizationPointLabel.equals(mySynchronizationPoint)) {
                 // The synchronization point does not match.
                 // Having mismatched synchronization point names can cause the model
                 // to deadlock, so we print a warning.
