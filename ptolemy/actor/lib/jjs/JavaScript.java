@@ -758,7 +758,7 @@ public class JavaScript extends AbstractPlaceableActor
         Time currentTime = director.getModelTime();
         return currentTime.getDoubleValue();
     }
-    
+
     /** Declare that any output that is marked as spontaneous does does
      *  not depend on the input in a firing. Also, declare dependencies
      *  based on prior calls to declareIndependence().
@@ -782,7 +782,7 @@ public class JavaScript extends AbstractPlaceableActor
             }
         }
         if (_independentInputs != null) {
-            for(int i = 0; i < _independentInputs.size(); i++) {
+            for (int i = 0; i < _independentInputs.size(); i++) {
                 Port input = getPort(_independentInputs.get(i));
                 Port output = getPort(_independentOutputs.get(i));
                 if (input instanceof IOPort && output instanceof IOPort) {
@@ -1398,7 +1398,7 @@ public class JavaScript extends AbstractPlaceableActor
                     "Failed to read URI: " + uri);
         }
     }
-    
+
     /** Provide access to the top-level accessors in this model.
      *  @return An array of instances of the JavaScript Accessor class.
      */
@@ -2215,7 +2215,7 @@ public class JavaScript extends AbstractPlaceableActor
     protected String _accessorClass() {
         return "JavaScript";
     }
-    
+
     /** Override the base class so that the name of any port added is shown.
      *  @exception IllegalActionException If the superclass throws it.
      *  @exception NameDuplicationException If the superclass throws it.
@@ -2958,10 +2958,10 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** The director thread. This is set in initialize() and unset in wrapup. */
     private Thread _directorThread;
-    
+
     /** Inputs that outputs do not depend on. */
     private List<String> _independentInputs;
-    
+
     /** Outputs that do not depend on inputs. */
     private List<String> _independentOutputs;
 
@@ -2998,16 +2998,16 @@ public class JavaScript extends AbstractPlaceableActor
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
-    
+
     /** Cached list of top-level accessors. */
     private Object[] _topLevelAccessors;
-    
+
     /** Version of workspace for list of top-level accessors. */
     private long _topLevelAccessorsVersion = -1;
 
     ///////////////////////////////////////////////////////////////////
     ////                        Inner Classes                      ////
-    
+
     /** Proxy for an accessor for monitoring purposes.
      *  This exposes methods that reveal information about the accessor
      *  but do not change its state, except for stopMonitoring().

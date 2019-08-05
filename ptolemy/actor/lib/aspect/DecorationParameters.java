@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package ptolemy.actor.lib.aspect;
 
@@ -18,8 +18,8 @@ public class DecorationParameters extends Attribute {
     /**
      * @param container
      * @param name
-     * @throws IllegalActionException
-     * @throws NameDuplicationException
+     * @exception IllegalActionException
+     * @exception NameDuplicationException
      */
     public DecorationParameters(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {

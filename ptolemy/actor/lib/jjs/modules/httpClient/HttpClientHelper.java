@@ -450,13 +450,13 @@ public class HttpClientHelper extends VertxHelperBase {
                                             }
                                         } else {
                                             // FIXME: Need to handle other MIME types.
-                                            
+
                                             // Changed default to parse body as string
                                             _requestObj.callMember("_response",
                                                      response, body.toString());
 
                                             // Here is the old code that would parse body as bytes
-                                            // 
+                                            //
                                             // _requestObj.callMember("_response",
                                             //         response, body.getBytes());
                                         }
@@ -508,7 +508,7 @@ public class HttpClientHelper extends VertxHelperBase {
                                                      response, body.toString());
 
                                             // Here is the old code that would parse body as bytes
-                                            // 
+                                            //
                                             // _requestObj.callMember("_response",
                                             //         response, body.getBytes());
                                         }

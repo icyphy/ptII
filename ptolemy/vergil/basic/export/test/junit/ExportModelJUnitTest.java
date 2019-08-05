@@ -296,12 +296,12 @@ public class ExportModelJUnitTest {
         // Pathnames that should be skipped
         String[] skip = {
             "jai/demo", // Skip jai demos because the don't run in JDK9 and later.
-	    "ModularCG.xml", // Prompted for save of unamed on close?
+            "ModularCG.xml", // Prompted for save of unamed on close?
             "pthales/demo/FFT/FFT.xml", // Skip JAI demo.
-	    "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
-	    "ptolemy/domains/ptinyos/demo",
-	    "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
-	    "SimplePassPointer", // Only works on 32-bit
+            "ptolemy/actor/ptalon/demo/ptinyos/", // PtinyOS is probably not installed.
+            "ptolemy/domains/ptinyos/demo",
+            "ScaleWithEmbeddedCFileActor", // Only works on 32-bit
+            "SimplePassPointer", // Only works on 32-bit
         };
         for (String element : skip) {
             if (modelPath.indexOf(element) != -1) {
@@ -463,7 +463,7 @@ public class ExportModelJUnitTest {
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
-                "WatchEmulator.xml", // Fails periodically.                         
+                "WatchEmulator.xml", // Fails periodically.
                 "WatchCommandUpdater.xml", // Audio device unavailable.
                 "Weather.xml", // Skip because it requires a key
                 "WebSocketChat.xml", // Has links to other models.

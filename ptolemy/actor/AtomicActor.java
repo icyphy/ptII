@@ -926,7 +926,7 @@ public class AtomicActor<T extends IOPort> extends ComponentEntity<T>
                     message.append("\n======\n");
                 }
                 throw new IllegalActionException(this, throwables.get(0),
-                        "Multiple exceptions thrown during wrapup:\n" 
+                        "Multiple exceptions thrown during wrapup:\n"
                         + message.toString());
             }
         }
