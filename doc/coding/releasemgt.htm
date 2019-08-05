@@ -277,24 +277,7 @@
 	<pre>
 	  cat /tmp/f | xargs $PTII/util/testsuite/controlm > /tmp/cms
 	</pre>
-	<p>To fix the files, run:</p>
-	<pre>
-	  grep "has controlms" /tmp/cms | awk '{print $1}' > /tmp/cmfs
-	  svn propset svn:keywords "Author Date Id Revision" `cat /tmp/cmfs`
-	  svn propset svn:eol-style native `cat /tmp/cmfs`
-	  svn commit -m "Added keywords and eol-style properties" `cat /tmp/cmfs`
-	</pre>
-	You may need to use dos2unix to fix the files.
-	<p>Check keywords in all files:
-	  <pre>
-	    cd $PTII
-	    cat /tmp/f | xargs $PTII/adm/bin/svnpropcheck > /tmp/props
-	    grep keywords: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$' > /tmp/keys
-	    grep eolstyle: /tmp/props | grep / | awk '{print $1}' | egrep -v '.xml$'> /tmp/eols
-	    cat /tmp/keys | xargs svn propset svn:keywords "Author Date Id Revision"
-	    cat /tmp/eols | xargs svn propset svn:eol-style native 
-	    svn commit -m "Added keywords and eol-style properties" `cat /tmp/eols /tmp/keys`
-	  </pre>
+	<b>FIXME</b>: It is not clear how to fix files that have control-Ms in them under git.
       </li>
 
       <li> Run <code>$PTII/adm/copyright/fixcopyrights</code> (not shipped with
