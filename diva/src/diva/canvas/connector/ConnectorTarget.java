@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,6 +47,10 @@ public interface ConnectorTarget {
      * takes a connector, as this gives the target a chance to disallow the
      * connection.  This method is primarily useful for manually
      * creating new figures.
+     * @param f The figure
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The head site
      */
     public Site getHeadSite(Figure f, double x, double y);
 
@@ -56,6 +60,10 @@ public interface ConnectorTarget {
      * takes a connector, as this gives the target a chance to disallow the
      * connection.  This method is primarily useful for manually
      * creating new figures.
+     * @param f The figure
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The tail site
      */
     public Site getTailSite(Figure f, double x, double y);
 
@@ -67,12 +75,20 @@ public interface ConnectorTarget {
      * can be the same as the passed site, which signals that the
      * passed site is the best one available.
      * @deprecated Use getHeadSite that takes a connector.
+     * @param s The site
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The head site
      */
     @Deprecated
     public Site getHeadSite(Site s, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
+     * @param s The site
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The tail site
      * @deprecated Use getTailSite that takes a connector.
      */
     @Deprecated
@@ -81,12 +97,22 @@ public interface ConnectorTarget {
     /** Return a suitable site to connect the given connector's head to,
      * based on this figure and location. Return null if there
      * is no suitable site.
+     * @param c The connector
+     * @param f The figure
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The head site
      */
     public Site getHeadSite(Connector c, Figure f, double x, double y);
 
     /** Return a suitable site to connect the given connector's tail to,
      * based on this figure and location. Return null if there
      * is no suitable site.
+     * @param c The connector
+     * @param f The figure
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The tail site
      */
     public Site getTailSite(Connector c, Figure f, double x, double y);
 
@@ -97,11 +123,21 @@ public interface ConnectorTarget {
      * only allowing one connection to each site. The returned site
      * can be the same as the passed site, which signals that the
      * passed site is the best one available.
+     * @param c The connector
+     * @param s The site
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The head site
      */
     public Site getHeadSite(Connector c, Site s, double x, double y);
 
     /** Return a suitable site to connect a connector's tail to.
      * See the description for getheadSite().
+     * @param c The connector
+     * @param s The site
+     * @param x The x location of the site
+     * @param y The y location of the site
+     * @return The tail site
      */
     public Site getTailSite(Connector c, Site s, double x, double y);
 }

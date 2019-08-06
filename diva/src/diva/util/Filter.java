@@ -26,7 +26,7 @@
 package diva.util;
 
 /**
- * An interface for objects that filter other objects
+ * An interface for objects that filter other objects.
  *
  * @author John Reekie
  * @version $Id$
@@ -34,6 +34,8 @@ package diva.util;
 public interface Filter {
     /** Test if an object passes the filter, returning true
      * if it does and false if it does not.
+     * @param o The object to be tested
+     * @return true of the object is acceptable
      */
     public boolean accept(Object o);
 }

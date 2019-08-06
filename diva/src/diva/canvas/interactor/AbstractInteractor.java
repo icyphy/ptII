@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -150,6 +150,7 @@ public abstract class AbstractInteractor implements Interactor {
     /** Set the consuming flag of this layer.  If this flag is
      * set, the interactor consumes all events that get past its mouse
      * filter. By default, the flag is true.
+     * @param flag The consuming flag
      */
     public void setConsuming(boolean flag) {
         _consuming = flag;
@@ -158,6 +159,7 @@ public abstract class AbstractInteractor implements Interactor {
     /** Set the enabled flag of this interactor.  If true, the interactor
      * is prepared to handle layer events. The default setting
      * of this flag is <b>true</b>.
+     * @param flag the enabled flag
      */
     @Override
     public void setEnabled(boolean flag) {
@@ -167,12 +169,14 @@ public abstract class AbstractInteractor implements Interactor {
     /** Set the motion enabled flag of this interactor.  If true, the
      * interactor is prepared to handle layer motion events. The default
      * setting of this flag is <b>false</b>.
+     * @param flag the motion flag
      */
     protected void setMotionEnabled(boolean flag) {
         _motionEnabled = flag;
     }
 
     /** Set the mouse filter of this interactor.
+     * @param filter The filter
      */
     @Override
     public void setMouseFilter(MouseFilter filter) {

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2018 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -231,23 +231,44 @@ public class JCanvasPanner extends JPanel {
             //  System.out.println("viewRect = " + viewRect);
             Rectangle myRect = _getInsetBounds();
 
-            AffineTransform forward = CanvasUtilities.computeFitTransform(
-                    viewRect, myRect);
+            AffineTransform forward = CanvasUtilities
+                    .computeFitTransform(viewRect, myRect);
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
                     .getTransformContext().getTransform();
 
-            AffineTransform inverse;
+            AffineTransform inverse = null;
 
-            try {
-                forward.concatenate(current.createInverse());
-                inverse = forward.createInverse();
-            } catch (NoninvertibleTransformException e) {
-                throw new RuntimeException(e.toString());
+            // Here's a bug:
+            // Open a new empty vergil window, and resize it to be
+            // small enough that the panner window disappears.
+            // An exception appears: "java.awt.geom.NoninvertibleTransformException: Determinant is 0"
+            // So, we check to see if the determinants are greater than 0.0.
+            if (current.getDeterminant() > 0.0
+                    && forward.getDeterminant() > 0.0) {
+                try {
+                    forward.concatenate(current.createInverse());
+                    inverse = forward.createInverse();
+                } catch (NoninvertibleTransformException ex) {
+                    throw new RuntimeException(
+                            "Failed to create an inverse of an AffineTransform.\n viewRect: "
+                                    + viewRect + "\ncurrent: " + current
+                                    + " current determinant:"
+                                    + current.getDeterminant() + "\nforward: "
+                                    + forward + " forward determinant:"
+                                    + forward.getDeterminant(),
+                            ex);
+                }
+            } else {
+                // One or more determinates are 0, treat this like _target == null.
+                Rectangle r = _getInsetBounds();
+                g.clearRect(r.x, r.y, r.width, r.height);
+                return;
             }
 
             Graphics2D g2d = (Graphics2D) g;
+
             g2d.transform(forward);
             canvas.paint(g);
             g2d.transform(inverse);
@@ -261,7 +282,8 @@ public class JCanvasPanner extends JPanel {
 
             g.setColor(Color.red);
             g.drawRect((int) visibleRect.getX(), (int) visibleRect.getY(),
-                    (int) visibleRect.getWidth(), (int) visibleRect.getHeight());
+                    (int) visibleRect.getWidth(),
+                    (int) visibleRect.getHeight());
 
             // NOTE: No longer meaningful, since always full space.
 
@@ -282,16 +304,17 @@ public class JCanvasPanner extends JPanel {
 
         // There is a little extra border...
         int border = 2;
-        Rectangle myRect = new Rectangle(insets.left + border, insets.top
-                + border, mySize.width - insets.top - insets.bottom - border,
+        Rectangle myRect = new Rectangle(insets.left + border,
+                insets.top + border,
+                mySize.width - insets.top - insets.bottom - border,
                 mySize.height - insets.left - insets.right - border);
         return myRect;
     }
 
     // This listener is attached to this panner and is responsible for
     // panning the target in response to a mouse click on the panner.
-    private class PanMouseListener extends MouseAdapter implements
-            MouseMotionListener {
+    private class PanMouseListener extends MouseAdapter
+            implements MouseMotionListener {
         @Override
         public void mousePressed(MouseEvent evt) {
             if (_target != null

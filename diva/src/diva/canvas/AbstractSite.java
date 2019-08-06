@@ -84,9 +84,12 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public Point2D getPoint(TransformContext tc) {
-        return getTransformContext().getTransform(tc).transform(getPoint(),
-                null);
-
+        TransformContext transformContext = getTransformContext();
+        if (transformContext != null) {
+            return transformContext.getTransform(tc).transform(getPoint(),
+                    null);
+        }
+        return new Point2D.Double(0, 0);
         // Formerly used deprecated method. EAL 6/12/05
         // return CanvasUtilities.transformInto(getPoint(), getTransformContext(), tc);
     }
@@ -108,9 +111,13 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public Point2D getPoint(TransformContext tc, double normal) {
-        AffineTransform transform = getTransformContext().getTransform(tc);
-        Point2D point = getPoint(normal);
-        return transform.transform(point, point);
+        TransformContext transformContext = getTransformContext();
+        if (transformContext != null) {
+            AffineTransform transform = transformContext.getTransform(tc);
+            Point2D point = getPoint(normal);
+            return transform.transform(point, point);
+        }
+        return new Point2D.Double(0, 0);
     }
 
     /** Get the enclosing transform context of this site.
@@ -119,7 +126,17 @@ public abstract class AbstractSite implements Site {
      */
     @Override
     public TransformContext getTransformContext() {
-        return getFigure().getParent().getTransformContext();
+        if (getFigure() != null && getFigure().getParent() != null) {
+            return getFigure().getParent().getTransformContext();
+        }
+        System.err.println(
+                "Warning: diva/canvas/AbstractSite.java: getTransformContext(): getFigure(): "
+                        + getFigure()
+                        + (getFigure() != null
+                                ? "getFigure().getParent(): "
+                                        + getFigure().getParent()
+                                : ""));
+        return null;
     }
 
     /** Get the x-coordinate of the site, in the enclosing

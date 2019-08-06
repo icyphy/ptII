@@ -417,7 +417,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Remove the figure at the given position in the list.
-     *
+     * @param index The index of the figure to be removed.
      * @exception IndexOutOfBoundsException The index is out of range.
      */
     public void remove(int index) {

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -41,15 +41,24 @@ package diva.util;
  * @version $Id$
  */
 public abstract class FilteredArrayIterator extends NullArrayIterator {
+    /** Construct a filtered array iterator.
+     *  @param array The array
+     */
     public FilteredArrayIterator(Object[] array) {
         super(array);
     }
 
+    /** Construct a filtered array iterator.
+     *  @param array The array
+     *  @param length The length
+     */
     public FilteredArrayIterator(Object[] array, int length) {
         super(array, length);
     }
 
     /** Test if the object is acceptable for return by the iterator.
+     *  @param o The object to be tested
+     *  @return True if the object is acceptable
      */
     public abstract boolean accept(Object o);
 
