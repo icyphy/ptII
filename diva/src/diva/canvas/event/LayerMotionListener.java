@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2005 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,14 +34,17 @@ package diva.canvas.event;
  */
 public interface LayerMotionListener extends java.util.EventListener {
     /** Invoked when the mouse enters a layer or figure.
+     *  @param e The event
      */
     public void mouseEntered(LayerEvent e);
 
     /** Invoked when the mouse exits a layer or figure.
+     *  @param e The event
      */
     public void mouseExited(LayerEvent e);
 
     /** Invoked when the mouse moves while over a layer or figure.
+     *  @param e The event
      */
     public void mouseMoved(LayerEvent e);
 }

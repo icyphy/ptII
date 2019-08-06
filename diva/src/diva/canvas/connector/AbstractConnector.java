@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,25 +52,25 @@ import diva.util.java2d.ShapeUtilities;
  * @author  John Reekie
  * @author  Michael Shilman
  */
-public abstract class AbstractConnector extends AbstractFigure implements
-Connector {
-    /** The head end
+public abstract class AbstractConnector extends AbstractFigure
+        implements Connector {
+    /** The head end.
      */
     private ConnectorEnd _headEnd = null;
 
-    /** The tail end
+    /** The tail end.
      */
     private ConnectorEnd _tailEnd = null;
 
-    /** The head site
+    /** The head site.
      */
     private Site _headSite = null;
 
-    /** The tail site
+    /** The tail site.
      */
     private Site _tailSite = null;
 
-    /** The label figure
+    /** The label figure.
      */
     private LabelFigure _labelFigure;
 
@@ -88,6 +88,8 @@ Connector {
 
     /** Create a new connector between the given sites. The connector, by
      *  default, is stroked with a unit-width continuous black stroke.
+     *  @param tail The tail of the connector.
+     *  @param head The head of the connector.
      */
     public AbstractConnector(Site tail, Site head) {
         _tailSite = tail;
@@ -97,6 +99,7 @@ Connector {
     }
 
     /** Get the bounding box of this connector.
+     *  @return the bounding box
      */
     @Override
     public Rectangle2D getBounds() {
@@ -120,6 +123,8 @@ Connector {
 
     /** Get the dash array. If the stroke is not a BasicStroke
      * then null will always be returned.
+     * @return The dash array.
+     * @see #setDashArray(float[])
      */
     public float[] getDashArray() {
         if (_stroke instanceof BasicStroke) {
@@ -131,12 +136,16 @@ Connector {
 
     /** Get the object drawn at the head end of the connector, if there
      * is one.
+     * @return the head end
+     * @see #setHeadEnd(ConnectorEnd)
      */
     public ConnectorEnd getHeadEnd() {
         return _headEnd;
     }
 
     /** Get the site that marks the "head" of the connector.
+     * @return the head site.
+     * @see #setHeadSite(Site)
      */
     @Override
     public Site getHeadSite() {
@@ -145,6 +154,8 @@ Connector {
 
     /** Get the figure that displays this connector's label.
      * This may be null.
+     * @return the label figure.
+     * @see #setLabelFigure(LabelFigure)
      */
     public LabelFigure getLabelFigure() {
         return _labelFigure;
@@ -152,6 +163,8 @@ Connector {
 
     /** Get the line width of this figure. If the stroke is not a BasicStroke
      * then 1.0 will always be returned.
+     * @return the line width.
+     * @see #setLineWidth(float)
      */
     public float getLineWidth() {
         if (_stroke instanceof BasicStroke) {
@@ -161,14 +174,9 @@ Connector {
         }
     }
 
-    /** Get the object drawn at the tail end of the connector, if there
-     * is one.
-     */
-    public ConnectorEnd getTailEnd() {
-        return _tailEnd;
-    }
-
     /** Get the outline shape of this connector.
+     * @return the shape
+     * @see #setShape(Shape)
      */
     @Override
     public Shape getShape() {
@@ -176,18 +184,33 @@ Connector {
     }
 
     /** Get the stroke of this connector.
+     *  @return the stroke.
+     *  @see #setStroke(Stroke)
      */
     public Stroke getStroke() {
         return _stroke;
     }
 
     /** Get the stroke paint pattern of this connector.
+     * @return the stroke paint
+     * @see #setStrokePaint(Paint)
      */
     public Paint getStrokePaint() {
         return _paint;
     }
 
+    /** Get the object drawn at the tail end of the connector, if there
+     * is one.
+     * @return the tail end.
+     * @see #setTailEnd(ConnectorEnd)
+     */
+    public ConnectorEnd getTailEnd() {
+        return _tailEnd;
+    }
+
     /** Get the site that marks the "tail" of the connector.
+     * @return the tail site
+     * @see #setTailSite(Site)
      */
     @Override
     public Site getTailSite() {
@@ -208,6 +231,8 @@ Connector {
      * If the connector is not visible, always return false, otherwise
      * check to see if the rectangle intersects the path of the connector,
      * either of its ends, or the label.
+     * @param r The rectangle
+     * @return True if this connector is hit by the given rectangle.
      */
     @Override
     public boolean hit(Rectangle2D r) {
@@ -236,6 +261,8 @@ Connector {
     /** Test if this connector intersects the given rectangle. This default
      *  implementation checks to see if the rectangle intersects with the
      *  path of the connector, the label, or either of the connector ends.
+     *  @param r The rectangle
+     *  @return true if this connector intersects the given rectangle
      */
     @Override
     public boolean intersects(Rectangle2D r) {
@@ -258,6 +285,7 @@ Connector {
     }
 
     /** Paint the connector.
+     *  @param g The Graphics contexts
      */
     @Override
     public void paint(Graphics2D g) {
@@ -302,6 +330,8 @@ Connector {
 
     /** Set the dash array of the stroke. The existing stroke will
      * be removed, but the line width will be preserved if possible.
+     * @param dashArray The dashArray
+     * @see #getDashArray()
      */
     public void setDashArray(float[] dashArray) {
         repaint();
@@ -321,6 +351,8 @@ Connector {
 
     /**
      * Set the object drawn at the head end of the connector.
+     * @param e The connector end.
+     * @see #getHeadEnd()
      */
     public void setHeadEnd(ConnectorEnd e) {
         // We can't just call reroute, because then route() doesn't have a
@@ -333,6 +365,8 @@ Connector {
 
     /** Set the site that marks the "head" of the connector,
      * and call headMoved();
+     * @param s The site
+     * @see #getHeadSite()
      */
     @Override
     public void setHeadSite(Site s) {
@@ -342,6 +376,8 @@ Connector {
 
     /** Set the LabelFigure of this connector. If there is no label
      *  figure currently, one is created and placed on the connector.
+     *  @param label The label of the figure
+     *  @see #getLabelFigure()
      */
     public void setLabelFigure(LabelFigure label) {
         _labelFigure = label;
@@ -350,6 +386,8 @@ Connector {
 
     /** Set the line width. The existing stroke will
      * be removed, but the dash array will be preserved if possible.
+     * @param lineWidth The line width.
+     * @see #getLineWidth()
      */
     public void setLineWidth(float lineWidth) {
         repaint();
@@ -369,12 +407,16 @@ Connector {
     }
 
     /** Set the shape, for subclasses only.
+     * @param s The shape
+     * @see #getShape()
      */
     protected void setShape(Shape s) {
         _shape = s;
     }
 
     /** Set the stroke of this connector.
+     *  @param s The stroke
+     *  @see #getStroke()
      */
     public void setStroke(Stroke s) {
         repaint();
@@ -383,6 +425,8 @@ Connector {
     }
 
     /** Set the stroke paint pattern of this connector.
+     *  @param p The stroke paint
+     *  @see #getStrokePaint()
      */
     public void setStrokePaint(Paint p) {
         repaint();
@@ -392,6 +436,8 @@ Connector {
 
     /**
      * Set the object drawn at the tail end of the connector.
+     * @param e The connector end
+     * @see #getTailEnd()
      */
     public void setTailEnd(ConnectorEnd e) {
         // We can't just call reroute, because then route() doesn't have a

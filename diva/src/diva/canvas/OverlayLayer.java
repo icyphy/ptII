@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -80,7 +80,9 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         setPaint(Color.lightGray);
     }
 
-    /** Create a new OverlayLayer with the given stroke and paint
+    /** Create a new OverlayLayer with the given stroke and paint.
+     *  @param s The given stroke
+     *  @param p The given paint
      */
     public OverlayLayer(Stroke s, Paint p) {
         super();
@@ -88,25 +90,30 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         setPaint(p);
     }
 
-    /** Add a new shape to the list of shapes in this layer
+    /** Add a new shape to the list of shapes in this layer.
+     *  @param s The shape to be added
      */
     public void add(Shape s) {
         _shapes.add(s);
     }
 
-    /** Clear the layer
+    /** Clear the layer.
      */
     public void clear() {
         _shapes.clear();
     }
 
-    /** Get the current paint stroke
+    /** Get the current paint stroke.
+     *  @return The stroke
+     *  @see #setStroke(Stroke)
      */
     public Stroke getStroke() {
         return _stroke;
     }
 
-    /** Get the current paint
+    /** Get the current paint.
+     *  @return the Paint
+     *  @see #setPaint(Paint)
      */
     public Paint getPaint() {
         return _paint;
@@ -115,6 +122,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     /** Test the visibility flag of this layer. Note that this flag
      *  does not indicate whether the layer is actually visible on
      *  the screen, as its pane or one if its ancestors may not be visible.
+     *  @see #setVisible(boolean)
      */
     @Override
     public boolean isVisible() {
@@ -168,7 +176,8 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         }
     }
 
-    /** Remove a shape from the list of shapes in this layer
+    /** Remove a shape from the list of shapes in this layer.
+     *  @param s The Shape to be removed
      */
     public void remove(Shape s) {
         _shapes.remove(s);
@@ -180,6 +189,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
      * ensure that enough of the canvas is repainted. This
      * particular version of this method is optimized for
      * rectangles.
+     * @param region The region
      */
     public void repaint(Rectangle2D region) {
         // If we don't have a BasicStroke, revert to the
@@ -194,15 +204,16 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
         double y = region.getY();
         double w = region.getWidth();
         double h = region.getHeight();
-        repaint(DamageRegion.createDamageRegion(getTransformContext(), x
-                - lineWidth, y - lineWidth, w + 2 * lineWidth, h + 2
-                * lineWidth));
+        repaint(DamageRegion.createDamageRegion(getTransformContext(),
+                x - lineWidth, y - lineWidth, w + 2 * lineWidth,
+                h + 2 * lineWidth));
     }
 
     /** Schedule a repaint of this layer over the given shape.
      * The shape is assumed to be a shape that is on this layer.
      * The width of the outline is taken into account when
      * repainting the canvas.
+     * @param shape The given shape
      */
     public void repaint(Shape shape) {
         Shape s = _stroke.createStrokedShape(shape);
@@ -213,6 +224,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     }
 
     /** Return an iterator over the shapes currently in this layer.
+     *  @return an iterator
      */
     public Iterator shapes() {
         return _shapes.iterator();
@@ -220,6 +232,8 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
 
     /** Set the stroke. All shapes will be stroked with
      * the same stroke.
+     * @param s The stroke
+     * @see #getStroke()
      */
     public void setStroke(Stroke s) {
         _stroke = s;
@@ -228,6 +242,8 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
 
     /** Set the paint. All shapes will be drawn with
      * the same paint.
+     * @param p The paint
+     * @see #getPaint()
      */
     public void setPaint(Paint p) {
         _paint = p;
@@ -236,6 +252,8 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
 
     /** Set the visibility flag of this layer. If the flag is false,
      * then the layer will not be drawn on the screen.
+     * @param flag the visibility flag
+     * @see #isVisible()
      */
     @Override
     public void setVisible(boolean flag) {

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -81,6 +81,7 @@ public class ConnectorInteractor extends DragInteractor {
     /**
      * Add a connector listener. The listener will be notified
      * on all significant events.
+     * @param l The connector listener
      */
     public void addConnectorListener(ConnectorListener l) {
         _connectorListeners.add(l);
@@ -88,6 +89,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** Detach the connector from its current site and attach
      * it to the given site.
+     * @param site The site
      */
     private void attach(Site site) {
         if (_handle.getSite() == _connector.getHeadSite()) {
@@ -132,11 +134,11 @@ public class ConnectorInteractor extends DragInteractor {
         Site ret = null;
 
         if (_handle.getSite() == _connector.getHeadSite()) {
-            ret = _manipulator._connectorTarget
-                    .getHeadSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget.getHeadSite(_connector, f, x,
+                    y);
         } else {
-            ret = _manipulator._connectorTarget
-                    .getTailSite(_connector, f, x, y);
+            ret = _manipulator._connectorTarget.getTailSite(_connector, f, x,
+                    y);
         }
 
         return ret;
@@ -156,6 +158,7 @@ public class ConnectorInteractor extends DragInteractor {
     }
 
     /** Fire a connector event to all connector listeners.
+     *  @param id The id
      */
     protected void fireConnectorEvent(int id) {
         int end;
@@ -173,12 +176,14 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** Get the current connector. If there isn't one, return
      * null.
+     * @return The connector
      */
     public Connector getConnector() {
         return _connector;
     }
 
     /** Get the current grab handle.
+     * @return The grab handle
      */
     public GrabHandle getHandle() {
         return _handle;
@@ -186,6 +191,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** Get the current target figure. If there isn't one, return
      * null.
+     * @return The target
      */
     public Figure getTarget() {
         return _target;
@@ -193,6 +199,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** Handle a mouse-released event. This overrides the inherited
      * method to generate a connector-dropped event.
+     * @param event The event
      */
     @Override
     public void mouseReleased(LayerEvent event) {
@@ -202,6 +209,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /**
      * Remove a connector listener.
+     * @param l The listener to be removed
      */
     public void removeConnectorListener(ConnectorListener l) {
         _connectorListeners.remove(l);
@@ -209,6 +217,7 @@ public class ConnectorInteractor extends DragInteractor {
 
     /** Initialize the interactor when a grab-handle
      * is grabbed.
+     * @param e The event
      */
     @Override
     public void setup(LayerEvent e) {
@@ -223,8 +232,9 @@ public class ConnectorInteractor extends DragInteractor {
     }
 
     /** Pick a site using the connector target and
-     *  then snap to it.  Container is the container to
-     *  pick in; x, y are the coordinates of the drag
+     *  then snap to it.
+     *  @param container The container to pick in.
+     *  @param hitRect the coordinates of the drag
      *  point in the transform context of that container.
      */
     public void snapToSite(final FigureContainer container,
@@ -265,7 +275,8 @@ public class ConnectorInteractor extends DragInteractor {
                 Rectangle2D bounds = ShapeUtilities.transformBounds(hitRect,
                         transform);
 
-                if (findSite(f, bounds.getCenterX(), bounds.getCenterY()) == null) {
+                if (findSite(f, bounds.getCenterX(),
+                        bounds.getCenterY()) == null) {
                     return false;
                 }
 
@@ -288,6 +299,9 @@ public class ConnectorInteractor extends DragInteractor {
     /** Respond to translation of the grab-handle. Move the
      * grab-handle, and adjust the connector accordingly,
      * snapping it to a suitable target if possible.
+     * @param e The event
+     * @param dx The change in x
+     * @param dy The change in y
      */
     @Override
     public void translate(LayerEvent e, double dx, double dy) {

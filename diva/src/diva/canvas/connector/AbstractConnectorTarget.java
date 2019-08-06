@@ -43,6 +43,9 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
     /** Return true if the given connector can be connected to the given
      * figure.  In this base class return true if the tail of the connector
      * is not attached to the same figure.
+     * @param c The connector
+     * @param f The figure
+     * @return true if the tail of the connector can be connected to the figure
      */
     public boolean acceptHead(Connector c, Figure f) {
         if (c != null && c.getTailSite().getFigure() == f) {
@@ -55,6 +58,9 @@ public abstract class AbstractConnectorTarget implements ConnectorTarget {
     /** Return true if the given connector can be connected to the given
      * figure.  In this base class return true if the head of the connector
      * is not attached to the same figure.
+     * @param c The connector
+     * @param f The figure
+     * @return true if the head of the connector can be connected to the figure
      */
     public boolean acceptTail(Connector c, Figure f) {
         if (c != null && c.getHeadSite().getFigure() == f) {

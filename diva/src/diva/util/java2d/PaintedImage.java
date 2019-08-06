@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -35,9 +35,10 @@ import java.awt.image.ImageObserver;
 import diva.canvas.CanvasUtilities;
 
 /**
- *
+ * Painted Images.
  * @version        $Id$
  * @author         Steve Neuendorffer
+ * @since Ptolemy II 1.0
  */
 public class PaintedImage implements PaintedObject, ImageObserver {
     // Note that this class was deprecated becase we were to use
@@ -53,6 +54,10 @@ public class PaintedImage implements PaintedObject, ImageObserver {
     // The bounds
     private Rectangle2D _bounds;
 
+    /** Construct a painted image.
+     *  @param image The image
+     *  @param bounds The bounds
+     */
     public PaintedImage(Image image, Rectangle2D bounds) {
         _image = image;
         _bounds = bounds;
@@ -84,8 +89,9 @@ public class PaintedImage implements PaintedObject, ImageObserver {
             int h) {
         if ((flags & (ImageObserver.ABORT | ImageObserver.ERROR)) == 0) {
             _transform = CanvasUtilities.computeTransform(
-                    new Rectangle2D.Double(0, 0, image.getWidth(this), image
-                            .getHeight(this)), _bounds);
+                    new Rectangle2D.Double(0, 0, image.getWidth(this),
+                            image.getHeight(this)),
+                    _bounds);
         }
 
         return true;

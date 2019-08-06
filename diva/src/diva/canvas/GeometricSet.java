@@ -51,6 +51,8 @@ public interface GeometricSet extends FigureSet {
     //public abstract Iterator freshFigures();
     /** Get the geometry. The client must not modify the
      * returned shape.
+     * @return The geometry
+     * @see #setGeometry(Shape)
      */
     public abstract Shape getGeometry();
 
@@ -59,6 +61,8 @@ public interface GeometricSet extends FigureSet {
      * operation. Implementors may choose to throw an exception
      * if the particular Shape class passed in as the geometry
      * is not suitable.
+     * @param geometry The geometry
+     * @see #getGeometry()
      */
     public abstract void setGeometry(Shape geometry);
 
