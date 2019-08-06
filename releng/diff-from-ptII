@@ -1,0 +1,206 @@
+#!/bin/bash
+# Run diff the osgi-2-0 branch with the ptII repo
+
+diff -rwb $PTII/diva diva/src/diva
+diff -rwb $PTII/org/ptolemy/commons/ org.ptolemy.commons/original-src/org/ptolemy/commons/
+# ptII FutureValue: FindBugs: toString method may return null.
+# cp $PTII/org/ptolemy/commons/FutureValue.java org.ptolemy.commons/original-src/org/ptolemy/commons/FutureValue.java
+
+# ptII ThreeDigitVersionSpecification: Javadoc, reordered methods, fixed up equals().
+# cp $PTII/org/ptolemy/commons/ThreeDigitVersionSpecification.java org.ptolemy.commons/original-src/org/ptolemy/commons/ThreeDigitVersionSpecification.java
+
+# ptII VersionSpecification: Javadoc.
+# cp $PTII/org/ptolemy/commons/VersionSpecification.java org.ptolemy.commons/original-src/org/ptolemy/commons/VersionSpecification.java
+
+diff -rwb $PTII/ptolemy/actor/lib/ ptolemy.actor.lib/original-src/ptolemy/actor/lib/
+# ptII Clock: Deprecated
+# cp $PTII/ptolemy/actor/lib/Clock.java ptolemy.actor.lib/original-src/ptolemy/actor/lib/Clock.java
+
+# ptII Dictionary: Don't print message about writing log.
+# cp $PTII/ptolemy/actor/lib/Dictionary.java ptolemy.actor.lib/original-src/ptolemy/actor/lib/Dictionary.java
+
+# ptII ExceptionSubscriber: Javadoc
+# cp $PTII/ptolemy/actor/lib/ExceptionSubscriber.java ptolemy.actor.lib/original-src/ptolemy/actor/lib/ExceptionSubscriber.java
+
+# ptII ExecutionTime: in ptII, granularityValue is not commented out, in osgi-2-0 it is.
+# Stick with osgi-2-0
+
+# ptII TestExceptionAttribute: Handle null messages.
+# cp $PTII/ptolemy/actor/lib/TestExceptionAttribute.java ptolemy.actor.lib/original-src/ptolemy/actor/lib/TestExceptionAttribute.java
+
+# ptII ImageToString: Check to see if the inputValue is a AWTImageToken
+# cp $PTII/ptolemy/actor/lib/conversions/ImageToString.java ptolemy.actor.lib/original-src/ptolemy/actor/lib/conversions/ImageToString.java
+
+
+diff -rwb $PTII/ptolemy/actor/lib/ ptolemy.actor.lib2/original-src/ptolemy/actor/lib2/
+# No changes.
+
+diff -rwb $PTII/ptolemy/actor/lib/gui/ ptolemy.actor.lib.gui/original-src/ptolemy/actor/lib/gui/
+# ptII DisplayJavaSE.class: Set the textArea to null instead of "".
+# cp $PTII/ptolemy/actor/lib/gui/DisplayJavaSE.java ptolemy.actor.lib.gui/original-src/ptolemy/actor/lib/gui/DisplayJavaSE.java
+
+diff -rwb -I $PTII/ptolemy/actor/	       ptolemy.core/original-src/ptolemy/actor/
+# ptII AtomicActor: Collect exceptions during wrapup.
+# cp $PTII/ptolemy/actor/AtomicActor.java ptolemy.core/original-src/ptolemy/actor/AtomicActor.java
+
+# ptII CompositeActor: Collect exceptions during wrapup.
+# cp $PTII/ptolemy/actor/CompositeActor.java ptolemy.core/original-src/ptolemy/actor/CompositeActor.java
+
+# ptII ExecutionAspectHelper.java: Check to see if the entity is not a Director
+# cp $PTII/ptolemy/actor/ExecutionAspectHelper.java ptolemy.core/original-src/ptolemy/actor/ExecutionAspectHelper.java
+
+# ptII Manager.java: Added static timeAndMemory(Long) method for tcl testing.
+# cp $PTII/ptolemy/actor/Manager.java ptolemy.core/original-src/ptolemy/actor/Manager.java
+
+# ptII SuperDenseTimeDirector: Updated location of Haiyang's thesis
+# cp $PTII/ptolemy/actor/SuperdenseTimeDirector.java ptolemy.core/original-src/ptolemy/actor/SuperdenseTimeDirector.java
+
+# ptII TypedIOPort: Check for GENERAL and avoid a hang in CapeCode.
+# cp $PTII/ptolemy/actor/TypedIOPort.java ptolemy.core/original-src/ptolemy/actor/TypedIOPort.java
+
+# ptII Time: Added milliseconds() method.
+# cp $PTII/ptolemy/actor/util/Time.java ptolemy.core/original-src/ptolemy/actor/util/Time.java
+
+diff -rwb $PTII/ptolemy/data/	       ptolemy.core/original-src/ptolemy/data/
+# ptII DateToke: cast to long
+# cp $PTII/ptolemy/data/DateToken.java ptolemy.core/original-src/ptolemy/data/DateToken.java
+
+# ptII RecordToken: Don't allow creating a RecordToken with {}.  For an empty RecordToken, output emptyRecord().
+# cp $PTII/ptolemy/data/RecordToken.java ptolemy.core/original-src/ptolemy/data/RecordToken.java
+
+# ptII ParseTreeEvaluator.java: Parsing of MatrixTokens and ArrayTokens changed
+# cp $PTII/ptolemy/data/expr/ParseTreeEvaluator.java ptolemy.core/original-src/ptolemy/data/expr/ParseTreeEvaluator.java
+
+# ptII ParseTreeTypeInference.java: If the variable is a Matrix or an Array, the return type will be the element type, not the Matrix or Array.
+# cp $PTII/ptolemy/data/expr/ParseTreeTypeInference.java ptolemy.core/original-src/ptolemy/data/expr/ParseTreeTypeInference.java
+
+# ptII MatrixType: Update message about corresponding matrix type.
+# cp $PTII/ptolemy/data/type/MatrixType.java ptolemy.core/original-src/ptolemy/data/type/MatrixType.java
+
+# osgi-2-0: UnionType has casts
+
+diff -rwb $PTII/ptolemy/graph/	       ptolemy.core/original-src/ptolemy/graph/
+# osgi-2.0 ElementList: has some casts
+
+diff -rwb $PTII/ptolemy/kernel/	       ptolemy.core/original-src/ptolemy/kernel/
+# ptII: VersionAttribute: updated to 11.1.devel
+# cp $PTII/ptolemy/kernel/attributes/VersionAttribute.java ptolemy.core/original-src/ptolemy/kernel/attributes/VersionAttribute.java
+
+# ptII: NamedObj: Use WeakReference to avoid a leak
+# cp $PTII/ptolemy/kernel/util/NamedObj.java ptolemy.core/original-src/ptolemy/kernel/util/NamedObj.java
+
+# ptII: Workspace: Don't throw an exception while interrupting, there may be a change request.
+# cp $PTII/ptolemy/kernel/util/Workspace.java ptolemy.core/original-src/ptolemy/kernel/util/Workspace.java
+
+
+diff -rwb $PTII/ptolemy/math/	       ptolemy.core/original-src/ptolemy/math/
+# No changes, no need to update
+
+diff -rwb $PTII/ptolemy/util/	       ptolemy.core/original-src/ptolemy/util/
+# ptII FileUtilities: createLink() is more robust.
+# cp $PTII/ptolemy/util/FileUtilities.java ptolemy.core/original-src/ptolemy/util/FileUtilities.java
+
+# ptII StringUtilities: Use Unsafe for Java 9.  Added escapeForXML.  Other minor updates.
+# cp $PTII/ptolemy/util/StringUtilities.java ptolemy.core/original-src/ptolemy/util/StringUtilities.java
+
+diff -rwb $PTII/ptolemy/actor/process/ ptolemy.domains.process/original-src/ptolemy/actor/process/
+# No changes, no need to update
+
+diff -rwb $PTII/ptolemy/domains/pn/ ptolemy.domains.process/original-src/ptolemy/domains/pn/
+# No changes, no need to update
+
+diff -rwb $PTII/ptolemy/domains/sdf/ ptolemy.domains.sdf/original-src/ptolemy/domains/sdf/
+# No changes, no need to update
+
+diff -rwb $PTII/com/microstar/ ptolemy.moml/original-src/com/microstar/
+# No changes, no need to update
+
+diff -rwb $PTII/ptolemy/moml/ ptolemy.moml/original-src/moml
+# ptII MoMLParser: minor comments only
+# osgi-2.0 BackwardCompatibility: two casts.
+# osgi-2.0 MultiportToSinglePort: one cast.
+# osgi-2.0 ParameterNameChanges: one cast.
+# UParser, UParserTokenManager: generated files with various diffs
+# Don't update
+
+diff -rwb $PTII/ptolemy/actor/gui/ ptolemy.gui/original-src/ptolemy/actor/gui/
+# ptII Configurer has a change concerning backward type inference
+# cp $PTII//actor/gui/Configurer.java ptolemy.gui/original-src/ptolemy/actor/gui/Configurer.java
+
+# ptII EditorPaneFactory has a simple javadoc update
+# cp $PTII//actor/gui/EditorPaneFactory.java ptolemy.gui/original-src/ptolemy/actor/gui/EditorPaneFactory.java
+
+# ptII GenerateCopyrights has new copyright updates
+# cp $PTII//actor/gui/GenerateCopyrights.java ptolemy.gui/original-src/ptolemy/actor/gui/GenerateCopyrights.java
+
+# ptII HTMLAbout has various updates for traversing models and updating LiveLinks
+# cp $PTII//actor/gui/HTMLAbout.java ptolemy.gui/original-src/ptolemy/actor/gui/HTMLAbout.java
+
+# ptII JNLPUtilities has various updates for handling paths.
+# cp $PTII//actor/gui/JNLPUtilities.java ptolemy.gui/original-src/ptolemy/actor/gui/JNLPUtilities.java
+
+# ptII PortConfigurerDialog: Avoid a NPE.
+# cp $PTII//actor/gui/PortConfigurerDialog.java ptolemy.gui/original-src/ptolemy/actor/gui/PortConfigurerDialog.java
+
+# ptII PtolemyFrame: getEffigy() might return an Effigy, not a PtolemyEffigy.  Avoid a NPE.
+# cp $PTII//actor/gui/PtolemyFrame.java ptolemy.gui/original-src/ptolemy/actor/gui/PtolemyFrame.java
+
+# ptII PtolemyQuery: Add try/catch around creating a modelURI.
+# cp $PTII//actor/gui/PtolemyQuery.java ptolemy.gui/original-src/ptolemy/actor/gui/PtolemyQuery.java
+
+# ptII TextEffigy: Added @Override
+# cp $PTII//actor/gui/TextEffigy.java ptolemy.gui/original-src/ptolemy/actor/gui/TextEffigy.java
+
+diff -rwb $PTII/ptolemy/actor/injection/ ptolemy.gui/original-src/ptolemy/actor/injection/
+# ptII has some minor comment changes.
+# Don't bother
+
+diff -rwb $PTII/ptolemy/gui/ ptolemy.gui/original-src/ptolemy/gui/
+# ptII has minor changes:  URL to wiki updated, Copyright year, @SuppressWarnings() for jdk10
+# update from ptII
+# cp $PTII//gui/Top.java ptolemy.gui/original-src/ptolemy/gui/Top.java
+
+diff -rwb $PTII/ptolemy/vergil/ ptolemy.gui/original-src/ptolemy/vergil/
+# ptII calls followRdirects
+# Update from ptII
+# cp $PTII/ptolemy/vergil/kernel/attributes/ImageAttribute.java ptolemy.gui/original-src/ptolemy/vergil/kernel/attributes/ImageAttribute.java
+
+diff -rwb $PTII/ptolemy/vergil/kernel/attributes/FilledShapeAttribute.java ./ptolemy.gui/src/ptolemy/vergil/kernel/attributes/FilledShapeAttribute.java
+# osgi-2-0 disables adding _controllerFactory
+
+diff -rwb $PTII/ptolemy/vergil/kernel/RelativeLinkFigure.java ./ptolemy.gui/src/ptolemy/vergil/kernel/RelativeLinkFigure.java
+# osgi-2-0 disables a big section of code
+# Don't update
+
+diff -rwb $PTII/ptolemy/vergil/icon/EditorIcon.java ./ptolemy.gui/src/ptolemy/vergil/icon/EditorIcon.java
+# osgi-2-0 disables adding _tableauFactory
+# Don't update
+
+diff -rwb $PTII/ptolemy/actor/injection/ActorModuleInitializer.java ./ptolemy.gui/src/ptolemy/actor/injection/ActorModuleInitializer.java
+# osgi-2-0 adds ptolemy.actor.injection.ActorModule instead of ptolemy.actor.ActorModule
+# Don't update
+
+diff -rwb $PTII/ptolemy/actor/gui/Configuration.java ./ptolemy.gui/src/ptolemy/actor/gui/Configuration.java
+# osgi-2-0 avoids importing and using BackwardCompatibility, comments out various other lines
+# ptII has some leak changes and other fixes
+# Copy ptII to osgi-2-0 and avoid BackwardCompatibility
+
+diff -rwb $PTII/ptolemy/actor/gui/CheckModelSize.java ./ptolemy.gui/src/ptolemy/actor/gui/CheckModelSize.java
+# osgi-2-0 avoids importing and using BackwardCompatibility, comments out various other lines
+# Don't update
+
+diff -rwb $PTII/ptolemy/actor/gui/ConfigurationApplication.java ./ptolemy.gui/src/ptolemy/actor/gui/ConfigurationApplication.java
+# osgi-2-0 avoids importing BackwardCompatibility
+# ptII avoids a leak, is more type-safe
+# Copy ptII to osgi-2-0 and avoid BackwardCompatibility
+
+diff -rwb $PTII/ptolemy/actor/Receiver.java ./ptolemy.core/src/ptolemy/actor/Receiver.java
+# osgi-2-0 is better, it declares requestFinish().
+
+diff -rwb $PTII/ptolemy/actor/AbstractReceiver.java ./ptolemy.core/src/ptolemy/actor/AbstractReceiver.java
+# osgi-2-0 is better, it adds an empty requestFinish() method
+
+diff -rwb $PTII/ptolemy/moml/filter/RemoveGraphicalClasses.java ./ptolemy.moml/src/ptolemy/moml/filter/RemoveGraphicalClasses.java
+# osgi-2-0 is better, it uses type-specific _graphicalClasses.
+
+
