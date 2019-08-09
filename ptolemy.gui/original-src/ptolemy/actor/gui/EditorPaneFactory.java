@@ -1,6 +1,6 @@
 /* An attribute that creates an editor pane to configure its container.
 
- Copyright (c) 1998-2013 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -103,7 +103,8 @@ public class EditorPaneFactory extends Attribute {
     /** Return a new default widget for configuring the specified object.
      *  This is used by the Configurer for objects that do not contain
      *  an instance of EditorPaneFactory as an attribute.  The resulting
-     *  component is an instance of the PtolemyQuery class that
+     *  component is an instance of the PtolemyQuery class that can be
+     *  used to edit the parameters of the object.
      *  @param object The object to be configured.
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
@@ -126,12 +127,15 @@ public class EditorPaneFactory extends Attribute {
                     PtolemyQuery decoratorQuery = new PtolemyQuery(object);
                     decoratorQuery.setAlignmentY(Component.TOP_ALIGNMENT);
                     decoratorQuery.setTextWidth(DEFAULT_QUERY_WIDTH);
-                    decoratorQuery.addText(
-                            "Decorator providing the parameters below: "
-                                    + decorator.getFullName(), Color.BLACK, 0);
+                    decoratorQuery
+                            .addText(
+                                    "Decorator providing the parameters below: "
+                                            + decorator.getFullName(),
+                                    Color.BLACK, 0);
                     boolean foundDecoratorAttribute = false;
 
-                    for (Object attribute : decoratorAttributes.attributeList()) {
+                    for (Object attribute : decoratorAttributes
+                            .attributeList()) {
                         if (attribute instanceof Settable) {
                             Settable settable = (Settable) attribute;
                             if (Configurer.isVisible(object, settable)) {
@@ -176,7 +180,8 @@ public class EditorPaneFactory extends Attribute {
      *  @return An instance of the PtolemyQuery class that is created
      *  with styles according to the type given in each visible attribute.
      */
-    public static Component createEditorPane(NamedObj object, PtolemyQuery query) {
+    public static Component createEditorPane(NamedObj object,
+            PtolemyQuery query) {
         query.setTextWidth(DEFAULT_QUERY_WIDTH);
         boolean foundOne = false;
         List<Settable> parameters = new LinkedList<Settable>(
