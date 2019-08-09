@@ -1,6 +1,6 @@
 /* Utility methods to handle HTML Viewer about: calls
 
- Copyright (c) 2003-2015 The Regents of the University of California.
+ Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -130,8 +131,7 @@ public class HTMLAbout {
                 + "<li><a href=\"about:configuration\">"
                 + "<code>about:configuration</code></a> "
                 + "Expand the configuration (good way to test for "
-                + "missing classes).\n"
-                + "<li><a href=\"about:expandLibrary\">"
+                + "missing classes).\n" + "<li><a href=\"about:expandLibrary\">"
                 + "<code>about:expandLibrary</code></a> "
                 + "Open a model and expand library tree (good way to test for "
                 + "missing classes, check standard out).\n"
@@ -152,11 +152,13 @@ public class HTMLAbout {
         _demosURLs = new LinkedList();
         if (_configurationExists("full")) {
             htmlBuffer
-            .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/doc/completeDemos.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demos.htm")
-                    + _aboutHTML("ptolemy/configs/doc/whatsNew"
-                            + version + ".htm")
+                    .append("<tr rowspan=4><center><b>Full</b></center></tr>\n"
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/completeDemos.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demos.htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew"
+                                    + version + ".htm")
+                            + _aboutHTML("ptolemy/configs/doc/whatsNew11.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew10.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew8.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew7.0.htm")
@@ -164,62 +166,72 @@ public class HTMLAbout {
                             + _aboutHTML("ptolemy/configs/doc/whatsNew5.1.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew5.0.htm")
                             + _aboutHTML("ptolemy/configs/doc/whatsNew4.0.htm")
-                            + _aboutHTML("ptolemy/configs/doc/whatsNew3.0.2.htm"));
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/whatsNew3.0.2.htm"));
         }
 
         if (_configurationExists("bcvtb")) {
             htmlBuffer
-            .append("<tr rowspan=4><center><b>BCVTB</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
-                    + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
-                    + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
+                    .append("<tr rowspan=4><center><b>BCVTB</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/bcvtb/intro.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/completeDemosBcvtb.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
+                            + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
         }
         if (_configurationExists("capecode")) {
-            htmlBuffer
-            .append("<tr rowspan=4><center><b>CapeCode</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/capecode/intro.htm")
-                    + _aboutHTML("ptolemy/configs/capecode/docs.htm")
-                    + _aboutHTML("ptolemy/configs/capecode/demonstrations.htm"));
+            htmlBuffer.append(
+                    "<tr rowspan=4><center><b>CapeCode</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/capecode/intro.htm")
+                            + _aboutHTML("ptolemy/configs/capecode/docs.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/capecode/demonstrations.htm")
+                            + _aboutHTML("ptolemy/configs/capecode/tour.htm"));
         }
         if (_configurationExists("cyphysim")) {
-            htmlBuffer
-            .append("<tr rowspan=4><center><b>CyPhySim</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/cyphysim/intro.htm")
-                    + _aboutHTML("ptolemy/configs/cyphysim/demonstrations.htm")
-                    + _aboutHTML("ptolemy/configs/cyphysim/docs.htm")
-                    + _aboutHTML("ptolemy/configs/doc/docs.htm"));
+            htmlBuffer.append(
+                    "<tr rowspan=4><center><b>CyPhySim</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/cyphysim/intro.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/cyphysim/demonstrations.htm")
+                            + _aboutHTML("ptolemy/configs/cyphysim/docs.htm")
+                            + _aboutHTML("ptolemy/configs/doc/docs.htm"));
         }
         // Don't include DSP here, it uses the Ptiny demos anyway.
         if (_configurationExists("hyvisual")) {
-            htmlBuffer
-            .append("<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
+            htmlBuffer.append(
+                    "<tr rowspan=4><center><b>HyVisual</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/hyvisual/intro.htm"));
         }
 
         if (_configurationExists("ptiny")) {
             htmlBuffer
-            .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtiny.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
+                    .append("<tr rowspan=4><center><b>Ptiny</b></center></tr>\n"
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/completeDemosPtiny.htm")
+                            + _aboutHTML("ptolemy/configs/doc/demosPtiny.htm")
 
-                    + _aboutHTML("doc/mainVergilPtiny.htm"));
+                            + _aboutHTML("doc/mainVergilPtiny.htm"));
         }
 
         if (_configurationExists("ptinyKepler")) {
-            htmlBuffer
-            .append("<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/kepler/doc-index.htm")
-                    + _aboutHTML("doc/mainVergilPtinyKepler.htm")
-                    + _aboutHTML("ptolemy/configs/doc/demosPtinyKepler.htm")
-                    + _aboutHTML("ptolemy/configs/doc/docsPtinyKepler.htm")
-                    + _aboutHTML("ptolemy/configs/doc/completeDemosPtinyKepler.htm"));
+            htmlBuffer.append(
+                    "<tr rowspan=4><center><b>Ptiny for Kepler</b></center></tr>\n"
+                            + _aboutHTML("ptolemy/configs/kepler/doc-index.htm")
+                            + _aboutHTML("doc/mainVergilPtinyKepler.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/demosPtinyKepler.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/docsPtinyKepler.htm")
+                            + _aboutHTML(
+                                    "ptolemy/configs/doc/completeDemosPtinyKepler.htm"));
 
         }
         if (_configurationExists("visualsense")) {
-            htmlBuffer
-            .append("<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
-                    + _aboutHTML("ptolemy/configs/visualsense/intro.htm"));
+            htmlBuffer.append(
+                    "<tr rowspan=4><center><b>VisualSense</b></center></tr>\n"
+                            + _aboutHTML(
+                                    "ptolemy/configs/visualsense/intro.htm"));
         }
 
         try {
@@ -238,8 +250,8 @@ public class HTMLAbout {
                     StringToken demoToken = (StringToken) demoTokens
                             .getElement(i);
                     htmlBuffer.append(_aboutHTML(demoToken.stringValue()));
-                    System.out.println("HTMLAbout: adding "
-                            + demoToken.stringValue());
+                    System.out.println(
+                            "HTMLAbout: adding " + demoToken.stringValue());
                 }
             }
         } catch (Exception ex) {
@@ -262,6 +274,10 @@ public class HTMLAbout {
     public static String checkCompleteDemos(String completeDemos)
             throws IOException {
         URL demosURL = _getDemoURL(completeDemos);
+        if (demosURL == null) {
+            throw new IOException("Could not find any demos in " + completeDemos
+                    + ". Does that file exist?");
+        }
         StringBuffer results = new StringBuffer(
                 "<h1>Results of checking for demos not listed in full "
                         + "demos</h1>\n"
@@ -312,12 +328,16 @@ public class HTMLAbout {
      *  @param regexp The regular expression of the links we are interested
      *  in.
      *  @param configuration  The configuration to open the files in.
-     *  @return the URL of the HTML file that was searched.
+     *  @return the URL of the HTML file that was searched or null
+     *  if demosFileName does not exist.
      *  @exception Exception If there is a problem opening a model.
      */
     public static URL generateLinks(String demosFileName, String regexp,
             Configuration configuration) throws Exception {
         URL demosURL = _getDemoURL(demosFileName);
+        if (demosURL == null) {
+            return null;
+        }
         List modelList = _getURLs(demosURL, regexp);
         Iterator models = modelList.iterator();
 
@@ -377,7 +397,8 @@ public class HTMLAbout {
         } else if (event.getDescription()
                 .startsWith("about:checkCompleteDemos")) {
             newURL = _temporaryHTMLFile("checkCompleteDemos", ".htm",
-                    checkCompleteDemos("ptolemy/configs/doc/completeDemos.htm"));
+                    checkCompleteDemos(
+                            "ptolemy/configs/doc/completeDemos.htm"));
         } else if (event.getDescription().startsWith("about:checkModelSizes")) {
             // Expand all the local .xml files in the fragment
             // and check their sizes and locations
@@ -389,23 +410,21 @@ public class HTMLAbout {
             Set modelSet = new HashSet(modelList);
             newURL = _temporaryHTMLFile("checkModelSizes", ".htm",
                     CheckModelSize.checkModelSize(configuration,
-                            (String[]) modelSet.toArray(new String[modelSet
-                                                                   .size()])));
+                            (String[]) modelSet
+                                    .toArray(new String[modelSet.size()])));
         } else if (event.getDescription().equals("about:copyright")) {
             // Note that if we have a link that is
             // <a href="about:copyright">about:copyright</a>
             // then event.getURL() will return null, so we have
             // to use getDescription()
             try {
-                newURL = _temporaryHTMLFile(
-                        "copyright",
-                        ".htm",
+                newURL = _temporaryHTMLFile("copyright", ".htm",
                         GenerateCopyrights
-                        .generatePrimaryCopyrightHTML(configuration)
-                        + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
-                        + "about this configuration \n"
-                        + "(<i>may take a moment to run</i>).\n"
-                        + "</body>\n</html>");
+                                .generatePrimaryCopyrightHTML(configuration)
+                                + "<p>Other <a href=\"about:allcopyrights\">copyrights</a>\n"
+                                + "about this configuration \n"
+                                + "(<i>may take a moment to run</i>).\n"
+                                + "</body>\n</html>");
             } catch (SecurityException ex) {
                 // Could be that we were running with -sandbox and
                 // cannot write the temporary file.
@@ -464,6 +483,13 @@ public class HTMLAbout {
         String demoFileName = "ptolemy/configs/doc/completeDemos.htm";
         String outputFileName = "models.txt";
 
+        if (System.getenv("DISPLAY") != null
+                && System.getenv("DISPLAY").length() > 0) {
+            System.err.println(
+                    "Because of issues with webcam-capture hanging during discovery "
+                            + "it is best if HTMLAbout is invoked with DISPLAY=\"\".  "
+                            + "See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/Finalizers.");
+        }
         if (args.length > 2) {
             System.err.println("Usage: [demoFileName [outputFilename]\n"
                     + "demoFileName defaults to " + demoFileName + "\n"
@@ -476,9 +502,33 @@ public class HTMLAbout {
         if (args.length == 2) {
             outputFileName = args[1];
         }
+        System.out.println(
+                "Printing '.' for regular models, 'P' for models with LiveLinks.");
         writeDemoURLs(demoFileName, outputFileName);
+        //ptolemy.moml.MoMLSimpleApplication.closeVertx();
+        HTMLAbout.closeVertx();
     }
 
+    /** If the VertxHelperBase class is present, then invoke the                                                                            
+     *  closeVertx() method so that this process does not wait around                                                                       
+     *  for the Vert.x threads.                                                                                                             
+     */
+    public static void closeVertx() {
+        try {
+            Class clazz = Class
+                    .forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+            if (clazz != null) {
+                Method method = clazz.getMethod("closeVertx");
+                method.invoke(null);
+            }
+        } catch (NoClassDefFoundError ex) {
+            // Ignore this, it means that MoMLSimpleApplication was invoked without the Vert.x jar files.                                   
+        } catch (Throwable throwable) {
+            System.err.println(
+                    "MoMLSimpleApplication: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: "
+                            + throwable);
+        }
+    }
     /** Run all the local .xml files that are linked to from an HTML file.
      *  @param demosFileName The name of the HTML file that contains links
      *  to the .xml files.  If this argument is the empty string, then
@@ -531,13 +581,13 @@ public class HTMLAbout {
      * @exception IOException If there is a problem reading the demo file
      * or writing the output file.
      */
-    public static void writeDemoURLs(String demosFileName, String outputFileName)
-            throws IOException {
+    public static void writeDemoURLs(String demosFileName,
+            String outputFileName) throws IOException {
         // Get PTII as C:/cxh/ptII
         String ptII = null;
         try {
             ptII = new URI(StringUtilities.getProperty("ptolemy.ptII.dirAsURL"))
-            .normalize().getPath();
+                    .normalize().getPath();
             // Under Windows, convert /C:/foo/bar to C:/foo/bar
             ptII = new File(ptII).getCanonicalPath().replace('\\', '/');
         } catch (URISyntaxException ex) {
@@ -560,8 +610,9 @@ public class HTMLAbout {
                 // Look for the value of $PTII and substitute in $CLASSPATH
                 // so that we can use FileUtilities.nameToURL() from within
                 // ptolemy.moml.filter.ActorIndex
-                fileWriter.write(StringUtilities.substitute(demo, ptII,
-                        "$CLASSPATH") + "\n");
+                fileWriter.write(
+                        StringUtilities.substitute(demo, ptII, "$CLASSPATH")
+                                + "\n");
                 try {
                     // Open the model, look for any LiveLinks and write them.
                     System.out.print(".");
@@ -570,7 +621,8 @@ public class HTMLAbout {
                     System.err.println("Warning: Could not open " + demo
                             + ".  This means that any LiveLinks in that model "
                             + "will not be added to the list of all demos. "
-                            + "This is not a big problem and can be safely ignored.: " + throwable);
+                            + "This is not a big problem and can be safely ignored.: "
+                            + throwable);
                 }
             }
         } finally {
@@ -586,15 +638,16 @@ public class HTMLAbout {
      *  @param ptII The Ptolemy II home directory.
      *  @exception Throwable If there is a problem opening the demo.
      */
-    public static void writeLiveLinks(FileWriter fileWriter, String demo, String ptII) throws Throwable {
+    public static void writeLiveLinks(FileWriter fileWriter, String demo,
+            String ptII) throws Throwable {
         // Read the model file and look for LiveLinks.  This may
         // miss some LiveLinks that are not in the toplevel model file, but
         // it is much faster than parsing each model.
         boolean matches = false;
         BufferedReader in = null;
         try {
-            in = new BufferedReader(
-                    new InputStreamReader(new File(demo).toURI().toURL().openStream()));
+            in = new BufferedReader(new InputStreamReader(
+                    new File(demo).toURI().toURL().openStream()));
 
             String inputLine;
 
@@ -616,9 +669,14 @@ public class HTMLAbout {
             parser.resetAll();
             List myFilters = BackwardCompatibility.allFilters();
             MoMLParser.addMoMLFilters(myFilters, workspace);
+            System.out.print("P");
+            //System.out.println("Parsing " + demo);
             NamedObj namedObj = parser.parseFile(demo);
             if (namedObj instanceof CompositeEntity) {
                 CompositeEntity model = (CompositeEntity) namedObj;
+
+                // Look for LiveLinks inside regular models, where
+                // the LiveLink is inside an Attribute.
                 Enumeration attributes = model.getAttributes();
                 while (attributes.hasMoreElements()) {
                     Object object = attributes.nextElement();
@@ -629,25 +687,79 @@ public class HTMLAbout {
                     // This method is for LiveLink, which is in actor.gui,
                     // so we should not add the dependency.
                     if (object instanceof Attribute) {
-                        Enumeration innerAttributes = ((Attribute)object).getAttributes();
-                        while (innerAttributes.hasMoreElements()) {
-                            Object innerObject = innerAttributes.nextElement();
-                            if (innerObject instanceof LiveLink) {
-                                LiveLink liveLink = (LiveLink)innerObject;
-                                if (liveLink.stringValue().contains("CLASSPATH")
-                                        && liveLink.stringValue().endsWith(".xml")) {
-                                    File liveLinkFile = liveLink.asFile();
-                                    // Look for the value of $PTII and substitute in $CLASSPATH
-                                    // so that we can use FileUtilities.nameToURL() from within
-                                    // ptolemy.moml.filter.ActorIndex
-                                    fileWriter.write(StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
-                                                "$CLASSPATH") + "\n");
-                                }
-                            }
-                        }
+                        Enumeration innerAttributes = ((Attribute) object)
+                                .getAttributes();
+
+                        _writeLiveLinksAttributes(fileWriter, demo, ptII,
+                                innerAttributes);
+                    }
+                }
+
+                // Look for LiveLinks inside Ontologies, like
+                // $PTII/ptolemy/demo/ElectricPowerSystem/Overview.xml
+                // where the LiveLink is inside a FiniteConcept, which is
+                // a CompositeEntity.
+                Enumeration entities = model.getEntities();
+                while (entities.hasMoreElements()) {
+                    Object entity = entities.nextElement();
+                    if (entity instanceof NamedObj) {
+                        attributes = ((NamedObj) entity).getAttributes();
+                        _writeLiveLinksAttributes(fileWriter, demo, ptII,
+                                attributes);
                     }
                 }
                 model.setContainer(null);
+            }
+        }
+    }
+
+    /** Look for LiveLinks in the Enumeration of attributes.
+     *  @param fileWriter The FileWriter to write the file names to..
+     *  @param demo The string path to the demo to be searched for live links.
+     *  @param ptII The Ptolemy II home directory.
+     *  @param innerAttributes An enumeration of attributes
+     *  @exception Throwable If there is a problem opening the demo.
+     */
+    private static void _writeLiveLinksAttributes(FileWriter fileWriter,
+            String demo, String ptII, Enumeration innerAttributes)
+            throws Throwable {
+        while (innerAttributes.hasMoreElements()) {
+            Object innerObject = innerAttributes.nextElement();
+            // System.out.println("Attribute: " + ((Attribute)innerObject).getFullName());
+            if (innerObject instanceof LiveLink) {
+                LiveLink liveLink = (LiveLink) innerObject;
+                File liveLinkFile = liveLink.asFile();
+                String liveLinkValue = liveLink.stringValue();
+
+                if (liveLinkValue.contains("CLASSPATH")
+                        && liveLinkValue.contains(".xml")) {
+                    // Look for the value of $PTII and substitute in $CLASSPATH
+                    // so that we can use FileUtilities.nameToURL() from within
+                    // ptolemy.moml.filter.ActorIndex
+                    String demoPath = StringUtilities.substitute(
+                            liveLinkFile.getCanonicalPath(), ptII,
+                            "$CLASSPATH");
+                    // Remove anything after the .xml so as to support
+                    // references to internal entities.
+                    demoPath = demoPath.substring(0,
+                            demoPath.lastIndexOf(".xml") + 4);
+                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
+                    fileWriter.write(demoPath + "\n");
+                } else if (!liveLinkValue.contains("/")
+                        && !liveLinkValue.contains("\\")
+                        && liveLinkValue.contains(".xml")) {
+                    // The link target is in the same directory as the model.
+                    // FIXME: It could be that models with relative LiveLinks will not be found when
+                    // the system is using jar files.
+                    String demoPath = StringUtilities.substitute(
+                            liveLinkFile.getCanonicalPath(), ptII,
+                            "$CLASSPATH");
+                    // Remove anything after the .xml.
+                    demoPath = demoPath.substring(0,
+                            demoPath.lastIndexOf(".xml") + 4);
+                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
+                    fileWriter.write(demoPath + "\n");
+                }
             }
         }
     }
@@ -658,23 +770,17 @@ public class HTMLAbout {
     // and about:links pages
     private static String _aboutHTML(String fileName) {
         _demosURLs.add(fileName);
-        return "  <tr>\n"
-        + "    <code>"
-        + fileName
-        + "</code>\n"
-        + "    <td><a href=\"about:demos#"
-        + fileName
-        + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
-        + "    <td><a href=\"about:links#"
-        + fileName
-        + "\">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
-        + "    <td><a href=\"about:checkModelSizes#"
-        + fileName
-        + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
-        // RunAllDemos does not work, it runs in the wrong thread?
-        // + "    <td><a href=\"about:runAllDemos#" + fileName
-        // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
-        + "  </tr>\n";
+        return "  <tr>\n" + "    <code>" + fileName + "</code>\n"
+                + "    <td><a href=\"about:demos#" + fileName
+                + "\">&nbsp;Open the .xml&nbsp;</a></td>\n"
+                + "    <td><a href=\"about:links#" + fileName
+                + "\">&nbsp;Open the ptdoc: .htm, .html, .xml and .pdf&nbsp;</a></td>\n"
+                + "    <td><a href=\"about:checkModelSizes#" + fileName
+                + "\">&nbsp;Check the sizes/centering of the models&nbsp;</a></td>\n"
+                // RunAllDemos does not work, it runs in the wrong thread?
+                // + "    <td><a href=\"about:runAllDemos#" + fileName
+                // + "\">&nbsp;Run all demos&nbsp;</a></td>\n"
+                + "  </tr>\n";
     }
 
     /** Expand the left hand library pane.  We search for a model,
@@ -708,39 +814,38 @@ public class HTMLAbout {
             String base = aboutURLString.substring(0,
                     aboutURLString.lastIndexOf("/"));
             baseURL = ConfigurationApplication.specToURL(base + "/intro.htm");
-            System.out
-            .println("HTMLAbout._expandLibrary(): looking in about URL: "
-                    + baseURL);
+            System.out.println(
+                    "HTMLAbout._expandLibrary(): looking in about URL: "
+                            + baseURL);
             List modelList = _getURLs(baseURL, regexp);
             if (modelList.size() > 0) {
                 // Get the first model and open it
                 String model = (String) modelList.get(0);
-                System.out
-                .println("HTMLAbout._expandLibrary(): looking for model relative to about URL: "
-                        + model);
+                System.out.println(
+                        "HTMLAbout._expandLibrary(): looking for model relative to about URL: "
+                                + model);
                 modelURL = new URL(baseURL, model);
             } else {
                 // Get the first url from intro.htm, look in it and get the
                 // first model
-                System.out
-                .println("HTMLAbout._expandLibrary(): looking inside "
+                System.out.println("HTMLAbout._expandLibrary(): looking inside "
                         + baseURL + " for .htm files");
                 List urlList = _getURLs(baseURL, ".*.htm");
                 Iterator urls = urlList.iterator();
                 while (urls.hasNext() && modelURL == null) {
                     // Looping through files, looking for a model
                     String model = (String) urls.next();
-                    System.out
-                    .println("HTMLAbout._expandLibrary(): looking inside "
-                            + model);
+                    System.out.println(
+                            "HTMLAbout._expandLibrary(): looking inside "
+                                    + model);
                     URL possibleModelURL = new URL(baseURL, model);
                     modelList = _getURLs(possibleModelURL, regexp);
                     if (modelList.size() > 0) {
                         model = (String) modelList.get(0);
                         // Get the first model and open it
-                        System.out
-                        .println("HTMLAbout._expandLibrary(): looking for model relative to first URL: "
-                                + model);
+                        System.out.println(
+                                "HTMLAbout._expandLibrary(): looking for model relative to first URL: "
+                                        + model);
                         modelURL = new URL(baseURL, model);
                     }
                 }
@@ -749,22 +854,22 @@ public class HTMLAbout {
         if (modelURL == null) {
             // Get completeDemos.htm
             baseURL = _getDemoURL(null);
-            System.out
-            .println("HTMLAbout._expandLibrary(): looking in completeDemos URL: "
-                    + baseURL);
+            System.out.println(
+                    "HTMLAbout._expandLibrary(): looking in completeDemos URL: "
+                            + baseURL);
             List modelList = _getURLs(baseURL, regexp);
             if (modelList.size() > 0) {
                 // Get the first model and open it
                 String model = (String) modelList.get(0);
-                System.out
-                .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
-                        + model);
+                System.out.println(
+                        "HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
+                                + model);
                 modelURL = new URL(baseURL, model);
             } else {
                 String model = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/domains/sdf/demo/Butterfly/Butterfly.xml";
-                System.out
-                .println("HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
-                        + model);
+                System.out.println(
+                        "HTMLAbout._expandLibrary(): looking for model relative to completeDemos URL: "
+                                + model);
                 modelURL = new URL(model);
             }
         }
@@ -807,8 +912,8 @@ public class HTMLAbout {
         try {
             url = ConfigurationApplication.specToURL(demosFileName);
         } catch (Exception ex) {
-            System.out.println("Warning: " + demosFileName + " not found: "
-                    + ex);
+            System.out
+                    .println("Warning: " + demosFileName + " not found: " + ex);
         }
         return url;
     }
@@ -851,8 +956,8 @@ public class HTMLAbout {
                 demosBuffer.append(inputLine);
             }
         } catch (Exception ex) {
-            System.out.println("HTMLAbout: failed to open " + demosURL + "\n"
-                    + ex);
+            System.out.println(
+                    "HTMLAbout: failed to open " + demosURL + "\n" + ex);
             return new LinkedList();
         } finally {
             if (in != null) {
@@ -890,7 +995,7 @@ public class HTMLAbout {
                         Exception ex1 = null;
                         try {
                             model = new URI(demosURLParent + modelLink)
-                            .normalize().getPath();
+                                    .normalize().getPath();
                             // Under Windows, convert /C:/foo/bar to C:/foo/bar
                             model = new File(model).toString().replace('\\',
                                     '/');
@@ -902,8 +1007,8 @@ public class HTMLAbout {
                         if (model == null) {
                             try {
                                 // Could be a jar url
-                                model = ConfigurationApplication.specToURL(
-                                        modelLink).toString();
+                                model = ConfigurationApplication
+                                        .specToURL(modelLink).toString();
                             } catch (Exception ex) {
                                 if (modelLink.startsWith("/")) {
                                     modelLink = modelLink.substring(1);
@@ -928,8 +1033,8 @@ public class HTMLAbout {
                                         System.out.println("Failed to look up "
                                                 + demosURLParent + modelLink
                                                 + " and " + modelLink + " and "
-                                                + absoluteModelLink + "\n"
-                                                + ex1 + "\n" + ex3);
+                                                + absoluteModelLink + "\n" + ex1
+                                                + "\n" + ex3);
                                     }
 
                                 }
@@ -977,7 +1082,7 @@ public class HTMLAbout {
 
         try {
             String spec = "ptolemy/configs/" + configurationName
-                + "/configuration.xml";
+                    + "/configuration.xml";
             URL url = ClassUtilities.getResource(spec);
             if (url != null) {
                 configurationExists = true;
