@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: GUI-related actors
 Bundle-SymbolicName: ptolemy.actor.lib.gui
-Bundle-Version: 11.0.1.qualifier
+Bundle-Version: 11.0.2.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-RegisterBuddy: ptolemy.moml, ptolemy.gui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
