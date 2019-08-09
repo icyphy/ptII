@@ -1,6 +1,6 @@
 /* Base class for objects with a name and a container.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -136,7 +136,7 @@ import ptolemy.util.StringUtilities;
  @see Workspace
  */
 public class NamedObj implements Changeable, Cloneable, Debuggable,
-DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
+        DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     // This class used to implement Serializable, but the implementation was never
     // complete and thus cause many warnings.
 
@@ -333,9 +333,9 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
      */
     public void addHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners == null) {
-            _hierarchyListeners = new HashSet<HierarchyListener>();
+            _hierarchyListeners = new HashSet<WeakReference<HierarchyListener>>();
         }
-        _hierarchyListeners.add(listener);
+        _hierarchyListeners.add(new WeakReference(listener));
 
         // Add to the container.
         NamedObj container = getContainer();
@@ -553,7 +553,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                         // See https://projects.ecoinformatics.org/ecoinfo/issues/7190
                         if (newParameter instanceof HierarchyListener) {
                             if (newParameter.getContainer() != null) {
-                                NamedObj newContainerContainer = newParameter.getContainer().getContainer();
+                                NamedObj newContainerContainer = newParameter
+                                        .getContainer().getContainer();
                                 NamedObj oldContainer = getContainer();
                                 // FIXME: This is probably a serious
                                 // problem that the container of the
@@ -565,8 +566,11 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                                 // we would really like to do is to
                                 // set the container to null during
                                 // cloning.
-                                if (newContainerContainer != null && newContainerContainer == oldContainer) {
-                                    newContainerContainer.removeHierarchyListener((HierarchyListener)newParameter);
+                                if (newContainerContainer != null
+                                        && newContainerContainer == oldContainer) {
+                                    newContainerContainer
+                                            .removeHierarchyListener(
+                                                    (HierarchyListener) newParameter);
                                 }
                             }
                         }
@@ -1037,8 +1041,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                 if (period < 0) {
                     return (Attribute) _attributes.get(name);
                 } else {
-                    final Attribute match = (Attribute) _attributes.get(name
-                            .substring(0, period));
+                    final Attribute match = (Attribute) _attributes
+                            .get(name.substring(0, period));
                     if (match == null) {
                         return null;
                     } else {
@@ -1808,7 +1812,14 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
      */
     public void removeHierarchyListener(HierarchyListener listener) {
         if (_hierarchyListeners != null) {
-            _hierarchyListeners.remove(listener);
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                    .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners.next();
+                if (reference.get() == listener) {
+                    listeners.remove();
+                }
+            }
 
             // Remove from the container.
             NamedObj container = getContainer();
@@ -2003,8 +2014,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
      *  @see #getName(NamedObj)
      */
     @Override
-    public void setName(String name) throws IllegalActionException,
-    NameDuplicationException {
+    public void setName(String name)
+            throws IllegalActionException, NameDuplicationException {
         String oldName = "";
 
         if (_debugging) {
@@ -2324,8 +2335,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             icon.configure(null, null, text);
         } catch (Exception ex) {
             throw new InternalErrorException(this, ex,
-                    "Error creating singleton attribute named " + name
-                    + " for " + getFullName());
+                    "Error creating singleton attribute named " + name + " for "
+                            + getFullName());
         }
     }
 
@@ -2362,9 +2373,9 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException = new CloneNotSupportedException(
                         "The field associated with " + fields[i].getName()
-                        + " could not be automatically cloned because "
-                        + ex.getMessage() + ".  This can be caused if "
-                        + "the field is not defined in a public class.");
+                                + " could not be automatically cloned because "
+                                + ex.getMessage() + ".  This can be caused if "
+                                + "the field is not defined in a public class.");
 
                 cloneException.initCause(ex);
                 throw cloneException;
@@ -2417,8 +2428,7 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             List<DebugListener> list;
 
             if (_debugListeners == null) {
-                System.err
-                .println("Warning, _debugListeners was null, "
+                System.err.println("Warning, _debugListeners was null, "
                         + "which means that _debugging was set to true, but no "
                         + "listeners were added?");
                 System.err.println(event);
@@ -2450,8 +2460,7 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             List<DebugListener> list;
 
             if (_debugListeners == null) {
-                System.err
-                .println("Warning, _debugListeners was null, "
+                System.err.println("Warning, _debugListeners was null, "
                         + "which means that _debugging was set to true, but no "
                         + "listeners were added?");
                 System.err.println(message);
@@ -2575,8 +2584,9 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
                     while (parameters.hasNext()) {
                         Attribute parameter = (Attribute) parameters.next();
-                        result.append(parameter._description(detail,
-                                indent + 1, 2) + "\n");
+                        result.append(
+                                parameter._description(detail, indent + 1, 2)
+                                        + "\n");
                     }
                 }
 
@@ -2637,8 +2647,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                 change.setListeners(_changeListeners);
 
                 if (_debugging) {
-                    _debug("-- Executing change request "
-                            + "with description: " + change.getDescription());
+                    _debug("-- Executing change request " + "with description: "
+                            + change.getDescription());
                 }
                 change.execute();
             }
@@ -2850,13 +2860,22 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             // because notification may result in exceptions.
             NamedObj container = getContainer();
             if (container != null) {
-                for (HierarchyListener listener : _hierarchyListeners) {
-                    container.addHierarchyListener(listener);
+                Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                        .iterator();
+                while (listeners.hasNext()) {
+                    WeakReference<HierarchyListener> reference = listeners
+                            .next();
+                    container.addHierarchyListener(reference.get());
                 }
             }
 
-            for (HierarchyListener listener : _hierarchyListeners) {
-                listener.hierarchyChanged();
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                    .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners.next();
+                reference.get().hierarchyChanged();
+                //for (HierarchyListener listener : _hierarchyListeners) {
+                //    listener.hierarchyChanged();
             }
         }
     }
@@ -2871,8 +2890,11 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     protected void _notifyHierarchyListenersBeforeChange()
             throws IllegalActionException {
         if (_hierarchyListeners != null) {
-            for (HierarchyListener listener : _hierarchyListeners) {
-                listener.hierarchyWillChange();
+            Iterator<WeakReference<HierarchyListener>> listeners = _hierarchyListeners
+                    .iterator();
+            while (listeners.hasNext()) {
+                WeakReference<HierarchyListener> reference = listeners.next();
+                reference.get().hierarchyWillChange();
             }
             // If changing the hierarchy is acceptable to all listeners,
             // then we get to here. At this point, we should remove all
@@ -2880,8 +2902,12 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             // re-add them after the change in the hierarchy is complete.
             NamedObj container = getContainer();
             if (container != null) {
-                for (HierarchyListener listener : _hierarchyListeners) {
-                    container.removeHierarchyListener(listener);
+                Iterator<WeakReference<HierarchyListener>> listeners2 = _hierarchyListeners
+                        .iterator();
+                while (listeners2.hasNext()) {
+                    WeakReference<HierarchyListener> reference = listeners2
+                            .next();
+                    container.removeHierarchyListener(reference.get());
                 }
             }
         }
@@ -3154,7 +3180,7 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     private List<NamedObj> _getDerivedList(Collection<NamedObj> visited,
             boolean propagate, boolean force, NamedObj context, int depth,
             List<Integer> override, String relativeName)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
@@ -3239,7 +3265,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                         NamedObj candidate = other;
 
                         if (relativeName != null) {
-                            candidate = _getContainedObject(other, relativeName);
+                            candidate = _getContainedObject(other,
+                                    relativeName);
                         }
 
                         if (candidate == null) {
@@ -3263,7 +3290,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                                                     containerName);
                                 }
 
-                                candidate = _propagateExistence(remoteContainer);
+                                candidate = _propagateExistence(
+                                        remoteContainer);
 
                                 // Indicate that the existence of the
                                 // candidate is implied by a
@@ -3372,7 +3400,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
      *  @param changer The override list for a path for the change.
      *  @return True if the candidate is shadowed.
      */
-    private boolean _isShadowed(List<Integer> candidate, List<Integer> changer) {
+    private boolean _isShadowed(List<Integer> candidate,
+            List<Integer> changer) {
         if (candidate == null) {
             return false;
         }
@@ -3453,7 +3482,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
                 // Find all the instances of DecoratorAttributes contained by this NamedObj,
                 // and put these in the cache, associated with the right decorator.
-                List<DecoratorAttributes> decoratorAttributes = attributeList(DecoratorAttributes.class);
+                List<DecoratorAttributes> decoratorAttributes = attributeList(
+                        DecoratorAttributes.class);
                 for (DecoratorAttributes decoratorAttribute : decoratorAttributes) {
                     Decorator decorator = decoratorAttribute.getDecorator();
                     // If the decorator is not found, decorator will be null.
@@ -3528,7 +3558,7 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
     private long _fullNameVersion = -1;
 
     /** List of hierarchy listeners, if any. */
-    private Set<HierarchyListener> _hierarchyListeners;
+    private HashSet<WeakReference<HierarchyListener>> _hierarchyListeners;
 
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
@@ -3602,8 +3632,8 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
     /** Serializable version of the Java Object class. */
     @SuppressWarnings("serial")
-    private static class SerializableObject extends Object implements
-    Serializable {
+    private static class SerializableObject extends Object
+            implements Serializable {
         // FindBugs suggested making this class a static inner class:
         //
         // "This class is an inner class, but does not use its embedded
