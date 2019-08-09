@@ -287,7 +287,7 @@ public class Configuration extends CompositeEntity
         //         }
         //     }
         //     MoMLParser.setMoMLFilters(momlFilters);
-        // }
+        }
         super.attributeChanged(attribute);
     }
 
