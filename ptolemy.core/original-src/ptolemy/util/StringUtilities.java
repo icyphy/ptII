@@ -1,6 +1,6 @@
 /* Utilities used to manipulate strings.
 
- Copyright (c) 2002-2017 The Regents of the University of California.
+ Copyright (c) 2002-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,6 +44,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.StringTokenizer;
+
+import sun.misc.Unsafe;
 
 ///////////////////////////////////////////////////////////////////
 //// StringUtilities
@@ -91,7 +93,7 @@ public class StringUtilities {
         }
 
         return longName.substring(0, 37) + ". . ."
-        + longName.substring(longName.length() - 38);
+                + longName.substring(longName.length() - 38);
     }
 
     /** Add a directory to the java.library.path directory..
@@ -111,22 +113,36 @@ public class StringUtilities {
     public static void addDirectoryToJavaLibraryPath(String directoryName)
             throws IOException {
         try {
-            Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
-            usrPathsField.setAccessible(true);
-            String[] libraryPathsArray = (String[])usrPathsField.get(null);
-            ArrayList<String> libraryPaths = new ArrayList<String>(Arrays.asList(libraryPathsArray));
+            // Java 1.9 throws a warning unless we use this:
+            // https://stackoverflow.com/a/46458447
+            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+            theUnsafe.setAccessible(true);
+            Unsafe unsafe = (Unsafe) theUnsafe.get(null);
+
+            Field usrPathsField = ClassLoader.class
+                    .getDeclaredField("usr_paths");
+            String[] libraryPathsArray = (String[]) unsafe.getObjectVolatile(
+                    ClassLoader.class, unsafe.staticFieldOffset(usrPathsField));
+            ArrayList<String> libraryPaths = new ArrayList<String>(
+                    Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
             }
             libraryPaths.add(directoryName);
-            usrPathsField.set(null, libraryPaths.toArray(new String[libraryPaths.size()]));
-            System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + directoryName);
+            unsafe.putObjectVolatile(ClassLoader.class,
+                    unsafe.staticFieldOffset(usrPathsField),
+                    libraryPaths.toArray(new String[libraryPaths.size()]));
+            System.setProperty("java.library.path",
+                    System.getProperty("java.library.path") + File.pathSeparator
+                            + directoryName);
         } catch (IllegalAccessException ex) {
-            IOException ioException = new IOException("Failed to get permissions to set library path");
+            IOException ioException = new IOException(
+                    "Failed to get permissions to set library path");
             ioException.initCause(ex);
             throw ioException;
         } catch (NoSuchFieldException ex2) {
-            IOException ioException = new IOException("Failed to get field handle to set library path");
+            IOException ioException = new IOException(
+                    "Failed to get field handle to set library path");
             ioException.initCause(ex2);
             throw ioException;
         }
@@ -144,15 +160,19 @@ public class StringUtilities {
      */
     public static void addPtolemyLibraryDirectoryToJavaLibraryPath()
             throws IOException {
+        // The rxtx serial i/o library needs to be able
+        // to find its shared libraries.
         String ptIIProperty = "ptolemy.ptII.dir";
         String ptII = StringUtilities.getProperty(ptIIProperty);
         if (ptII.length() > 0) {
-            StringUtilities.addDirectoryToJavaLibraryPath(ptII + File.separator + "lib");
+            StringUtilities.addDirectoryToJavaLibraryPath(
+                    ptII + File.separator + "lib");
         } else {
-            System.err.println("Warning: StringUtilities.addPtolemyLibraryDirectory() "
-                    + "could not get the value of the " + ptIIProperty
-                    + ".  This means that loading shared libraries like the Serial I/O "
-                    + "interface could fail. ");
+            System.err.println(
+                    "Warning: StringUtilities.addPtolemyLibraryDirectory() "
+                            + "could not get the value of the " + ptIIProperty
+                            + ".  This means that loading shared libraries like the Serial I/O "
+                            + "interface could fail. ");
         }
     }
 
@@ -223,56 +243,69 @@ public class StringUtilities {
      *  @return A new string with special characters replaced.
      */
     public static String escapeForXML(String string) {
-        // This method gets called quite a bit when parsing large
-        // files, so rather than calling substitute() many times,
-        // we combine all the loops in one pass.
+        return escapeForXML(string, true);
+    }
 
-        // A different solution might be to scan the string for
-        // escaped xml characters and if any are found, then create a
-        // StringBuffer and do the conversion.  Using a profiler would
-        // help here.
-        if (string == null) {
-            return null;
-        }
-        StringBuffer buffer = new StringBuffer(string);
-        int i = 0;
-        int length = string.length();
-        while (i < length) {
-            switch (buffer.charAt(i)) {
-            case '\n':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&#10;");
-                length += 4;
-                break;
-            case '\r':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&#13;");
-                length += 4;
-                break;
-            case '"':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&quot;");
-                length += 5;
-                break;
-            case '&':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&amp;");
-                length += 4;
-                break;
-            case '<':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&lt;");
-                length += 3;
-                break;
-            case '>':
-                buffer.deleteCharAt(i);
-                buffer.insert(i, "&gt;");
-                length += 3;
-                break;
+    /** Given a string, replace all the instances of XML special characters
+     *  with their corresponding XML entities.  This is necessary to
+     *  allow arbitrary strings to be encoded within XML.
+     *
+     *  <p>In this method, we make the following translations:
+     *  <pre>
+     *  &amp; becomes &amp;amp;
+     *  " becomes &amp;quot;
+     *  &lt; becomes &amp;lt;
+     *  &gt; becomes &amp;gt;
+     *  newline becomes &amp;#10;, if requested.
+     *  carriage return becomes $amp;#13;, if requested.
+     *  </pre>
+     *  @see #unescapeForXML(String)
+     *
+     *  @param string The string to escape.
+     *  @param string Whether or not to escape line break characters.
+     *  @return A new string with special characters replaced.
+     */
+    public static String escapeForXML(String string, boolean escapeLinebreaks) {
+        if (string != null) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.ensureCapacity(string.length());
+            for (int i = 0, n = string.length(); i < n; ++i) {
+                char c = string.charAt(i);
+                switch (c) {
+                case '\n':
+                    if (escapeLinebreaks) {
+                        buffer.append("&#10;");
+                    } else {
+                        buffer.append(c);
+                    }
+                    break;
+                case '\r':
+                    if (escapeLinebreaks) {
+                        buffer.append("&#13;");
+                    } else {
+                        buffer.append(c);
+                    }
+                    break;
+                case '"':
+                    buffer.append("&quot;");
+                    break;
+                case '&':
+                    buffer.append("&amp;");
+                    break;
+                case '<':
+                    buffer.append("&lt;");
+                    break;
+                case '>':
+                    buffer.append("&gt;");
+                    break;
+                default:
+                    buffer.append(c);
+                    break;
+                }
             }
-            i++;
+            string = buffer.toString();
         }
-        return buffer.toString();
+        return string;
     }
 
     /** Given a string, return a string that when fed to the
@@ -316,7 +349,8 @@ public class StringUtilities {
      */
     public static void exit(int returnValue) {
         try {
-            if (StringUtilities.getProperty("ptolemy.ptII.doNotExit").length() > 0) {
+            if (StringUtilities.getProperty("ptolemy.ptII.doNotExit")
+                    .length() > 0) {
                 return;
             }
         } catch (SecurityException ex) {
@@ -328,7 +362,8 @@ public class StringUtilities {
         try {
             if (StringUtilities.getProperty("ptolemy.ptII.exitAfterWrapup")
                     .length() > 0) {
-                throw new RuntimeException("Normally, we would "
+                throw new RuntimeException("StringUtilities.exit() was called. "
+                        + "Normally, we would "
                         + "exit here because Manager.exitAfterWrapup() "
                         + "was called.  However, because the "
                         + "ptolemy.ptII.exitAfterWrapup property "
@@ -405,12 +440,16 @@ public class StringUtilities {
 
         try {
             property = System.getProperty(propertyName);
+            // if (propertyName.equals("ptolemy.ptII.dir")) {
+            //     System.out.println("StringUtilities.getProperty(" + propertyName + "): " + property);
+            // }
         } catch (SecurityException ex) {
             if (!propertyName.equals("ptolemy.ptII.dir")) {
                 // Constants.java depends on this when running with
                 // -sandbox.
                 SecurityException security = new SecurityException(
-                        "Could not find '" + propertyName + "' System property");
+                        "Could not find '" + propertyName
+                                + "' System property");
                 security.initCause(ex);
                 throw security;
             }
@@ -431,7 +470,12 @@ public class StringUtilities {
         // Check for cases where the ptII property starts with
         // the string "/cygdrive".  This can happen if the property
         // was set by doing "PTII=`pwd`" under Cygwin bash.
-        if (property != null) {
+        //
+        // If the property starts with $JAVAROOT, and the
+        // propertyName is ptolemy.ptII.dir, then don't return
+        // the property yet, instead, refine it.
+        if (property != null && (!propertyName.equals("ptolemy.ptII.dir")
+                && !property.startsWith("$JAVAROOT"))) {
             if (propertyName.equals("ptolemy.ptII.dir")
                     && property.startsWith("/cygdrive")
                     && !_printedCygwinWarning) {
@@ -469,21 +513,25 @@ public class StringUtilities {
             if (propertyName.equals("ptolemy.ptII.dir")) {
                 if (_ptolemyPtIIDir != null) {
                     // Return the previously calculated value
+                    // System.out.println("StringUtilities.getProperty(" + propertyName + "): returning previous " + _ptolemyPtIIDir);
                     return _ptolemyPtIIDir;
                 } else {
                     String stringUtilitiesPath = "ptolemy/util/StringUtilities.class";
 
                     // PTII variable was not set
-                    URL namedObjURL = ClassUtilities.getResource(stringUtilitiesPath);
+                    URL namedObjURL = ClassUtilities
+                            .getResource(stringUtilitiesPath);
 
                     if (namedObjURL != null) {
                         // Get the file portion of URL
                         String namedObjFileName = namedObjURL.getFile();
 
+                        // System.out.println("StringUtilities.getProperty(" + propertyName + "): namedObjURL: " + namedObjURL);
                         // FIXME: How do we get from a URL to a pathname?
                         if (namedObjFileName.startsWith("file:")) {
                             if (namedObjFileName.startsWith("file://")
-                                    || namedObjFileName.startsWith("file:\\\\")) {
+                                    || namedObjFileName
+                                            .startsWith("file:\\\\")) {
                                 // We get rid of either file:/ or file:\
                                 namedObjFileName = namedObjFileName
                                         .substring(6);
@@ -494,10 +542,9 @@ public class StringUtilities {
                             }
                         }
 
-                        String abnormalHome = namedObjFileName.substring(
-                                0,
+                        String abnormalHome = namedObjFileName.substring(0,
                                 namedObjFileName.length()
-                                - stringUtilitiesPath.length());
+                                        - stringUtilitiesPath.length());
 
                         // abnormalHome will have values like: "/C:/ptII/"
                         // which cause no end of trouble, so we construct a File
@@ -519,17 +566,17 @@ public class StringUtilities {
                                 + File.separator + "RMptsupport.jar";
 
                         if (_ptolemyPtIIDir.endsWith(ptsupportJarName)) {
-                            _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
-                                    0,
+                            _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                     _ptolemyPtIIDir.length()
-                                    - ptsupportJarName.length());
+                                            - ptsupportJarName.length());
                         } else {
                             ptsupportJarName = "/DMptolemy/XMptsupport.jar";
 
-                            if (_ptolemyPtIIDir.lastIndexOf(ptsupportJarName) != -1) {
+                            if (_ptolemyPtIIDir
+                                    .lastIndexOf(ptsupportJarName) != -1) {
                                 _ptolemyPtIIDir = _ptolemyPtIIDir.substring(0,
                                         _ptolemyPtIIDir
-                                        .lastIndexOf(ptsupportJarName));
+                                                .lastIndexOf(ptsupportJarName));
                             } else {
                                 // Ptolemy II 6.0.1 under Windows: remove
                                 // "\ptolemy\ptsupport.jar!"
@@ -543,11 +590,9 @@ public class StringUtilities {
 
                                 if (_ptolemyPtIIDir
                                         .lastIndexOf(ptsupportJarName) != -1) {
-                                    _ptolemyPtIIDir = _ptolemyPtIIDir
-                                            .substring(
-                                                    0,
-                                                    _ptolemyPtIIDir
-                                                    .lastIndexOf(ptsupportJarName));
+                                    _ptolemyPtIIDir = _ptolemyPtIIDir.substring(
+                                            0, _ptolemyPtIIDir.lastIndexOf(
+                                                    ptsupportJarName));
                                 }
                             }
                         }
@@ -558,31 +603,27 @@ public class StringUtilities {
                     // recognize %20 as being a single space, instead file names
                     // see %20 as three characters: '%', '2', '0'.
                     if (_ptolemyPtIIDir != null) {
-                        _ptolemyPtIIDir = StringUtilities.substitute(
-                                _ptolemyPtIIDir, "%20", " ");
+                        _ptolemyPtIIDir = StringUtilities
+                                .substitute(_ptolemyPtIIDir, "%20", " ");
                     }
                     //*.class files are compiled into classes.dex file; therefore, check for StringUtilities.class fails
                     //it's OK to set _ptolemyPtIIDir to an empty string on Android
-                    if (_ptolemyPtIIDir == null
-                            && System.getProperty("java.vm.name").equals(
-                                    "Dalvik")) {
+                    if (_ptolemyPtIIDir == null && System
+                            .getProperty("java.vm.name").equals("Dalvik")) {
                         _ptolemyPtIIDir = "";
                     }
                     if (_ptolemyPtIIDir == null) {
-                        throw new RuntimeException(
-                                "Could not find "
-                                        + "'ptolemy.ptII.dir'"
-                                        + " property.  "
-                                        + "Also tried loading '"
-                                        + stringUtilitiesPath
-                                        + "' as a resource and working from that. "
-                                        + "Vergil should be "
-                                        + "invoked with -Dptolemy.ptII.dir"
-                                        + "=\"$PTII\", "
-                                        + "otherwise the following features will not work: "
-                                        + "PtinyOS, Ptalon, the Python actor, "
-                                        + "actor document, cg code generation and possibly "
-                                        + "other features will not work.");
+                        throw new RuntimeException("Could not find "
+                                + "'ptolemy.ptII.dir'" + " property.  "
+                                + "Also tried loading '" + stringUtilitiesPath
+                                + "' as a resource and working from that. "
+                                + "Vergil should be "
+                                + "invoked with -Dptolemy.ptII.dir"
+                                + "=\"$PTII\", "
+                                + "otherwise the following features will not work: "
+                                + "PtinyOS, Ptalon, the Python actor, "
+                                + "actor document, cg code generation and possibly "
+                                + "other features will not work.");
                     }
 
                     try {
@@ -593,6 +634,7 @@ public class StringUtilities {
                         // Ignore, we are probably running as an applet or -sandbox
                     }
 
+                    // System.out.println("StringUtilities.getProperty(" + propertyName + "): returning " + _ptolemyPtIIDir);
                     return _ptolemyPtIIDir;
                 }
             }
@@ -635,8 +677,13 @@ public class StringUtilities {
      */
     public static boolean isValidIdentifier(String name) {
         char[] nameArray = name.toCharArray();
-
-        for (int i = 0; i < nameArray.length; i++) {
+        if (nameArray.length == 0) {
+            return false;
+        }
+        if (!Character.isJavaIdentifierStart(nameArray[0])) {
+            return false;
+        }
+        for (int i = 1; i < nameArray.length; i++) {
             if (!Character.isJavaIdentifierPart(nameArray[i])) {
                 return false;
             }
@@ -662,8 +709,8 @@ public class StringUtilities {
         Properties newProperties = new Properties(systemProperties);
         String propertyFileName = "$CLASSPATH/lib/ptII.properties";
 
-        URL propertyFileURL = FileUtilities.nameToURL(
-                "$CLASSPATH/lib/ptII.properties", null, null);
+        URL propertyFileURL = FileUtilities
+                .nameToURL("$CLASSPATH/lib/ptII.properties", null, null);
 
         if (propertyFileURL == null) {
             throw new IOException("Could not find " + propertyFileName);
@@ -682,8 +729,8 @@ public class StringUtilities {
      *  @return The expected source file name.
      */
     public static String objectToSourceFileName(Object object) {
-        String sourceFileNameBase = object.getClass().getName()
-                .replace('.', '/');
+        String sourceFileNameBase = object.getClass().getName().replace('.',
+                '/');
 
         // Inner classes: Get rid of everything past the first $
         if (sourceFileNameBase.indexOf("$") != -1) {
@@ -714,16 +761,15 @@ public class StringUtilities {
             if (System.getenv("PTOLEMYII_DOT") != null) {
                 baseDirectory = System.getenv("PTOLEMYII_DOT");
                 if (baseDirectory.endsWith(File.separator)) {
-                    baseDirectory = baseDirectory.substring(0, baseDirectory.length() - 1);
+                    baseDirectory = baseDirectory.substring(0,
+                            baseDirectory.length() - 1);
                 }
             }
         } catch (SecurityException ex) {
             // Ignore, we are probably in an applet.
         }
-        String preferencesDirectoryName =
-            baseDirectory +
-            File.separator +
-            StringUtilities.PREFERENCES_DIRECTORY + File.separator; 
+        String preferencesDirectoryName = baseDirectory + File.separator
+                + StringUtilities.PREFERENCES_DIRECTORY + File.separator;
 
         File preferencesDirectory = new File(preferencesDirectoryName);
 
@@ -758,7 +804,8 @@ public class StringUtilities {
      * @return A LinkedList of the lines that aren't comments.
      * @exception IOException If thrown when reading from the input String.
      */
-    public static LinkedList<String> readLines(String lines) throws IOException {
+    public static LinkedList<String> readLines(String lines)
+            throws IOException {
         BufferedReader bufferedReader = null;
         LinkedList<String> returnList = new LinkedList<String>();
         String line;
@@ -767,8 +814,8 @@ public class StringUtilities {
             // Read line by line, skipping comments.
             while ((line = bufferedReader.readLine()) != null) {
                 line = line.trim();
-                if (!(line.length() == 0 || line.startsWith("/*") || line
-                        .startsWith("//"))) {
+                if (!(line.length() == 0 || line.startsWith("/*")
+                        || line.startsWith("//"))) {
                     returnList.add(line);
                 }
             }
@@ -987,15 +1034,14 @@ public class StringUtilities {
         } else {
             try {
                 String prefixCanonicalPath = new File(prefix)
-                .getCanonicalPath();
+                        .getCanonicalPath();
 
                 String stringCanonicalPath = new File(string)
-                .getCanonicalPath();
+                        .getCanonicalPath();
 
                 if (stringCanonicalPath.startsWith(prefixCanonicalPath)) {
-                    return replacement
-                            + stringCanonicalPath.substring(prefixCanonicalPath
-                                    .length());
+                    return replacement + stringCanonicalPath
+                            .substring(prefixCanonicalPath.length());
                 }
             } catch (Throwable throwable) {
                 // ignore.
@@ -1033,8 +1079,8 @@ public class StringUtilities {
         // Parse the command into tokens
         List<String> commandList = new LinkedList<String>();
 
-        StreamTokenizer streamTokenizer = new StreamTokenizer(new StringReader(
-                inputString));
+        StreamTokenizer streamTokenizer = new StreamTokenizer(
+                new StringReader(inputString));
 
         // We reset the syntax so that we don't convert to numbers,
         // otherwise, if PTII is "d:\\tmp\\ptII\ 2.0", then
@@ -1225,7 +1271,8 @@ public class StringUtilities {
      *  @return A string that describes the command.
      */
     public static String usageString(String commandTemplate,
-            String[][] commandOptions, String[][] commandFlagsWithDescriptions) {
+            String[][] commandOptions,
+            String[][] commandFlagsWithDescriptions) {
         // This method is static so that we can reuse it in places
         // like copernicus/kernel/Copernicus and actor/gui/MoMLApplication
         StringBuffer result = new StringBuffer("Usage: " + commandTemplate
