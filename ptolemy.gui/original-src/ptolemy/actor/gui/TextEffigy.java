@@ -1,6 +1,6 @@
 /* A representative of a text file.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -100,7 +100,7 @@ public class TextEffigy extends Effigy {
         case "clj":
             return "text/clojure";
         case "cpp":
-            return "text/cpp"; 
+            return "text/cpp";
         case "cs":
             return "text/cs";
         case "css":
@@ -115,7 +115,7 @@ public class TextEffigy extends Effigy {
         case "gy":
             return "text/groovy";
         case "h":
-            return "text/cpp"; 
+            return "text/cpp";
         case "htm":
         case "html":
             return "text/html";
@@ -173,7 +173,7 @@ public class TextEffigy extends Effigy {
     public Document getDocument() {
         return _doc;
     }
-    
+
     /** Return the syntax style for the document, if one has been identified,
      *  and null otherwise.
      *  @return A syntax style or null.
@@ -186,6 +186,7 @@ public class TextEffigy extends Effigy {
      *  against the original text.
      *  @return True if the data has been modified.
      */
+    @Override
     public boolean isModified() {
         if (_originalText == null) {
             if (_doc.getLength() > 0) {
@@ -219,7 +220,7 @@ public class TextEffigy extends Effigy {
             String text) throws Exception {
         return newTextEffigy(container, text, null);
     }
-    
+
     /** Create a new effigy in the given container containing the specified
      *  text.  The new effigy will have a new instance of
      *  DefaultStyledDocument associated with it.
@@ -279,13 +280,13 @@ public class TextEffigy extends Effigy {
         //
         String syntaxStyle = "text/plain";
         if (in != null) {
-            String extension = EffigyFactory.getExtension(in).toLowerCase(
-                    Locale.getDefault());
+            String extension = EffigyFactory.getExtension(in)
+                    .toLowerCase(Locale.getDefault());
             String syntaxStyleFromExtension = extensionToSyntaxStyle(extension);
             if (syntaxStyleFromExtension != null) {
                 syntaxStyle = syntaxStyleFromExtension;
             } else if (extension.equals("jar") || extension.equals("kar")
-                    // TODO: find a better way to check for binary files.
+            // TODO: find a better way to check for binary files.
                     || extension.equals("gz") || extension.equals("tar")
                     || extension.equals("zip")) {
                 return null;
@@ -310,20 +311,20 @@ public class TextEffigy extends Effigy {
                     try {
                         inputStream = in.openStream();
                     } catch (NullPointerException npe) {
-                        throw new IOException("Failed to open '" + in
-                                + "', base: '" + base
-                                + "' : openStream() threw a "
-                                + "NullPointerException");
+                        throw new IOException(
+                                "Failed to open '" + in + "', base: '" + base
+                                        + "' : openStream() threw a "
+                                        + "NullPointerException");
                     } catch (Exception ex) {
                         IOException exception = new IOException(
                                 "Failed to open '" + in + "\", base: \"" + base
-                                + "\"");
+                                        + "\"");
                         exception.initCause(ex);
                         throw exception;
                     }
 
-                    reader = new BufferedReader(new InputStreamReader(
-                            inputStream));
+                    reader = new BufferedReader(
+                            new InputStreamReader(inputStream));
 
                     // openStream throws an IOException, not a
                     // FileNotFoundException
@@ -335,8 +336,8 @@ public class TextEffigy extends Effigy {
                         // so we look for the file as a resource.
                         URL jarURL = ptolemy.util.ClassUtilities
                                 .jarURLEntryResource(in.toString());
-                        reader = new BufferedReader(new InputStreamReader(
-                                jarURL.openStream()));
+                        reader = new BufferedReader(
+                                new InputStreamReader(jarURL.openStream()));
 
                         // We were able to open the URL, so update the
                         // original URL so that the title bar accurately
@@ -433,7 +434,7 @@ public class TextEffigy extends Effigy {
             }
         }
     }
-    
+
     /** Write the text of the document to the specified file.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -473,15 +474,19 @@ public class TextEffigy extends Effigy {
         try {
             // Attempt to create a styled document.
             // Use reflection here to avoid a hard dependency on an external package.
-            Class docClass = Class.forName("org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
-            Constructor docClassConstructor = docClass.getConstructor(String.class);
-            doc = (Document) docClassConstructor.newInstance(new Object[] {syntaxStyle});
+            Class docClass = Class
+                    .forName("org.fife.ui.rsyntaxtextarea.RSyntaxDocument");
+            Constructor docClassConstructor = docClass
+                    .getConstructor(String.class);
+            doc = (Document) docClassConstructor
+                    .newInstance(new Object[] { syntaxStyle });
         } catch (Throwable ex) {
             // Ignore and use default text editor.
-            System.out.println("Note: failed to open syntax-directed editor: " + ex.getMessage());
+            System.out.println("Note: failed to open syntax-directed editor: "
+                    + ex.getMessage());
         }
         if (doc == null) {
-           doc = new DefaultStyledDocument();
+            doc = new DefaultStyledDocument();
         }
         return doc;
     }
@@ -491,10 +496,10 @@ public class TextEffigy extends Effigy {
 
     /** The document associated with this effigy. */
     private Document _doc;
-    
+
     /** The original text, to determine whether it has been modified. */
     private String _originalText;
-    
+
     /** The syntax style, if one has been identified. */
     private String _syntaxStyle;
 
@@ -520,8 +525,8 @@ public class TextEffigy extends Effigy {
                 String editorPreference = ".";
 
                 try {
-                    editorPreference = System.getProperty(
-                            "ptolemy.user.texteditor", ".");
+                    editorPreference = System
+                            .getProperty("ptolemy.user.texteditor", ".");
                 } catch (SecurityException security) {
                     // Ignore, we are probably running in a sandbox
                     // or applet.
@@ -538,7 +543,7 @@ public class TextEffigy extends Effigy {
 
                 _newTextEffigyURL = effigyClass.getMethod("newTextEffigy",
                         new Class[] { CompositeEntity.class, URL.class,
-                        URL.class });
+                                URL.class });
             } catch (ClassNotFoundException ex) {
                 throw new IllegalActionException(ex.toString());
             } catch (NoSuchMethodException ex) {
@@ -580,8 +585,8 @@ public class TextEffigy extends Effigy {
                 throws Exception {
             // Create a new effigy.
             try {
-                return (Effigy) _newTextEffigyURL.invoke(null, new Object[] {
-                        container, base, in });
+                return (Effigy) _newTextEffigyURL.invoke(null,
+                        new Object[] { container, base, in });
             } catch (java.lang.reflect.InvocationTargetException ex) {
                 throw (Exception) ex.getCause();
                 // Uncomment this for debugging
