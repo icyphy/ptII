@@ -5,7 +5,7 @@ Bundle-SymbolicName: ptolemy.actor.lib
 Bundle-Version: 11.1.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-RegisterBuddy: ptolemy.moml
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.imageio,
  org.osgi.framework;version="1.7.0",
  org.ptolemy.classloading;version="11.1.0",

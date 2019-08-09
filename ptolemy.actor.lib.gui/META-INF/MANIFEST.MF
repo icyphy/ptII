@@ -5,7 +5,7 @@ Bundle-SymbolicName: ptolemy.actor.lib.gui
 Bundle-Version: 11.0.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-RegisterBuddy: ptolemy.moml, ptolemy.gui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: javax.swing,
  javax.swing.border,
  javax.swing.text,

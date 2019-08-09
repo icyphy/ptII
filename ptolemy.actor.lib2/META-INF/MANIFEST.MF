@@ -5,7 +5,7 @@ Bundle-SymbolicName: ptolemy.actor.lib2
 Bundle-Version: 11.0.0.qualifier
 Bundle-Activator: ptolemy.actor.lib2.activator.Activator
 Eclipse-RegisterBuddy: ptolemy.moml
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.osgi.framework;version="1.7.0",
  org.ptolemy.classloading;version="11.0.0",
  org.ptolemy.classloading.osgi;version="11.0.0",

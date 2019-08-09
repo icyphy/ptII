@@ -4,7 +4,7 @@ Bundle-Name: Ptolemy elementary core testing
 Bundle-SymbolicName: org.ptolemy.core.test
 Bundle-Version: 11.0.1.qualifier
 Bundle-Vendor: iSencia Belgium NV
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.ptolemy.testsupport;bundle-version="11.0.0",
  ptolemy.core;bundle-version="11.0.0",
  ptolemy.actor.lib;bundle-version="11.0.0",

@@ -4,7 +4,7 @@ Bundle-Name: Ptolemy Testsupport tools
 Bundle-SymbolicName: org.ptolemy.testsupport
 Bundle-Version: 11.0.0.qualifier
 Bundle-Vendor: iSencia Belgium NV
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: junit.framework; version="4.0.0",
  org.junit;version="4.0.0",
  org.ptolemy.commons;version="11.0.0",

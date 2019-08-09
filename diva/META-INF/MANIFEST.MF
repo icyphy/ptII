@@ -4,7 +4,7 @@ Bundle-Name: Diva
 Bundle-SymbolicName: diva
 Bundle-Version: 11.0.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: com.microstar.xml;version="11.0.0",
  javax.imageio,
  javax.swing,
