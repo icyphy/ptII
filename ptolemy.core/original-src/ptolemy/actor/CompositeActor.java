@@ -1,6 +1,6 @@
 /* An aggregation of actors.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -131,8 +131,8 @@ import ptolemy.util.StringUtilities;
  @see ptolemy.actor.Director
  @see ptolemy.actor.Manager
  */
-public class CompositeActor extends CompositeEntity implements Actor,
-FiringsRecordable {
+public class CompositeActor extends CompositeEntity
+        implements Actor, FiringsRecordable {
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
      *  directory.
@@ -353,8 +353,7 @@ FiringsRecordable {
                 Manager manager = getManager();
 
                 if (castPort.isOutput() && getDirector() != null
-                        && manager != null
-                        && manager.getState() != Manager.IDLE
+                        && manager != null && manager.getState() != Manager.IDLE
                         && manager.getState() != Manager.INFERING_WIDTHS
                         && manager.getState() != Manager.PREINITIALIZING) {
                     // Note that even if castPort is opaque, we still have to
@@ -369,8 +368,7 @@ FiringsRecordable {
                 }
 
                 if (castPort.isInput() && getExecutiveDirector() != null
-                        && manager != null
-                        && manager.getState() != Manager.IDLE
+                        && manager != null && manager.getState() != Manager.IDLE
                         && manager.getState() != Manager.INFERING_WIDTHS
                         && manager.getState() != Manager.PREINITIALIZING) {
                     try {
@@ -678,7 +676,7 @@ FiringsRecordable {
                 }
                 throw new IllegalActionException(this,
                         "Can't find the publisher for \"" + name
-                        + "\"., names were: " + message);
+                                + "\"., names were: " + message);
             } else if (publishedPorts.size() > 1) {
                 // Check to see if any of the publishedPorts are within a ClassDefinition.
                 // FIXME: we should be able to do this before now, but when ports are being
@@ -703,9 +701,11 @@ FiringsRecordable {
                     }
                 }
                 if (publishedPorts.size() != 1) {
-                    throw new NameDuplicationException(this, "We have "
-                            + publishedPorts.size() + " ports with the name \""
-                            + name + "\", which is not equal to 1.\n" + message);
+                    throw new NameDuplicationException(this,
+                            "We have " + publishedPorts.size()
+                                    + " ports with the name \"" + name
+                                    + "\", which is not equal to 1.\n"
+                                    + message);
                 }
             }
 
@@ -733,7 +733,8 @@ FiringsRecordable {
 
                 // FindBugs: ptolemy.actor.CompositeActor.getPublishedPorts(Pattern) makes inefficient use of keySet iterator instead of entrySet iterator
                 //for (String name : _publishedPorts.keySet()) {
-                for (Map.Entry<String, Set<IOPort>> entry: _publishedPorts.entrySet()) {
+                for (Map.Entry<String, Set<IOPort>> entry : _publishedPorts
+                        .entrySet()) {
                     //Matcher matcher = pattern.matcher(name);
                     Matcher matcher = pattern.matcher(entry.getKey());
                     if (matcher.matches()) {
@@ -764,7 +765,8 @@ FiringsRecordable {
                 //for (String name : _publishedPorts.keySet()) {
                 //  if (_publishedPorts.get(name).contains(port)) {
 
-                for (Map.Entry<String, Set<IOPort>> entry: _publishedPorts.entrySet()) {
+                for (Map.Entry<String, Set<IOPort>> entry : _publishedPorts
+                        .entrySet()) {
                     if (entry.getValue().contains(port)) {
                         return entry.getKey();
                     }
@@ -789,7 +791,8 @@ FiringsRecordable {
             if (_subscribedPorts != null) {
                 // FindBugs: ptolemy.actor.CompositeActor.getSubscribedPortChannel(IOPort) makes inefficient use of keySet iterator instead of entrySet iterator
                 // for (String name : _subscribedPorts.keySet()) {
-                for (Map.Entry<String, List<IOPort>> entry: _subscribedPorts.entrySet()) {
+                for (Map.Entry<String, List<IOPort>> entry : _subscribedPorts
+                        .entrySet()) {
                     //if (_subscribedPorts.get(name).contains(port)) {
                     // return name;
                     if (entry.getValue().contains(port)) {
@@ -1199,37 +1202,39 @@ FiringsRecordable {
                     subscriberPort);
         } else {
             IOPort publishedPort = getPublishedPort(name);
-            IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name) : null;
-                    if (relation == null) {
-                        try {
-                            // CompositeActor always creates an IORelation.
-                            relation = (IORelation) newRelation(uniqueName("publisherRelation"));
-                        } catch (NameDuplicationException e) {
-                            // Shouldn't happen.
-                            throw new IllegalStateException(e);
-                        }
-                        // Prevent the relation and its links from being exported.
-                        relation.setPersistent(false);
-                        // Prevent the relation from showing up in vergil.
-                        new Parameter(relation, "_hide", BooleanToken.TRUE);
-                        publishedPort.liberalLink(relation);
-                        if (_publisherRelations == null) {
-                            _publisherRelations = new HashMap<String, IORelation>();
-                        }
-                        _publisherRelations.put(name, relation);
-                    }
-                    if (!subscriberPort.isLinked(relation)) {
-                        subscriberPort.liberalLink(relation);
-                        notifyConnectivityChange();
+            IORelation relation = _publisherRelations != null
+                    ? _publisherRelations.get(name)
+                    : null;
+            if (relation == null) {
+                try {
+                    // CompositeActor always creates an IORelation.
+                    relation = (IORelation) newRelation(
+                            uniqueName("publisherRelation"));
+                } catch (NameDuplicationException e) {
+                    // Shouldn't happen.
+                    throw new IllegalStateException(e);
+                }
+                // Prevent the relation and its links from being exported.
+                relation.setPersistent(false);
+                // Prevent the relation from showing up in vergil.
+                new Parameter(relation, "_hide", BooleanToken.TRUE);
+                publishedPort.liberalLink(relation);
+                if (_publisherRelations == null) {
+                    _publisherRelations = new HashMap<String, IORelation>();
+                }
+                _publisherRelations.put(name, relation);
+            }
+            if (!subscriberPort.isLinked(relation)) {
+                subscriberPort.liberalLink(relation);
+                notifyConnectivityChange();
 
-                        Director director = getDirector();
-                        if (director != null) {
-                            director.invalidateSchedule();
-                            director.invalidateResolvedTypes();
-                        }
-                    }
-                    return publishedPort;
+                Director director = getDirector();
+                if (director != null) {
+                    director.invalidateSchedule();
+                    director.invalidateResolvedTypes();
+                }
+            }
+            return publishedPort;
         }
     }
 
@@ -1255,8 +1260,8 @@ FiringsRecordable {
      *  @exception IllegalActionException If the published port cannot be found.
      */
     public IOPort linkToPublishedPort(String name, IOPort subscriberPort,
-            boolean global) throws IllegalActionException,
-            NameDuplicationException {
+            boolean global)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -1294,9 +1299,9 @@ FiringsRecordable {
                         //connect the newly created port to the subscriber port
                         try {
                             // CompositeActor always creates an IORelation.
-                            relation = (IORelation) newRelation(uniqueName(subscriberPort
-                                    .getContainer().getName()
-                                    + "subscriberExternalRelationB"));
+                            relation = (IORelation) newRelation(uniqueName(
+                                    subscriberPort.getContainer().getName()
+                                            + "subscriberExternalRelationB"));
                         } catch (NameDuplicationException ex) {
                             // Shouldn't happen.
                             throw new IllegalStateException(ex);
@@ -1313,8 +1318,8 @@ FiringsRecordable {
                         notifyConnectivityChange();
                     }
 
-                    return ((CompositeActor) container).linkToPublishedPort(
-                            name, port, global);
+                    return ((CompositeActor) container)
+                            .linkToPublishedPort(name, port, global);
                 }
             }
         }
@@ -1358,7 +1363,7 @@ FiringsRecordable {
                 if (!matched) {
                     throw new IllegalActionException(this,
                             "Failed to find a publisher to match \"" + pattern
-                            + "\"");
+                                    + "\"");
                 }
             } else {
                 throw new IllegalActionException(this,
@@ -1389,9 +1394,9 @@ FiringsRecordable {
      *          as a result of the added relations or ports.
      *  @exception IllegalActionException If the published port cannot be found.
      */
-    public void linkToPublishedPort(Pattern pattern,
-            TypedIOPort subscriberPort, boolean global)
-                    throws IllegalActionException, NameDuplicationException {
+    public void linkToPublishedPort(Pattern pattern, TypedIOPort subscriberPort,
+            boolean global)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isClassDefinition()) {
@@ -1406,7 +1411,7 @@ FiringsRecordable {
                             subscriberPort.getContainer(),
                             "No Publishers were found adjacent to or below "
                                     + subscriberPort.getContainer()
-                                    .getFullName());
+                                            .getFullName());
                 }
             } else {
                 boolean matched = false;
@@ -1422,7 +1427,7 @@ FiringsRecordable {
                     throw new IllegalActionException(
                             subscriberPort.getContainer(),
                             "Failed to find a publisher to match \"" + pattern
-                            + "\"");
+                                    + "\"");
                 }
             }
             if (global && this != toplevel()) {
@@ -1445,9 +1450,9 @@ FiringsRecordable {
                     //connect the newly created port to the subscriber port
                     try {
                         // CompositeActor always creates an IORelation.
-                        relation = (IORelation) newRelation(uniqueName(subscriberPort
-                                .getContainer().getName()
-                                + "subscriberExternalRelationA"));
+                        relation = (IORelation) newRelation(uniqueName(
+                                subscriberPort.getContainer().getName()
+                                        + "subscriberExternalRelationA"));
                     } catch (NameDuplicationException e) {
                         // Shouldn't happen.
                         throw new IllegalStateException(e);
@@ -2126,7 +2131,7 @@ FiringsRecordable {
         // memory here.  So, our solution is to modify Manager so that
         // _container is a WeakReference.
 
-        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#containerInCompositeActor
+        // See https://wiki.eecs.berkeley.edu/ptexternal/Main/Main/MemoryLeaks#containerInCompositeActor
         super.setContainer(container);
 
         Director director = getDirector();
@@ -2158,8 +2163,8 @@ FiringsRecordable {
      *  in this container with the same name as the given director.
      *  @see #getDirector()
      */
-    public void setDirector(Director director) throws IllegalActionException,
-    NameDuplicationException {
+    public void setDirector(Director director)
+            throws IllegalActionException, NameDuplicationException {
         if (director != null) {
             director.setContainer(this);
             // No need to call _setDirector in here since the
@@ -2376,19 +2381,20 @@ FiringsRecordable {
         } else {
             // Remove the link to a previous relation, if necessary.
 
-            IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name) : null;
+            IORelation relation = _publisherRelations != null
+                    ? _publisherRelations.get(name)
+                    : null;
 
-                    if (relation != null) {
-                        subscriberPort.unlink(relation);
-                        notifyConnectivityChange();
-                    }
+            if (relation != null) {
+                subscriberPort.unlink(relation);
+                notifyConnectivityChange();
+            }
 
-                    Director director = getDirector();
-                    if (director != null) {
-                        director.invalidateSchedule();
-                        director.invalidateResolvedTypes();
-                    }
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
         }
     }
 
@@ -2423,45 +2429,46 @@ FiringsRecordable {
         } else {
             // Remove the link to a previous relation, if necessary.
 
-            IORelation relation = _publisherRelations != null ? _publisherRelations
-                    .get(name) : null;
+            IORelation relation = _publisherRelations != null
+                    ? _publisherRelations.get(name)
+                    : null;
 
-                    if (relation != null) {
-                        subscriberPort.unlink(relation);
-                        notifyConnectivityChange();
-                    }
+            if (relation != null) {
+                subscriberPort.unlink(relation);
+                notifyConnectivityChange();
+            }
 
-                    Director director = getDirector();
-                    if (director != null) {
-                        director.invalidateSchedule();
-                        director.invalidateResolvedTypes();
-                    }
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateSchedule();
+                director.invalidateResolvedTypes();
+            }
 
-                    if (global && container instanceof CompositeActor) {
-                        for (Object relationObj : subscriberPort.linkedRelationList()) {
-                            try {
-                                for (Object port : ((IORelation) relationObj)
-                                        .linkedPortList(subscriberPort)) {
+            if (global && container instanceof CompositeActor) {
+                for (Object relationObj : subscriberPort.linkedRelationList()) {
+                    try {
+                        for (Object port : ((IORelation) relationObj)
+                                .linkedPortList(subscriberPort)) {
 
-                                    IOPort subscribedPort = (IOPort) port;
-                                    if (subscribedPort.isInput()) {
-                                        ((CompositeActor) container)
+                            IOPort subscribedPort = (IOPort) port;
+                            if (subscribedPort.isInput()) {
+                                ((CompositeActor) container)
                                         .unlinkToPublishedPort(name,
                                                 subscribedPort, global);
 
-                                        subscribedPort.setContainer(null);
+                                subscribedPort.setContainer(null);
 
-                                    }
-                                }
-                                ((IORelation) relationObj).setContainer(null);
-                                notifyConnectivityChange();
-                            } catch (NameDuplicationException ex) {
-                                throw new InternalErrorException(
-                                        subscriberPort.getContainer(), ex,
-                                        "Failed to set the container to null?");
                             }
                         }
+                        ((IORelation) relationObj).setContainer(null);
+                        notifyConnectivityChange();
+                    } catch (NameDuplicationException ex) {
+                        throw new InternalErrorException(
+                                subscriberPort.getContainer(), ex,
+                                "Failed to set the container to null?");
                     }
+                }
+            }
         }
     }
 
@@ -2521,7 +2528,7 @@ FiringsRecordable {
      */
     public void unlinkToPublishedPort(Pattern pattern,
             TypedIOPort subscriberPort, boolean global)
-                    throws IllegalActionException {
+            throws IllegalActionException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isWithinClassDefinition()) {
@@ -2553,9 +2560,9 @@ FiringsRecordable {
                             connectedInsidePort.remove(subscriberPort);
                             if (connectedInsidePort.size() == 0) {
                                 ((CompositeActor) container)
-                                .unlinkToPublishedPort(pattern,
-                                        (TypedIOPort) subscribedPort,
-                                        global);
+                                        .unlinkToPublishedPort(pattern,
+                                                (TypedIOPort) subscribedPort,
+                                                global);
 
                                 subscribedPort.setContainer(null);
 
@@ -2614,8 +2621,8 @@ FiringsRecordable {
      *  be set
      */
     public void unregisterPublisherPort(String name, IOPort publisherPort,
-            boolean global) throws IllegalActionException,
-            NameDuplicationException {
+            boolean global)
+            throws IllegalActionException, NameDuplicationException {
         NamedObj container = getContainer();
         if (!isOpaque() && container instanceof CompositeActor
                 && !((CompositeActor) container).isWithinClassDefinition()) {
@@ -2654,8 +2661,8 @@ FiringsRecordable {
                             IOPort publishedPort = (IOPort) port;
                             if (publishedPort.isOutput()) {
                                 ((CompositeActor) container)
-                                .unregisterPublisherPort(name,
-                                        publishedPort, global);
+                                        .unregisterPublisherPort(name,
+                                                publishedPort, global);
                                 publishedPort.setContainer(null);
                             }
                         }
@@ -2686,10 +2693,18 @@ FiringsRecordable {
         try {
             _workspace.getReadAccess();
 
+            // Collect exceptions during wrapup.
+            LinkedList<Throwable> throwables = new LinkedList<Throwable>();
+
             // First invoke initializable methods.
             if (_initializables != null) {
                 for (Initializable initializable : _initializables) {
-                    initializable.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        initializable.wrapup();
+                    } catch (Throwable throwable) {
+                        throwables.add(throwable);
+                    }
                 }
             }
 
@@ -2697,13 +2712,23 @@ FiringsRecordable {
             if (_piggybacks != null) {
                 // Invoke the wrapup() method of each piggyback.
                 for (Executable piggyback : _piggybacks) {
-                    piggyback.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        piggyback.wrapup();
+                    } catch (Throwable throwable) {
+                        throwables.add(throwable);
+                    }
                 }
             }
             if (_derivedPiggybacks != null) {
                 // Invoke the wrapup() method of each piggyback.
                 for (Executable piggyback : _derivedPiggybacks) {
-                    piggyback.wrapup();
+                    // Catch any exceptions so that additional wrapup methods are invoked.
+                    try {
+                        piggyback.wrapup();
+                    } catch (Throwable throwable) {
+                        throwables.add(throwable);
+                    }
                 }
             }
 
@@ -2712,8 +2737,8 @@ FiringsRecordable {
                 // a composite that is not opaque is not always an error.
                 // Generating WebStart for ptolemy/demo/ElectricPowerSystem/ElectricPowerSystem.xml
                 // One possibility is to add the DoNothingDirector.
-                System.out
-                        .println("Warning: CompositeActor.wrapup() was called on "
+                System.out.println(
+                        "Warning: CompositeActor.wrapup() was called on "
                                 + getFullName()
                                 + ", which is not opaque (it does not have a director?).");
             }
@@ -2725,7 +2750,30 @@ FiringsRecordable {
             Director director = getDirector();
 
             if (director != null) {
-                director.wrapup();
+                // Catch any exceptions so that additional wrapup methods are invoked.
+                try {
+                    director.wrapup();
+                } catch (Throwable throwable) {
+                    throwables.add(throwable);
+                }
+            }
+            if (throwables.size() == 1) {
+                Throwable exception = throwables.get(0);
+                if (exception instanceof IllegalActionException) {
+                    throw (IllegalActionException)exception;
+                } else {
+                    throw new IllegalActionException(this, exception,
+                            "Exception thrown during wrapup.");
+                }
+            } else if (throwables.size() > 1) {
+                StringBuffer message = new StringBuffer();
+                for (Throwable throwable : throwables) {
+                    message.append(throwable.getMessage());
+                    message.append("\n======\n");
+                }
+                throw new IllegalActionException(this, throwables.get(0),
+                        "Multiple exceptions thrown during wrapup:\n"
+                        + message.toString());
             }
         } finally {
             _workspace.doneReading();
@@ -2800,8 +2848,8 @@ FiringsRecordable {
      *   name already in the actor.
      */
     @Override
-    protected void _addPort(Port port) throws IllegalActionException,
-    NameDuplicationException {
+    protected void _addPort(Port port)
+            throws IllegalActionException, NameDuplicationException {
         if (!(port instanceof IOPort)) {
             throw new IllegalActionException(this, port,
                     "CompositeActor can only contain instances of IOPort.");
@@ -2915,7 +2963,8 @@ FiringsRecordable {
      *  @exception IllegalActionException If reading from parameter associated
      *  with port fails.
      */
-    protected void _transferPortParameterInputs() throws IllegalActionException {
+    protected void _transferPortParameterInputs()
+            throws IllegalActionException {
         // Need to read from port parameters
         // first because in some domains (e.g. SDF)
         // the behavior of the schedule might depend on rate variables
