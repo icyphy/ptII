@@ -1,7 +1,7 @@
 /* An AWT and Swing implementation of the the DisplayInterface
  that displays input data in a text area on the screen.
 
- @Copyright (c) 1998-2014 The Regents of the University of California.
+ @Copyright (c) 1998-2019 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -82,8 +82,8 @@ to use this actor to log large output streams.</p>
 @since Ptolemy II 10.0
  */
 
-public class DisplayJavaSE extends AbstractPlaceableJavaSE implements
-DisplayInterface {
+public class DisplayJavaSE extends AbstractPlaceableJavaSE
+        implements DisplayInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -141,8 +141,8 @@ DisplayInterface {
                 // caret position (despite the fact that the caret
                 // is already where want it).
                 try {
-                    int lineOffset = textArea.getLineStartOffset(textArea
-                            .getLineCount() - 1);
+                    int lineOffset = textArea
+                            .getLineStartOffset(textArea.getLineCount() - 1);
                     textArea.setCaretPosition(lineOffset);
                 } catch (BadLocationException ex) {
                     // Ignore ... worst case is that the scrollbar
@@ -169,8 +169,8 @@ DisplayInterface {
      * actor with this name.
      */
     @Override
-    public void init(Display displayActor) throws IllegalActionException,
-    NameDuplicationException {
+    public void init(Display displayActor)
+            throws IllegalActionException, NameDuplicationException {
         _display = displayActor;
         super.init(displayActor);
     }
@@ -190,8 +190,8 @@ DisplayInterface {
                     // Place the text area in its own frame.
                     // Need an effigy and a tableau so that menu ops work properly.
 
-                    Effigy containerEffigy = Configuration.findEffigy(_display
-                            .toplevel());
+                    Effigy containerEffigy = Configuration
+                            .findEffigy(_display.toplevel());
 
                     try {
                         if (containerEffigy == null) {
@@ -206,15 +206,15 @@ DisplayInterface {
                                             + " MoML filter is not replacing the"
                                             + " class that extends Display.");
                         }
-                        TextEffigy textEffigy = TextEffigy.newTextEffigy(
-                                containerEffigy, "");
+                        TextEffigy textEffigy = TextEffigy
+                                .newTextEffigy(containerEffigy, "");
 
                         // The default identifier is "Unnamed", which is no good for
                         // two reasons: Wrong title bar label, and it causes a save-as
                         // to destroy the original window.
 
-                        textEffigy.identifier.setExpression(_display
-                                .getFullName());
+                        textEffigy.identifier
+                                .setExpression(_display.getFullName());
 
                         _tableau = new DisplayWindowTableau(_display,
                                 textEffigy, "tableau");
@@ -225,7 +225,8 @@ DisplayInterface {
                         JScrollPane pane = ((TextEditor) _frame)
                                 .getScrollPane();
                         if (pane != null) {
-                            pane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                            pane.setVerticalScrollBarPolicy(
+                                    ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
                         }
 
                         textArea = ((TextEditor) _frame).text;
@@ -246,7 +247,7 @@ DisplayInterface {
                     }
                 } else {
                     // Erase previous text.
-                    textArea.setText("");
+                    textArea.setText(null);
                 }
 
                 if (_frame != null) {
@@ -278,8 +279,9 @@ DisplayInterface {
         Runnable doIt = new Runnable() {
             @Override
             public void run() {
-                Container container = (Container) (portableContainer != null ? portableContainer
-                        .getPlatformContainer() : null);
+                Container container = (Container) (portableContainer != null
+                        ? portableContainer.getPlatformContainer()
+                        : null);
                 if (container == null) {
                     // Reset everything.
                     // NOTE: _remove() doesn't work here.  Why?
@@ -311,8 +313,8 @@ DisplayInterface {
                 _scrollPane.setViewportBorder(new LineBorder(Color.black));
 
                 // Always have a vertical scrollbar so that we don't get a horizontal scrollbar when it appers.
-                _scrollPane
-                        .setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+                _scrollPane.setVerticalScrollBarPolicy(
+                        ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 
                 container.add(_scrollPane);
                 textArea.setBackground(Color.white);
@@ -325,8 +327,8 @@ DisplayInterface {
                 }
 
                 if (!titleSpec.trim().equals("")) {
-                    _scrollPane.setBorder(BorderFactory
-                            .createTitledBorder(titleSpec));
+                    _scrollPane.setBorder(
+                            BorderFactory.createTitledBorder(titleSpec));
                 }
 
                 try {
@@ -389,8 +391,8 @@ DisplayInterface {
                     try {
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
-                        MessageHandler
-                        .error("Unexpected error: Unable to unset previous pane size.",
+                        MessageHandler.error(
+                                "Unexpected error: Unable to unset previous pane size.",
                                 e);
                     }
                     setFrame(_frame);
@@ -423,8 +425,8 @@ DisplayInterface {
                     try {
                         _paneSize.setToken((Token) null);
                     } catch (IllegalActionException e) {
-                        MessageHandler
-                        .error("Unexpected error: Unable to unset previous pane size.",
+                        MessageHandler.error(
+                                "Unexpected error: Unable to unset previous pane size.",
                                 e);
                     }
                     setFrame(_frame);
@@ -510,8 +512,8 @@ DisplayInterface {
          *   attribute already in the container.
          */
         public DisplayWindowTableau(Display display, TextEffigy container,
-                String name) throws IllegalActionException,
-                NameDuplicationException {
+                String name)
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
 
             String title = display.title.stringValue();
