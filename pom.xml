@@ -72,8 +72,8 @@ $Id$
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
     <repository>
-      <id>eclipse-oxygen</id>
-      <url>http://download.eclipse.org/releases/oxygen</url>
+      <id>eclipse-2019-06</id>
+      <url>http://download.eclipse.org/releases/2019-06</url>
       <layout>p2</layout>
     </repository>
 
@@ -127,6 +127,8 @@ $Id$
         <version>${tycho-version}</version>
         <configuration>
           <compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+          <!-- Don't use project settings so that we avoid the Unsafe error in StringUtilities -->
+          <useProjectSettings>false</useProjectSettings>
         </configuration>
       </plugin>
 
