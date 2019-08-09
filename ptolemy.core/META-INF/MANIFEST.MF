@@ -5,7 +5,7 @@ Bundle-SymbolicName: ptolemy.core
 Bundle-Version: 11.1.1.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
 Eclipse-BuddyPolicy: registered
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.ptolemy.classloading;version="11.1.0",
  org.ptolemy.classloading.osgi;version="11.0.0",
  ptolemy.actor;version="11.1.0",
