@@ -1,6 +1,6 @@
 /* Base class for Ptolemy configurations.
 
- Copyright (c) 2000-2013 The Regents of the University of California.
+ Copyright (c) 2000-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,6 +55,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
+import ptolemy.kernel.Port;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -66,7 +67,8 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLFilter;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.filter.RemoveClasses;
-//import ptolemy.moml.filter.RemoveGraphicalClasses;
+// Triquetrum: break dependencies at some point for initial modularization.
+// import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -139,8 +141,8 @@ import ptolemy.util.StringUtilities;
  @see Tableau
  @see TextEditorTableau
  */
-public class Configuration extends CompositeEntity implements
-        ApplicationConfigurer, InstanceOpener {
+public class Configuration extends CompositeEntity
+        implements ApplicationConfigurer, InstanceOpener {
     /** Construct an instance in the specified workspace with an empty
      *  string as a name. You can then change the name with setName().
      *  If the workspace argument is null, then use the default workspace.
@@ -156,17 +158,17 @@ public class Configuration extends CompositeEntity implements
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public Configuration(Workspace workspace) throws IllegalActionException,
-            NameDuplicationException {
+    public Configuration(Workspace workspace)
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _configurations.add(this);
         classesToRemove = new Parameter(this, "_classesToRemove",
                 new ArrayToken(BaseType.STRING));
         //classesToRemove.setTypeEquals(new ArrayType(BaseType.STRING));
-        // FIXME : ErwinDL commented this to break dependencies at some point for initial modularization
-//        removeGraphicalClasses = new Parameter(this, "_removeGraphicalClasses",
-//                BooleanToken.FALSE);
-//        removeGraphicalClasses.setTypeEquals(BaseType.BOOLEAN);
+        // FIXME: Triquetrum: break dependencies at some point for initial modularization.
+        //removeGraphicalClasses = new Parameter(this, "_removeGraphicalClasses",
+        //        BooleanToken.FALSE);
+        //removeGraphicalClasses.setTypeEquals(BaseType.BOOLEAN);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,8 +197,7 @@ public class Configuration extends CompositeEntity implements
      * value false, indicating that RemoveGraphicalClasses should not
      * be added to the filter list.
      */
-    // FIXME : ErwinDL commented this to break dependencies at some point for initial modularization
-//    public Parameter removeGraphicalClasses;
+    public Parameter removeGraphicalClasses;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -254,40 +255,39 @@ public class Configuration extends CompositeEntity implements
             }
 
             MoMLParser.setMoMLFilters(momlFilters);
-        }
-        // FIXME : ErwinDL commented this to break dependencies at some point for initial modularization
-        /*else if (attribute == removeGraphicalClasses) {
-            // Find the RemoveGraphicalClasses element, if any
-            RemoveGraphicalClasses removeGraphicalClassesFilter = null;
-            List momlFilters = MoMLParser.getMoMLFilters();
-            if (momlFilters == null) {
-                momlFilters = new LinkedList();
-            } else {
-                Iterator filters = momlFilters.iterator();
-                while (filters.hasNext()) {
-                    MoMLFilter filter = (MoMLFilter) filters.next();
-                    if (filter instanceof RemoveGraphicalClasses) {
-                        removeGraphicalClassesFilter = (RemoveGraphicalClasses) filter;
-                        break;
-                    }
-                }
-            }
-            // Get the token
-            BooleanToken removeGraphicalClassesToken = (BooleanToken) removeGraphicalClasses
-                    .getToken();
-            if (removeGraphicalClassesToken.booleanValue()) {
-                if (removeGraphicalClassesFilter == null) {
-                    // We did not find a RemoveGraphicalClasses, so create one.
-                    removeGraphicalClassesFilter = new RemoveGraphicalClasses();
-                    momlFilters.add(removeGraphicalClassesFilter);
-                }
-            } else {
-                if (removeGraphicalClassesFilter != null) {
-                    momlFilters.remove(removeGraphicalClassesFilter);
-                }
-            }
-            MoMLParser.setMoMLFilters(momlFilters);
-        }*/
+        // FIXME: Triquetrum: break dependencies at some point for initial modularization.
+        // } else if (attribute == removeGraphicalClasses) {
+        //     // Find the RemoveGraphicalClasses element, if any
+        //     RemoveGraphicalClasses removeGraphicalClassesFilter = null;
+        //     List momlFilters = MoMLParser.getMoMLFilters();
+        //     if (momlFilters == null) {
+        //         momlFilters = new LinkedList();
+        //     } else {
+        //         Iterator filters = momlFilters.iterator();
+        //         while (filters.hasNext()) {
+        //             MoMLFilter filter = (MoMLFilter) filters.next();
+        //             if (filter instanceof RemoveGraphicalClasses) {
+        //                 removeGraphicalClassesFilter = (RemoveGraphicalClasses) filter;
+        //                 break;
+        //             }
+        //         }
+        //     }
+        //     // Get the token
+        //     BooleanToken removeGraphicalClassesToken = (BooleanToken) removeGraphicalClasses
+        //             .getToken();
+        //     if (removeGraphicalClassesToken.booleanValue()) {
+        //         if (removeGraphicalClassesFilter == null) {
+        //             // We did not find a RemoveGraphicalClasses, so create one.
+        //             removeGraphicalClassesFilter = new RemoveGraphicalClasses();
+        //             momlFilters.add(removeGraphicalClassesFilter);
+        //         }
+        //     } else {
+        //         if (removeGraphicalClassesFilter != null) {
+        //             momlFilters.remove(removeGraphicalClassesFilter);
+        //         }
+        //     }
+        //     MoMLParser.setMoMLFilters(momlFilters);
+        // }
         super.attributeChanged(attribute);
     }
 
@@ -297,13 +297,14 @@ public class Configuration extends CompositeEntity implements
      */
     public String check() throws Exception {
         StringBuffer results = new StringBuffer();
-        Configuration cloneConfiguration = (Configuration) clone(new Workspace(
-                "clonedCheckWorkspace"));
+        Configuration cloneConfiguration = (Configuration) clone(
+                new Workspace("clonedCheckWorkspace"));
 
         // Check TypedAtomicActors and Attributes
         Iterator containedObjects = deepNamedObjList().iterator();
         while (containedObjects.hasNext()) {
             NamedObj containedObject = (NamedObj) containedObjects.next();
+            // System.out.println("Configuration.check: containedObject: " + containedObject);
             // Check the clone fields on AtomicActors and Attributes.
             // Note that Director extends Attribute, so we get the
             // Directors as well
@@ -313,8 +314,8 @@ public class Configuration extends CompositeEntity implements
                     results.append(checkCloneFields(containedObject));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException(containedObject, null,
-                            throwable, "The check for "
-                                    + "clone methods properly setting "
+                            throwable,
+                            "The check for " + "clone methods properly setting "
                                     + "the fields failed.");
                 }
             }
@@ -326,6 +327,7 @@ public class Configuration extends CompositeEntity implements
             Iterator attributes = composite.attributeList().iterator();
             while (attributes.hasNext()) {
                 Attribute attribute = (Attribute) attributes.next();
+                // System.out.println("Configuration.check: attribute: " + attribute);
                 if (!attribute.getClass().isMemberClass()) {
                     // If an attribute is an inner class, it makes
                     // no sense to clone to a different workspace because
@@ -336,7 +338,8 @@ public class Configuration extends CompositeEntity implements
                         results.append(checkCloneFields(attribute));
                     } catch (Throwable throwable) {
                         throw new InternalErrorException(attribute, null,
-                                throwable, "The check for "
+                                throwable,
+                                "The check for "
                                         + "clone methods properly setting "
                                         + "the fields failed.");
                     }
@@ -351,8 +354,8 @@ public class Configuration extends CompositeEntity implements
                                 + composite.getFullName() + "\n"
                                 + clonedComposite.description());
                     } else {
-                        if (attribute.workspace().equals(
-                                clonedAttribute.workspace())) {
+                        if (attribute.workspace()
+                                .equals(clonedAttribute.workspace())) {
                             results.append("\nIn attribute "
                                     + attribute.getFullName()
                                     + ", the workspace is the same in the master and "
@@ -376,30 +379,35 @@ public class Configuration extends CompositeEntity implements
                                 thisZeroField.setAccessible(true);
 
                                 Object outer = thisZeroField.get(attribute);
-                                if (Class.forName(
-                                        "ptolemy.kernel.util.NamedObj")
+                                if (Class
+                                        .forName("ptolemy.kernel.util.NamedObj")
                                         .isAssignableFrom(outer.getClass())) {
                                     NamedObj outerNamedObj = (NamedObj) outer;
                                     NamedObj clonedOuterNamedObj = (NamedObj) thisZeroField
                                             .get(clonedAttribute);
                                     if (outerNamedObj.workspace().equals(
                                             clonedOuterNamedObj.workspace())) {
-                                        results.append("\nAn inner class instance has the same workspace in the outer "
-                                                + "class in both the original and the cloned attribute."
-                                                + "\n Attribute:        "
-                                                + attribute.getFullName()
-                                                + "\n Cloned attribute: "
-                                                + clonedAttribute.getFullName()
-                                                + "\n Outer Workspace:       "
-                                                + outerNamedObj.workspace()
-                                                + "\n ClonedOuter Workspace: "
-                                                + clonedOuterNamedObj
-                                                        .workspace()
-                                                + "\n Outer Object:        "
-                                                + outerNamedObj.getFullName()
-                                                + "\n Cloned Outer Object: "
-                                                + clonedOuterNamedObj
-                                                        .getFullName());
+                                        results.append(
+                                                "\nAn inner class instance has the same workspace in the outer "
+                                                        + "class in both the original and the cloned attribute."
+                                                        + "\n Attribute:        "
+                                                        + attribute
+                                                                .getFullName()
+                                                        + "\n Cloned attribute: "
+                                                        + clonedAttribute
+                                                                .getFullName()
+                                                        + "\n Outer Workspace:       "
+                                                        + outerNamedObj
+                                                                .workspace()
+                                                        + "\n ClonedOuter Workspace: "
+                                                        + clonedOuterNamedObj
+                                                                .workspace()
+                                                        + "\n Outer Object:        "
+                                                        + outerNamedObj
+                                                                .getFullName()
+                                                        + "\n Cloned Outer Object: "
+                                                        + clonedOuterNamedObj
+                                                                .getFullName());
                                     }
                                 }
                             }
@@ -407,21 +415,25 @@ public class Configuration extends CompositeEntity implements
                     }
                 }
             }
+            clonedComposite.setContainer(null);
         }
 
         // Check atomic actors for clone problems related to types
         List entityList = allAtomicEntityList();
         Iterator entities = entityList.iterator();
+        long startTime = (new java.util.Date()).getTime();
         while (entities.hasNext()) {
             Object entity = entities.next();
+            System.out.println("Configuration.check: entity: " + entity + " " + ptolemy.actor.Manager.timeAndMemory(startTime));
+            System.out.print("#");
             if (entity instanceof TypedAtomicActor) {
                 // Check atomic actors for clone problems
                 try {
                     results.append(checkCloneFields((TypedAtomicActor) entity));
                 } catch (Throwable throwable) {
                     throw new InternalErrorException((TypedAtomicActor) entity,
-                            null, throwable, "The check for "
-                                    + "clone methods properly setting "
+                            null, throwable,
+                            "The check for " + "clone methods properly setting "
                                     + "the fields failed.");
                 }
                 TypedAtomicActor actor = (TypedAtomicActor) entity;
@@ -484,12 +496,12 @@ public class Configuration extends CompositeEntity implements
                     while (cloneConstraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) cloneConstraintIterator
                                 .next();
-                        if (!constraintsDescription.contains(constraint
-                                .toString())) {
-                            results.append("Master object of "
-                                    + actor.getFullName()
-                                    + " is missing constraint:\n"
-                                    + constraint.toString() + ".\n");
+                        if (!constraintsDescription
+                                .contains(constraint.toString())) {
+                            results.append(
+                                    "Master object of " + actor.getFullName()
+                                            + " is missing constraint:\n"
+                                            + constraint.toString() + ".\n");
                         }
                     }
 
@@ -501,8 +513,8 @@ public class Configuration extends CompositeEntity implements
                         while (constraintIterator.hasNext()) {
                             Inequality constraint = (Inequality) constraintIterator
                                     .next();
-                            cloneConstraintsDescription.add(constraint
-                                    .toString());
+                            cloneConstraintsDescription
+                                    .add(constraint.toString());
                         }
                     } catch (Throwable throwable) {
                         throw new IllegalActionException(actor, throwable,
@@ -514,8 +526,8 @@ public class Configuration extends CompositeEntity implements
                     while (constraintIterator.hasNext()) {
                         Inequality constraint = (Inequality) constraintIterator
                                 .next();
-                        if (!cloneConstraintsDescription.contains(constraint
-                                .toString())) {
+                        if (!cloneConstraintsDescription
+                                .contains(constraint.toString())) {
                             results.append("Clone of " + actor.getFullName()
                                     + " is missing constraint:\n"
                                     + constraint.toString() + ".\n");
@@ -543,32 +555,31 @@ public class Configuration extends CompositeEntity implements
                             NamedObj greaterNamedObj = (NamedObj) greaterAssociatedObject;
                             NamedObj lesserNamedObj = (NamedObj) lesserAssociatedObject;
                             greaterNamedObj.getContainer().getClass().getName();
-                            if (lesserNamedObj != null
-                                    && greaterNamedObj.getContainer() != lesserNamedObj
+                            if (lesserNamedObj != null && greaterNamedObj
+                                    .getContainer() != lesserNamedObj
                                             .getContainer()
-                                    // actor.lib.qm.CompositeQM was causing false
-                                    // positives because the contstraints had different
-                                    // containers, but were contained within the Composite.
+                            // actor.lib.qm.CompositeQM was causing false
+                            // positives because the contstraints had different
+                            // containers, but were contained within the Composite.
                                     && greaterNamedObj.getContainer()
                                             .getContainer() != lesserNamedObj
-                                            .getContainer()
+                                                    .getContainer()
                                     // PubSubPort that contains an
                                     // initialTokens that is used to
                                     // set the type.
-                                    && !(lesserNamedObj.getContainer() instanceof PubSubPort)) {
+                                    && !(lesserNamedObj
+                                            .getContainer() instanceof PubSubPort)) {
                                 results.append(clone.getFullName()
                                         + " has type constraints with "
                                         + "associated objects that don't have "
                                         + "the same container:\n"
                                         + greaterNamedObj.getFullName()
                                         + " has a container:\n"
-                                        + greaterNamedObj.getContainer()
-                                        + "\n"
+                                        + greaterNamedObj.getContainer() + "\n"
                                         + lesserNamedObj.getFullName()
                                         + " has a container:\n"
                                         + lesserNamedObj.getContainer()
-                                        + "\nThe constraint was: "
-                                        + constraint
+                                        + "\nThe constraint was: " + constraint
                                         + "\n"
                                         + "This can occur if the clone(Workspace) "
                                         + "method is not present or does not set "
@@ -581,6 +592,8 @@ public class Configuration extends CompositeEntity implements
                 }
             }
         }
+        // Free up space.
+        cloneConfiguration.setContainer(null);
         return results.toString();
     }
 
@@ -600,9 +613,9 @@ public class Configuration extends CompositeEntity implements
      */
     public static String checkCloneFields(NamedObj namedObj)
             throws CloneNotSupportedException, IllegalAccessException,
+            IllegalActionException, NameDuplicationException,
             ClassNotFoundException {
         NamedObj namedObjClone = (NamedObj) namedObj.clone(new Workspace());
-
         StringBuffer results = new StringBuffer();
         Class namedObjClass = namedObj.getClass();
 
@@ -620,9 +633,19 @@ public class Configuration extends CompositeEntity implements
             namedObjFields = clazz.getDeclaredFields();
             for (Field field : namedObjFields) {
                 field.setAccessible(true);
-                results.append(_checkCloneField(namedObj, namedObjClone, field));
+                results.append(
+                        _checkCloneField(namedObj, namedObjClone, field));
             }
         }
+
+        if (namedObjClone instanceof Attribute) {
+            ((Attribute) namedObjClone).setContainer(null);
+        } else if (namedObjClone instanceof ComponentEntity) {
+            ((ComponentEntity) namedObjClone).setContainer(null);
+        } else if (namedObjClone instanceof Port) {
+            ((Port) namedObjClone).setContainer(null);
+        }
+
         return results.toString();
     }
 
@@ -632,8 +655,8 @@ public class Configuration extends CompositeEntity implements
      */
     public static void closeAllTableaux() throws IllegalActionException {
         // Based on code by Chad Berkley.
-        Configuration configuration = (Configuration) Configuration
-                .configurations().iterator().next();
+        Configuration configuration = Configuration.configurations().iterator()
+                .next();
         // Get the directory from the configuration.
         ModelDirectory directory = configuration.getDirectory();
         if (directory == null) {
@@ -656,7 +679,7 @@ public class Configuration extends CompositeEntity implements
      *  @return A list of configurations, where each element of the list
      *  is of type Configuration.
      */
-    public static List configurations() {
+    public static List<Configuration> configurations() {
         return _configurations;
     }
 
@@ -754,7 +777,13 @@ public class Configuration extends CompositeEntity implements
                 // avoid popping up two MessageHandlers.
                 boolean calledMessageHandler = false;
                 try {
-                    if (effigy.getContainer() instanceof ModelDirectory) {
+                    if (effigy == null) {
+                        // Coverity Scan 1352685 warned that effigy can be null.
+                        throw new InternalErrorException(
+                                "createPrimaryTableau() "
+                                        + "called with a null Effigy?");
+                    } else if (effigy
+                            .getContainer() instanceof ModelDirectory) {
                         // This is the master.
                         // Calling setContainer() = null will exit, so
                         // we display the error message here.
@@ -767,14 +796,15 @@ public class Configuration extends CompositeEntity implements
                             if (((PtolemyEffigy) effigy).getModel() != null) {
                                 MessageHandler.error("Failed to open "
                                         + ((PtolemyEffigy) effigy).getModel()
-                                                .getFullName(), ex);
+                                                .getFullName(),
+                                        ex);
                             } else {
-                                MessageHandler.error(
-                                        "Failed to open " + effigy, ex);
+                                MessageHandler.error("Failed to open " + effigy,
+                                        ex);
                             }
                             calledMessageHandler = true;
                         } else {
-                            // Opening a link to a non-existant .htm file
+                            // Opening a link to a non-existent .htm file
                             // might get us to here because the effigy is
                             // not a PtolemyEffigy.
                             //
@@ -786,8 +816,10 @@ public class Configuration extends CompositeEntity implements
                             // from the exception.
                             // In addition, we cannot catch HeadlessExceptions.
 
-                            MessageHandler.error("Failed to open "
-                                    + effigy.identifier.getExpression(), ex);
+                            MessageHandler.error(
+                                    "Failed to open "
+                                            + effigy.identifier.getExpression(),
+                                    ex);
                             calledMessageHandler = true;
                         }
                     }
@@ -810,8 +842,8 @@ public class Configuration extends CompositeEntity implements
                             .objectToSourceFileName(object);
 
                     try {
-                        URL toRead = getClass().getClassLoader().getResource(
-                                filename);
+                        URL toRead = getClass().getClassLoader()
+                                .getResource(filename);
 
                         // If filename was not found in the classpath, then search
                         // each element in the classpath for a directory named
@@ -819,21 +851,21 @@ public class Configuration extends CompositeEntity implements
                         // by Eclipse for Kepler.  See also TextEffigy.newTextEffigy()
                         if (toRead == null) {
                             toRead = ClassUtilities.sourceResource(filename);
-                            System.out.println("Configuration: sourceResource "
-                                    + filename + " " + toRead);
+                            //  System.out.println("Configuration: sourceResource "
+                            //        + filename + " " + toRead);
                         }
 
                         if (toRead != null) {
                             return openModel(null, toRead,
                                     toRead.toExternalForm());
                         } else {
-                            MessageHandler
-                                    .error("Cannot find a tableau or the source code for "
+                            MessageHandler.error(
+                                    "Cannot find a tableau or the source code for "
                                             + object.getFullName());
                         }
                     } catch (Exception exception) {
-                        MessageHandler.error(
-                                "Failed to open the source code for "
+                        MessageHandler
+                                .error("Failed to open the source code for "
                                         + object.getFullName(), exception);
                     }
                 }
@@ -859,10 +891,7 @@ public class Configuration extends CompositeEntity implements
      *  @return An effigy, or null if none can be found.
      */
     public static Effigy findEffigy(NamedObj model) {
-        Iterator configurations = _configurations.iterator();
-
-        while (configurations.hasNext()) {
-            Configuration configuration = (Configuration) configurations.next();
+        for (Configuration configuration : _configurations) {
             Effigy effigy = configuration.getEffigy(model);
 
             if (effigy != null) {
@@ -893,9 +922,9 @@ public class Configuration extends CompositeEntity implements
      */
     public Object getStringParameterAsClass(String parameterName,
             Class[] constructorParameterTypes,
-            Object[] constructorParameterClass) throws ClassNotFoundException,
-            IllegalAccessException, IllegalActionException,
-            InstantiationException,
+            Object[] constructorParameterClass)
+            throws ClassNotFoundException, IllegalAccessException,
+            IllegalActionException, InstantiationException,
             java.lang.reflect.InvocationTargetException, NoSuchMethodException {
         // Deal with the PDF Action first.
         StringParameter classNameParameter = (StringParameter) getAttribute(
@@ -957,8 +986,8 @@ public class Configuration extends CompositeEntity implements
      *   should not be thrown).
      */
     @Override
-    public void openAnInstance(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    public void openAnInstance(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         // This could be called openInstance(), but we don't want to
         // have a dependency to Tableau in ModalController and ModalRefinement.
 
@@ -981,8 +1010,8 @@ public class Configuration extends CompositeEntity implements
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openInstance(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
+    public Tableau openInstance(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
         return openInstance(entity, null);
     }
 
@@ -1100,8 +1129,8 @@ public class Configuration extends CompositeEntity implements
             effigy = factory.createEffigy(directory, base, in);
 
             if (effigy == null) {
-                MessageHandler
-                        .error("Unsupported file type or connection not available: "
+                MessageHandler.error(
+                        "Unsupported file type or connection not available: "
                                 + in.toExternalForm());
                 return null;
             }
@@ -1171,9 +1200,11 @@ public class Configuration extends CompositeEntity implements
      *  @exception NameDuplicationException If a name conflict occurs (this
      *   should not be thrown).
      */
-    public Tableau openModel(NamedObj entity) throws IllegalActionException,
-            NameDuplicationException {
-        return openModel(entity, null);
+    public Tableau openModel(NamedObj entity)
+            throws IllegalActionException, NameDuplicationException {
+        NamedObj container = entity.getContainer();
+        Effigy containerEffigy = getEffigy(container);
+        return openModel(entity, containerEffigy);
     }
 
     /** Open the specified Ptolemy II model. If a model already has
@@ -1221,24 +1252,29 @@ public class Configuration extends CompositeEntity implements
     /** If the argument is not null, then throw an exception.
      *  This ensures that the object is always at the top level of
      *  a hierarchy.
-     *  @param container The proposed container.
+     *  @param container The proposed container.  If the proposed
+     *  container is null, then super.setContainer(null) is invoked,
+     *  which may free up memory.
      *  @exception IllegalActionException If the argument is not null.
+     *  @exception NameDuplicationException If thrown by a parent class.
      */
     @Override
     public void setContainer(CompositeEntity container)
-            throws IllegalActionException {
+            throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             throw new IllegalActionException(this,
                     "Configuration can only be at the top level "
                             + "of a hierarchy.");
         }
+        super.setContainer(null);
     }
 
     /** Find all instances of Tableau deeply contained in the directory
      *  and call show() on them.  If there is no directory, then do nothing.
      */
     public void showAll() {
-        final ModelDirectory directory = (ModelDirectory) getEntity(_DIRECTORY_NAME);
+        final ModelDirectory directory = (ModelDirectory) getEntity(
+                _DIRECTORY_NAME);
 
         if (directory == null) {
             return;
@@ -1252,6 +1288,16 @@ public class Configuration extends CompositeEntity implements
 
     /** The name of the model directory. */
     static public final String _DIRECTORY_NAME = "directory";
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         package protected methods         ////
+
+    /** Remove the configuration from the list of configurations.
+     *  @param configuration The configuration to be removed.
+     */
+    void removeConfiguration(Configuration configuration) {
+        _configurations.remove(configuration);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1308,8 +1354,7 @@ public class Configuration extends CompositeEntity implements
         // This will fail in an applet.
         field.setAccessible(true);
         Class fieldType = field.getType();
-        if (!fieldType.isPrimitive()
-                && field.get(namedObj) != null
+        if (!fieldType.isPrimitive() && field.get(namedObj) != null
                 && !Modifier.isStatic(field.getModifiers())
                 && !Modifier.isStatic(fieldType.getModifiers()) //matlab.Engine.ConversionParameters.
                 /*&& !fieldType.isArray()*/
@@ -1344,12 +1389,12 @@ public class Configuration extends CompositeEntity implements
                 String message = "";
                 if (Class.forName("ptolemy.kernel.util.NamedObj")
                         .isAssignableFrom(fieldType)) {
-                    NamedObj fieldNamedObj = (NamedObj) Class.forName(
-                            "ptolemy.kernel.util.NamedObj").cast(
-                            field.get(namedObj));
-                    NamedObj cloneNamedObj = (NamedObj) Class.forName(
-                            "ptolemy.kernel.util.NamedObj").cast(
-                            field.get(namedObjClone));
+                    NamedObj fieldNamedObj = (NamedObj) Class
+                            .forName("ptolemy.kernel.util.NamedObj")
+                            .cast(field.get(namedObj));
+                    NamedObj cloneNamedObj = (NamedObj) Class
+                            .forName("ptolemy.kernel.util.NamedObj")
+                            .cast(field.get(namedObjClone));
                     message = "Field: " + fieldNamedObj.workspace().getName()
                             + " Clone: " + cloneNamedObj.workspace().getName();
                 }
@@ -1357,8 +1402,8 @@ public class Configuration extends CompositeEntity implements
                 // Determine what code should go in clone(W)
                 String assignment = field.getName();
                 // FIXME: extend this to more types
-                if (Class.forName("ptolemy.kernel.Port").isAssignableFrom(
-                        fieldType)) {
+                if (Class.forName("ptolemy.kernel.Port")
+                        .isAssignableFrom(fieldType)) {
                     assignment = ".getPort(\"" + assignment + "\")";
                     //                       } else if (fieldType.isInstance( new Attribute())) {
                 } else if (Class.forName("ptolemy.kernel.util.Attribute")
@@ -1384,11 +1429,8 @@ public class Configuration extends CompositeEntity implements
                             + "or null?  */ " + assignment;
                 }
 
-                String shortClassName = field
-                        .getType()
-                        .getName()
-                        .substring(
-                                field.getType().getName().lastIndexOf(".") + 1);
+                String shortClassName = field.getType().getName().substring(
+                        field.getType().getName().lastIndexOf(".") + 1);
 
                 //new Exception("Configuration._checkCloneField()").printStackTrace();
 
@@ -1514,8 +1556,8 @@ public class Configuration extends CompositeEntity implements
                 // the class Effigy always has a URI attribute, but
                 // the value might not get set.
                 if (uri == null) {
-                    effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                            entity));
+                    effigy.identifier
+                            .setExpression(_effigyIdentifier(effigy, entity));
                 } else {
                     effigy.identifier.setExpression(uri.toString());
                 }
@@ -1523,6 +1565,13 @@ public class Configuration extends CompositeEntity implements
                 if (container == null) {
                     // Put the effigy into the directory
                     ModelDirectory directory = getDirectory();
+                    if (directory == null) {
+                        throw new NullPointerException("While trying to open "
+                                + entity + " in " + container
+                                + ", getDirectory() returned null?  "
+                                + "Perhaps an entity of name \""
+                                + _DIRECTORY_NAME + "\" was not created?");
+                    }
                     effigy.setName(directory.uniqueName(entity.getName()));
                     effigy.setContainer(directory);
                 } else {
@@ -1578,8 +1627,8 @@ public class Configuration extends CompositeEntity implements
                     }
                 }
 
-                effigy.identifier.setExpression(_effigyIdentifier(effigy,
-                        entity));
+                effigy.identifier
+                        .setExpression(_effigyIdentifier(effigy, entity));
 
                 return createPrimaryTableau(effigy);
             }
@@ -1606,5 +1655,5 @@ public class Configuration extends CompositeEntity implements
     ////                         private variables                 ////
 
     /** The list of configurations that have been created. */
-    private static List _configurations = new LinkedList();
+    private static LinkedList<Configuration> _configurations = new LinkedList<Configuration>();
 }
