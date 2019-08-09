@@ -1,6 +1,6 @@
 /* A token that contains a set of label/token pairs.
 
- Copyright (c) 1997-2014 The Regents of the University of California.
+ Copyright (c) 1997-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -127,6 +127,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
 
             _initialize(labels, values);
         } else {
+            if (init.trim().equals("{}")) {
+                throw new IllegalActionException("A record token cannot be"
+                        + " created from the expression '" + init
+                        + "' because '{}' could be either an empty record"
+                        + " or an empty array.  To create an empty record, "
+                        + "use 'emptyRecord()'.");
+
+            }
             throw new IllegalActionException("A record token cannot be"
                     + " created from the expression '" + init + "'");
         }
@@ -378,8 +386,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
      *  labels determined by the java.lang.String.compareTo() method.
      *
      *  <p>Record labels that contain any non-Java identifier characters
-     *  are surrounded with double quotes. Quotes within label strings are
-     *  escaped using a backslash.
+     *  or contain only numbers are surrounded with double quotes.
+     *  Quotes within label strings are escaped using a backslash.
      *  </p>
      *
      *  @return A String beginning with "{" that contains label and value
@@ -387,6 +395,14 @@ public class RecordToken extends AbstractNotConvertibleToken {
      */
     @Override
     public String toString() {
+        // RecordToken.toString() now outputs 'emptyRecord()' for a
+        // RecordToken of length zero.  Formerly, it outputted '{}'.
+        // This could cause serious trouble.  However, we need it for
+        // handling empty JavaScript objects returned by the CapeCode
+        // WebServer accessor.
+        if (length() == 0) {
+            return "emptyRecord()";
+        }
         Object[] labelsObjects = _fields.keySet().toArray();
 
         // order the labels
@@ -760,7 +776,8 @@ public class RecordToken extends AbstractNotConvertibleToken {
     // This method is called by the constructor.
     private void _initialize(String[] labels, Token[] values)
             throws IllegalActionException {
-        if (labels == null || values == null || labels.length != values.length) {
+        if (labels == null || values == null
+                || labels.length != values.length) {
             throw new IllegalActionException("RecordToken: the labels or "
                     + "the values array do not have the same length, "
                     + "or is null.");
