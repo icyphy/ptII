@@ -1,6 +1,6 @@
 /* A subscriber to exceptions that are handled by CatchExceptionAttribute.
 
- Copyright (c) 2014 The Regents of the University of California.
+ Copyright (c) 2014-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -44,9 +44,7 @@ package ptolemy.actor.lib;
  * {@link ptolemy.actor.lib.CatchExceptionAttribute}, the client is
  * the Ptolemy developer (defines commands by dragging and dropping
  * attributes into the model), and the receiver is a Ptolemy entity
- * (such as an attribute that writes to a file, or an actor such as
- * {@link org.ptolemy.ptango.lib.HttpActor} which sends a retry
- * message upon exception with restart policy.
+ * (such as an attribute that writes to a file.
  *
  * @author Elizabeth Latronico
  * @version $Id: ExceptionSubscriber.java 69467 2014-06-29 14:35:19Z beth@berkeley.edu$

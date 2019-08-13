@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2018 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -136,23 +136,19 @@ public class BasicManhattanRouter implements ManhattanRouter {
 
         // Infer direction in which the edge has to leave the head
         // connection point
-        int headDir = _getManhattanDirection(
-                radAngle,
-                distance,
-                true,
-                headSite.hasNormal() ? CanvasUtilities.getDirection(headSite
-                        .getNormal()) : -1);
+        int headDir = _getManhattanDirection(radAngle, distance, true,
+                headSite.hasNormal()
+                        ? CanvasUtilities.getDirection(headSite.getNormal())
+                        : -1);
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
         headPt = headSite.getPoint(currentContext);
 
         // Infer direction in which the edge has to leave the tail
         // connection point
-        int tailDir = _getManhattanDirection(
-                radAngle,
-                distance,
-                false,
-                tailSite.hasNormal() ? CanvasUtilities.getDirection(tailSite
-                        .getNormal()) : -1);
+        int tailDir = _getManhattanDirection(radAngle, distance, false,
+                tailSite.hasNormal()
+                        ? CanvasUtilities.getDirection(tailSite.getNormal())
+                        : -1);
         tailSite.setNormal(CanvasUtilities.getNormal(tailDir));
         tailPt = tailSite.getPoint(currentContext);
 
@@ -295,8 +291,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (yDiff > 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX(), head.getY()
-                            + MINDIST);
+                    point = new Point2D.Double(head.getX(),
+                            head.getY() + MINDIST);
                 } else if (xDiff > 0 && tailDir == SwingConstants.EAST
                         || xDiff < 0 && tailDir == SwingConstants.WEST) {
                     //System.out.println("completing 90");
@@ -305,8 +301,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     double pos = Math.max(head.getY(), tail.getY()) + MINDIST;
                     point = new Point2D.Double(head.getX(), pos);
                 } else {
-                    point = new Point2D.Double(head.getX(), head.getY() - yDiff
-                            / 2);
+                    point = new Point2D.Double(head.getX(),
+                            head.getY() - yDiff / 2);
                 }
 
                 if (xDiff > 0) {
@@ -325,8 +321,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
             } else {
                 if (yDiff < 0) {
                     //System.out.println("routing backwards");
-                    point = new Point2D.Double(head.getX(), head.getY()
-                            - MINDIST);
+                    point = new Point2D.Double(head.getX(),
+                            head.getY() - MINDIST);
                 } else if (xDiff > 0 && tailDir == SwingConstants.EAST
                         || xDiff < 0 && tailDir == SwingConstants.WEST) {
                     //System.out.println("completing 90");
@@ -335,8 +331,8 @@ public class BasicManhattanRouter implements ManhattanRouter {
                     double pos = Math.min(head.getY(), tail.getY()) - MINDIST;
                     point = new Point2D.Double(head.getX(), pos);
                 } else {
-                    point = new Point2D.Double(head.getX(), head.getY() - yDiff
-                            / 2);
+                    point = new Point2D.Double(head.getX(),
+                            head.getY() - yDiff / 2);
                 }
 
                 if (xDiff > 0) {
@@ -346,7 +342,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
             }
         } else {
-            throw new RuntimeException("unknown dir");
+            throw new RuntimeException("unknown direction: " + headDir);
         }
 
         Polyline2D route = _route(point, dir, tail, tailDir);

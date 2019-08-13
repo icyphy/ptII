@@ -1,6 +1,6 @@
 /* A class that represents model time.
 
- Copyright (c) 2004-2015 The Regents of the University of California.
+ Copyright (c) 2004-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -160,7 +160,7 @@ public class Time implements Comparable {
      */
     public Time(Director director, long timeValue) {
         _director = director;
-        _timeValue = new BigInteger(Long.toString(timeValue));
+        _timeValue = BigInteger.valueOf(timeValue);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -632,15 +632,34 @@ public class Time implements Comparable {
         // signal precision and
         // (-1)^(sign)x(1+significand)x2^(exponent-1023)
         // for double presision.
-        int minimumNumberOfBits = (int) Math.floor(-1
-                * ExtendedMath.log2(_timeResolution())) + 1;
+        int minimumNumberOfBits = (int) Math
+                .floor(-1 * ExtendedMath.log2(_timeResolution())) + 1;
         int maximumGain = 52 - minimumNumberOfBits;
 
         return ExtendedMath.DOUBLE_PRECISION_SIGNIFICAND_ONLY
                 * Math.pow(2.0, maximumGain);
     }
 
-    /** Return a new time object whose time value is decreased by the
+    /** Return a new Time object whose value equals the argument,
+     *  which is interpreted in milliseconds.
+     *  @param director The director with which this time object is associated.
+     *  @param milliseconds The time in ms.
+     * @return
+     */
+    public static Time milliseconds(Director director, long milliseconds) {
+        // Handle the default case efficiently and exactly.
+        double resolution = director.getTimeResolution();
+        if (resolution == 10E-10) {
+            return new Time(director, BigInteger.valueOf(milliseconds)
+                    .multiply(BigInteger.valueOf(10000000)));
+        }
+        // Resolution in ms.
+        double resolutionMs = resolution * 1000;
+        long multiple = Math.round(milliseconds / resolutionMs);
+        return new Time(director, multiple);
+    }
+
+    /** Return a new Time object whose time value is decreased by the
      *  given double value. Quantization is performed on both the
      *  timeValue argument and the result.
      *  @param timeValue The amount of time decrement.
@@ -683,40 +702,40 @@ public class Time implements Comparable {
 
         // Note: a time value of a Time object can be either positive infinite
         // or negative infinite.
-        if (time._isNegativeInfinite ) {
-            if (_isNegativeInfinite ) {
+        if (time._isNegativeInfinite) {
+            if (_isNegativeInfinite) {
                 throw new ArithmeticException(
-                    "Subtracting negative infinity from negative infinity yields an invalid time.");
+                        "Subtracting negative infinity from negative infinity yields an invalid time.");
             }
-            return( Double.POSITIVE_INFINITY );
+            return (Double.POSITIVE_INFINITY);
         }
 
-        if (time._isPositiveInfinite ) {
-            if (_isPositiveInfinite ) {
+        if (time._isPositiveInfinite) {
+            if (_isPositiveInfinite) {
                 throw new ArithmeticException(
-                    "Subtracting positive infinity from positive infinity yields an invalid time.");
+                        "Subtracting positive infinity from positive infinity yields an invalid time.");
             }
-            return( Double.NEGATIVE_INFINITY );
+            return (Double.NEGATIVE_INFINITY);
         }
 
-        if (_isPositiveInfinite ) {
-            return( Double.POSITIVE_INFINITY );
+        if (_isPositiveInfinite) {
+            return (Double.POSITIVE_INFINITY);
         }
 
-        if (_isNegativeInfinite ) {
-            return( Double.NEGATIVE_INFINITY );
+        if (_isNegativeInfinite) {
+            return (Double.NEGATIVE_INFINITY);
         }
 
         // Handle case of different resolutions.
         final double resolution = _timeResolution();
-        if (resolution != time._timeResolution() ) {
+        if (resolution != time._timeResolution()) {
             final double thisValue = getDoubleValue();
             final double thatValue = time.getDoubleValue();
-            return( thisValue - thatValue );
+            return (thisValue - thatValue);
         }
 
         final BigInteger difference = _timeValue.subtract(time._timeValue);
-        return( DoubleUtilities.bigToDouble(difference) * resolution );
+        return (DoubleUtilities.bigToDouble(difference) * resolution);
     }
 
     /** Return the string representation of this time object.
@@ -803,16 +822,14 @@ public class Time implements Comparable {
         long multiple = Math.round(value / precision);
 
         if (Math.abs(multiple * precision - value) > precision) {
-            throw new IllegalActionException(
-                    "The given time value "
-                            + value
-                            + " is too large to be converted precisely to an "
-                            + "instance of Time with the specified time resolution of "
-                            + precision
-                            + ". The maximum value that can always be precisely converted is "
-                            + maximumAccurateValueAsDouble()
-                            + ". A number close to your value that can be converted is "
-                            + multiple * precision);
+            throw new IllegalActionException("The given time value " + value
+                    + " is too large to be converted precisely to an "
+                    + "instance of Time with the specified time resolution of "
+                    + precision
+                    + ". The maximum value that can always be precisely converted is "
+                    + maximumAccurateValueAsDouble()
+                    + ". A number close to your value that can be converted is "
+                    + multiple * precision);
         }
 
         return BigInteger.valueOf(multiple);

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2005 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,40 +55,47 @@ public interface Interactor extends LayerListener, LayerMotionListener {
      * respectively) are passed to the interactor without calling
      * this method to check. The mouse-entered event is called only
      * if isMotionEnabled() returns true.
+     * @param event The event
      */
     public boolean accept(LayerEvent event);
 
     /** Get the mouse filter used by this interactor to
      * decide whether to accept an event. The result may
      * be null.
+     * @return The mouse filter
      */
     public MouseFilter getMouseFilter();
 
     /** Test the consuming flag of this interactor. If this flag is
      * set, the interactor expects is indicating that all events
      * that it will accept should be consumed.
+     * @return true if it is consuming
      */
     public boolean isConsuming();
 
     /** Test the enabled flag of this interactor. If true, the
      * interactor is prepared to handle layer events of all kinds.
+     * @return true if the interactor is enabled
      */
     public boolean isEnabled();
 
     /** Test the motion enabled flag of this interactor. If true, the
      * interactor is prepared to handle layer motion events.
+     * @return true if the interactor is motion enabled
      */
     public boolean isMotionEnabled();
 
     /** Set the enabled flag of this interactor.  If true, the
      * interactor is prepared to handle layer events. The default
      * setting of this flag should be <b>true</b>.
+     * @param flag the enabled flag
      */
     public void setEnabled(boolean flag);
 
     /** Set the mouse filter of this interactor. If a filter is
      * set with this method, the interactor is expected to use the
      * filter within its accept() method.
+     * @param filter the mouse filter.
      */
     public void setMouseFilter(MouseFilter filter);
 }

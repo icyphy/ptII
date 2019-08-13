@@ -4,7 +4,7 @@ Bundle-Name: Ptolemy Actor GUI testing
 Bundle-SymbolicName: org.ptolemy.actor.gui.test
 Bundle-Version: 10.1.0.qualifier
 Bundle-Vendor: Ptolemy Project, Berkeley, California
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.ptolemy.testsupport;bundle-version="10.1.0",
  ptolemy.core;bundle-version="10.1.0",
  ptolemy.actor.lib;bundle-version="10.1.0",

@@ -1,6 +1,6 @@
 /* Top-level window for Ptolemy models with a menubar and status bar.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2018 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -108,10 +108,6 @@ public abstract class PtolemyFrame extends TableauFrame {
         extensions.add("moml");
         // We use a constructor that takes a list because
         // _fileFilter is declared in Top to be a javax.swing.filechooser.FileFilter.
-        // Thus, we can't call diva.gui.ExtensionFileFilter.addExtension();
-        // Note that as of Java 1.6, there is a FileNameExtensionFilter which
-        // replaces diva.gui.ExtensionFileFilter, see
-        //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
         _fileFilter = new ExtensionFilenameFilter(extensions);
 
         setModel(model);
@@ -156,17 +152,16 @@ public abstract class PtolemyFrame extends TableauFrame {
     public Effigy getEffigy() {
         Effigy originalEffigy = super.getEffigy();
         if (originalEffigy instanceof PtolemyEffigy) {
-            if (!getTableau().isMaster()
-                    && !originalEffigy.masterEffigy().equals(
-                            originalEffigy.topEffigy())
-                            // GT View can set the Effigy as non-persistent so
-                            // that the model can be run and the user is not
-                            // prompted to save the optimized version.  To
-                            // replicate, run $PTII/bin/vergil
-                            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
-                            // and then close the optimized model.  You should
-                            // not be prompted for save.
-                            && originalEffigy.isPersistent()) {
+            if (!getTableau().isMaster() && !originalEffigy.masterEffigy()
+                    .equals(originalEffigy.topEffigy())
+            // GT View can set the Effigy as non-persistent so
+            // that the model can be run and the user is not
+            // prompted to save the optimized version.  To
+            // replicate, run $PTII/bin/vergil
+            // ~/ptII/ptolemy/actor/gt/demo/ConstOptimization/ConstOptimization.xml
+            // and then close the optimized model.  You should
+            // not be prompted for save.
+                    && originalEffigy.isPersistent()) {
                 // The tableau is no longer the master, perhaps there
                 // was a deletion.  Hence, the original effigy should
                 // no longer be the associated effigy.
@@ -179,8 +174,8 @@ public abstract class PtolemyFrame extends TableauFrame {
                 try {
                     PtolemyEffigy newEffigy = new PtolemyEffigy(
                             (CompositeEntity) originalEffigy.getContainer(),
-                            originalEffigy.getContainer().uniqueName(
-                                    _model.getName()));
+                            originalEffigy.getContainer()
+                                    .uniqueName(_model.getName()));
                     newEffigy.setModel(_model);
                     newEffigy.setModified(originalEffigy.isModified());
                     getTableau().setContainer(newEffigy);
@@ -266,12 +261,14 @@ public abstract class PtolemyFrame extends TableauFrame {
             System.out.println("PtolemyFrame._close() : " + this.getName());
         }
 
-        PtolemyEffigy ptolemyEffigy = (PtolemyEffigy) getEffigy();
+        // If we generated documentation and are closing a DocEffigy,
+        // then getEffigy() will return an Effigy, not a PtolemyEffigy.
+        Effigy effigy = getEffigy();
 
         // The effigy should not be null, but if the window has
         // already been closed somehow, then it will be.
-        if (ptolemyEffigy != null) {
-            List tableaux = ptolemyEffigy.entityList(Tableau.class);
+        if (effigy != null) {
+            List tableaux = effigy.entityList(Tableau.class);
             Iterator tableauxIterator = tableaux.iterator();
 
             while (tableauxIterator.hasNext()) {
@@ -429,8 +426,8 @@ public abstract class PtolemyFrame extends TableauFrame {
             // The problem here is that with FileDialog, we can't add the
             // query as an accessory like we can with JFileChooser.  So, we
             // pop up a check box dialog before bringing up the FileDialog.
-            ComponentDialog dialog = new ComponentDialog(this,
-                    "Save Submodel?", _query);
+            ComponentDialog dialog = new ComponentDialog(this, "Save Submodel?",
+                    _query);
             String button = dialog.buttonPressed();
 
             if (button.equals("Cancel")) {

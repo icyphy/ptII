@@ -113,6 +113,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Create a new Graphics pane with the passed Layer
      * as the main graphics pane.
+     * @param foregroundLayer The foreground layer
      */
     public GraphicsPane(FigureLayer foregroundLayer) {
         // Background events
@@ -145,31 +146,41 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Get the background event layer
+    /** Get the background event layer.
+     * @return The layer.
+     * @see #setBackgroundEventLayer(EventLayer)
      */
     public EventLayer getBackgroundEventLayer() {
         return _backgroundEventLayer;
     }
 
-    /** Get the background layer
+    /** Get the background layer.
+     * @return The layer.
+     * @see #setBackgroundLayer(CanvasLayer)
      */
     public CanvasLayer getBackgroundLayer() {
         return _backgroundLayer;
     }
 
-    /** Get the foreground layer
+    /** Get the foreground layer.
+     * @return The layer.
+     * @see #setForegroundLayer(FigureLayer)
      */
     public FigureLayer getForegroundLayer() {
         return _foregroundLayer;
     }
 
-    /** Get the overlay layer
+    /** Get the overlay layer.
+     * @return The layer.
+     * @see #setOverlayLayer(OverlayLayer)
      */
     public OverlayLayer getOverlayLayer() {
         return _overlayLayer;
     }
 
-    /** Get the foreground event layer
+    /** Get the foreground event layer.
+     * @return The layer.
+     * @see #setForegroundEventLayer(EventLayer)
      */
     public EventLayer getForegroundEventLayer() {
         return _foregroundEventLayer;
@@ -233,7 +244,9 @@ public class GraphicsPane extends CanvasPane {
         };
     }
 
-    /** Set the background event layer
+    /** Set the background event layer.
+     *  @param l The layer.
+     *  @see #getBackgroundEventLayer()
      */
     public void setBackgroundEventLayer(EventLayer l) {
         _nullifyLayer(_backgroundEventLayer);
@@ -242,7 +255,9 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Set the background figure layer
+    /** Set the background figure layer.
+     *  @param l The layer.
+     *  @see #getBackgroundLayer()
      */
     public void setBackgroundLayer(CanvasLayer l) {
         _nullifyLayer(_backgroundLayer);
@@ -251,7 +266,9 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Set the foreground figure layer
+    /** Set the foreground figure layer.
+     *  @param l The layer.
+     *  @see #getForegroundLayer()
      */
     public void setForegroundLayer(FigureLayer l) {
         _nullifyLayer(_foregroundLayer);
@@ -260,7 +277,9 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Set the overlay layer
+    /** Set the overlay layer.
+     *  @param l The layer.
+     *  @see #getOverlayLayer()
      */
     public void setOverlayLayer(OverlayLayer l) {
         _nullifyLayer(_overlayLayer);
@@ -269,7 +288,9 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Set the foreground event layer
+    /** Set the foreground event layer.
+     *  @param l The layer.
+     *  @see #getForegroundEventLayer()
      */
     public void setForegroundEventLayer(EventLayer l) {
         _nullifyLayer(_foregroundEventLayer);
@@ -278,7 +299,7 @@ public class GraphicsPane extends CanvasPane {
         _rebuildLayerArray();
     }
 
-    /** Rebuild the array of layers for use by iterators
+    /** Rebuild the array of layers for use by iterators.
      */
     protected void _rebuildLayerArray() {
         _layers = new CanvasLayer[5];

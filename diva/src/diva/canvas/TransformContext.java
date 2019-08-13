@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -70,9 +70,10 @@ public class TransformContext {
 
     /** Create a transform context associated with the
      * given display component.
+     * @param component The given display component
      */
     public TransformContext(CanvasComponent component) {
-        this._component = component;
+        _component = component;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -82,6 +83,7 @@ public class TransformContext {
      * context of this context. If the ancestor is not valid, then
      * all of the contexts from this one up to the ancestor
      * are marked invalid.
+     * @param ancestor The ancestor context
      */
     public void checkCacheValid(TransformContext ancestor) {
         TransformContext c = this;
@@ -93,6 +95,7 @@ public class TransformContext {
     }
 
     /** Concatenate this transform context with the given transform.
+     * @param at The transform
      */
     public void concatenate(AffineTransform at) {
         _transform.concatenate(at);
@@ -101,6 +104,7 @@ public class TransformContext {
 
     /** Get the component that this context is associated with. The
      * component is set in the constructor and cannot be changed.
+     * @return The component
      */
     public CanvasComponent getComponent() {
         return _component;
@@ -108,6 +112,7 @@ public class TransformContext {
 
     /** Get the transform from parent coordinates into
      * local coordinates.
+     * @return the transform
      */
     public AffineTransform getInverseTransform() {
         if (_inverseTransform == null) {
@@ -124,6 +129,7 @@ public class TransformContext {
 
     /** Get the parent transform context of this one, or null
      * if this context is at the root of the transform tree.
+     * @return The parent transform
      */
     public TransformContext getParent() {
         if (_component.getParent() == null) {
@@ -134,6 +140,7 @@ public class TransformContext {
     }
 
     /** Get the transform from local coordinates into screen coordinates.
+     * @return The transform
      */
     public AffineTransform getScreenTransform() {
         if (!_cacheValid) {
@@ -145,14 +152,21 @@ public class TransformContext {
 
     /** Get the transform of this context. This is the transform from
      * this context into the parent's context.
+     * @return The transform
+     * @see #setTransform(AffineTransform)
+     * @see #getTransform(TransformContext)
      */
     public AffineTransform getTransform() {
         return _transform;
     }
 
     /** Get the transform of this context, relative to the given context.
-     *  This is the transform from this context into the given context, which
-     *  must enclose this one.
+     * This is the transform from this context into the given context, which
+     * must enclose this one.
+     * @param context The context
+     * @return The transform
+     * @see #setTransform(AffineTransform)
+     * @see #getTransform()
      */
     public AffineTransform getTransform(TransformContext context) {
         if (context == this) {
@@ -182,6 +196,7 @@ public class TransformContext {
      * is incremented whenever the transform changes, so can be
      * used by client components to figure out when to update cached
      * data based upon the transform.
+     * @return The version number of the transform context.
      */
     public int getVersion() {
         return _version;
@@ -198,12 +213,14 @@ public class TransformContext {
     }
 
     /** Test if the cache is valid.
+     *  @return true if the cache is valid.
      */
     public boolean isCacheValid() {
         return _cacheValid;
     }
 
     /** Push this transform onto the graphics stack.
+     *  @param g The graphics context
      */
     public void push(Graphics2D g) {
         _graphicsTransform = g.getTransform();
@@ -211,12 +228,14 @@ public class TransformContext {
     }
 
     /** Pop this transform off the graphics stack.
+     *  @param g The graphics context
      */
     public void pop(Graphics2D g) {
         g.setTransform(_graphicsTransform);
     }
 
     /** Pre-concatenate this transform context with the given transform.
+     *  @param at The given transform
      */
     public void preConcatenate(AffineTransform at) {
         _transform.preConcatenate(at);
@@ -230,6 +249,8 @@ public class TransformContext {
      * transforms.  Note that the transform may be remembered by this
      * context, so the caller must make sure that it will not be
      * subsequently modified.
+     * @param at The AffineTransform
+     * @see #getTransform()
      */
     public void setTransform(AffineTransform at) {
         _transform = at;
@@ -237,6 +258,8 @@ public class TransformContext {
     }
 
     /** Translate this context the given distance.
+     *  @param x The x distance to be translated
+     *  @param y The y distance to be translated
      */
     public void translate(double x, double y) {
         // It might be worth optimizing this by keep this transform around
@@ -258,8 +281,8 @@ public class TransformContext {
             _screenTransform = _transform;
         } else {
             CanvasComponent p = _component.getParent();
-            _screenTransform = new AffineTransform(p.getTransformContext()
-                    .getScreenTransform());
+            _screenTransform = new AffineTransform(
+                    p.getTransformContext().getScreenTransform());
             _screenTransform.concatenate(_transform);
         }
 

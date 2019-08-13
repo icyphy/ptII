@@ -62,8 +62,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class DateToken extends AbstractConvertibleToken implements
-        PartiallyOrderedToken {
+public class DateToken extends AbstractConvertibleToken
+        implements PartiallyOrderedToken {
 
     /** Construct a date token. The current time is used for the date,
      *  the default precision is milliseconds and the default time zone
@@ -185,9 +185,10 @@ public class DateToken extends AbstractConvertibleToken implements
                             + Integer.parseInt(nanos);
                     _precision = PRECISION_NANOSECOND;
                 } else {
-                    throw new IllegalActionException(null, "Unexpected date"
-                            + "format: " + dateString + " is not formatted as "
-                            + _SIMPLE_DATE_FORMAT);
+                    throw new IllegalActionException(null,
+                            "Unexpected date" + "format: " + dateString
+                                    + " is not formatted as "
+                                    + _SIMPLE_DATE_FORMAT);
                 }
 
                 String timeZoneOffset = value.substring(24, 29);
@@ -287,8 +288,8 @@ public class DateToken extends AbstractConvertibleToken implements
             return result;
         }
 
-        throw new IllegalActionException(notSupportedConversionMessage(token,
-                "date"));
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "date"));
     }
 
     /** Get the calendar instance representing this date.
@@ -459,8 +460,6 @@ public class DateToken extends AbstractConvertibleToken implements
         return calendar.get(Calendar.YEAR);
     }
 
-
-
     /** Check whether the value of this token is strictly greater than
      *  that of the argument token.  The argument and this token are
      *  converted to equivalent types, and then compared.  Generally,
@@ -527,8 +526,8 @@ public class DateToken extends AbstractConvertibleToken implements
             //throw new IllegalActionException(null, ex, notSupportedMessage(
             //        "isLessThan", this, rightArgument))
             //// and must do this instead:
-            throw new IllegalActionException("Cannot compare ScalarToken with "
-                    + rightArgument);
+            throw new IllegalActionException(
+                    "Cannot compare ScalarToken with " + rightArgument);
         }
         return isLessThan(rightDateToken);
     }
@@ -551,16 +550,16 @@ public class DateToken extends AbstractConvertibleToken implements
         if (typeInfo == CPO.SAME) {
             return _doIsLessThan(rightArgument);
         } else if (typeInfo == CPO.HIGHER) {
-            DateToken convertedArgument = (DateToken) getType().convert(
-                    rightArgument);
+            DateToken convertedArgument = (DateToken) getType()
+                    .convert(rightArgument);
             try {
                 return _doIsLessThan(convertedArgument);
             } catch (IllegalActionException ex) {
                 // If the type-specific operation fails, then create a
                 // better error message that has the types of the
                 // arguments that were passed in.
-                throw new IllegalActionException(null, ex, notSupportedMessage(
-                        "isLessThan", this, rightArgument));
+                throw new IllegalActionException(null, ex,
+                        notSupportedMessage("isLessThan", this, rightArgument));
             }
         } else if (typeInfo == CPO.LOWER) {
             return rightArgument.isGreaterThan(this);
@@ -673,8 +672,8 @@ public class DateToken extends AbstractConvertibleToken implements
      */
     @Override
     protected Token _add(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage("add", this,
-                rightArgument));
+        throw new IllegalActionException(null,
+                notSupportedMessage("add", this, rightArgument));
     }
 
     /** Subtract is not supported for Dates.
@@ -685,8 +684,8 @@ public class DateToken extends AbstractConvertibleToken implements
      */
     @Override
     protected Token _divide(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage("divide",
-                this, rightArgument));
+        throw new IllegalActionException(null,
+                notSupportedMessage("divide", this, rightArgument));
     }
 
     /** The isCloseTo() method brings both tokens to the same precision.
@@ -712,17 +711,18 @@ public class DateToken extends AbstractConvertibleToken implements
 
         DateToken dateToken = null;
         if (token instanceof StringToken) {
-            dateToken = new DateToken(((StringToken)token).stringValue());
+            dateToken = new DateToken(((StringToken) token).stringValue());
         } else if (token instanceof DateToken) {
             dateToken = (DateToken) token;
         } else {
-            throw new IllegalActionException(null, "Cannot compute _isCloseTo for DateToken and "
-                    + token.getType());
+            throw new IllegalActionException(null,
+                    "Cannot compute _isCloseTo for DateToken and "
+                            + token.getType());
         }
         long dateValue = dateToken._value;
         if (dateToken.getPrecision() > getPrecision()) {
             int precisionDifference = dateToken.getPrecision() - getPrecision();
-            dateValue = (long) (dateValue / (long) Math.pow(1000, precisionDifference));
+            dateValue = dateValue / (long) Math.pow(1000, precisionDifference);
         }
         if (Math.abs(dateValue - _value) < epsilon) {
             return BooleanToken.TRUE;
@@ -782,9 +782,9 @@ public class DateToken extends AbstractConvertibleToken implements
         Calendar left = getCalendarInstance();
         Calendar right = rightArgument.getCalendarInstance();
 
-        return BooleanToken
-                .getInstance(left.compareTo(right) < 0
-                        || (left.compareTo(right) == 0 && _getMicroAndNanoSeconds() < rightArgument
+        return BooleanToken.getInstance(
+                left.compareTo(right) < 0 || (left.compareTo(right) == 0
+                        && _getMicroAndNanoSeconds() < rightArgument
                                 ._getMicroAndNanoSeconds()));
     }
 
@@ -796,8 +796,8 @@ public class DateToken extends AbstractConvertibleToken implements
      */
     @Override
     protected Token _modulo(Token rightArgument) throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage("modulo",
-                this, rightArgument));
+        throw new IllegalActionException(null,
+                notSupportedMessage("modulo", this, rightArgument));
     }
 
     /** Multiply is not supported for Dates.
@@ -809,8 +809,8 @@ public class DateToken extends AbstractConvertibleToken implements
     @Override
     protected Token _multiply(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage("multiply",
-                this, rightArgument));
+        throw new IllegalActionException(null,
+                notSupportedMessage("multiply", this, rightArgument));
     }
 
     /** Subtract is not supported for Dates.
@@ -822,8 +822,8 @@ public class DateToken extends AbstractConvertibleToken implements
     @Override
     protected Token _subtract(Token rightArgument)
             throws IllegalActionException {
-        throw new IllegalActionException(null, notSupportedMessage("subtract",
-                this, rightArgument));
+        throw new IllegalActionException(null,
+                notSupportedMessage("subtract", this, rightArgument));
     }
 
     ///////////////////////////////////////////////////////////////////

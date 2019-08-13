@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2005 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -33,12 +33,18 @@ import java.util.NoSuchElementException;
  *
  * @author Michael Shilman
  * @version $Id$
+ * @since Ptolemy II 1.0
  */
 public class ArrayIterator extends IteratorAdapter {
+    // FIXME: Can't we use a java.util class here?
+
     private Object[] _array;
 
     private int _i;
 
+    /** Construct an array iterator.
+     *  @param array The array.
+     */
     public ArrayIterator(Object[] array) {
         _array = array;
         _i = 0;

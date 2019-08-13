@@ -50,8 +50,8 @@ import ptolemy.kernel.util.IllegalActionException;
  have multiple values at the same time point while keeping the values
  ordered."</p>
  </blockquote>
- <p>See: Haiyang Zheng. <a
-href="http://chess.eecs.berkeley.edu/pubs/303.html#in_browser"><i>Operational Semantics of Hybrid Systems</i></a>, PhD thesis,
+ <p>See: Haiyang Zheng.
+<a href="https://ptolemy.berkeley.edu/projects/chess/pubs/303.html#in_browser" target="_top"><i>Operational Semantics of Hybrid Systems</i></a>, PhD thesis,
  University of California, Berkeley, May, 2007.</p>
 
  @author Edward A. Lee

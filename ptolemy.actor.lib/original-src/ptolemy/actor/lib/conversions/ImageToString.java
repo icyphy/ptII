@@ -1,6 +1,6 @@
 /* An actor that converts an AWTImage to a base-64 encoded String.
 
- @Copyright (c) 2003-2016 The Regents of the University of California.
+ @Copyright (c) 2003-2018 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -46,7 +46,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageToBase64
@@ -56,7 +55,7 @@ import ptolemy.kernel.util.StringAttribute;
 
  @author Marten Lohstroh
  @version $Id$
- @since Ptolemy II 10.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */
@@ -73,7 +72,6 @@ public class ImageToString extends Converter {
     public ImageToString(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
 
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL); // FIXME: No image type available...
@@ -103,20 +101,29 @@ public class ImageToString extends Converter {
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        final RenderedImage im = getRenderedImage(
-                ((AWTImageToken) input.get(0)).getValue());
-        try {
-                OutputStream enc = Base64.getUrlEncoder().wrap(os);
-            ImageIO.write(im, "png", enc); // FIXME: Use parameter instead.
-            enc.close(); // Important, flushes the output buffer.
-            StringToken tk = new StringToken(os.toString(StandardCharsets.US_ASCII.name()));
-            output.send(0, tk);
-        } catch (final IOException ioe) {
-            throw new IllegalActionException(
-                    "Unable to convert image to base-64 string.");
+        final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        Object inputValue = input.get(0);
+        if (!(inputValue instanceof AWTImageToken)) {
+            throw new IllegalActionException(this,
+                    "The input value \"" + inputValue
+                            + "\" is not an AWTImageToken, " + "it is a "
+                            + inputValue.getClass());
+        } else {
+            RenderedImage image = getRenderedImage(
+                    ((AWTImageToken) inputValue).getValue());
+            try {
+                OutputStream encodedStream = Base64.getUrlEncoder()
+                        .wrap(outputStream);
+                ImageIO.write(image, "png", encodedStream); // FIXME: Use parameter instead.
+                encodedStream.close(); // Important, flushes the output buffer.
+                StringToken result = new StringToken(outputStream
+                        .toString(StandardCharsets.US_ASCII.name()));
+                output.send(0, result);
+            } catch (final IOException ioe) {
+                throw new IllegalActionException(this, ioe,
+                        "Unable to convert image to base-64 string.");
+            }
         }
-
     }
 
     /** Return false if the input port has no token, otherwise return

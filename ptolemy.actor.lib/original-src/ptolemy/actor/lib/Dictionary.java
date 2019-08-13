@@ -111,14 +111,15 @@ public class Dictionary extends TypedAtomicActor {
         triggerKeys = new TypedIOPort(this, "triggerKeys", true, false);
         new SingletonParameter(triggerKeys, "_showName").setExpression("true");
         new StringAttribute(triggerKeys, "_cardinal").setExpression("SOUTH");
-        
+
         triggerValues = new TypedIOPort(this, "triggerValues", true, false);
-        new SingletonParameter(triggerValues, "_showName").setExpression("true");
+        new SingletonParameter(triggerValues, "_showName")
+                .setExpression("true");
         new StringAttribute(triggerValues, "_cardinal").setExpression("SOUTH");
-        
+
         values = new TypedIOPort(this, "values", false, true);
-        new SingletonParameter(values, "_showName").setExpression("true");      
-        
+        new SingletonParameter(values, "_showName").setExpression("true");
+
         value = new TypedIOPort(this, "value", true, false);
         new SingletonParameter(value, "_showName").setExpression("true");
 
@@ -143,7 +144,7 @@ public class Dictionary extends TypedAtomicActor {
         updateFile = new Parameter(this, "updateFile");
         updateFile.setTypeEquals(BaseType.BOOLEAN);
         updateFile.setExpression("false");
-        
+
         loggingDirectory = new FileParameter(this, "loggingDirectory");
     }
 
@@ -253,13 +254,13 @@ public class Dictionary extends TypedAtomicActor {
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerKeys;
-    
+
     /** Upon receiving any token at this port, this actor will produce
      *  on the values output an array containing all the values of entries
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerValues;
-    
+
     /** Upon receiving any token at the triggerValues port, this actor
      *  will produce on this output an array containing all the values
      *  of entries in the dictionary. The order is arbitrary.
@@ -305,15 +306,14 @@ public class Dictionary extends TypedAtomicActor {
 
         try {
             // Set the type constraints.
-            newObject.readKeyArray.setTypeAtLeast(ArrayType
-                    .arrayOf(newObject.readKey));
+            newObject.readKeyArray
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.readKey));
             newObject.keys
                     .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
-            newObject.resultArray.setTypeAtLeast(ArrayType
-                    .arrayOf(newObject.value));
-            newObject.values.setTypeAtLeast(ArrayType
-                    .arrayOf(newObject.value));
+            newObject.resultArray
+                    .setTypeAtLeast(ArrayType.arrayOf(newObject.value));
+            newObject.values.setTypeAtLeast(ArrayType.arrayOf(newObject.value));
         } catch (IllegalActionException ex) {
             CloneNotSupportedException exception = new CloneNotSupportedException(
                     "Failed to clone " + getFullName());
@@ -379,7 +379,8 @@ public class Dictionary extends TypedAtomicActor {
             if (theResult != null) {
                 result.send(0, theResult);
                 if (_debugging) {
-                    _debug("Retrieved key, value: " + theKey + ", " + theResult);
+                    _debug("Retrieved key, value: " + theKey + ", "
+                            + theResult);
                 }
             } else {
                 // Sending nil on the output enables use of this actor in SDF, since
@@ -415,8 +416,8 @@ public class Dictionary extends TypedAtomicActor {
             resultArray.send(0, resultToken);
             if (keysNotFound.size() > 0) {
                 ArrayToken notFoundToken = new ArrayToken(BaseType.STRING,
-                        keysNotFound.toArray(new StringToken[keysNotFound
-                                .size()]));
+                        keysNotFound
+                                .toArray(new StringToken[keysNotFound.size()]));
                 notFound.send(0, notFoundToken);
                 if (_debugging) {
                     _debug("Keys with no value: " + notFoundToken);
@@ -441,12 +442,12 @@ public class Dictionary extends TypedAtomicActor {
         }
         if (triggerValues.getWidth() > 0 && triggerValues.hasToken(0)) {
             // Must consume the trigger, or DE will fire me again.
-        	triggerValues.get(0);
-        	
-        	Token[] theResult = new Token[_store.values().size()];
+            triggerValues.get(0);
+
+            Token[] theResult = new Token[_store.values().size()];
             int i = 0;
             for (Token value : _store.values()) {
-            	theResult[i] = value;
+                theResult[i] = value;
                 i++;
             }
             ArrayToken resultToken = new ArrayToken(value.getType(), theResult);
@@ -469,12 +470,6 @@ public class Dictionary extends TypedAtomicActor {
             // Leave off the leading period on the file so it doen't get hidden.
             _logger = new LoggerListener(getFullName().substring(1), directory);
             addDebugListener(_logger);
-            try {
-                MessageHandler.message("Log file being written to "
-                        + directory.getCanonicalPath());
-            } catch (IOException e) {
-                // Ignore.
-            }
         } else {
             if (_logger != null) {
                 removeDebugListener(_logger);
@@ -499,8 +494,8 @@ public class Dictionary extends TypedAtomicActor {
                 if (_parser == null) {
                     _parser = new PtParser();
                 }
-                ASTPtRootNode parseTree = _parser.generateParseTree(dictionary
-                        .toString());
+                ASTPtRootNode parseTree = _parser
+                        .generateParseTree(dictionary.toString());
 
                 if (_parseTreeEvaluator == null) {
                     _parseTreeEvaluator = new ParseTreeEvaluator();
@@ -514,8 +509,9 @@ public class Dictionary extends TypedAtomicActor {
                         _scope);
 
                 if (!(parsed instanceof RecordToken)) {
-                    _errorMessage("Initialization file does not evaluate to a Ptolemy II record: "
-                            + file.getExpression());
+                    _errorMessage(
+                            "Initialization file does not evaluate to a Ptolemy II record: "
+                                    + file.getExpression());
                 }
 
                 for (String key : ((RecordToken) parsed).labelSet()) {
@@ -534,7 +530,8 @@ public class Dictionary extends TypedAtomicActor {
                     reader.close();
                 } catch (IOException e) {
                     _errorMessage("Failed to close initialization file: "
-                            + theFile.getPath() + " Exception: " + e.toString());
+                            + theFile.getPath() + " Exception: "
+                            + e.toString());
                 }
             }
         } else {
@@ -653,7 +650,7 @@ public class Dictionary extends TypedAtomicActor {
                 throws IllegalActionException {
             return null;
         }
-        
+
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
