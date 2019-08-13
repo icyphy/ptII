@@ -141,6 +141,7 @@ import ptolemy.kernel.util.Workspace;
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
  */
+@Deprecated
 public class Clock extends TimedSource {
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -288,8 +289,8 @@ public class Clock extends TimedSource {
                 if (_phase == 0 && _firstOutputProduced) {
                     Time potentialNextOutputTime = _tentativeCycleStartTime
                             .subtract(_previousPeriod).add(periodValue);
-                    if (potentialNextOutputTime.compareTo(getDirector()
-                            .getModelTime()) >= 0) {
+                    if (potentialNextOutputTime
+                            .compareTo(getDirector().getModelTime()) >= 0) {
                         _tentativeNextOutputTime = potentialNextOutputTime;
                         _tentativeCycleStartTime = potentialNextOutputTime;
                         // If this occurs outside fire(), e.g. in a modal
@@ -334,8 +335,8 @@ public class Clock extends TimedSource {
             throw throwable;
         }
         try {
-            newObject.output.setTypeAtLeast(ArrayType
-                    .elementType(newObject.values));
+            newObject.output
+                    .setTypeAtLeast(ArrayType.elementType(newObject.values));
         } catch (IllegalActionException e) {
             // Should have been caught before.
             throw new InternalErrorException(e);

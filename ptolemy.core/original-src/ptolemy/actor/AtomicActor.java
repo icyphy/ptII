@@ -1,6 +1,6 @@
 /* An executable entity.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -67,8 +67,8 @@ import ptolemy.kernel.util.Workspace;
  @see ptolemy.actor.CompositeActor
  @see ptolemy.actor.IOPort
  */
-public class AtomicActor<T extends IOPort> extends ComponentEntity<T> implements
-Actor, FiringsRecordable {
+public class AtomicActor<T extends IOPort> extends ComponentEntity<T>
+        implements Actor, FiringsRecordable {
     /** Construct an actor in the default workspace with an empty string
      *  as its name. Increment the version number of the workspace.
      *  The object is added to the workspace directory.
@@ -900,9 +900,34 @@ Actor, FiringsRecordable {
             _debug("Called wrapup()");
         }
         // Invoke initializable methods.
+        // Collect exceptions during wrapup.
+        LinkedList<Throwable> throwables = new LinkedList<Throwable>();
+
         if (_initializables != null) {
             for (Initializable initializable : _initializables) {
-                initializable.wrapup();
+                try {
+                    initializable.wrapup();
+                } catch (Throwable throwable) {
+                    throwables.add(throwable);
+                }
+            }
+            if (throwables.size() == 1) {
+                Throwable exception = throwables.get(0);
+                if (exception instanceof IllegalActionException) {
+                    throw (IllegalActionException)exception;
+                } else {
+                    throw new IllegalActionException(this, exception,
+                            "Exception thrown during wrapup.");
+                }
+            } else if (throwables.size() > 1) {
+                StringBuffer message = new StringBuffer();
+                for (Throwable throwable : throwables) {
+                    message.append(throwable.getMessage());
+                    message.append("\n======\n");
+                }
+                throw new IllegalActionException(this, throwables.get(0),
+                        "Multiple exceptions thrown during wrapup:\n"
+                        + message.toString());
             }
         }
     }

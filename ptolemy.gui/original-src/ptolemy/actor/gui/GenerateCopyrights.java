@@ -1,6 +1,6 @@
 /* Generate a web page that contains links for the appropriate copyrights
 
-   Copyright (c) 2003-2015 The Regents of the University of California.
+   Copyright (c) 2003-2018 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -113,15 +113,17 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "com.github.sarxos.webcam.Webcam",
                 "lib/webcam-capture-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "com.github.ojdcheck.OpenJavaDocCheck",
+        _addIfClassPresent(copyrightsMap,
+                "com.github.ojdcheck.OpenJavaDocCheck",
                 "lib/ojdcheck-license.htm");
 
         _addIfClassPresent(copyrightsMap, "com.kitfox.svg.app.beans.SVGIcon",
                 "lib/svgSalamander-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
+        _addIfClassPresent(copyrightsMap,
+                "com.jhlabs.image.AbstractBufferedImageOp",
                 "com/jhlabs/jhlabs-license.htm");
-            
+
         _addIfClassPresent(copyrightsMap, "com.microstar.xml.XmlParser",
                 "com/microstar/xml/aelfred-license.htm");
 
@@ -131,18 +133,25 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "com.sleepycat.db.Environment",
                 "ptdb/lib/db-dbxml-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "com.google.protobuf.MessageOrBuilder",
+        _addIfClassPresent(copyrightsMap,
+                "com.google.protobuf.MessageOrBuilder",
                 "lib/protobuf-license.htm");
 
         _addIfFilePresent(copyrightsMap,
                 "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub",
-                "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html");
-        
-        _addIfClassPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
-                "diva/gui/ExtensionFileFilter-license.htm");
+                "lib/universalJavaApplicationStub-license.html");
 
-        _addIfClassPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
+        _addIfFilePresent(copyrightsMap,
+                "$CLASSPATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub",
+                "lib/universalJavaApplicationStub-license.html");
+
+        _addIfClassPresent(copyrightsMap,
+                "edu.umich.eecs.april.image.AprilTagFilter",
                 "edu/umich/eecs/april/april-license.htm");
+
+        _addIfClassPresent(copyrightsMap,
+                "edu.cmu.sphinx.api.LiveSpeechRecognizer",
+                "ptolemy/actor/lib/jjs/modules/speechRecognition/sphinx-license.htm");
 
         _addIfClassPresent(copyrightsMap, "g4ltl.SolverUtility",
                 "lib/g4ltl-license.htm");
@@ -162,14 +171,23 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "jni.GenericJNIActor",
                 "jni/launcher/launcher-copyright.htm");
 
-        _addIfClassPresent(copyrightsMap, "mescal.domains.mescalPE.kernel.parser",
+        _addIfClassPresent(copyrightsMap,
+                "mescal.domains.mescalPE.kernel.parser",
                 "mescal/configs/doc/cup-copyright.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "net.jimblackler.Utils.YieldAdapterIterator",
                 "net/jimblackler/Utils/jimblacklerUtils-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
+        _addIfClassPresent(copyrightsMap, "oscP5.OscP5",
+                "lib/oscP5-license.htm");
+
+        // Used by RExpression and RExpression2 actors.
+        _addIfClassPresent(copyrightsMap,
+                "org.apache.commons.lang.StringEscapeUtils",
+                "lib/commons-license.htm");
+        _addIfClassPresent(copyrightsMap, "org.apache.commons.logging.Log",
+                "lib/commons-license.htm");
 
         _addIfClassPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
@@ -177,7 +195,8 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "org.eclipse.jetty.server.Server",
                 "lib/jetty-all-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "org.eclipse.paho.client.mqttv3.MqttClient",
+        _addIfClassPresent(copyrightsMap,
+                "org.eclipse.paho.client.mqttv3.MqttClient",
                 "lib/org.eclipse.paho.client.mqttv3-license.htm");
 
         _addIfClassPresent(copyrightsMap, "org.json.JSONObject",
@@ -192,43 +211,60 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "org.junit.runner.JUnitCore",
                 "lib/junit-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "org.netbeans.api.visual.widget.Scene",
+        _addIfClassPresent(copyrightsMap,
+                "org.netbeans.api.visual.widget.Scene",
                 "lib/netbeans-visual-library-license.htm");
 
         _addIfClassPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
 
+        // Used by RExpression2 actor.
+        _addIfClassPresent(copyrightsMap, "org.rosuda.JRI.REXP",
+                "lib/JRI-license.htm");
+
         _addIfClassPresent(copyrightsMap,
                 "org.satlive.jsat.objects.ExternalLiteral",
                 "mescal/configs/doc/jsat-copyright.htm");
 
+        // ant is used by JSAccessor, but we can't have a class have
+        // two licenses associated with it, so we look for
+        // AccessorLibrary and include apache-ant-license.htm
         _addIfClassPresent(copyrightsMap,
-                "org.terraswarm.gdp.GDP_GCL",
-                "lib/gdp-license.htm");
+                "org.terraswarm.accessor.AccessorLibrary",
+                "ant/apache-ant-license.htm");
+
+        _addIfClassPresent(copyrightsMap, "org.terraswarm.accessor.JSAccessor",
+                "org/terraswarm/accessor/accessors/web/accessors-license.htm");
 
         // Vertx
         _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
-                "lib/jackson-2.6.1-license.htm");
+                "lib/jackson-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "io.netty.handler.traffic.ChannelTrafficShapingHandler",
-                "lib/netty-all-4.0.31.Final-license.htm");
+                "lib/netty-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
-                "lib/hazelcast-3.5.2-license.htm");
+                "lib/hazelcast-license.htm");
 
         _addIfClassPresent(copyrightsMap, "io.vertx.core.Vertx",
-                "lib/vertx-3.1.0-license.htm");
+                "lib/vertx-license.htm");
 
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.actor.gui.PortConfigurerDialog",
+                "ptolemy/actor/gui/PortConfigurerDialog-license.htm");
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.RunLayoutFrame",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.actor.gui.run.RunLayoutFrame",
                 "org/mlc/mlc-copyright.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.colt.ColtRandomSource",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.actor.lib.colt.ColtRandomSource",
                 "ptolemy/actor/lib/colt/colt-copyright.htm");
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.database.DatabaseManager",
@@ -240,13 +276,12 @@ public class GenerateCopyrights {
                 "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
                 "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
         /* ptolemy.actor.lib.io.comm.SerialComm */
-        _addIfClassPresent(copyrightsMap, "gnu.io.SerialPort", 
+        _addIfClassPresent(copyrightsMap, "gnu.io.SerialPort",
                 "lib/nrjavaserial-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
                 "ptolemy/actor/lib/jjs/jjs-license.htm");
-
         _addIfFilePresent(copyrightsMap,
                 "$CLASSPATH/ptolemy/actor/lib/jjs/external/require.js",
                 "ptolemy/actor/lib/jjs/external/require.js-license.htm");
@@ -260,12 +295,10 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
         _addIfClassPresent(copyrightsMap, "javax.mail.Address",
                 "lib/javamail-license.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
-                "ptolemy/actor/lib/opencv/opencv-copyright.htm");
+        _addIfClassPresent(copyrightsMap, "org.ptolemy.opencv.FaceRecognizer",
+                "lib/opencv-license.htm");
         _addIfClassPresent(copyrightsMap,
-                "ptolemy.actor.lib.opencv.javacv.CameraReader",
-                "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
+                "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/jython-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
                 "ptolemy/actor/lib/x10/x10-copyright.htm");
@@ -276,20 +309,23 @@ public class GenerateCopyrights {
                 "ptolemy.backtrack.eclipse.ast.TypeAnalyzer",
                 "ptolemy/backtrack/eclipse/ast/eclipse-copyright.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.backtrack.util.ClassFileLoader",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.backtrack.util.ClassFileLoader",
                 "ptolemy/backtrack/util/gcj-copyright.html");
 
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.caltrop.actors.AbstractCalInterpreter",
                 "ptolemy/caltrop/cup-copyright.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.caltrop.actors.CalInterpreter",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.caltrop.actors.CalInterpreter",
                 "ptolemy/caltrop/saxon-copyright.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGenerator",
                 "ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.copernicus.kernel.KernelMain",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.copernicus.kernel.KernelMain",
                 "ptolemy/copernicus/kernel/soot-copyright.html");
 
         _addIfClassPresent(copyrightsMap, "ptolemy.data.ontologies.Concept",
@@ -304,7 +340,8 @@ public class GenerateCopyrights {
                 "ptolemy.domains.gr.lib.vr.GRTexture2D.java",
                 "ptolemy/domains/gr/lib/vr/vr-copyright.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.domains.gro.kernel.GRODirector",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.domains.gro.kernel.GRODirector",
                 "ptolemy/domains/gro/JOGL-copyright.htm");
 
         _addIfClassPresent(copyrightsMap,
@@ -318,8 +355,8 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
-                "ptolemy/gui/ExtensionFilenameFilter-license.htm");
+        _addIfClassPresent(copyrightsMap, "ptolemy.gui.ComponentDialog",
+                "ptolemy/gui/ComponentDialog-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.homer.widgets.ResizableImageWidget",
@@ -356,15 +393,19 @@ public class GenerateCopyrights {
                 "ptolemy.vergil.basic.layout.kieler.KielerGraphUtil",
                 "ptolemy/vergil/basic/layout/kieler/kieler-copyright.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.vergil.pdfrenderer.PDFAttribute",
+        _addIfClassPresent(copyrightsMap,
+                "ptolemy.vergil.pdfrenderer.PDFAttribute",
                 "ptolemy/vergil/pdfrenderer/PDFRenderer-copyright.htm");
 
-        _addIfClassPresent(copyrightsMap, "tcl.lang.Shell", "lib/ptjacl-license.htm");
+        _addIfClassPresent(copyrightsMap, "tcl.lang.Shell",
+                "lib/ptjacl-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "thales.vergil.SingleWindowApplication",
+        _addIfClassPresent(copyrightsMap,
+                "thales.vergil.SingleWindowApplication",
                 "thales/thalesSingleWindow-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "org.jivesoftware.smack.XMPPConnection",
+        _addIfClassPresent(copyrightsMap,
+                "org.jivesoftware.smack.XMPPConnection",
                 "lib/smack-license.htm");
 
         // Check for the _applicationCopyrights parameter
@@ -399,13 +440,13 @@ public class GenerateCopyrights {
         try {
             // Probably wrong to read it as bytes and convert to a
             // string, but we have a convenient method, so we use it.
-            masterCopyrightBuffer.append(new String(FileUtilities
-                    .binaryReadURLToByteArray(FileUtilities.nameToURL(
-                            copyrightStartFileName, null, null))));
+            masterCopyrightBuffer.append(new String(
+                    FileUtilities.binaryReadURLToByteArray(FileUtilities
+                            .nameToURL(copyrightStartFileName, null, null))));
         } catch (IOException ex) {
             // Print only a message, we want to print the copyrights
-            System.err.println("Could not read " + copyrightStartFileName
-                    + ": " + ex);
+            System.err.println(
+                    "Could not read " + copyrightStartFileName + ": " + ex);
         }
 
         StringBuffer htmlBuffer = new StringBuffer(
@@ -420,8 +461,8 @@ public class GenerateCopyrights {
 
         if (copyrightsMap.size() != sortedCopyrightsMap.size()) {
             // Print only a message, we want to print the copyrights.
-            System.err
-                    .println("GenerateCopyrights: the size of the unsorted copyright table "
+            System.err.println(
+                    "GenerateCopyrights: the size of the unsorted copyright table "
                             + "and the sorted copyright table are not the same?  Perhaps there are two "
                             + "or more copyrights with the same file name? (foo/copyright.htm and "
                             + "bar/copyright.htm will not work.)");
@@ -430,18 +471,14 @@ public class GenerateCopyrights {
         Iterator copyrights = sortedCopyrightsMap.entrySet().iterator();
         if (copyrights.hasNext()) {
             // DSP configuration might not include other actors.
-            htmlBuffer
-                    .append("<p>Below we list features and the "
-                            + "corresponding copyright "
-                            + " of the package that is used.  If a feature is not "
-                            + "listed below, then the "
-                            + _getApplicationName(configuration)
-                            + " copyright is the "
-                            + "only copyright."
-                            + "<table>\n"
-                            + "  <tr>\n"
-                            + "      <th>Copyright of package used by the feature</th>\n"
-                            + "      <th>Feature</th>\n" + "  </tr>\n");
+            htmlBuffer.append("<p>Below we list features and the "
+                    + "corresponding copyright "
+                    + " of the package that is used.  If a feature is not "
+                    + "listed below, then the "
+                    + _getApplicationName(configuration) + " copyright is the "
+                    + "only copyright." + "<table>\n" + "  <tr>\n"
+                    + "      <th>Copyright of package used by the feature</th>\n"
+                    + "      <th>Feature</th>\n" + "  </tr>\n");
 
             while (copyrights.hasNext()) {
                 Map.Entry entry = (Map.Entry) copyrights.next();
@@ -462,8 +499,8 @@ public class GenerateCopyrights {
                     // Assuming that entityClassName contains a dot separated
                     // classpath here.
                     String docName = "doc.codeDoc." + entityClassName;
-                    String codeDoc = _findURL(docName.replace('.', '/')
-                            + ".html");
+                    String codeDoc = _findURL(
+                            docName.replace('.', '/') + ".html");
                     entityBuffer.append("<a href=\"" + codeDoc + "\">"
                             + entityClassName + "</a>");
                 }
@@ -482,9 +519,8 @@ public class GenerateCopyrights {
                         + "</code></a></td>\n" + "  <td>" + entityBuffer
                         + "</td>\n" + "</tr>\n");
                 try {
-                    String copyright = new String(
-                            FileUtilities.binaryReadURLToByteArray(new URL(
-                                    foundCopyright)));
+                    String copyright = new String(FileUtilities
+                            .binaryReadURLToByteArray(new URL(foundCopyright)));
 
                     // Append the text between the body tags.
 
@@ -495,10 +531,9 @@ public class GenerateCopyrights {
                             startIndex += "</head>".length();
                         } else {
                             // Print only a message, we want to print the copyrights.
-                            System.out
-                                    .println("Could not find body or head in "
-                                            + foundCopyright + " "
-                                            + copyright.substring(0, 200));
+                            System.out.println("Could not find body or head in "
+                                    + foundCopyright + " "
+                                    + copyright.substring(0, 200));
                             startIndex = 0;
                         }
                     } else {
@@ -529,11 +564,10 @@ public class GenerateCopyrights {
                     if (hIndex != -1) {
                         int hEndIndex = copyright.indexOf("</h");
                         if (hEndIndex < hIndex) {
-                            throw new RuntimeException(
-                                    "Generating copyrights: " + "hEndIndex "
-                                            + hEndIndex + " < " + hIndex + " "
-                                            + foundCopyright + " copyright:\n"
-                                            + copyright);
+                            throw new RuntimeException("Generating copyrights: "
+                                    + "hEndIndex " + hEndIndex + " < " + hIndex
+                                    + " " + foundCopyright + " copyright:\n"
+                                    + copyright);
                         }
                         String header = copyright.substring(hIndex, hEndIndex);
                         String newHeader = header;
@@ -547,7 +581,8 @@ public class GenerateCopyrights {
                             File copyrightFile = new File(copyrightURL);
                             String copyrightFileName = copyrightFile.getName();
                             int hyphenIndex = 0;
-                            if ((hyphenIndex = copyrightFileName.indexOf("-")) > 0) {
+                            if ((hyphenIndex = copyrightFileName
+                                    .indexOf("-")) > 0) {
                                 packageName = copyrightFileName.substring(0,
                                         hyphenIndex);
                             } else {
@@ -559,11 +594,13 @@ public class GenerateCopyrights {
                         }
 
                         int nameIndex = 0;
-                        if ((nameIndex = newHeader.indexOf("<a name=\"")) != -1) {
+                        if ((nameIndex = newHeader
+                                .indexOf("<a name=\"")) != -1) {
                             int labelIndex = 0;
                             if ((labelIndex = newHeader.indexOf("\">")) != -1) {
-                                String target = newHeader.substring(nameIndex
-                                        + "<a name=\"".length(), labelIndex);
+                                String target = newHeader.substring(
+                                        nameIndex + "<a name=\"".length(),
+                                        labelIndex);
                                 // Skip the <h1> or <h2>
                                 String label = newHeader
                                         .substring(labelIndex + 6);
@@ -571,16 +608,16 @@ public class GenerateCopyrights {
                                 //_guessCopyright(label, copyright);
 
                                 masterCopyrightTable
-                                        .append(_generateLicenseTableRow(
-                                                target, label));
+                                        .append(_generateLicenseTableRow(target,
+                                                label));
                             }
                         }
                     }
                     masterCopyrightBuffer.append(copyright);
                 } catch (IOException ex) {
                     // Ignore this, we want to print the copyrights no matter what.
-                    System.out.println("Could not read " + foundCopyright
-                            + ": " + ex);
+                    System.out.println(
+                            "Could not read " + foundCopyright + ": " + ex);
                 }
             }
 
@@ -589,27 +626,26 @@ public class GenerateCopyrights {
 
         String tableTarget = "<!-- Table Contents Goes Here -->";
         int tableTargetIndex = -1;
-        if ((tableTargetIndex = masterCopyrightBuffer.indexOf(tableTarget)) == -1) {
-            System.err
-                    .println("GenerateCopyrights: Could not find \""
-                            + tableTarget
-                            + "\" in the generated copyright text, "
-                            + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
+        if ((tableTargetIndex = masterCopyrightBuffer
+                .indexOf(tableTarget)) == -1) {
+            System.err.println("GenerateCopyrights: Could not find \""
+                    + tableTarget + "\" in the generated copyright text, "
+                    + "maybe ptolemy/actor/gui/masterCopyrightStart.htm.in does not have it?");
         } else {
-            masterCopyrightBuffer
-                    .insert(tableTargetIndex, masterCopyrightTable);
+            masterCopyrightBuffer.insert(tableTargetIndex,
+                    masterCopyrightTable);
         }
         try {
-            URL masterCopyrightURL = HTMLAbout
-                    ._temporaryHTMLFile("mastercopyright", ".htm",
-                            masterCopyrightBuffer.toString());
+            URL masterCopyrightURL = HTMLAbout._temporaryHTMLFile(
+                    "mastercopyright", ".htm",
+                    masterCopyrightBuffer.toString());
             htmlBuffer.append("<p>For the complete copyrights in one file\n"
                     + "See the <a href=\"" + masterCopyrightURL
                     + "\">master copyright</a>.</p>\n");
         } catch (IOException ex) {
             // Ignore this, we want to print the copyrights.
-            System.err
-                    .println("Could not write a temporary file with the complete copyrights: "
+            System.err.println(
+                    "Could not write a temporary file with the complete copyrights: "
                             + ex);
         }
 
@@ -649,18 +685,19 @@ public class GenerateCopyrights {
         String applicationName = _getApplicationName(configuration);
         String applicationCopyrightURL = _findURL(applicationCopyright);
 
-        String aelfredCopyright = _findURL("com/microstar/xml/aelfred-license.htm");
+        String aelfredCopyright = _findURL(
+                "com/microstar/xml/aelfred-license.htm");
         String graphCopyright = _findURL("ptolemy/graph/graph-license.htm");
-        String doubleUtilitiesCopyright = _findURL("ptolemy/util/DoubleUtilities-license.htm");
+        String doubleUtilitiesCopyright = _findURL(
+                "ptolemy/util/DoubleUtilities-license.htm");
 
         String defaultCSS = _findURL("doc/default.css");
         StringBuffer htmlBuffer = new StringBuffer();
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
                 + "<link href=\"" + defaultCSS + "\" rel=\"stylesheet\""
                 + "type=\"text/css\">\n" + "</head>\n<body>\n" + "<h1>"
-                + applicationName + "</h1>\n"
-                + "The primary copyright for the " + applicationName
-                + " System can be\n" + "found in <a href=\""
+                + applicationName + "</h1>\n" + "The primary copyright for the "
+                + applicationName + " System can be\n" + "found in <a href=\""
                 + applicationCopyrightURL + "\"><code>"
                 + _canonicalizeURLToPTII(applicationCopyrightURL)
                 + "</code></a>.\n"
@@ -678,32 +715,24 @@ public class GenerateCopyrights {
                     + "</code></a>\n");
         }
 
-        htmlBuffer
-                .append("<p>"
-                        + applicationName
-                        + " uses AElfred as an XML Parser.\n"
-                        + "AElfred is covered by the copyright in\n "
-                        + "<a href=\""
-                        + aelfredCopyright
-                        + "\"><code>"
-                        + _canonicalizeURLToPTII(aelfredCopyright)
-                        + "</code></a>\n</p>"
-                        + "<p>"
-                        + applicationName
-                        + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
-                        + "Significant portions of the ptolemy.graph package were developed by "
-                        + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
-                        + "and his group. and are covered by a BSD License in\n "
-                        + "<a href=\"" + graphCopyright + "\"><code>"
-                        + _canonicalizeURLToPTII(graphCopyright)
-                        + "</code></a>\n</p>"
-                        + "<p>"
-                        + applicationName
-                        + " uses DoubleUtilities, which is based on Guava's DoubleUtils.java.  "
-                        + "Guava is licensed under the Apache License, Version 2.0, see "
-                        + "<a href=\"" + doubleUtilitiesCopyright + "\"><code>"
-                        + _canonicalizeURLToPTII(doubleUtilitiesCopyright)
-                        + "</code></a>\n</p>");
+        htmlBuffer.append("<p>" + applicationName
+                + " uses AElfred as an XML Parser.\n"
+                + "AElfred is covered by the copyright in\n " + "<a href=\""
+                + aelfredCopyright + "\"><code>"
+                + _canonicalizeURLToPTII(aelfredCopyright) + "</code></a>\n</p>"
+                + "<p>" + applicationName
+                + " uses the ptolemy.graph package for scheduling and analysis of Ptolemy II models."
+                + "Significant portions of the ptolemy.graph package were developed by "
+                + "<a href=\"http://www.ece.umd.edu/~ssb/#in_browser\">Professor Shuvra S. Bhattacharyya</a> "
+                + "and his group. and are covered by a BSD License in\n "
+                + "<a href=\"" + graphCopyright + "\"><code>"
+                + _canonicalizeURLToPTII(graphCopyright) + "</code></a>\n</p>"
+                + "<p>" + applicationName
+                + " uses DoubleUtilities, which is based on Guava's DoubleUtils.java.  "
+                + "Guava is licensed under the Apache License, Version 2.0, see "
+                + "<a href=\"" + doubleUtilitiesCopyright + "\"><code>"
+                + _canonicalizeURLToPTII(doubleUtilitiesCopyright)
+                + "</code></a>\n</p>");
 
         return htmlBuffer.toString();
     }
@@ -722,9 +751,9 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library
      */
-    private static void _addIfClassPresent(Map<String, Set<String>> copyrightsMap,
-            String applicationClassName, String libraryClassName,
-            String copyrightPath) {
+    private static void _addIfClassPresent(
+            Map<String, Set<String>> copyrightsMap, String applicationClassName,
+            String libraryClassName, String copyrightPath) {
         // If actor.lib.database.DatabaseManager is present, then
         // we look for MySQL JDBC packages.
         try {
@@ -745,8 +774,9 @@ public class GenerateCopyrights {
      * @param copyrightPath The path or URL to the copyright for
      * the library.
      */
-    private static void _addIfClassPresent(Map<String, Set<String>> copyrightsMap,
-            String className, String copyrightPath) {
+    private static void _addIfClassPresent(
+            Map<String, Set<String>> copyrightsMap, String className,
+            String copyrightPath) {
 
         boolean addIt = false;
 
@@ -790,7 +820,6 @@ public class GenerateCopyrights {
         }
     }
 
-
     /* If a file name can be found as a resource, then add
      * the file name and copyrightPath to copyrightsMap
      * @param The map of copyrights.
@@ -800,8 +829,9 @@ public class GenerateCopyrights {
      * the library, for example
      * "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html"
      */
-    private static void _addIfFilePresent(Map<String, Set<String>> copyrightsMap,
-            String fileName, String copyrightPath) {
+    private static void _addIfFilePresent(
+            Map<String, Set<String>> copyrightsMap, String fileName,
+            String copyrightPath) {
 
         boolean addIt = false;
 
@@ -897,7 +927,8 @@ public class GenerateCopyrights {
      *  @param label The label for the license.
      *  @return HTML for the row that represents the table.
      */
-    private static String _generateLicenseTableRow(String target, String label) {
+    private static String _generateLicenseTableRow(String target,
+            String label) {
         StringBuffer results = new StringBuffer(" <tr>\n" + "  <td>\n"
                 + "     <a href=\"#" + target + "\">"
                 + label.replace("License for", "").replace("Copyright for", "")
@@ -910,8 +941,9 @@ public class GenerateCopyrights {
             }
         }
         if (rowIndex == -1) {
-            results.append("  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java for \""
-                    + target + "\".</td>");
+            results.append(
+                    "  <td>?</td> <td>?</td> <td>?</td> <td>Update ptolemy/actor/gui/GenerateCopyrights.java for \""
+                            + target + "\".</td>");
         } else {
             results.append("  <td>" + _licenses[rowIndex][1] + "</td>\n"
                     + "  <td>" + _licenses[rowIndex][2] + "</td>\n" + "  <td>"
@@ -974,7 +1006,8 @@ public class GenerateCopyrights {
         public int compare(String a, String b) {
             File fileA = new File(a);
             File fileB = new File(b);
-            return fileA.getName().toLowerCase().compareTo(fileB.getName().toLowerCase());
+            return fileA.getName().toLowerCase()
+                    .compareTo(fileB.getName().toLowerCase());
         }
     }
 
@@ -985,23 +1018,26 @@ public class GenerateCopyrights {
      */
     private static String[][] _licenses = {
             // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
+            { "accessors", " ", " ", "Y", "Y", "BSD and MIT" },
             { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyright" },
             { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
-            { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License"},
-            { "ExtensionFileFilter", "Y", " ", "Y", "Y",
-                    "Include Oracle's copyright" },
-            { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
+            { "ComponentDialog", "Y", " ", "Y", "Y",
+                    "Oracle BSD Example License" },
+            { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License" },
             { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
             { "javamail", " ", " ", "Y", " ",
                     "CDDL + GPLv2 with Classpath exception" },
+            { "PortConfigurerDialog", "Y", " ", "Y", "Y",
+                    "Oracle BSD Example License" },
             { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
             { "ResizableImageWidget", " ", " ", "Y", " ",
                     "CDDL + Oracle + Oracle" },
             { "april", " ", " ", " ", "Y ", "BSD" },
             { "chic", " ", " ", "Y", "Y", "BSD" },
             { "colt", "Y", " ", "Y", "Y", "BSD and others" },
+            { "commons", "N", " ", "Y", "Y", "Apache" },
             { "cup", " ", " ", "Y", " ", "Similar to BSD" },
             { "db", " ", " ", "Y", " ",
                     "Similar to <font color=\"red\">GPL</font>" }, // GPL!!
@@ -1031,6 +1067,7 @@ public class GenerateCopyrights {
             { "jmf", " ", "Y", " ", " ", "Oracle" },
             { "jna", " ", " ", "Y", "Y",
                     "Apache License + GNU Lesser General Public" },
+            { "JRI", " ", "Y", " ", " ", "GNU Lesser General Public" },
             { "joystick", " ", " ", "Y", " ", "Artistic License" },
             { "js", " ", " ", "Y", " ", "Mozilla + Oracle" },
             { "json", " ", " ", "Y", "Y", "BSD-like" },
@@ -1046,7 +1083,8 @@ public class GenerateCopyrights {
             { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
             { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
             { "netty", " ", " ", " ", "Y ", "Apache + MIT + BSD + PD" },
-            { "opencv", " ", " ", "Y", " ", "" },
+            { "nrjavaserial", " ", " ", "Y", " ", "LGPL 2.1 + Apache" },
+            { "opencv", " ", " ", "Y", " ", "BSD" },
             { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
             { "org.eclipse.paho.client.mqttv3", " ", " ", " ", "Y", "Eclipse" },
             { "oscP5", " ", " ", " ", "Y ",
@@ -1062,6 +1100,7 @@ public class GenerateCopyrights {
             { "smack", " ", " ", "Y", "Y", "Apache License" },
             { "socketio", " ", " ", "Y", "Y", "BSD" },
             { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
+            { "sphinx", " ", " ", "N", "N", "BSD-like" },
             { "svgSalamander", " ", " ", "Y", " ", "BSD" },
             { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
             { "udunits", " ", " ", "Y", " ",

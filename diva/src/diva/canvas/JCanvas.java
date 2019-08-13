@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -109,13 +109,14 @@ public class JCanvas extends JComponent implements Printable {
 
     /** Create a new canvas that contains the given CanvasPane. Mouse
      * events on the canvas are enabled by default.
+     * @param pane The given CanvasPane
      */
     public JCanvas(CanvasPane pane) {
         super();
         setBackground(Color.white);
         setCanvasPane(pane);
-        enableEvents(AWTEvent.MOUSE_EVENT_MASK
-                | AWTEvent.MOUSE_MOTION_EVENT_MASK);
+        enableEvents(
+                AWTEvent.MOUSE_EVENT_MASK | AWTEvent.MOUSE_MOTION_EVENT_MASK);
 
         // We have to set this to something other than null, or else no
         // tool tips will appear!
@@ -146,8 +147,8 @@ public class JCanvas extends JComponent implements Printable {
         }
 
         Dimension size = getSize();
-        BufferedImage bufferedImage = new BufferedImage(size.width,
-                size.height, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bufferedImage = new BufferedImage(size.width, size.height,
+                BufferedImage.TYPE_INT_ARGB);
         Graphics2D graphics = bufferedImage.createGraphics();
         RenderingHints hints = new RenderingHints(null);
         hints.put(RenderingHints.KEY_ANTIALIASING,
@@ -178,6 +179,7 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /** Get the canvas pane contained by this component.
+     * @return The canvas pane.
      */
     public final CanvasPane getCanvasPane() {
         return _canvasPane;
@@ -226,6 +228,10 @@ public class JCanvas extends JComponent implements Printable {
      * This method allocates an offscreen buffer if necessary, and then
      * paints the canvas into the right buffer and blits it to the
      * on-screen buffer.
+     * <p>
+     * Acknowledgment: some of this code was adapted from code
+     * posted by Jonathon Knudsen to the Java2D mailing list, May
+     * 1998.
      */
     @Override
     public void paint(Graphics g) {
@@ -257,13 +263,14 @@ public class JCanvas extends JComponent implements Printable {
                 g2d.clearRect(clip.x, clip.y, clip.width, clip.height);
             }
 
+            // Draw directly onto the graphics pane
             if (paintAll) {
                 _canvasPane.paint(g2d);
             } else {
                 _canvasPane.paint(g2d, clip);
             }
         } else {
-            // If necessary, get a new offscreen buffer. Clear the reference
+            // Get a new offscreen buffer if necessary. Clear the reference
             // to the off-screen buffer, so that the memory can be freed
             // if necessary by the GC and reallocated for the new buffer.
             if (_offscreen == null || _offscreen.getWidth() != clip.width
@@ -284,6 +291,7 @@ public class JCanvas extends JComponent implements Printable {
                 g2d.clearRect(clip.x, clip.y, clip.width, clip.height);
             }
 
+            // Paint on it
             if (paintAll) {
                 _canvasPane.paint(g2d);
             } else {
@@ -294,6 +302,7 @@ public class JCanvas extends JComponent implements Printable {
                 _canvasPane.paint(g2d, clip);
             }
 
+            // Blit it to the onscreen buffer
             g.drawImage(_offscreen, clip.x, clip.y, null);
         }
 
@@ -341,8 +350,8 @@ public class JCanvas extends JComponent implements Printable {
         Rectangle2D pageBounds = new Rectangle2D.Double(format.getImageableX(),
                 format.getImageableY(), format.getImageableWidth(),
                 format.getImageableHeight());
-        ((Graphics2D) graphics).transform(CanvasUtilities.computeFitTransform(
-                printRegion, pageBounds));
+        ((Graphics2D) graphics).transform(
+                CanvasUtilities.computeFitTransform(printRegion, pageBounds));
         graphics.setClip(printRegion);
 
         paint(graphics);
@@ -352,6 +361,7 @@ public class JCanvas extends JComponent implements Printable {
     /** Accept notification that a repaint has occurred on
      * in this canvas. Call the given damage region to generate
      * the appropriate calls to the Swing repaint manager.
+     * @param d The damage region.
      */
     public void repaint(DamageRegion d) {
         d.apply(this);
@@ -361,6 +371,7 @@ public class JCanvas extends JComponent implements Printable {
      * If there is already a pane in this JCanvas, replace it.
      * If the pane already is in a canvas, remove it from
      * that other canvas.
+     * @param pane The canvas pane.
      */
     public final void setCanvasPane(CanvasPane pane) {
         if (_canvasPane != null) {
@@ -403,14 +414,16 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /**
-     * return the horizontal range model for this canvas
+     * Return the horizontal range model for this canvas.
+     * @return the horizontal range model for this canvas.
      */
     public BoundedRangeModel getHorizontalRangeModel() {
         return _horizontalRangeModel;
     }
 
     /**
-     * return the vertical range model for this canvas
+     * Return the vertical range model for this canvas.
+     * @return the vertical range model for this canvas.
      */
     public BoundedRangeModel getVerticalRangeModel() {
         return _verticalRangeModel;
@@ -418,7 +431,8 @@ public class JCanvas extends JComponent implements Printable {
 
     /**
      * Return the total size of everything in the canvas, in canvas
-     *  coordinates.
+     * coordinates.
+     * @return The total size of everything in the canvas.
      */
     public Rectangle2D getViewSize() {
         Rectangle2D viewRect = null;
@@ -448,6 +462,7 @@ public class JCanvas extends JComponent implements Printable {
     /**
      * Return the size of the visible part of the canvas, in canvas
      *  coordinates.
+     * @return the size of the visible part of the canvas.
      */
     public Rectangle2D getVisibleSize() {
         AffineTransform current = getCanvasPane().getTransformContext()
@@ -479,11 +494,23 @@ public class JCanvas extends JComponent implements Printable {
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 
+        // With r33656, we were checking to see if the event was
+        // consumed, and if it was not, we were calling super.processMouseEvent()
+        // However, this resulted in a problem:
+
+        // "vergil has an extremely annoying feature of popping up a
+        // tooltip right in the middle of any dialog you open. E.g.,
+        // double click on an actor, and a tooltip immediately blocks
+        // your view of what you were requesting... "
+
+        // The fix is to always call super.processMouseEvent(e)
+        // See https://wiki.eecs.berkeley.edu/ptolemy/Ptolemy/ToolTips
+
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
-        if (!e.isConsumed()) {
-            super.processMouseEvent(e);
-        }
+        //if (!e.isConsumed()) {
+        super.processMouseEvent(e);
+        //}
     }
 
     /** Process a mouse motion event. This method overrides the
@@ -496,11 +523,13 @@ public class JCanvas extends JComponent implements Printable {
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 
+        // See processMouseEvent() for why we always call
+        // super.processMouseMotionEvent(e)
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it is probably necessary (see above).
-        if (!e.isConsumed()) {
-            super.processMouseMotionEvent(e);
-        }
+        //if (!e.isConsumed()) {
+        super.processMouseMotionEvent(e);
+        //}
     }
 
     ///////////////////////////////////////////////////////////////////

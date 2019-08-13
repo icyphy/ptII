@@ -187,6 +187,12 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      */
     @Override
     public Iterator nodes(Object composite) {
+        // If we copy text from annotation and then paste it in to the background
+        // we get a NPE here.
+        if (getCompositeModel(composite) == null) {
+            throw new NullPointerException(
+                    "Could not get the composite model for " + composite);
+        }
         return getCompositeModel(composite).nodes(composite);
     }
 
@@ -253,7 +259,8 @@ public abstract class ModularGraphModel extends AbstractGraphModel {
      * the given property name.
      */
     @Override
-    public abstract void setProperty(Object o, String propertyName, Object value);
+    public abstract void setProperty(Object o, String propertyName,
+            Object value);
 
     /**
      * Set the semantic object corresponding

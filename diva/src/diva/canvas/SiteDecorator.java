@@ -43,6 +43,7 @@ public class SiteDecorator implements Site {
     private Site _site;
 
     /** Create a new decorator on the given site.
+     *  @param site The site.
      */
     public SiteDecorator(Site site) {
         _site = site;
@@ -68,6 +69,7 @@ public class SiteDecorator implements Site {
     /** Get the angle of the normal to this site, in radians
      * between zero and 2pi. The direction is "out" of the site.
      * The result is meaningful only if hasNormal() returns true.
+     * @see #setNormal(double)
      */
     @Override
     public double getNormal() {
@@ -160,6 +162,7 @@ public class SiteDecorator implements Site {
      * If the site can change its normal, it can also change
      * its position. For example, a site on the perimeter of a
      * figure may move to a different position.
+     * @see #getNormal()
      */
     @Override
     public void setNormal(double normal) {

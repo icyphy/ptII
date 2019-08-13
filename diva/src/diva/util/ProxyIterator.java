@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2005 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -38,6 +38,9 @@ import java.util.Iterator;
 public class ProxyIterator extends IteratorAdapter {
     private Iterator _iterator;
 
+    /** Construct an iterator that takes another iterator.
+     * @param i The source iterator.
+     */
     public ProxyIterator(Iterator i) {
         _iterator = i;
     }

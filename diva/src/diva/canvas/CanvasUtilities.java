@@ -125,12 +125,12 @@ public final class CanvasUtilities {
         }
 
         // Start the union with the shape of the first child
-        Figure f = (Figure) i.next();
+        Figure f = i.next();
         GeneralPath shape = new GeneralPath(f.getShape());
 
         // Scan the rest of the children and take the union
         while (i.hasNext()) {
-            f = (Figure) i.next();
+            f = i.next();
             shape.append(f.getShape(), false); // Don't connect
         }
 
@@ -148,12 +148,12 @@ public final class CanvasUtilities {
         double x2;
         double y2;
 
-        Site f = (Site) i.next();
+        Site f = i.next();
         x1 = x2 = f.getX();
         y1 = y2 = f.getY();
 
         while (i.hasNext()) {
-            f = (Site) i.next();
+            f = i.next();
 
             double x = f.getX();
             double y = f.getY();
@@ -191,13 +191,13 @@ public final class CanvasUtilities {
         }
 
         // Get a copy of the bounds of the first child
-        Figure f = (Figure) i.next();
+        Figure f = i.next();
         // Deal with the possibility that the figure may not be visible.
         while (!f.isVisible()) {
             if (!i.hasNext()) {
                 return new Rectangle2D.Double();
             }
-            f = (Figure) i.next();
+            f = i.next();
         }
         Rectangle2D b = f.getBounds();
         Rectangle2D bounds = new Rectangle2D.Double(b.getX(), b.getY(),
@@ -205,7 +205,7 @@ public final class CanvasUtilities {
 
         // Scan the rest of the children and take the union
         while (i.hasNext()) {
-            f = (Figure) i.next();
+            f = i.next();
             if (!f.isVisible()) {
                 continue;
             }
@@ -407,8 +407,8 @@ public final class CanvasUtilities {
             break;
 
         default:
-            throw new IllegalArgumentException("Unknown location constant: "
-                    + location);
+            throw new IllegalArgumentException(
+                    "Unknown location constant: " + location);
         }
 
         return new Point2D.Double(x, y);
@@ -427,7 +427,8 @@ public final class CanvasUtilities {
         //return (t &
         //            ( AffineTransform.TYPE_GENERAL_ROTATION
         //            | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
-        return (t & (AffineTransform.TYPE_MASK_ROTATION | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
+        return (t & (AffineTransform.TYPE_MASK_ROTATION
+                | AffineTransform.TYPE_GENERAL_TRANSFORM)) == 0;
     }
 
     /** Return the angle between -PI and PI that corresponds to the
@@ -579,8 +580,8 @@ public final class CanvasUtilities {
             return SwingConstants.SOUTH_EAST;
 
         default:
-            throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+            throw new IllegalArgumentException(
+                    "Unknown direction constant: " + direction);
         }
     }
 
@@ -608,7 +609,8 @@ public final class CanvasUtilities {
             r.setFrame(bounds);
             return r;
         } else if ((at.getType() & (AffineTransform.TYPE_MASK_SCALE
-                | AffineTransform.TYPE_TRANSLATION | AffineTransform.TYPE_IDENTITY)) != 0) {
+                | AffineTransform.TYPE_TRANSLATION
+                | AffineTransform.TYPE_IDENTITY)) != 0) {
             double x = r.getX();
             double y = r.getY();
             double w = r.getWidth();
@@ -624,9 +626,9 @@ public final class CanvasUtilities {
 
             switch (at.getType()) {
             case AffineTransform.TYPE_GENERAL_SCALE
-            | AffineTransform.TYPE_TRANSLATION:
+                    | AffineTransform.TYPE_TRANSLATION:
             case AffineTransform.TYPE_UNIFORM_SCALE
-            | AffineTransform.TYPE_TRANSLATION:
+                    | AffineTransform.TYPE_TRANSLATION:
                 xdash = x * m[m00] + m[m02];
                 ydash = y * m[m11] + m[m12];
                 wdash = w * m[m00];
@@ -784,8 +786,8 @@ public final class CanvasUtilities {
             break;
 
         default:
-            throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+            throw new IllegalArgumentException(
+                    "Unknown direction constant: " + direction);
         }
 
         return p;
@@ -840,8 +842,8 @@ public final class CanvasUtilities {
             break;
 
         default:
-            throw new IllegalArgumentException("Unknown direction constant: "
-                    + direction);
+            throw new IllegalArgumentException(
+                    "Unknown direction constant: " + direction);
         }
 
         return p;

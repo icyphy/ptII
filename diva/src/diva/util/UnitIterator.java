@@ -37,6 +37,9 @@ import java.util.NoSuchElementException;
 public class UnitIterator extends IteratorAdapter {
     private Object _item = null;
 
+    /** Construct an iterator over a single object.
+     * @param item The single object.
+     */
     public UnitIterator(Object item) {
         _item = item;
     }

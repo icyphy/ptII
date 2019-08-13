@@ -1,6 +1,6 @@
 /* Handle exceptions thrown in tests.
 
- Copyright (c) 2006-2014 The Regents of the University of California.
+ Copyright (c) 2006-2019 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -63,7 +63,7 @@ import ptolemy.util.MessageHandler;
  @Pt.AcceptedRating Yellow (hyzheng)
  */
 public class TestExceptionAttribute extends AbstractInitializableAttribute
-implements ExceptionHandler {
+        implements ExceptionHandler {
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -96,13 +96,11 @@ implements ExceptionHandler {
 
         // In order for this to show up in the vergil library, it has to have
         // an icon description.
-        _attachText(
-                "_iconDescription",
-                "<svg>\n"
-                        + "<polygon points=\"0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0\" "
-                        + "style=\"fill:pink;stroke:red\"/>\n"
-                        + "<text x=\"35\" y=\"10\" style=\"font-size:30;fill:red\">!</text>\n"
-                        + "</svg>\n");
+        _attachText("_iconDescription", "<svg>\n"
+                + "<polygon points=\"0,0 22,-8 12,-28 32,-18 40,-40 48,-18 68,-28 58,-8 80,0 58,8 68,28 48,18 40,40 32,18 12,28 22,8 0,0\" "
+                + "style=\"fill:pink;stroke:red\"/>\n"
+                + "<text x=\"35\" y=\"10\" style=\"font-size:30;fill:red\">!</text>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -168,8 +166,13 @@ implements ExceptionHandler {
             int prefixLength = ((IntToken) matchPrefixOfLength.getToken())
                     .intValue();
             if (prefixLength <= 0) {
-                if (!exception.getMessage().equals(
-                        correctExceptionMessage.stringValue())) {
+                String message = exception.getMessage();
+                if (message == null) {
+                    throw new IllegalActionException(this, exception,
+                            "Expected:\n"
+                                    + correctExceptionMessage.stringValue()
+                                    + "\nBut got null error message:\n" + exception);
+                } else if (!message.equals(correctExceptionMessage.stringValue())) {
                     throw new IllegalActionException(this, exception,
                             "Expected:\n"
                                     + correctExceptionMessage.stringValue()
@@ -184,7 +187,7 @@ implements ExceptionHandler {
                 if (!exception.getMessage().startsWith(prefix)) {
                     throw new IllegalActionException(this, exception,
                             "Expected a message starting with:\n" + prefix
-                            + "\nBut got:\n" + exception.getMessage());
+                                    + "\nBut got:\n" + exception.getMessage());
                 }
             }
         }

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2016 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -122,6 +122,8 @@ public class ArcConnector extends AbstractConnector {
      * sites. The connector is drawn with a width of one
      * and in black, and at the default incident angle of
      * 45 degrees (PI/4 radians).
+     * @param tail The tail
+     * @param head The head
      */
     public ArcConnector(Site tail, Site head) {
         super(tail, head);
@@ -131,6 +133,8 @@ public class ArcConnector extends AbstractConnector {
     }
 
     /** Get the angle at which the arc leaves the tail figure.
+     * @return the angle
+     * @see #setAngle(double)
      */
     public double getAngle() {
         return _exitAngle;
@@ -139,6 +143,8 @@ public class ArcConnector extends AbstractConnector {
     /** Get the angle that determines the orientation of a
      * self-loop. This method should be used when saving an arc
      * to an external representation, if the arc is a self-loop.
+     * @return the gamma
+     * @see #setGamma(double)
      */
     public double getGamma() {
         return _gamma;
@@ -150,12 +156,10 @@ public class ArcConnector extends AbstractConnector {
     public Point2D getArcMidpoint() {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(
-                _centerX
-                + _radius
-                * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
-                _centerY
-                + _radius
-                * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
+                _centerX + _radius * Math
+                        .sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
+                _centerY + _radius * Math
+                        .cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
     }
 
     /** Get the site that marks the midpoint of the connector.
@@ -170,7 +174,9 @@ public class ArcConnector extends AbstractConnector {
         return _midpointSite;
     }
 
-    /** Get the flag saying whether this arc is to be drawn as a self-loop
+    /** Get the flag saying whether this arc is to be drawn as a self-loop.
+     * @return True if this arc is to be drawn as a self-loop.
+     * @see #setSelfLoop(boolean)
      */
     public boolean getSelfLoop() {
         return _selfloop;
@@ -225,12 +231,12 @@ public class ArcConnector extends AbstractConnector {
         // Figure out the centers of the attached figures
         Point2D headCenter;
 
-        // uru: checking that the parent of the tailFigure is not 
-        // null is necessary when using KIELER layout. 
+        // uru: checking that the parent of the tailFigure is not
+        // null is necessary when using KIELER layout.
         // The auto layout generates a spline path which is displayed
-        // using the KielerLayoutArcConnector. However, as soon as 
-        // the user starts dragging a node, the edge turns back to 
-        // being a regular arc. During this transformation the 
+        // using the KielerLayoutArcConnector. However, as soon as
+        // the user starts dragging a node, the edge turns back to
+        // being a regular arc. During this transformation the
         // parent of the tailFigure _sometimes_ becomes null.
         // The null check here does not seem to result in any
         // visual quirks.
@@ -357,8 +363,9 @@ public class ArcConnector extends AbstractConnector {
         //        }
 
         // Set the arc
-        _arc.setArcByCenter(centerX, centerY, radius, _startAngle / Math.PI
-                * 180, _extentAngle / Math.PI * 180, Arc2D.OPEN);
+        _arc.setArcByCenter(centerX, centerY, radius,
+                _startAngle / Math.PI * 180, _extentAngle / Math.PI * 180,
+                Arc2D.OPEN);
 
         // Move the label
         repositionLabel();
@@ -375,6 +382,8 @@ public class ArcConnector extends AbstractConnector {
      *  angles should be somewhat less than PI/2, and PI/4 a good
      *  general maximum figure.  If the angle is outside the range -PI
      *  to PI, then it is corrected to lie within that range.
+     *  @param angle The angle
+     *  @see #getAngle()
      */
     public void setAngle(double angle) {
         while (angle > Math.PI) {
@@ -392,6 +401,8 @@ public class ArcConnector extends AbstractConnector {
      * This value is roughly equal to the angle of the tangent to the
      * loop at it's mid-point. This method is only intended for use
      * when creating self-loop arcs from a saved representation.
+     * @param gamma The gamma
+     * @see #getGamma()
      */
     public void setGamma(double gamma) {
         _gamma = gamma;
@@ -406,6 +417,8 @@ public class ArcConnector extends AbstractConnector {
      * Not, however, that this method should only be called when the
      * arc changes, otherwise manipulation won't work properly. Use
      * getSelfLoop() to test the current state of this flag.
+     * @param selfloop true if this is a self-loop.
+     * @see #getSelfLoop()
      */
     public void setSelfLoop(boolean selfloop) {
         // If becoming a self-loop, use the current angle if it is
@@ -452,6 +465,8 @@ public class ArcConnector extends AbstractConnector {
     /** Translate the midpoint of the arc. This method is not exact,
      * but attempts to alter the shape of the arc so that the
      * midpoint moves by something close to the given amount.
+     * @param dx The x value to transform
+     * @param dy The y value to transform
      */
     public void translateMidpoint(double dx, double dy) {
         // Calculate some parameters

@@ -127,6 +127,8 @@ $Id$
         <version>${tycho-version}</version>
         <configuration>
           <compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
+          <!-- Don't use project settings so that we avoid the Unsafe error in StringUtilities -->
+          <useProjectSettings>false</useProjectSettings>
         </configuration>
       </plugin>
 
