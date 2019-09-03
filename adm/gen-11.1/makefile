@@ -2836,9 +2836,10 @@ izpackFix: $(IZPACK_DIR)
 # IzpackSetup creates a link for accessors/web/node_modules/@accessors-hosts
 # To build it use: make PTIIHOME=$PTII IzpackSetup.class
 # See https://izpack.atlassian.net/wiki/display/IZPACK/Executing+a+Java+Class+with+ProcessPanel
-# Require -target 8 so that IzpackSetup will run with the JDK 8 JVMs we ship.
+# Require --release 8 so that IzpackSetup will run with the JDK 8 JVMs we ship.
+PTADMJAVAC=javac --release 8
 IzpackSetup.class: IzpackSetup.java
-	javac -target 8 -release 8 -classpath `ls -1 $(IZPACK_DIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACK_DIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
+	$(PTADMJAVAC) -classpath `ls -1 $(IZPACK_DIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACK_DIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
 
 izpacksetup.jar: izpackFix IzpackSetup.class
 	$(JAR) cf $@ IzpackSetup.class
@@ -2995,10 +2996,10 @@ CLASSPATHSEPARATOR=;
 IZPACK_CLASSDIR=${IZPACK_DIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACK_DIR}/lib/installer.jar${CLASSPATHSEPARATOR}
 #IZPACK_CLASSDIR=c:/cxh/src/izpack/trunk/src/lib
 ExtractJarFile.class: ExtractJarFile.java
-	javac -target 8 -release 8 -classpath "$(IZPACK_CLASSDIR)" $^
+	$(PTADMJAVAC) -classpath "$(IZPACK_CLASSDIR)" $^
 
 Echo.class: Echo.java
-	javac -target 8 -release 8 -classpath "$(IZPACK_CLASSDIR)" $^
+	$(PTADMJAVAC) -classpath "$(IZPACK_CLASSDIR)" $^
 
 ExtractJarFile.jar: ExtractJarFile.class Echo.class
 	jar -cf $@ CYGPATH^
