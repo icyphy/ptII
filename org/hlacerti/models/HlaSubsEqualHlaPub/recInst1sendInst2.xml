@@ -10,41 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 135, 743, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={775, 39, 761, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[527, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7044566667976061">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9233398795176521">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{270.3299156907565, 327.4006349372091}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Rec&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;HlaSubsEqualHlaPub&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="synchronizationPointName" class="ptolemy.data.expr.Parameter" value="&quot;SimuSame&quot;">
-            <display name="Synchronization point name"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 10.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{196.11816406249994, 241.2543520309478}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -144,6 +116,52 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 140.0]">
         </property>
     </property>
+    <property name="Lookahead" class="ptolemy.data.expr.Parameter" value="0.1">
+        <display name="Lookahead"/>
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 55.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Rec">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HlaSubsEqualHlaPub">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="Lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Send">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate similar to OnlyHlaSubscriber.xml but this one also sends data.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 375.0]">
+        </property>
+    </property>
     <entity name="HlaSub1" class="org.hlacerti.lib.HlaSubscriber">
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
             <display name="Name of the attribute to receive"/>
@@ -157,29 +175,29 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 260.0]">
         </property>
     </entity>
-    <entity name="otherHlaSubs" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 684, 400, 166}, maximized=false}">
+    <entity name="HlaSubs-i1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1439, 348, 332, 158}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 315.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 300.0]">
         </property>
     </entity>
     <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 345.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 275.0]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -228,26 +246,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 95.0]">
         </property>
     </entity>
-    <entity name="BeforeOtherHlaPub" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 684, 400, 166}, maximized=false}">
+    <entity name="BeforeHlaPub-i2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1452, 91, 368, 171}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 181.71875]">
         </property>
     </entity>
     <entity name="CurrentTime2" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 166.71875]">
         </property>
     </entity>
     <entity name="CurrentMicrostep2" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 211.71875]">
         </property>
     </entity>
     <entity name="RecordAssembler2" class="ptolemy.actor.lib.RecordAssembler">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 141.71875]">
         </property>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -268,7 +286,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 285.0]">
+        <vertex name="vertex1" value="[115.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -282,7 +300,7 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[185.0, 150.0]">
+        <vertex name="vertex1" value="[185.0, 131.71875]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -298,7 +316,7 @@
         </vertex>
     </relation>
     <link port="HlaSub1.output" relation="relation"/>
-    <link port="otherHlaSubs.input" relation="relation2"/>
+    <link port="HlaSubs-i1.input" relation="relation2"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation"/>
     <link port="CurrentMicrostep.output" relation="relation4"/>
@@ -311,7 +329,7 @@
     <link port="HlaPublisher.input" relation="relation11"/>
     <link port="Ramp.output" relation="relation11"/>
     <link port="Ramp.trigger" relation="relation6"/>
-    <link port="BeforeOtherHlaPub.input" relation="relation8"/>
+    <link port="BeforeHlaPub-i2.input" relation="relation8"/>
     <link port="CurrentTime2.output" relation="relation9"/>
     <link port="CurrentTime2.trigger" relation="relation7"/>
     <link port="CurrentMicrostep2.output" relation="relation10"/>
