@@ -4,13 +4,13 @@
 <entity name="1Subscriber1PublisherNoInstanceClassName" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={51, 165, 896, 628}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 295, 896, 713}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 518]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[662, 603]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3749598355281203">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4899497487437185">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1221.0978348431422, 898.7326688655156}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1202.7993254637436, 913.0}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -19,9 +19,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model Type: &#10;             Test - 1Subscriber1PublisherNoInstanceClassName&#10;&#10;Feature: &#10;             1 Federation with 2 federates &quot;Sender1&quot; and &quot;Receiver1&quot;&#10;             This federation is set to work out of the box.&#10;             However, if &quot;Name of HLA class instance&quot; in HlaSubscriber &#10;             and HlaPublisher do not match, then the following exception &#10;             is thrown:&#10;             &quot;The fire() method of this actor was never called. Usually, &#10;             this is an error indicating that starvation is occurring.&quot;&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;----------------------------------------------------&#10;Description: &#10;A Federation with 2 federates &quot;Sender1&quot; and &quot;Receiver1&quot;.&#10;This federation is set to work out of the box.&#10;However, if &quot;Name of HLA class instance&quot; in HlaSubscriber &#10;and HlaPublisher do not match, no value is received by the  &#10;HlaSubscriber with a silent error. &#10;In some models (or in the past) an  exception could be thrown:&#10;    &quot;The fire() method of this actor was never called. Usually, &#10;     this is an error indicating that starvation is occurring.&quot;&#10;-----------------------------------------------------&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 710.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 735.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,7 +37,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open and run the models in this order:&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[982.0, 925.0]">
         </property>
@@ -109,7 +109,7 @@
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1045.0, 1035.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1060.0, 1060.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -117,41 +117,35 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution (it is not working!):&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 985.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 1005.0]">
         </property>
     </property>
-    <entity name="Sender1" class="ptolemy.vergil.actor.lib.VisualModelReference">
-        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Sender1.xml">
-        </property>
-        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
-        </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
-        </property>
-        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1235.0, 1035.0]">
-        </property>
-    </entity>
-    <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1150.0, 1035.0]">
-        </property>
-    </entity>
-    <entity name="Receiver1" class="ptolemy.vergil.actor.lib.VisualModelReference">
+    <entity name="Receiver" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Receiver1.xml">
         </property>
         <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
         </property>
-        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
         </property>
         <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1170.0, 1060.0]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1325.0, 1035.0]">
+    </entity>
+    <entity name="Sender" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="Sender1.xml">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1225.0, 1075.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1270.0, 1090.0]">
         </property>
     </entity>
 </entity>

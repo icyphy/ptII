@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 200 2018-03-29 14:42:35Z gl.lasnier $
+# @Version: $Id: makefile 175 2018-03-27 14:34:24Z gl.lasnier $
 #
 # @Copyright (c) 2017-2018 The Regents of the University of California.
 # All rights reserved.
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesTarNer
+ME =		org/hlacerti/models/TimeManagement/TimeAdvancing2FederatesNERbis
 
 # Root of the Java directory
-ROOT =		../../../../../../
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -48,10 +48,10 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	README.txt \
-	priseV2.fed \
-	TimeAdvancing2FederatesTarNerFed1TAR.xml \
-	TimeAdvancing2FederatesTarNerFed2NER.xml \
-	TimeAdvancing2FederatesTarNer.xml
+	NoData.fed \
+	TimeAdvancing2FederatesNERFed1NER.xml \
+	TimeAdvancing2FederatesNERFed2NER.xml \
+	TimeAdvancing2FederatesNERbis.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -84,10 +84,10 @@ demo: demo_ptolemy demo_vergil
 #	CLASSPATH="$(CLASSPATH)" appletviewer TimeManagement.htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" TimeAdvancing2FederatesTarNer.xml
+	"$(PTII)/bin/ptolemy" TimeAdvancing2FederatesNERbis.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" TimeAdvancing2FederatesTarNer.xml
+	"$(PTII)/bin/vergil" TimeAdvancing2FederatesNERbis.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
