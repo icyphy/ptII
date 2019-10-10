@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedReceiver1" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,38 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 34, 659, 891}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={59, 22, 664, 866}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[430, 756]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5514394058384007">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6852484427476534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{154.65722656249997, 498.31090494791647}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver1&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;StaticMultiInstanceJoker&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstanceJoker.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.1">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="enableHlaReporter" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Generate HLA reports ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -5.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{156.4581936997319, 493.671875}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -93,14 +68,22 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver1">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="StaticMultiInstanceJoker">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr), Janette Cardoso&#10;">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="StaticMultiInstanceJoker.fed">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, -45.0]">
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender1">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, -15.0]">
         </property>
     </property>
     <entity name="HlaSub1" class="org.hlacerti.lib.HlaSubscriber">
@@ -165,7 +148,7 @@
         </port>
     </entity>
     <entity name="HlaSub1 - Joker1:val1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={627, 929, 382, 240}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 22, 382, 222}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[382, 178]">
         </property>
@@ -224,7 +207,7 @@
         </port>
     </entity>
     <entity name="HlaSub2 - Joker2:val1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1143, 749, 407, 405}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={480, 442, 407, 387}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
@@ -299,7 +282,7 @@
         </port>
     </entity>
     <entity name="HlaSub3 - Joker1:val2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1395, 53, 390, 133}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={443, 212, 390, 115}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[390, 71]">
         </property>
@@ -374,7 +357,7 @@
         </port>
     </entity>
     <entity name="HlaSub4 -Joker2:val2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1550, 534, 362, 178}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={449, 328, 361, 112}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[361, 68]">
         </property>
