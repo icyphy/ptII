@@ -4,13 +4,13 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 213, 675, 731}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={87, 169, 640, 731}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[441, 621]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[406, 621]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6917092652860983">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8065360083012068">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{268.23766190798904, 447.32763671875006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{264.49430894851685, 472.7803605241005}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- DistributedReceiver1 model: first federate to be launched.">

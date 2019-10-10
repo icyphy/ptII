@@ -4,38 +4,38 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 193, 987, 580}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 169, 987, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 470]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6874016893396686">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.8509745695400937">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-671.55908203125, -244.40669950790715}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1019.0234398841858, -161.42300058085058}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Configuration: &#10;             1Value2Instances2Jokers: UAV(val1,instance1), UAV(val1,instance2), RAV(val1,joker_1), RAV(val1, joker_2), success&#10;             2Values2Instances2Jokers: UAV(val1,instance1), UAV(val2,instance2), RAV(val1,joker_1), RAV(val2, joker_2), success&#10;             2Values2Instances1Joker: UAV(val1,instance1), UAV(val2,instance1), RAV(val1,joker_1), RAV(val2, joker_1), success&#10;             3Federates4Values2Instances2Jokers: Sender1 UAV(val1,instance1), UAV(val2,instance1),&#10;                          Sender2 UAV(val1,instance2), UAV(val2,instance2),&#10;                          Receiver1 RAV(val1,joker1), UAV(val2,joker2),&#10;                          success&#10;&#10;Expected results:&#10;             Each test must be successfull&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;------------------------------------------&#10;Model type:   Test&#10;Expected results: Each test must be successfull&#10;------------------------------------------&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-1216.0, -583.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -290.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Testsuite for the static HLA multi instance feature.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;Testsuite for the static HLA multi instance feature.&#10;Some models are examples of bad models.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1215.0, -200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1205.0, -205.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstanceJoker/1Value2Instances2Jokers/StaticMultiInstanceJoker.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 1Value2Instances2Jokers/StaticMultiInstanceJoker.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -125.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstanceJoker/1Value2Instances2Jokers/StaticMultiInstanceJoker.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="1Value2Instances2Jokers/StaticMultiInstanceJoker.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -64,17 +64,17 @@
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Good model:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1213.0, -133.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1205.0, -145.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- StaticMultiInstanceJoker/2Values2Instances1Joker/StaticMultiInstanceJoker.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 2Values2Instances1Joker/StaticMultiInstanceJoker.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -55.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="StaticMultiInstanceJoker/2Values2Instances1Joker/StaticMultiInstanceJoker.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="2Values2Instances1Joker/StaticMultiInstanceJoker.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -102,12 +102,43 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- 2Values2Instances2Jokers/StaticMultiInstanceJoker.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -75.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="2Values2Instances2Jokers/StaticMultiInstanceJoker.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstanceJoker/2Values2Instances1Joker/StaticMultiInstanceJoker.xml">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Model StaticMultiInstanceJoker/2Values2Instances2Jokers/StaticMultiInstanceJoker.xml&#10;was removed on April, 10, 2018. Error msg &quot;starvation&quot;.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bad models:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1205.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, -95.0]">
         </property>
     </property>
 </entity>
