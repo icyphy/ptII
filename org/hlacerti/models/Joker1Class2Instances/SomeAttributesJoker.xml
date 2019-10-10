@@ -4,13 +4,13 @@
 <entity name="SomeAttributesJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 380, 958, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={285, 460, 999, 520}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[724, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[765, 410]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9999863228411289">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.098965455481039">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{404.00488281249994, 293.1851420255602}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{390.5048828125, 205.98934188741723}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -22,7 +22,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 65.0]">
         </property>
     </property>
-    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 90.0]">
         </property>
     </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -57,7 +57,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 105.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -67,7 +67,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 115.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -87,7 +87,7 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 70.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -95,9 +95,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Choose one of the two ways for updating the vehicles's coordinates:&#10;&#10;1. The two instances (robot and uav) are updated by a unique federate &#10;(the attributes are correctly reflected). &#10;Open the model below and run the models in the indicated order.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Choose one of the two ways for updating the vehicles's coordinates:&#10;&#10;1. The two instances (robot and uav) are updated by a unique federate. &#10;In this case, the federation execution is correct.&#10;Open the model below and run the models in the indicated order.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 55.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -105,7 +105,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- A federate updates 'robot' and 'uav'">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 130.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OneFederate2Instances.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -138,9 +138,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Each instance is updated by a different federate&#10;(the attributes are not correctly reflected). &#10;Open the two models bellow and run the models in the indicated order.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Each instance is updated by a different federate. In this case,&#10;the attributes y and z are not correctly reflected. &#10;Open the two models bellow and run the models in the indicated order.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 160.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -148,7 +148,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate UAV updates instance 'uav' (along the wall)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 215.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UAValongTheWall.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -181,7 +181,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Sender1 updates instance 'robot' (on the ground)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 235.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="Robot.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -214,9 +214,19 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a bad model, because the behavior would be the same&#10;whatever one or two federates are used for updating the two&#10;instances.&#10;There are two ways to fix the model of federate Display:&#10;- do not use wildcard, but the name of the instances &#10;- if wildcards are used, then put HlaSubscribers for all attributes.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a bad model, because the behavior would be the same&#10;whatever one or two federates are used for updating the two&#10;instances. Indeed, joker_1 could be assigned by &quot;uav&quot; or &quot;robot&quot;,&#10;so you are not allowd to choose &quot;y&quot; and &quot;z&quot; in the reflector actors.&#10;&#10;There are two ways to fix the model of federate Display:&#10;- do not use wildcard, but the name of the instances &#10;- if wildcards are used, then put HlaSubscribers for all attributes.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 265.0]">
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First run this model, then read the following for&#10;running the following federate(s).&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 20.0]">
         </property>
     </property>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
@@ -232,7 +242,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 155.0]">
         </property>
     </entity>
     <entity name="HlaSub2" class="org.hlacerti.lib.HlaSubscriber">
@@ -248,7 +258,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 237.43896484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[119.0, 267.43896484375]">
         </property>
     </entity>
     <entity name="HlaSub3" class="org.hlacerti.lib.HlaSubscriber">
@@ -264,7 +274,7 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[122.81774139404297, 185.01871490478516]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[117.81774139404297, 210.01871490478516]">
         </property>
     </entity>
     <entity name="HlaSub4" class="org.hlacerti.lib.HlaSubscriber">
@@ -280,17 +290,17 @@
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
             <display name="type of the parameter"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[114.0, 292.43896484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[119.0, 322.43896484375]">
         </property>
     </entity>
     <entity name="Avehicle" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x,y">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={525, 398, 300, 197}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={939, 533, 340, 214}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[300, 153]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[340, 170]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 185.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -299,8 +309,8 @@
 <title>Avehicle</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.01" max="2.0100000000000002"/>
-<yRange min="2.0" max="8.0"/>
+<xRange min="0.01" max="4.01"/>
+<yRange min="1.0" max="5.0"/>
 <default connected="no" marks="various"/>
 </plot>?>
         </configure>
@@ -308,11 +318,11 @@
     <entity name="AnotherVehicle" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="x,z">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={526, 596, 299, 200}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={950, 748, 339, 252}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[299, 156]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[339, 208]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.0, 267.43896484375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[239.0, 297.43896484375]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -321,8 +331,8 @@
 <title>AnotherVehicle</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="0.01" max="3.0100000000000002"/>
-<yRange min="1.0" max="12.0"/>
+<xRange min="0.01" max="4.01"/>
+<yRange min="2.0" max="6.0"/>
 <default connected="no" marks="various"/>
 </plot>?>
         </configure>

@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimeAdvancing2FederatesNERFed2NER" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -12,35 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
         </property>
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Fed2NER&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;TimeAdvancing2FederatesNER&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="1.0">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 95.0]">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={747, 368, 669, 532}, maximized=false}">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={81, 377, 652, 640}, maximized=false}">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[435, 422]">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 522]">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2415265211563036">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0933189337784104">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.81963900862073, 291.3310659123564}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{123.16025826181044, 223.10640863409625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate Fed2NER participating to HlaFederation;&#10;it must be the first one to be launched.&#10;&#10;For observing how the time advances,&#10;do a right-click on HlaManager icone and&#10;choose Listen To Attribute.&#10;&#10;Note: Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.">
@@ -72,9 +50,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clement Michel">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Janette Cardoso">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 385.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 350.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -87,6 +65,32 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="synchronizeToRealTime=1 in DE director.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 145.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Fed2NER">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TimeAdvancing2FederatesNER">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="NoData.fed">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Fed1NER">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 95.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate&#10;to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 95.0]">
         </property>
     </property>
 </entity>

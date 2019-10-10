@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 175 2018-03-27 14:34:24Z gl.lasnier $
+# @Version: $Id: makefile 175 2018-03-27 14:34:24Z cardoso $
 #
 # @Copyright (c) 2017-2018 The Regents of the University of California.
 # All rights reserved.
@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesNER
+ME =		org/hlacerti/models/TimeManagement/TimeAdvancing2FederatesNER
 
 # Root of the Java directory
-ROOT =		../../../../../../
+ROOT =		../../../../../
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	README.txt \
-	priseV2.fed \
+	NoData.fed \
 	TimeAdvancing2FederatesNERFed1NER.xml \
 	TimeAdvancing2FederatesNERFed2NER.xml \
 	TimeAdvancing2FederatesNER.xml

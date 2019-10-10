@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 10.0]">
         </property>
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="2">
@@ -26,7 +26,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 20.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
@@ -45,10 +45,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, -9.999999999999972]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 5.0]">
         </property>
     </property>
-    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
+    <property name="Lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
+        <display name="Lookahead"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -64,16 +65,16 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={719, 501, 807, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 152, 827, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[573, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[593, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0287014026367887">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{207.64597664439202, 228.1660360980084}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{217.3669704861112, 228.16603609800833}">
     </property>
     <property name="period_dc1" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -91,7 +92,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 45.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -128,29 +129,27 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This HlaSubscriber has the same parameters&#10;(class, attribute, instance names) than the&#10;HlaPublisher in the same model. It does not &#10;receive  any update neither raises an error.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Bad design:&#10;This HlaSubscriber has the same parameters&#10;(class, attribute, instance names) than the&#10;HlaPublisher in the same model. It does not &#10;receive  any update.&#10;This situation must be detected and raise&#10;an exception.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 185.0]">
         </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Send">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HLASubsEqualHlaPub">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HlaSubsEqualHlaPub">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HLASubsEqualHlaPub.fed">
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
         </property>
         <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
         </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="Lookahead">
         </property>
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Send">
         </property>
-        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 20.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -183,6 +182,11 @@
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 120.0]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
     </entity>
     <entity name="HlaSub" class="org.hlacerti.lib.HlaSubscriber">
         <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
@@ -201,9 +205,9 @@
         </property>
     </entity>
     <entity name="HlaSub1 - val1" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1013, 513, 407, 387}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={842, 221, 279, 144}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[299, 72]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 340.0]">
         </property>
@@ -237,8 +241,8 @@
             </property>
         </port>
     </entity>
-    <entity name="BeforeHlaPub" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1375, 453, 430, 251}, maximized=false}">
+    <entity name="BeforeHlaPub-i1" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1498, 646, 372, 225}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>
@@ -320,7 +324,7 @@
     <link port="RecordAssembler.value" relation="relation"/>
     <link port="RecordAssembler.time" relation="relation5"/>
     <link port="RecordAssembler.microstep" relation="relation6"/>
-    <link port="BeforeHlaPub.input" relation="relation8"/>
+    <link port="BeforeHlaPub-i1.input" relation="relation8"/>
     <link port="CurrentTime2.output" relation="relation9"/>
     <link port="CurrentTime2.trigger" relation="relation7"/>
     <link port="CurrentMicrostep2.output" relation="relation10"/>

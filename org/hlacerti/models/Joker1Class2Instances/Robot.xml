@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={500, 22, 754, 393}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={436, 448, 735, 405}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[520, 283]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[501, 295]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.327539245455204">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.220815502193119">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{103.240966796875, 107.13041274126839}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{112.2513373076026, 121.03384809351678}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -135,7 +135,7 @@
         </property>
     </property>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period_dc2">
         </property>

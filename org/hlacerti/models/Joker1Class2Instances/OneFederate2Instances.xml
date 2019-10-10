@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="VehicleTwoInstances" class="ptolemy.actor.TypedCompositeActor">
+<entity name="OneFederate2Instances" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -50,13 +50,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={889, 22, 662, 514}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1146, 355, 714, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[428, 404]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[480, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.081791023802444">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.021581686414576">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{109.3543773660184, 191.41400566916565}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.19169711610348, 259.90039997009575}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -140,7 +140,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 305.0]">
         </property>
     </property>
     <property name="hla_value_dc1" class="ptolemy.data.expr.Parameter" value="1">
@@ -159,7 +159,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-60.0, 365.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 320.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -171,11 +171,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The instance 'robot' is a vehicle moving only on the ground.&#10;The instance 'uav' is a vehicle moving only along the wall.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 345.0]">
         </property>
     </property>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="period_dc2">
         </property>
@@ -195,7 +195,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;robot&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 135.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
@@ -213,7 +213,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{hla_value_dc1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 245.0]">
         </property>
     </entity>
     <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
@@ -226,7 +226,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 260.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -235,7 +235,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="period_dc1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 255.0]">
         </property>
     </entity>
     <entity name="Scale" class="ptolemy.actor.lib.Scale">
@@ -258,7 +258,7 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;robot&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 175.0]">
         </property>
     </entity>
     <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -268,7 +268,7 @@
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 315.0]">
         </property>
     </entity>
     <entity name="HlaPublisher4" class="org.hlacerti.lib.HlaPublisher">
@@ -281,8 +281,30 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;uav&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 315.0]">
         </property>
+    </entity>
+    <entity name="BeforeUAV" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="robot.x,robot.y,uav.x, uav.z">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={962, 271, 370, 261}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[370, 217]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 230.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Avehicle</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="4.0"/>
+<yRange min="1.0" max="15.0"/>
+<default connected="no" marks="various"/>
+</plot>?>
+        </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -294,28 +316,48 @@
         <vertex name="vertex1" value="[110.0, 135.0]">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[100.0, 290.0]">
+        <vertex name="vertex1" value="[95.0, 255.0]">
         </vertex>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[205.0, 175.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[195.0, 135.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[195.0, 315.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[115.0, 225.0]">
+        </vertex>
     </relation>
     <link port="DiscreteClock2.output" relation="relation4"/>
-    <link port="HlaPublisher2.input" relation="relation5"/>
+    <link port="HlaPublisher2.input" relation="relation"/>
     <link port="Ramp2.output" relation="relation5"/>
     <link port="Ramp2.trigger" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation2"/>
-    <link port="HlaPublisher.input" relation="relation6"/>
+    <link port="HlaPublisher.input" relation="relation9"/>
     <link port="Ramp.output" relation="relation6"/>
     <link port="Ramp.trigger" relation="relation2"/>
     <link port="Scale.input" relation="relation5"/>
-    <link port="Scale.output" relation="relation"/>
-    <link port="HlaPublisher3.input" relation="relation"/>
+    <link port="Scale.output" relation="relation7"/>
+    <link port="HlaPublisher3.input" relation="relation7"/>
     <link port="Scale2.input" relation="relation6"/>
-    <link port="Scale2.output" relation="relation3"/>
-    <link port="HlaPublisher4.input" relation="relation3"/>
+    <link port="Scale2.output" relation="relation8"/>
+    <link port="HlaPublisher4.input" relation="relation8"/>
+    <link port="BeforeUAV.input" relation="relation"/>
+    <link port="BeforeUAV.input" relation="relation7"/>
+    <link port="BeforeUAV.input" relation="relation9"/>
+    <link port="BeforeUAV.input" relation="relation8"/>
+    <link relation1="relation5" relation2="relation"/>
+    <link relation1="relation6" relation2="relation9"/>
 </entity>

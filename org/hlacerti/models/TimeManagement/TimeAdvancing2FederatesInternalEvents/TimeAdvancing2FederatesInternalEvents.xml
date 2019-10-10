@@ -21,7 +21,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso &amp; Clement Michel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 845.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 800.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -29,7 +29,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;--------------------------------------------------------------&#10;Model type: Test&#10;Feature: Time Management&#10;Expected result: This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;-----------------------------------------------------&#10;Model type: A federation with internal events, no federate is &#10;synchronized with real-time.&#10;-----------------------------------------------------&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 95.0]">
         </property>
@@ -39,7 +39,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Simple test of the time advancement in HLA using NER and TAR&#10;and internal events. &#10;&#10;Goal of this model: test the time advancing in a federation&#10;with two federates  Fed1TAR and Fed2NER when Fed2NER&#10;produces internal events.&#10;&#10;Note: In each federate, the user can set the Time Management&#10;Service to NER or TAR.&#10;&#10;* Federate Fed1TAR is:&#10;    - Time Regulator (TR) and Time Constrained (TC)&#10;    - using TAR with timestep=1.0&#10;    - stopTime=10&#10;&#10;* Federate Fed2NER is:&#10;    - Time Regulator (TR) and Time Constrained (TC)&#10;    - using NER with lookahead=0.1&#10;    - stopTime=8&#10;&#10;For observing how the time advances in each federate, do&#10;a right-click on HlaManager icone and choose Listen To Attribute.&#10;&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-55.0, 195.0]">
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -51,9 +51,9 @@
         </property>
     </property>
     <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed1TAR model: last federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed1TAR model: first federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 640.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 625.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancingFed1TAR.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -84,9 +84,9 @@
         </property>
     </property>
     <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed2NERwithInternalEvents model: first federate to be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- Federate Fed2NERwithInternalEvents model: last federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 620.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 645.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancingFed2NERwithInternalEvents.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -126,7 +126,7 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 745.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 735.0]">
         </property>
     </entity>
     <entity name="Fed2NERwithInternalEvents" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -140,11 +140,11 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 775.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 770.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.259259259259323, 783.7211328976035]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 800.0]">
         </property>
     </entity>
 </entity>

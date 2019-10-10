@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedSender" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -48,58 +48,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 35.0]">
         </property>
     </property>
-    <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
-        <display name="Lookahead"/>
-        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-            </property>
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 30.0]">
-        </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={389, 408, 695, 632}, maximized=false}">
     </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Sender&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;MicrostepError&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
-            <display name="Is synchronization point register ?"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 15.0]">
-        </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 522]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={499, 518, 677, 632}, maximized=false}">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3475571325194333">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 514]">
-    </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0956238292707756">
-    </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{154.24696727275852, 209.31454402923583}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{116.33984374999999, 172.1550330861973}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -137,7 +92,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Clement Michel - Janette Cardoso, ISAE-SUPAERO, France.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 140.0]">
         </property>
     </property>
     <property name="periodS" class="ptolemy.data.expr.Parameter" value="1.0">
@@ -164,9 +119,48 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be t the current Ptolemy time, and h the current HLA time.&#10;In a TAR federate, at current time t the timestamp of a UAV is:&#10;- t, if t &gt;= h+lookahead&#10;- (t+ lookahead) otherwise.    &#10;When proposeTime(t') is called, TAR(h+TS) is executed only if &#10;t' &gt; h+ TARTimeStep. Otherwise t' is granted and becomes&#10;current time. So t is advanced but h stay the same.&#10;&#10;Whatever the relation between periodS and TARTimeStepS (in the&#10;Sender), there is a problem with the microstep at federate Receiver.&#10;Internal events and RAV are not added in the AddSubtract actor,&#10;even if they have the same microstep and the same timestamp.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be t the current Ptolemy time, and h the current HLA time.&#10;In a TAR federate, at current time t the timestamp of a UAV is:&#10;- t, if t &gt;= h+lookahead&#10;- (t+ lookahead) otherwise.    &#10;When proposeTime(t') is called, TAR(h+TS) is executed only if &#10;t' &gt; h+ TARTimeStep. Otherwise t' is granted and becomes&#10;current time. So t is advanced but h stay the same.&#10;&#10;At commit 1691c4a63a7 (Sept, 2019) there is no more reset&#10;of the microstep and the federation execution is as expected.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 165.0]">
+        </property>
+    </property>
+    <property name="Lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Sender">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="MicrostepError">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="Lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 20.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

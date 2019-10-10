@@ -60,7 +60,7 @@
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TimeAdvancing1FederateNER">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Signal.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="NoData.fed">
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
         </property>
@@ -68,7 +68,7 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 100.0}">
         </property>
     </property>
 </entity>

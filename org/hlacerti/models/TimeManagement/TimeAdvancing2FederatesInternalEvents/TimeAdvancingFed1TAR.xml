@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 80.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 143, 638, 582}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 143, 638, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[404, 472]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[404, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0553442602367786">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{253.6689453125, 268.2296706456218}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{253.6689453125, 291.91862309644665}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate Fed1TAR participating to &#10;&quot;TimeAdvancing2FederatesInternalEvents&quot; federation;&#10;it must be the last one to be launched since it &#10;registers the synchronization point.&#10;&#10;For observing how the time advances in each&#10;federate, do a right-click on HlaManager icone&#10;and choose Listen To Attribute.&#10;&#10;Note: Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;&#10;Parameter hlaTimeStep is only used with TAR.">
@@ -79,7 +79,7 @@
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TimeAdvancing2FederatesInternalEvents">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Signal.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="NoData.fed">
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
         </property>
