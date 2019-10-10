@@ -4,7 +4,7 @@
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 220, 719, 878}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={350, 22, 719, 878}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[485, 768]">
     </property>
@@ -120,7 +120,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using lingerTime=0L for DistributedSender, the&#10;displays do not appear. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using lingerTime=0L for DistributedSender, the&#10;displays do not appear. All the VisualModelReferences need&#10;to execute in a new thread except the last, which should &#10;execute in the calling thread. This last one prevents the Stop&#10;actor from executing until it stops. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 1075.0]">
         </property>
@@ -142,7 +142,7 @@
     <entity name="DistributedSender" class="ptolemy.vergil.actor.lib.VisualModelReference">
         <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="DistributedSender1.xml">
         </property>
-        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
         </property>
         <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="100L">
         </property>
@@ -150,11 +150,11 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 1040.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 1040.0}">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 1015.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 1045.0]">
         </property>
     </entity>
 </entity>
