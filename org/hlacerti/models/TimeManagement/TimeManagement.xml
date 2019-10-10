@@ -2,32 +2,32 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="TimeManagement" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={935, 228, 985, 633}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={636, 152, 700, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[769, 515]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[466, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5714957999011742">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0358900183243633">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1648.046875, 1130.8230195981555}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{1214.1005859375, 1306.1304824561403}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model Type: &#10;             Test&#10;&#10;Configuration: &#10;             TimeAdvancing1FederateTAR: 1 federate using TAR, success&#10;             TimeAdvancing1FederateNER: 1 federate using NER, success&#10;             TimeAdvancing2FederatesTAR: Fed1 using TAR with TS=1.0; Fed2 using TAR with TS=2.0, success&#10;             TimeAdvancing2FederatesTarNer: Fed1 using TAR with TS=1.0 Stoptime=10 and Fed2 using NER with LAH=0.1 and Stoptime=8, success,&#10;             TimeAdvancing2FederatesNER: Fed1 using NER  with LAH=0.1 Stoptime=10 and Fed2 using NER with LAH=0.1 Stoptime=8, success,&#10;             TimeAdvancing2FederatesNerTar: Fed1 using NER with LAH=0.1 and Stoptime=10 and Fed2 using TAR with TS=1.0 Stoptime=8, success,&#10;             TimeAdvancing2FederatesIntervalEvents: Fed1 using TAR, Fed2 using NER but producing &quot;internal events&quot; using discrete clock, success&#10;&#10;Expected result:&#10;             Each test must be successfull&#10;&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------&#10;Federations with using time management. Each federation&#10;highlight a particular behavior.&#10;--------------------------------------------------&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[980.0, 685.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 1055.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing1FederateTAR: 1 federate using TAR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1170.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing1FederateTAR/TimeAdvancing1FederateTAR.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -48,7 +48,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeAdvancing1FederateTAR/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeAdvancing1FederateTAR/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
@@ -60,31 +60,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 1155.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;&#10;Testsuite for the HLA time advancement feature (NER or TAR).&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[985.0, 1090.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie - http://www.ciele.fr">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1000.0, 1360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[990.0, 1150.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing1FederateNER: 1 federate using NER">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1190.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing1FederateNER/TimeAdvancing1FederateNER.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -105,7 +87,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeAdvancing1FederateNER/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeAdvancing1FederateNER/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
@@ -113,9 +95,9 @@
         </property>
     </property>
     <property name="Annotation14" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesIntervalEvents: Fed1 TAR and Fed2 NER producing internal events">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesIntervalEvents: Fed1 TAR and&#10;    Fed2 NER producing internal events">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1230.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesInternalEvents/TimeAdvancing2FederatesInternalEvents.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -136,38 +118,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeAdvancing2FederatesIntervalEvents/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation15" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesTAR: Fed1 TAR and Fed2 TAR">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1225.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesTAR/TimeAdvancing2FederatesTAR.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesTAR/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeAdvancing2FederatesIntervalEvents/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
@@ -175,11 +126,11 @@
         </property>
     </property>
     <property name="Annotation16" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesNER: Fed1 NER and Fed2 NER">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesNERbis: Fed1 NER and Fed2 NER">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1325.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesNER/TimeAdvancing2FederatesNER.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesNER/TimeAdvancing2FederatesNERbis.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -198,38 +149,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesNER/index.html">
-            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation17" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesTarNer: Fed1 TAR and Fed2 NER">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1265.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesTarNer/TimeAdvancing2FederatesTarNer.xml">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
-            </property>
-        </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesTarNer/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeManagement/TimeAdvancing2FederatesNER/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
@@ -239,7 +159,7 @@
     <property name="Annotation18" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesNerTar: Fed1 NER and Fed2 TAR">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1210.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesNerTar/TimeAdvancing2FederatesNerTar.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -260,11 +180,52 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
             </property>
         </property>
-        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/TimeManagement/TimeAdvancing2FederatesNerTar/index.html">
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeManagement/TimeAdvancing2FederatesNerTar/index.html">
             <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
             </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- TimeAdvancing2FederatesNER: Fed1 NER and Fed2 NER">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1305.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="TimeAdvancing2FederatesNER/TimeAdvancing2FederatesNER.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/models/TimeManagement/TimeAdvancing2FederatesNER/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See README.txt for a discussion about these two models below:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[995.0, 1280.0]">
         </property>
     </property>
 </entity>

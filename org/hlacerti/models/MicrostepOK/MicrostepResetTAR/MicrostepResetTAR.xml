@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="MicrostepResetTAR" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={616, 117, 999, 640}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={44, 65, 949, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[783, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{391.5, 261.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -56,7 +56,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open the DistributedSender model: last federate to be launched (Sender) .">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, 155.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="DistributedSender.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -89,15 +89,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Created with bin/mkptlivelinkdemo and modified by Janette Cardoso.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 240.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using TAR in all federates, the microstep of a RAV event (in federate Receiver) is reseted if its &#10;timestamp is the same as an internal event. This was observed at r76499 until the current 77055.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using TAR in all federates, the microstep of a RAV event (in federate Receiver) was reseted&#10;if its  timestamp is the same as an internal event. This was observed at r76499 and at 77055, but&#10;it is solved at the current version (Sept 2019) and since 2017.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 185.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">

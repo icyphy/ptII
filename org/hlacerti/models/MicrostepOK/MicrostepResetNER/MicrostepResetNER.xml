@@ -4,7 +4,7 @@
 <entity name="MicrostepResetNER" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={383, 33, 991, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={283, 386, 991, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[757, 522]">
     </property>
@@ -27,13 +27,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Created with bin/mkptlivelinkdemo and modified by Janette Cardoso.)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 320.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In federate Receiver, an internal event is generated at the same logical time as the RAV&#10;received from federates Sender and Sender2. &#10;&#10;When using NER for all the above federates, the microstep is correctly incremented if&#10;- two RAV are received comming from 2 federates&#10;- the timestamp of the RAV is the same as the timestamp of an internal event.&#10;In the models using TAR, the second situation provokes a reset of the RAV microstep.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In federate Receiver, an internal event is generated at the same logical time as the RAV&#10;received from federates Sender and Sender2. &#10;&#10;When using NER for all the above federates, the microstep is correctly incremented if&#10;- two RAV are received comming from 2 federates&#10;- the timestamp of the RAV is the same as the timestamp of an internal event.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 165.0]">
         </property>
@@ -132,5 +132,15 @@
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: these models caled &quot;MicrostepReset*&quot; were designed to analyze a bug observed at r76499, &#10;but this bug was fixed since 2017.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 280.0]">
+        </property>
     </property>
 </entity>

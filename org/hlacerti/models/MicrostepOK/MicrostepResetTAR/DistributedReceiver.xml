@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedReceiver" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,35 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={734, 109, 700, 506}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 435, 760, 645}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[466, 396]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[526, 535]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.710347882337663">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9093293406990552">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{309.9694934961747, 286.041610722639}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;MicrostepError&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 60.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{318.7255859375, 313.0180380178052}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,8 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 80.0]">
         </property>
     </property>
-    <property name="lah" class="ptolemy.data.expr.Parameter" value="0.5">
-        <display name="Lookahead"/>
+    <property name="Lookahead" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -99,9 +76,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be TS=TARTimeStep the time step. In a TAR federate, in a time advancing&#10;loop TAR(k*TS), all received RAV(t'), t' &lt; h+TS, are re-timestamp to h+TS.&#10;&#10;When periodR=periodS, the expected value after the AddSubtractor&#10;is (1+2+3.5+4)=10.5, the addition of internal events and RAVs. &#10;But even if the microstep and time are the same, e.g., (m=1, t=1),&#10;RAV and internal events values are not added together.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Let be TS=TARTimeStep the time step. In a TAR federate, in a time advancing&#10;loop TAR(k*TS), all received RAV(t'), t' &lt; h+TS, are re-timestamp to h+TS.&#10;&#10;When periodR=periodS, the expected value after the AddSubtractor&#10;is (1+2+3.5+4)=10.5, the addition of internal events and RAVs. &#10;A bug was found at version r76499 but it was already fixed.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 460.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 465.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -114,7 +91,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 90.0]">
         </property>
     </property>
-    <property name="v1" class="ptolemy.data.expr.Parameter" value="1">
+    <property name="v1" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -133,7 +110,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 145.0]">
         </property>
     </property>
-    <property name="v2" class="ptolemy.data.expr.Parameter" value="2">
+    <property name="v2" class="ptolemy.data.expr.Parameter" value="2.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -179,6 +156,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Clement Michel - Janette Cardoso, ISAE-SUPAERO, France.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 445.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="MicrostepError">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="Lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 60.0]">
         </property>
     </property>
     <class name="RecordAssembler" extends="ptolemy.actor.TypedCompositeActor">
@@ -255,7 +252,7 @@
         </property>
     </entity>
     <entity name="AfterAdd" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={674, 232, 315, 162}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={902, 145, 336, 221}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[334, 589]">
         </property>
@@ -271,7 +268,7 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{periodR}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{v2}">
         </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 220.0]">
@@ -282,6 +279,8 @@
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{periodR}">
         </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{v1}">
+        </property>
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 125.0]">
         </property>
@@ -291,7 +290,7 @@
         </property>
     </entity>
     <entity name="BeforeAdd" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={687, 22, 302, 209}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={603, 151, 295, 266}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[297, 371]">
         </property>

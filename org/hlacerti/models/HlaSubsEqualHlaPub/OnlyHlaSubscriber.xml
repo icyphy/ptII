@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={752, 78, 774, 422}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 121, 780, 483}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[540, 312]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[546, 373]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2754277119759354">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{119.7734375, 115.57329746462264}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{119.77343749999997, 131.254311615566}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -53,7 +53,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 10.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -81,9 +81,9 @@
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Rec">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HLASubsEqualHlaPub">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="HlaSubsEqualHlaPub">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HLASubsEqualHlaPub.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="HlaSubsEqualHlaPub.fed">
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
         </property>
@@ -93,7 +93,7 @@
         </property>
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 35.0}">
         </property>
     </property>
     <entity name="HlaSub1" class="org.hlacerti.lib.HlaSubscriber">
@@ -113,7 +113,7 @@
         </property>
     </entity>
     <entity name="otherHlaSubs" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1414, 51, 424, 171}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={536, 525, 392, 193}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[407, 343]">
         </property>

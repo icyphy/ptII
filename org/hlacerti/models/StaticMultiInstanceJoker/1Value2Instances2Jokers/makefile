@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 158 2018-03-09 17:24:39Z gl.lasnier $
+# @Version: $Id: makefile 158 2018-03-09 17:24:39Z cardoso $
 #
 # @Copyright (c) 2017-2019 The Regents of the University of California.
 # All rights reserved.
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/StaticMultiInstanceJoker/1Value2Instances2Jokers
+ME =		org/hlacerti/models/StaticMultiInstanceJoker/1Value2Instances2Jokers
 
 # Root of the Java directory
 ROOT =		../../../../../../

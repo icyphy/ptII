@@ -7,17 +7,21 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains a Federate that has HlaSubscriber &#10;with same parameters then a HlaPublisher.&#10;&#10;Open the following two models and run them in this order&#10;(the last one is the register of the synchronization point):&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This federation contains a Federate that has HlaSubscriber &#10;with same parameters then a HlaPublisher.&#10;&#10;Open the following two models and run them in this order&#10;(the last one is the register of the synchronization point):&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 140.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HlaPubAndHlaSubs.xml ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 235.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HlaPubAndHlaSubs.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -39,28 +43,32 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 80, 791, 418}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 55, 736, 574}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[557, 308]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[502, 464]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3151766407538736">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2721653233137387">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{216.95685653542844, 207.29276644891712}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{202.37109374999997, 302.435927972561}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso, Edward Lee">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 230.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="OnlyHlaSubscriber.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 220.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="OnlyHlaSubscriber.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -85,11 +93,95 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The last federate has a HlaSubscriber with the same parameters&#10;(class, attribute, instance names) than the HlaPublisher in the same&#10;model. It does not  receive  any update.&#10;This situation must be detected and raise an exception.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here you have a similar federation with a different federate &quot;Rec&quot;.&#10;Open the following two models and run them in this order:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="HlaPubAndHlaSubs.xml ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 370.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="HlaPubAndHlaSubs.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation8" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="recInst1sendInst2.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 355.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="recInst1sendInst2.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Now there are two instances in the federation.&#10;If you use &quot;instance2&quot; instead of &quot;instance1&quot; in the HlaSubscriber&#10;of  federate  &quot;Send&quot;, it will receive the updates of instance1.val1&#10;made by federate &quot;Rec&quot;.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 395.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The last federate has a HlaSubscriber with the same parameters&#10;(class, attribute, instance names) than the HlaPublisher in the same&#10;model. It does not  receive  any update neither raises an error.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Goal: show a silent error made by the user.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 120.0]">
         </property>
     </property>
 </entity>

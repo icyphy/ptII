@@ -4,13 +4,13 @@
 <entity name="Receiver1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 51, 824, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={33, 142, 824, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[590, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1931147603555319">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-242.26440429687497, 148.56443965517235}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-242.26440429687497, 148.56443965517238}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="2">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -61,9 +61,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched. &#10;&#10;This federation is set to work out of the box.&#10;However, if &quot;Name of HLA class instance&quot; in HlaSubscriber (of&#10;Receiver1 federate) and HlaPublisher (of Sender1 federate) do not &#10;match, then the following exception is thrown:&#10; &quot;The fire() method of this actor was never called. Usually, &#10;this is an error indicating that starvation is occurring.&quot;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched. &#10;&#10;This federation is set to work out of the box.&#10;However, if &quot;Name of HLA class instance&quot; in HlaSubscriber (of&#10;Receiver1 federate) and HlaPublisher (of Sender1 federate) do not &#10;match, no value is received by the HlaSubscriber with a silent&#10;error. In some models (or in the past) an  exception could be thrown:&#10; &quot;The fire() method of this actor was never called. Usually, &#10;this is an error indicating that starvation is occurring.&quot;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-475.0, -70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-480.0, -80.0]">
         </property>
     </property>
     <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.01">
@@ -88,11 +88,11 @@
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver1">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="1Subscriber1PublisherNoInstanceClassName">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="1Subscriber1PublisherCheckInstanceNameMatching">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1Subscriber1PublisherNoInstanceClassName.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="1Subscriber1PublisherCheckInstanceNameMatching.fed">
         </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Next Event Request (NER)">
         </property>
         <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
         </property>
@@ -112,7 +112,7 @@
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
         </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;Sender1ValueTransfer1&quot;">
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;i1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
         <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
@@ -121,22 +121,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-410.0, 165.0}">
         </property>
     </entity>
-    <entity name="display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1399, 141, 388, 218}, maximized=false}">
+    <entity name="displayReceiver" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={936, 164, 295, 221}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[297, 371]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[295, 177]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-35.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 200.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 205.0]">
         </property>
     </entity>
     <entity name="CurrentMicrostep" class="ptolemy.actor.lib.CurrentMicrostep">
         <doc>Output the current microstep.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-250.0, 265.0]">
         </property>
     </entity>
     <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
@@ -158,26 +158,6 @@
             </property>
         </port>
     </entity>
-    <entity name="Test - val1" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-110.0, 215.0}">
-        </property>
-    </entity>
-    <entity name="Test - CurrentMicrostep" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 340.0]">
-        </property>
-    </entity>
-    <entity name="Test - CurrenTime" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 275.0]">
-        </property>
-    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -186,20 +166,12 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[-185.0, 320.0]">
-        </vertex>
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[-205.0, 250.0]">
-        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="HlaSubscriber.output" relation="relation5"/>
-    <link port="display.input" relation="relation"/>
+    <link port="displayReceiver.input" relation="relation"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation5"/>
     <link port="CurrentMicrostep.output" relation="relation2"/>
@@ -208,7 +180,4 @@
     <link port="RecordAssembler.value" relation="relation5"/>
     <link port="RecordAssembler.time" relation="relation3"/>
     <link port="RecordAssembler.microstep" relation="relation2"/>
-    <link port="Test - val1.input" relation="relation5"/>
-    <link port="Test - CurrentMicrostep.input" relation="relation2"/>
-    <link port="Test - CurrenTime.input" relation="relation3"/>
 </entity>

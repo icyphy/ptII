@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StaticMultiInstanceJoker" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 193, 823, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={594, 193, 987, 580}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[589, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[753, 470]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6116311815826176">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6874016893396686">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-738.6755379428034, -160.44710781816156}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-671.55908203125, -244.40669950790715}">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -20,16 +20,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;&#10;--------------------------------------------------------------&#10;Model type: &#10;             Test&#10;&#10;Configuration: &#10;             1Value2Instances2Jokers: UAV(val1,instance1), UAV(val1,instance2), RAV(val1,joker_1), RAV(val1, joker_2), success&#10;             2Values2Instances2Jokers: UAV(val1,instance1), UAV(val2,instance2), RAV(val1,joker_1), RAV(val2, joker_2), success&#10;             2Values2Instances1Joker: UAV(val1,instance1), UAV(val2,instance1), RAV(val1,joker_1), RAV(val2, joker_1), success&#10;             3Federates4Values2Instances2Jokers: Sender1 UAV(val1,instance1), UAV(val2,instance1),&#10;                          Sender2 UAV(val1,instance2), UAV(val2,instance2),&#10;                          Receiver1 RAV(val1,joker1), UAV(val2,joker2),&#10;                          success&#10;&#10;Expected results:&#10;             Each test must be successfull&#10;----------------------------------------------------------------&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-1216.0, -583.0}">
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.003921569,0.003921569,0.003921569,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr)">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1210.0, 15.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">

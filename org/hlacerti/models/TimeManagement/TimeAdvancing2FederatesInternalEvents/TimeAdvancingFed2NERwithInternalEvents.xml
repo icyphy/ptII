@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={381, 226, 670, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={88, 268, 670, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[436, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0722362910586398">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0878743738821177">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{464.8037141164144, 201.41955566406247}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{146.95091629028312, 289.6650390625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate Fed2NER participating to &#10;&quot;TimeAdvancing2FederatesIntervalEvents&quot; federation;&#10;it must be the first one to be launched.&#10;It generates &quot;internal&quot; events that are not&#10;sent through the federation&#10;&#10;For observing how the time advances,&#10;do a right-click on HlaManager icone and&#10;choose Listen To Attribute.&#10;&#10;Each federate can independently set the &#10;parameter &quot;TimeManagement Service&quot; &#10;in HlaManager to:&#10;- NER&#10;- TAR.&#10;&#10;Parameter hlaTimeStep is only used with TAR.">
@@ -98,7 +98,7 @@
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TimeAdvancing2FederatesInternalEvents">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Signal.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="NoData.fed">
         </property>
         <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="hlaTimeStep">
         </property>
@@ -117,6 +117,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 75.0]">
         </property>
     </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="clockPeriod">
         </property>
@@ -125,7 +127,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={658, 170, 500, 344}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={940, 417, 500, 344}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
