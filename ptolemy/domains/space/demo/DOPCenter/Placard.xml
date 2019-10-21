@@ -98,7 +98,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 30.0]">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={396, 101, 888, 847}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 26, 888, 847}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[654, 736]">
             </property>
@@ -117,41 +117,41 @@
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[261.4879673326143, 137.00000000000023]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="room" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="room">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 315.0}">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="trailer" class="ptolemy.domains.modal.kernel.State">
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="trailer">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[261.4879673326143, 387.0000000000001]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="state" class="ptolemy.domains.modal.kernel.State">
                 <property name="isFinalState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[266.4879673326143, 457.0]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="document header" class="ptolemy.domains.modal.kernel.State">
@@ -159,11 +159,11 @@
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[251.48796733261432, 47.00000000000023]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <entity name="table trailer" class="ptolemy.domains.modal.kernel.State">
@@ -171,11 +171,11 @@
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 230.0]">
-                </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -315,7 +315,7 @@
             <link port="StringConst.output" relation="relation"/>
         </entity>
         <entity name="room" class="ptolemy.domains.modal.modal.Refinement">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 22, 813, 510}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 23, 834, 632}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -378,7 +378,7 @@
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 35.0]">
                     </property>
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 376, 813, 510}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={20, 268, 834, 632}, maximized=false}">
                 </property>
                 <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
                 </property>
@@ -633,7 +633,7 @@
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;{\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\end{document}">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;% {\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\end{document}">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
@@ -731,7 +731,7 @@
                 </property>
             </port>
             <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;{\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\vspace{1in}&#10;">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="\hline&#10;\end{tabular}&#10;&#10;% {\scriptsize To update: http://embedded.eecs.berkeley.edu/placard}&#10;\vspace{1in}&#10;">
                     <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                         <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                         </property>
