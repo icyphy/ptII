@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="DistributedReceiver" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -10,35 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2126, 179, 962, 664}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={436, 25, 980, 656}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[746, 546]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1487485166170288">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.09495612756524, 233.49951171875}">
-    </property>
-    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;Receiver&quot;">
-            <display name="Federate's name"/>
-        </property>
-        <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;MicrostepError&quot;">
-            <display name="Federation's name"/>
-        </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
-            <display name="Federate Object Model (.fed) file path"/>
-        </property>
-        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
-            <display name="Time Management Service"/>
-        </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
-            <display name="*** If TAR is used, time step (s)"/>
-        </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
-            <display name="lookahead (s)"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[252.746337890625, 35.7255859375]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.0949561275653, 233.49951171875}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,7 +56,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[332.746337890625, 10.7255859375]">
         </property>
     </property>
-    <property name="lah" class="ptolemy.data.expr.Parameter" value="0.5">
+    <property name="Lookahead" class="ptolemy.data.expr.Parameter" value="0.5">
         <display name="Lookahead"/>
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -99,9 +77,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The first RAV-event at time t has its microstep reset to 1 even if &#10;the expected value was k &gt;= 2. The following RAV-events at the &#10;same time have its microstep correctly increased.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The &quot;microstep reset&quot; bug was found on 2016 but is already fixed on 2018.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[112.746337890625, 400.7255859375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 400.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -141,6 +119,26 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 70.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="MicrostepError">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MicrostepError.fed">
+        </property>
+        <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
+        </property>
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARTimeStep">
+        </property>
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="Lookahead">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Sender">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 35.0]">
         </property>
     </property>
     <class name="RecordAssembler" extends="ptolemy.actor.TypedCompositeActor">
@@ -217,9 +215,9 @@
         </property>
     </entity>
     <entity name="AfterMerge" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={561, 224, 336, 639}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={359, 35, 302, 282}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[334, 589]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[302, 238]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[527.746337890625, 205.7255859375]">
         </property>
@@ -253,17 +251,17 @@
         </property>
     </entity>
     <entity name="BeforeMerge" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={210, 393, 299, 421}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 41, 290, 398}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[297, 371]">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[290, 354]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[527.746337890625, 315.7255859375]">
         </property>
     </entity>
     <entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
         <display name="objectName nuh"/>
-        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
-            <display name="type of the parameter"/>
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;nuh&quot;">
+            <display name="Name of the attribute to receive"/>
         </property>
         <property name="classObjectName" class="ptolemy.data.expr.Parameter" value="&quot;ValueTransfer&quot;">
             <display name="Object class in FOM"/>
@@ -271,8 +269,8 @@
         <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;classInst1&quot;">
             <display name="Name of the HLA class instance"/>
         </property>
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;nuh&quot;">
-            <display name="Name of the attribute to receive"/>
+        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="int">
+            <display name="type of the parameter"/>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[112.746337890625, 290.7255859375]">
         </property>

@@ -13,11 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.28124999999994, 258.2182065217391}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on the links below for different Billard models.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federation with Billard models using JavaScript.&#10;&#10;Launch the federates by clicking in the link below in this order:">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 35.0]">
         </property>
@@ -25,7 +25,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PoolTable2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 125.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="PoolTable2.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">

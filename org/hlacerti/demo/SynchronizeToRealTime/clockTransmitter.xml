@@ -4,13 +4,13 @@
 <entity name="clockTransmitter" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={824, 182, 745, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={525, 205, 745, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2161952648834713">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.97021484374994, 212.67415559505986}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.97021484374991, 212.67415559505986}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -42,9 +42,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron (ISAE SUPAERO - ONERA)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier, Pierre Siron,  Janette Cardoso (ISAE SUPAERO)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 145.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">

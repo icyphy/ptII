@@ -111,14 +111,6 @@ import ptolemy.kernel.util.Workspace;
  * not not specify to use the CERTI message buffer, then this parameter should
  * be false. See also {@link MessageProcessing} class.
  * <p>
- * FIXME: took from publisher actor description. Keep it or not?
- * In a federation implemented only with Ptolemy II federates,
- * an HlaAttributeUpdater is linked to a unique HlaAttributeReflector. Any data
- * dependencies that the director might assume on a regular "wired" connection
- * will also be assumed across HlaAttributeUpdater-HlaAttributeReflector pairs.
- * Similarly, the type of the HlaAttributeReflector output must match the type
- * of the HlaAttributeUpdater input.
- * <p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeUpdater.java 214 2018-04-01 13:32:02Z j.cardoso $

@@ -4,13 +4,13 @@
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={653, 141, 787, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={616, 237, 787, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[553, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.21920796005862">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{171.6855539779662, 141.45700522891616}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{171.68555397796618, 141.45700522891613}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -81,7 +81,7 @@
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 75.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 446, 886, 632}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={218, 203, 886, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[652, 221]">
         </property>
@@ -245,10 +245,6 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The controller (AutoPilot) is digital (DE director) instead of analogous as in the &#10;Matlab  demo f14.mdl">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -15.0]">
-            </property>
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-265.0, -225.0]">
             </property>
         </property>
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="Ts/10">
@@ -519,7 +515,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.005" max="11.995000000000001"/>
-<yRange min="-4.2411515600128" max="3.0325716925957744"/>
+<yRange min="-1.6882632506616635" max="1.1620703233129435"/>
 </plot>?>
             </configure>
         </entity>

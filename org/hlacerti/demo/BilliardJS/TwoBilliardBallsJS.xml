@@ -42,11 +42,11 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be run.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 265.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 45.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -71,6 +71,16 @@
         <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 20.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: J. Cardoso, D. Come &amp; P. Siron">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{48.38857405008635, 273.385963136874}">
         </property>
     </property>
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
