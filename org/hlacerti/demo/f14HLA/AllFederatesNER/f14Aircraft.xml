@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4649371494369183">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{129.91284179687503, 104.02203220274393}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{129.91284179687503, 104.02203220274394}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
@@ -260,7 +260,7 @@
         <entity name="AircraftModel" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 100.0}">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={894, 416, 762, 632}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={678, 268, 762, 632}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[528, 460]">
             </property>
@@ -285,12 +285,6 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 85.0]">
-                </property>
-            </property>
-            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="ODESolver" class="ptolemy.data.expr.StringParameter" value="ExplicitRK23Solver">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 100.0]">
                 </property>
             </property>
             <property name="Zw" class="ptolemy.data.expr.Parameter" value="-0.6385">
@@ -1037,7 +1031,7 @@
         <entity name="PilotGForce" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 205.0]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 93, 686, 621}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={641, 93, 640, 632}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[406, 451]">
             </property>
@@ -1062,12 +1056,6 @@
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 145.0]">
-                </property>
-            </property>
-            <property name="Continuous Director" class="ptolemy.domains.continuous.kernel.ContinuousDirector">
-                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 130.0]">
                 </property>
             </property>
             <property name="g" class="ptolemy.data.expr.Parameter" value="32.2">
@@ -1206,7 +1194,7 @@
         <entity name="alpha AoA" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Pitch, Alpha">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1006, 625, 577, 287}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={863, 613, 577, 287}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[577, 243]">
             </property>
@@ -1220,7 +1208,7 @@
 <plot>
 <title>TimedPlotter</title>
 <xRange min="0.0" max="12.0"/>
-<yRange min="-1.4384757896228793" max="1.0475134942967055"/>
+<yRange min="-1.4392592401404842" max="1.0547134346993494"/>
 </plot>?>
             </configure>
         </entity>

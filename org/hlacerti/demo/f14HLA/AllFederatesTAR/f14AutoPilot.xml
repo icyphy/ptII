@@ -85,7 +85,7 @@
     <entity name="AutoPilotDE" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 85.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={706, 376, 986, 383}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={454, 268, 986, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[752, 273]">
         </property>
@@ -249,10 +249,6 @@
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The controller (AutoPilot) is digital (DE director) instead of analogous as in the &#10;Matlab  demo f14.mdl">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, -5.0]">
-            </property>
-        </property>
-        <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, -235.0]">
             </property>
         </property>
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="Ts/10">

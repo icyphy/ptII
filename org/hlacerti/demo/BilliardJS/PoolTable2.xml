@@ -4,13 +4,13 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 136, 969, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 176, 969, 703}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 593]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.298747809790472">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5627269416734904">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1543.4320723212647, -2438.3969894652237}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-1586.03369140625, -2471.285451912715}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -65,6 +65,16 @@
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="display">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-1440, -2615}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be run.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-1660.0, -2600.0]">
         </property>
     </property>
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">

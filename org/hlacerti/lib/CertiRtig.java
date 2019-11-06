@@ -52,12 +52,12 @@ import ptolemy.util.StringUtilities;
  * This object is based on the Exec actor implementation. It invokes the
  * HLA/CERTI RTIG as a subprocess in a specified <i>directory</i> with a specified
  * <i>environment</i>. A default platform-dependent shell command is preprended
- * so the RTIG is executed within the shell. If another RTIG process is running
- * the current subprocess is destroyed.
+ * so the RTIG is executed within the shell. If there is another RTIG process  
+ * running the current subprocess is destroyed.
  * </p><p>
  * This object is used by the {@link HlaManager} and need to be performed before
- * the initialization of a HLA/CERTI Federate. That's why we execute this mechanism
- * in the {@link HlaManager} preinitialize() method.
+ * the initialization of a HLA/CERTI Federate. That is why this mechanism is
+ * executed in the {@link HlaManager} preinitialize() method.
  * </p><p>
  * The specified <i>directory</i> is the current directory of the Ptolemy
  * simulation and needs to contain the Federate Object Management file (.fed).
