@@ -1,0 +1,21 @@
+;; Test federation for proving the microstep error
+
+	(Fed
+	 (Federation MicrostepError)
+	 (FedVersion v1.0)
+	 (Spaces)
+	 (Objects
+	  (Class ObjectRoot
+	   (Attribute privilegeToDelete reliable timestamp)
+	   (Class RTIprivate)
+	   (Class ValueTransfer
+		(Attribute nuh RELIABLE TIMESTAMP)
+	   )
+	  )
+	 )
+	 (Interactions
+	  (Class InteractionRoot BEST_EFFORT RECEIVE
+	   (Class RTIprivate BEST_EFFORT RECEIVE)
+	  )
+	 )
+	)
