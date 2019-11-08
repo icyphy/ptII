@@ -1,0 +1,34 @@
+Before merge
+
+{microstep = 1, time = 0.0, value = 1}
+{microstep = 1, time = 0.0, value = 2}
+
+{microstep = 1, time = 1.0, value = 1}
+{microstep = 1, time = 1.0, value = 2}
+{microstep = 1, time = 1.0, value = 4}
+
+
+{microstep = 2, time = 1.0, value = 4}
+{microstep = 1, time = 2.0, value = 1}
+{microstep = 1, time = 2.0, value = 2}
+
+{microstep = 1, time = 3.0, value = 1}
+{microstep = 1, time = 3.0, value = 2}
+{microstep = 1, time = 3.0, value = 4}
+
+
+{microstep = 2, time = 3.0, value = 4}
+
+After merge
+{microstep = 1, time = 0.0, value = 1}
+{microstep = 2, time = 0.0, value = 2}
+{microstep = 1, time = 1.0, value = 1}
+{microstep = 2, time = 1.0, value = 2}
+{microstep = 3, time = 1.0, value = 4}
+{microstep = 4, time = 1.0, value = 4}
+{microstep = 1, time = 2.0, value = 1}
+{microstep = 2, time = 2.0, value = 2}
+{microstep = 1, time = 3.0, value = 1}
+{microstep = 2, time = 3.0, value = 2}
+{microstep = 3, time = 3.0, value = 4}
+{microstep = 4, time = 3.0, value = 4}

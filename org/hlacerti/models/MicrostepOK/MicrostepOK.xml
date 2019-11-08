@@ -85,13 +85,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 65.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={424, 198, 806, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={863, 592, 799, 393}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[572, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[565, 283]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.0, 251.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{272.5, 131.5}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
@@ -101,6 +101,31 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: these models caled &quot;MicrostepReset*&quot; were designed to analyze a bug&#10;observed at r76499,  but this bug was fixed since 2017.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="MicrostepResetOK: a tricky federation for showing that microsteps are correctly increased.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 185.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="MicrostepReset/MicrostepOK.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{160, 165}">
+            </property>
         </property>
     </property>
 </entity>
