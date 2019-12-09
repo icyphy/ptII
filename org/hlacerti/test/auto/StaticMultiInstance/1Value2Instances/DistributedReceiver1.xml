@@ -16,7 +16,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9851049059763544">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.79107968750003, 310.77490234375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{298.79107968750003, 310.77490234375006}">
     </property>
     <property name="TARTimeStep" class="ptolemy.data.expr.Parameter" value="1">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -67,16 +67,6 @@
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: CIELE Ingenierie (http://www.ciele.fr)&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, -5.0]">
-        </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Receiver12">
