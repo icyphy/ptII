@@ -545,47 +545,26 @@ public class DatabaseManager extends TypedAtomicActor {
         }
         if (_connection == null) {
             // Get database connection.
+            // Do this in a separate thread so we can timeout after 10 seconds.
+            // FIXME: timeout should not be hardwired.
+            _exception = null;
+            MakeConnection makeConnection = new MakeConnection() ;
+            makeConnection.start() ;
             try {
-                _connection = DriverManager.getConnection(
-                        database.getExpression(), userName.getExpression(),
-                        new String(_password));
-                // If updating, use single transaction.
-                _connection.setAutoCommit(false);
-            } catch (SQLException ex) {
+                makeConnection.join(10000) ;
+            } catch (InterruptedException e) {}
+            
+            if (_connection == null || _exception != null) {
+                makeConnection.interrupt();
+                // Wait one more second for the thread to set the _exception
+                // variable and exit.  Note that the thread may still be running
+                // blocked on a socketConnect(), but apparently this will eventually
+                // time out (after about 4 minutes in tests).
                 try {
-                    // The following blocks explicitly register drivers.
-                    // But maybe these aren't necessary if the driver is
-                    // in the classpath?  If the model fails to find the
-                    // drivers, then try adding the jar files to the
-                    // build path in Eclipse.
-
-                    // Try the mysql driver
-                    DriverManager.registerDriver((java.sql.Driver) Class
-                            .forName("com.mysql.jdbc.Driver").newInstance());
-                    _connection = DriverManager.getConnection(
-                            database.getExpression(), userName.getExpression(),
-                            new String(_password));
-                    // If updating, use single transaction.
-                    _connection.setAutoCommit(false);
-                } catch (Throwable throwable) {
-                    // Try the Oracle driver
-                    try {
-                        DriverManager.registerDriver((java.sql.Driver) Class
-                                .forName("oracle.jdbc.OracleDriver")
-                                .newInstance());
-                        _connection = DriverManager.getConnection(
-                                database.getExpression(),
-                                userName.getExpression(),
-                                new String(_password));
-                        // If updating, use single transaction.
-                        _connection.setAutoCommit(false);
-                    } catch (Throwable throwable2) {
-                        _password = null;
-                        // Note that we throw the original exception.
-                        throw new IllegalActionException(this, ex,
-                                "Failed to open connection to the database.");
-                    }
-                }
+                    makeConnection.join(1000) ;
+                } catch (InterruptedException e) {}
+                throw new IllegalActionException(this, _exception,
+                        "Failed to open connection to the database.");
             }
         }
 
@@ -625,8 +604,77 @@ public class DatabaseManager extends TypedAtomicActor {
     ////                         private variables                 ////
 
     /** The currently open connection. */
-    private Connection _connection;
+    private volatile Connection _connection;
+    
+    /** If the MakeConnection class throws an exception, this will be non-null. */
+    private volatile Throwable _exception;
 
     /** The password last entered. */
     private char[] _password;
+    
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Make a connection to the database driver.
+     *  Unfortunately, the timeout mechanism provided by the driver may
+     *  not work, so this runs in a separate thread so we can impose our
+     *  own timeout on it.
+     */
+    private class MakeConnection extends Thread {
+        @Override
+        public void run() {
+            setName("MakeConnection");
+            try {
+                // If the database is down, apparently the DriverManager will hang
+                // forever. We set a 5 second timeout here.
+                // FIXME: Unfortunately, this does not work!!!
+                DriverManager.setLoginTimeout(5);
+                _connection = DriverManager.getConnection(
+                        database.getExpression(), userName.getExpression(),
+                        new String(_password));
+                // If updating, use single transaction.
+                _connection.setAutoCommit(false);
+            } catch (SQLException ex) {
+                try {
+                    // The following blocks explicitly register drivers.
+                    // But maybe these aren't necessary if the driver is
+                    // in the classpath?  If the model fails to find the
+                    // drivers, then try adding the jar files to the
+                    // build path in Eclipse.
+
+                    // Try the mysql driver
+                    DriverManager.registerDriver((java.sql.Driver) Class
+                            .forName("com.mysql.jdbc.Driver").newInstance());
+                    // If the database is down, apparently the DriverManager will hang
+                    // forever. We set a 5 second timeout here. Why does this have
+                    // to be done again? Perhaps because of registerDriver?
+                    // FIXME: Unfortunately, this does not work!!!
+                    DriverManager.setLoginTimeout(5);
+                    _connection = DriverManager.getConnection(
+                            database.getExpression(), userName.getExpression(),
+                            new String(_password));
+                    // If updating, use single transaction.
+                    _connection.setAutoCommit(false);
+                } catch (Throwable throwable) {
+                    // Try the Oracle driver
+                    try {
+                        DriverManager.registerDriver((java.sql.Driver) Class
+                                .forName("oracle.jdbc.OracleDriver")
+                                .newInstance());
+                        _connection = DriverManager.getConnection(
+                                database.getExpression(),
+                                userName.getExpression(),
+                                new String(_password));
+                        // If updating, use single transaction.
+                        _connection.setAutoCommit(false);
+                    } catch (Throwable throwable2) {
+                        _password = null;
+                        // Note that we throw the original exception.
+                        _exception = ex;
+                    }
+                }
+            }
+        }
+    }
 }
