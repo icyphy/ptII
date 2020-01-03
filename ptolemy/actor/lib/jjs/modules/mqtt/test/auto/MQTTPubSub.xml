@@ -11,7 +11,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, -70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, -70.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={271, 30, 955, 634}, maximized=false}">
@@ -20,10 +20,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9738847256915534">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.03293523528697, 166.07324218750023}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.03293523528697, 166.07324218750028}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A test for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A test for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'mqtt.eclipse.org' as the broker server address, port 1883.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 265.0]">
         </property>
@@ -174,7 +174,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="iot.eclipse.org">
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="mqtt.eclipse.org">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -248,7 +248,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="iot.eclipse.org">
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="mqtt.eclipse.org">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
