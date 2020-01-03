@@ -85,16 +85,3 @@ test SetVariable-2.1 {test with the default output values} {
     enumToTokenValues [$rec getRecord 0]
 } {9 0 1 2 3}
 
-test SetVariable-3.1 {changeFailed} {
-    #Uses 2.1 above
-    jdkCaptureErr {
-        # This test was failing if we ran Exit.tcl and then this test.
-        # MessageHandler.error() now actually throws the Exception.
-	catch {$setVariable changeFailed [java::null] \
-                   [java::new Exception {Test exception for SetVariable.changeFailed()}]} errMsg
-    } results
-    list [string range $results 0 89] "\n" $errMsg
-} {{Failed to set variable.
-java.lang.Exception: Test exception for SetVariable.changeFailed()} {
-} {java.lang.RuntimeException: java.lang.Exception: Test exception for SetVariable.changeFailed()}}
-
