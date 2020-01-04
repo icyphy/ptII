@@ -333,7 +333,4 @@ NameError: global name 'ThisIsATypo' is not defined
 
   in .top.PythonScript
 Because:
-Traceback (most recent call last):
-  File "<string>", line 8, in fire
-NameError: global name 'ThisIsATypo' is not defined
-}}
+NameError: global name 'ThisIsATypo' is not defined}}
