@@ -30,7 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -909,6 +911,7 @@ public class HlaManager extends AbstractInitializableAttribute
         try {
             _hlaDebug("Initializing the RTI Ambassador");
             _federateAmbassador.initialize(_rtia);
+            isThereArtia();
             _hlaDebug("RTI Ambassador initialized.");
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
@@ -953,6 +956,9 @@ public class HlaManager extends AbstractInitializableAttribute
                     + "CERTI_FOM_PATH = " + System.getenv("CERTI_FOM_PATH"));
         }
 
+        // Check whether there is an rtia running. This can happen when making
+        // tests.
+        isThereArtia() ;
         // First, check whether there is already an RTI running.
         _factory = null;
         _certiRtig = null;
@@ -1516,12 +1522,41 @@ public class HlaManager extends AbstractInitializableAttribute
                             _hlaDebug("**** Killing the RTIG process (if authorized by the system)");
                             _certiRtig.terminateProcess();
                         }
-                        _hlaDebug("----------------------- End execution.");
+                        // Check whether there is an rtia running. 
+                       isThereArtia() ;
+                      _hlaDebug("----------------------- End execution.");
+                        
                     }
                 }
             }
         }
     }
+
+    /** Execute "ps -ax" then check if there is a "rtia" process running
+     *  Print whether there is or not a rtia running.
+     */
+public void isThereArtia() {
+System.out.flush();
+    try {
+        String process;
+        // When using '|' (pipe) we need to indicate the shell
+        String[] cmd = {"/bin/sh","-c", "ps -ax | grep rtia | grep -v grep"} ;
+        Process p = Runtime.getRuntime().exec(cmd);
+        int nbFound=0; //
+        BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+        while ((process = input.readLine()) != null) {
+                System.out.println(process);
+                if (process.contains("rtia"))
+                        nbFound ++;
+                }
+                input.close();
+                if (nbFound > 0)
+                    System.out.println("---- HlaManager: " + nbFound + " rtia process was/were found");
+                else {System.out.println("===== HlaManager: No rtia processes found");}
+       } catch (Exception err) {
+               err.printStackTrace();
+         }
+   } 
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
