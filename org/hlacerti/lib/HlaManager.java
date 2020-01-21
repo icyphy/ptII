@@ -911,7 +911,7 @@ public class HlaManager extends AbstractInitializableAttribute
         try {
             _hlaDebug("Initializing the RTI Ambassador");
             _federateAmbassador.initialize(_rtia);
-            isThereArtia();
+            isThereArtiX("rtia");
             _hlaDebug("RTI Ambassador initialized.");
         } catch (RTIexception e) {
             throw new IllegalActionException(this, e,
@@ -958,7 +958,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
         // Check whether there is an rtia running. This can happen when making
         // tests.
-        isThereArtia() ;
+        isThereArtiX("rtig");
         // First, check whether there is already an RTI running.
         _factory = null;
         _certiRtig = null;
@@ -1523,7 +1523,8 @@ public class HlaManager extends AbstractInitializableAttribute
                             _certiRtig.terminateProcess();
                         }
                         // Check whether there is an rtia running. 
-                       isThereArtia() ;
+                       isThereArtiX("rtia") ;
+                       //isThereArtiX("rtig") ;
                       _hlaDebug("----------------------- End execution.");
                         
                     }
@@ -1535,24 +1536,29 @@ public class HlaManager extends AbstractInitializableAttribute
     /** Execute "ps -ax" then check if there is a "rtia" process running
      *  Print whether there is or not a rtia running.
      */
-public void isThereArtia() {
+public void isThereArtiX(String msg) {
+    //FIXME This way to run a command works with macos Sierra, centos 7 and debian 9
+    // it does not work with Windows. Need to add the same code as in CertiRtig.java
 System.out.flush();
     try {
         String process;
         // When using '|' (pipe) we need to indicate the shell
-        String[] cmd = {"/bin/sh","-c", "ps -ax | grep rtia | grep -v grep"} ;
+        // /bin/sh seems not to work on Debian
+        //String[] cmd = {"/bin/sh","-c", "ps -ax | grep rtia | grep -v grep"} ;
+        String[] cmd = {"/bin/bash","-c", "ps -ax | grep rtia | grep -v grep"} ;
         Process p = Runtime.getRuntime().exec(cmd);
         int nbFound=0; //
         BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
         while ((process = input.readLine()) != null) {
                 System.out.println(process);
-                if (process.contains("rtia"))
+                if (process.contains(msg))
                         nbFound ++;
                 }
                 input.close();
                 if (nbFound > 0)
-                    System.out.println("---- HlaManager: " + nbFound + " rtia process was/were found");
-                else {System.out.println("===== HlaManager: No rtia processes found");}
+                    System.out.println("---- HlaManager: " + nbFound + msg + " process was/were found");
+                else {System.out.println("===== HlaManager: No " + msg + " processes found");}
+                nbFound = 0;
        } catch (Exception err) {
                err.printStackTrace();
          }
