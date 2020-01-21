@@ -323,7 +323,9 @@ public class CertiRtig extends NamedObj {
             retval.add("cmd.exe");
             retval.add("/C");
         } else {
-            retval.add("/bin/sh");
+         //bin/sh seems not to work on Debian
+            // retval.add("/bin/sh");
+            retval.add("/bin/bash");
             retval.add("-c");
         }
         return retval;
