@@ -955,10 +955,7 @@ public class HlaManager extends AbstractInitializableAttribute
             _hlaDebug("preinitialize() - "
                     + "CERTI_FOM_PATH = " + System.getenv("CERTI_FOM_PATH"));
         }
-
-        // Check whether there is an rtia running. This can happen when making
-        // tests.
-        isThereArtiX("rtig");
+     
         // First, check whether there is already an RTI running.
         _factory = null;
         _certiRtig = null;
@@ -1522,9 +1519,6 @@ public class HlaManager extends AbstractInitializableAttribute
                             _hlaDebug("**** Killing the RTIG process (if authorized by the system)");
                             _certiRtig.terminateProcess();
                         }
-                        // Check whether there is an rtia running. 
-                       isThereArtiX("rtia") ;
-                       //isThereArtiX("rtig") ;
                       _hlaDebug("----------------------- End execution.");
                         
                     }
