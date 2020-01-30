@@ -23,7 +23,7 @@ if [ ! -f $CERTI_SRC ]; then
 #git clone -b dev-scalian/alaine-macos-compatibility https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
     # If the command above does not work, try:
     git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
-    git checkout dev-scalian/alaine-macos-compatibility
+    git checkout dev-scalian/alaine-compatibility-mac
     echo ""
 fi
 
