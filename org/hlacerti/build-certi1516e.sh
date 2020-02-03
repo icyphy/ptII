@@ -19,12 +19,9 @@ if [ ! -f $CERTI_SRC ]; then
 
     # Master does not have yet the new data types of HLA 1516-2010 Evolved
     # git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
-    # This branch bellow has implemented the new data types (HLA 1516-2010 Evolved) and compiles under macos
-#git clone -b dev-scalian/alaine-macos-compatibility https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
-    # If the command above does not work, try:
-    git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
-    git checkout dev-scalian/alaine-compatibility-mac
-    echo ""
+    # This branch below has implemented the new data types (HLA 1516-2010 Evolved) and compiles under macos
+    git clone -b dev-scalian/alaine-compatibility-mac https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
+    echo "****** Git clone completed."
 fi
 
 OS=`uname -s`
