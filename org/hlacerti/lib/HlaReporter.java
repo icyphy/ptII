@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import certi.rti.impl.CertiLogicalTime;
+import certi.rti1516e.impl.CertiLogicalTime1516E;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
@@ -358,6 +359,63 @@ public class HlaReporter {
                 && (_preUAVsTimes.length() - _preUAVsTimes
                         .lastIndexOf(pUAVTimeStamp)) == pUAVTimeStamp
                                 .length()) {
+
+            // 'in' is the Token.
+            _UAVsValues[attributeIndex].replace(
+                    _UAVsValues[attributeIndex].length() - 2,
+                    _UAVsValues[attributeIndex].length(), in.toString() + ";");
+        } else {
+
+            _preUAVsTimes.append(preUAVTimeStamp);
+            _pUAVsTimes.append(pUAVTimeStamp);
+
+            for (int i = 0; i < _numberOfAttributesToPublish; i++) {
+                if (i == attributeIndex) {
+                    _UAVsValues[i].append(in.toString() + ";");
+                } else {
+                    _UAVsValues[i].append("-;");
+                }
+            }
+        }
+    }
+
+    /** This method records in StringBuffer arrays all information about UAVs
+     *  during the simulation execution.
+     *  @param hp HlaUpdatable actor responsible of the UAV.
+     *  @param in The emitted token.
+     *  @param hlaTime HLA logical time as Ptolemy's time.
+     *  @param ptTime PTII time as Ptolemy's time.
+     *  @param microstep The current DE director's microstep.
+     *  @param uavTimeStamp The timestamp of the UAV.
+     *  @exception IllegalActionException If the HlaUpdatable attribute name is not retrieved.
+     */
+    public void updateUAVsInformation(HlaUpdatable hp, Token in, Time hlaTime,
+                                      Time ptTime, int microstep, CertiLogicalTime1516E uavTimeStamp)
+            throws IllegalActionException {
+        String hlaPublisherAttributeFullName = hp.getFullName() + "."
+                + hp.getHlaAttributeName();
+
+        int attributeIndex = 0;
+        for (int i = 0; i < _numberOfAttributesToPublish; i++) {
+            if (hlaPublisherAttributeFullName
+                    .equals(_nameOfAttributesToPublish[i])) {
+                attributeIndex = i;
+                break;
+            }
+        }
+
+        storeTimes("UAV " + hlaPublisherAttributeFullName, hlaTime, ptTime);
+
+        String pUAVTimeStamp = uavTimeStamp.getTime() + ";";
+        String preUAVTimeStamp = "(" + ptTime + "," + microstep + ");";
+
+        if (_numberOfUAVs > 0
+                && (_preUAVsTimes.length() - _preUAVsTimes
+                .lastIndexOf(preUAVTimeStamp)) == preUAVTimeStamp
+                .length()
+                && (_preUAVsTimes.length() - _preUAVsTimes
+                .lastIndexOf(pUAVTimeStamp)) == pUAVTimeStamp
+                .length()) {
 
             // 'in' is the Token.
             _UAVsValues[attributeIndex].replace(
