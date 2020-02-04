@@ -58,6 +58,9 @@ JSRCS = \
 	HlaAttributeReflector.java \
 	HlaAttributeUpdater.java \
 	HlaManager.java \
+	HlaManager1516e.java \
+	HlaManager1_3.java \
+	HlaManagerDelegate.java \
 	HlaPublisher.java \
 	HlaReflectable.java \
 	HlaReporter.java \
