@@ -38,7 +38,10 @@ import ptolemy.kernel.util.Nameable;
 //// HlaReflectable
 
 /**
- * FIXME
+ * Interface realized by any actor that produces an output event whenever
+ * the specified HLA attribute of the specified HLA object instance is
+ * updated by another federate in the federation.
+ * @see HlaAttributeReflector
  *
  *  @author Janette Cardoso and Edward A. Lee
  *  @version $Id: HlaPublisher.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -120,11 +123,4 @@ public interface HlaReflectable extends Nameable {
      *  @exception IllegalActionException If the class name is empty.
      */
     public String getHlaInstanceName() throws IllegalActionException;
-
-    /** Indicate if the HLA publisher actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA publisher actor uses the CERTI message and
-     *  false if it doesn't.
-     */
-    public boolean useCertiMessageBuffer();
 }

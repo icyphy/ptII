@@ -1,8 +1,6 @@
 package org.hlacerti.lib;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -375,7 +373,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
         Object[] tObj = hlaAttributesToPublish.get(updater.getFullName());
 
         // Encode the value to be sent to the CERTI.
-        byte[] bAttributeValue = MessageProcessing.encodeHlaValue(updater, in);
+        byte[] bAttributeValue = MessageProcessing1516e.encodeHlaValue(in);
         if (hlaManager.getDebugging()) {
             hlaDebug("      start updateHlaAttribute() t_ptII = " + currentTime
                     + "; t_hla = " + ((CertiLogicalTime1516E)federateAmbassador.hlaLogicalTime).getTime());
@@ -1942,21 +1940,6 @@ public class HlaManager1516e implements HlaManagerDelegate {
         }
     }
 
-    private URL findFomFile() throws IllegalActionException, MalformedURLException {
-        String CERTI_FOM_PATH = System.getenv("CERTI_FOM_PATH");
-        System.out.println("Variable fedFileOnRtig : " + hlaManager.fedFileOnRTIG.stringValue());
-
-        String[] directories = CERTI_FOM_PATH.split(":");
-        for(String directory : directories){
-            File fom = new File(directory + File.separator + hlaManager.fedFileOnRTIG.stringValue());
-            if(fom.exists()){
-                URL fomURL = fom.toURI().toURL();
-                return  fomURL;
-            }
-        }
-        throw new IllegalActionException("Fom not found in directories defined in CERTI_FOM_PATH");
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         constants                         ////
 
@@ -1977,8 +1960,6 @@ public class HlaManager1516e implements HlaManagerDelegate {
 
         ///////////////////////////////////////////////////////////////////
         ////                         public variables                  ////
-
-        private RTIambassador rtia;
 
         /** The lookahead value set by the user and used by CERTI to handle
          *  time management and to order time-stamp-ordered (TSO) events.
@@ -2053,8 +2034,6 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, SaveInProgress, RestoreInProgress,
                 ConcurrentAccessAttempted, IllegalActionException {
-
-            this.rtia = rtia;
 
             // Retrieve model stop time
             stopTime = director.getModelStopTime();
@@ -2154,12 +2133,6 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     HlaReflectable hs = (HlaReflectable) getPortFromTab(tObj).getContainer(); //???
 
                     if (hlaManager.getDebugging()) {
-                        String theAttributesString = "";
-                        Set<AttributeHandle> attributeKeys = theAttributes.keySet();
-                        for(AttributeHandle key : attributeKeys){
-                            theAttributesString += "[attributeHandle=" + key.hashCode() + ", value=" + new String(theAttributes.get(key)) + "]";
-                        }
-
                         hlaDebug("INNER callback: reflectAttributeValues():"
                                 + " theObject=" + theObject.hashCode()
                                 + " attributeHandle=" + attributeHandle.hashCode()
@@ -2192,7 +2165,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                             // This could come from the decodeHlaValue and encodeHlaValue CERTI methods.
                             ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
                             byte[] valueByte = bw.array();
-                            value = MessageProcessing.decodeHlaValue(hs, getTypeFromTab(tObj), valueByte);
+                            value = MessageProcessing1516e.decodeHlaValue(getTypeFromTab(tObj), valueByte);
                             te = new HlaTimedEvent(ts,
                                     new Object[] { getTypeFromTab(tObj), value},
                                     theObject.hashCode());

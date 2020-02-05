@@ -310,6 +310,21 @@ import ptolemy.kernel.util.Workspace;
  * the details. Some of these messages, primarily those related to the lifecycle of
  * the interaction with the RTI, are also printed to standard out, even if you are
  * listening to the attribute.
+ * </p><p>
+ * The <i>useCertiMessageBuffer</i> parameter works together with the
+ * <i>attributeType</i> parameter to interpret the bits that are transported
+ * over the RTI. Specifically, an HLA RTI will transport arbitrary byte sequences
+ * regardless of what they represent.  CERTI, the particular RTI that Ptolemy II
+ * uses, provides a convenience feature that packs and unpacks the message bytes
+ * for a small set of data types.  This feature takes into account the annoyance
+ * that the byte order can be different on different platforms (big endian or
+ * little endian). If the attribute that this actor is listening to is updated
+ * by a "foreign" federate (not implemented in Ptolemy II), then this
+ * <i>useCertiMessageBuffer</i> parameter should be set to true to ensure that
+ * byte order changes are handled. And in this case, only the small set of data
+ * types supported by CERTI can be used.  On the other hand, if the attribute
+ * is updated by a Ptolemy II model, and that update does not not specify
+ * to use the CERTI message buffer, then this parameter should be false.
  * </p>
  * <p>NOTE FOR DEVELOPERS:
  * A federate needs to instruct the RTI that it is prepared to receive one or more
@@ -511,6 +526,17 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     public FileParameter hlaReportPath;
 
+    /** Indicate whether the attribute value is conveyed through
+     *  a CERTI message buffer. This is a boolean that defaults to false.
+     *  It should be set to true if the attribute to which this actor
+     *  listens is updated by a foreign simulator. It can be false
+     *  if the attribute is updated by a federate implemented in Ptolemy II,
+     *  and if this corresponding parameter in the actor doing the updating
+     *  is also false. This parameter is ignored for all versions of HLA
+     *  except 1.3 (i.e., if the FED file is .fed, not .xml).
+     */
+    public Parameter useCertiMessageBuffer;
+
     /** The name of a synchronization point to which this federate should
      *  synchronize its start. If the name given here is the name of this
      *  federate, then this federate registers itself as a
@@ -609,7 +635,14 @@ public class HlaManager extends AbstractInitializableAttribute
         killRTIG = new Parameter(this, "killRTIG");
         killRTIG.setTypeEquals(BaseType.BOOLEAN);
         killRTIG.setExpression("launchRTIG");
-    }
+
+        // CERTI message buffer encapsulation.
+        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
+        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
+        useCertiMessageBuffer.setExpression("false");
+        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
+        attributeChanged(useCertiMessageBuffer);
+}
 
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                  ////
@@ -753,9 +786,15 @@ public class HlaManager extends AbstractInitializableAttribute
             if (fedFile.getExpression().endsWith(".fed")) {
                 _hlaManagerDelegate = new HlaManager1_3(this);
                 System.out.println("HLA version is 1.3.");
+                // For this version, using the CERTI message buffer is
+                // an option, so we show this parameter.
+                useCertiMessageBuffer.setVisibility(Settable.FULL);
             } else if (fedFile.getExpression().endsWith(".xml")) {
                 _hlaManagerDelegate = new HlaManager1516e(this);
-                System.out.println("HLA version is 1516e.");
+                System.out.println("HLA version is 1516-2010.");
+                // For this version, using the CERTI message buffer is not
+                // an option, so we hide this parameter.
+                useCertiMessageBuffer.setVisibility(Settable.NONE);
             } else {
                 throw new IllegalActionException(this,
                         "fedFile needs to be either a .fed file (for version 1.3) or "

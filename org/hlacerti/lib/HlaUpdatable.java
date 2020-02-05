@@ -38,7 +38,9 @@ import ptolemy.kernel.util.Nameable;
 //// HlaUpdatable
 
 /**
- * FIXME
+ * Interface realized by any actor that updates
+ * the specified HLA attribute of the specified HLA object instance.
+ * @see HlaAttributeUpdater
  *
  *  @author Janette Cardoso and Edward A. Lee
  *  @version $Id: HlaPublisher.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -72,11 +74,4 @@ public interface HlaUpdatable extends Nameable {
 
     /** FIXME: This should probably not be here. See HlaManager. */
     public TypedIOPort getInputPort();
-
-    /** Indicate if the HLA publisher actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA publisher actor uses the CERTI message and
-     *  false if it doesn't.
-     */
-    public boolean useCertiMessageBuffer();
 }

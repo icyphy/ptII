@@ -193,16 +193,8 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
             }
         });
 
-        // CERTI message buffer encapsulation.
-        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
-        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
-        useCertiMessageBuffer.setExpression("false");
-        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
-        attributeChanged(useCertiMessageBuffer);
-
         // Initialize default private values.
         _reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
-        _useCertiMessageBuffer = false;
 
         // Set handle to impossible values <= XXX: FIXME: GiL: true ?
         _attributeHandle = Integer.MIN_VALUE;
@@ -227,9 +219,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
 
     /** The type of the output port specified through the user interface. */
     public StringParameter typeSelector;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    public Parameter useCertiMessageBuffer;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -266,9 +255,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
                 throw new IllegalActionException(this,
                         "Cannot have empty classObjectName!");
             }
-        } else if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
-                    .getToken()).booleanValue();
         } else if (attribute == typeSelector) {
             String newPotentialTypeName = typeSelector.stringValue();
             // XXX: FIXME: What is the purpose of this test ?
@@ -300,7 +286,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
         // Manage private members.
         newObject._reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
         newObject._hlaManager = _hlaManager;
-        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
 
         newObject._attributeHandle = _attributeHandle;
         newObject._classHandle = _classHandle;
@@ -483,15 +468,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
         _fireAt(event.timeStamp);
     }
 
-    /** Indicate if the HLA subscriber actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA actor uses the CERTI message and false if
-     *  it doesn't.
-     */
-    public boolean useCertiMessageBuffer() {
-        return _useCertiMessageBuffer;
-    }
-
     /** Return the HLA attribute name provided by this HlaSubscriber actor.
      * It must match the attribute name defined in the FOM for a class classObjectName.
      *  @return the HLA attribute name.
@@ -622,9 +598,6 @@ public class HlaSubscriber extends TypedAtomicActor implements HlaReflectable {
 
     /** A reference to the associated {@link HlaManager}. */
     private HlaManager _hlaManager;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    private boolean _useCertiMessageBuffer;
 
     /** HLA attribute handle provided by the RTI for the attribute
      *  to subscribe to. */

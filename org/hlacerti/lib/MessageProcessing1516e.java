@@ -1,4 +1,5 @@
-/*
+/* Message encoding and decoding for HLA version 1516e.
+
 Below is the copyright agreement for the Ptolemy II system.
 
 Copyright (c) 2015-2019 The Regents of the University of California.
@@ -26,16 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
  */
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.hlacerti.lib;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 import certi.communication.MessageBuffer;
 import hla.rti.jlc.EncodingHelpers;
@@ -52,18 +44,19 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
-/**
- * <p>This class implements the functionalities to encode/decode
- * HLA values received from HLA/CERTI.</p>
+/** This class implements the functionalities to encode/decode
+ *  HLA values received or sent to an HLA RTI. This version is designed
+ *  to work with version 1516-2010 of HLA, and unlike the MessageProcessing,
+ *  does not support Certi-specific message buffers.
  *
- *  @author David Come, Contributors: Gilles Lasnier
+ *  @author Janette Cardoso and Edward A. Lee
  *  @version $Id: MessageProcessing.java 214 2018-04-01 13:32:02Z j.cardoso $
  *  @since Ptolemy II 11.0
  *
- *  @Pt.ProposedRating Yellow (glasnier)
- *  @Pt.AcceptedRating Red (glasnier)
+ *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.AcceptedRating Red (eal)
  */
-public class MessageProcessing {
+public class MessageProcessing1516e {
     /** This generic method calls the {@link EncodingHelpers} API provided
      *  by CERTI to handle type decoding operations for HLA value attribute
      *  that has been reflected (RAV).
@@ -74,49 +67,9 @@ public class MessageProcessing {
      *  @exception IllegalActionException If the token is not handled or the
      *  decoding has failed.
      */
-    static public Object decodeHlaValue(boolean useCertiMessageBuffer, Type type,
-            byte[] buffer) throws IllegalActionException {
+    static public Object decodeHlaValue(Type type, byte[] buffer)
+            throws IllegalActionException {
 
-        // Case to handle CERTI message buffer.
-        if (useCertiMessageBuffer) {
-            ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-            MessageBuffer msgBuffer = new MessageBuffer(bis, bos);
-            try {
-                msgBuffer.receiveData();
-            } catch (Exception e) {
-                throw new IllegalActionException(
-                        "Error to store CERTI message buffer from"
-                                + " ByteArrayInputStream, reason: "
-                                + e.getMessage());
-            }
-
-            if (type.equals(BaseType.BOOLEAN)) {
-                return msgBuffer.readBoolean();
-            } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-                return msgBuffer.readByte();
-            } else if (type.equals(BaseType.DOUBLE)) {
-                return msgBuffer.readDouble();
-            } else if (type.equals(BaseType.FLOAT)) {
-                return msgBuffer.readFloat();
-            } else if (type.equals(BaseType.INT)) {
-                return msgBuffer.readInt();
-            } else if (type.equals(BaseType.LONG)) {
-                return msgBuffer.readLong();
-            } else if (type.equals(BaseType.SHORT)) {
-                return msgBuffer.readShort();
-            } else if (type.equals(BaseType.STRING)) {
-                return msgBuffer.readString();
-            } else {
-                throw new IllegalActionException(
-                        "The current type received by the HLA/CERTI Federation"
-                                + " , through a CERTI message buffer,"
-                                + " is not handled  ");
-            }
-        }
-
-        // Case to handle "normal" events.
         if (type.equals(BaseType.BOOLEAN)) {
             return EncodingHelpers.decodeBoolean(buffer);
         } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
@@ -150,7 +103,7 @@ public class MessageProcessing {
      *  @exception IllegalActionException If the token is not handled or the
      *  encoding has failed.
      */
-    public static byte[] encodeHlaValue(boolean useCertiMessageBuffer, Token tok)
+    public static byte[] encodeHlaValue(Token tok)
             throws IllegalActionException {
         byte[] encodedValue = null;
         Token t = tok;
@@ -158,53 +111,6 @@ public class MessageProcessing {
         // Get the corresponding type of the HLA attribute value.
         BaseType type = (BaseType) t.getType();
 
-        // Case to handle CERTI message buffer.
-        if (useCertiMessageBuffer) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-            MessageBuffer msgBuffer = new MessageBuffer(null, bos);
-
-            if (type.equals(BaseType.BOOLEAN)) {
-                msgBuffer.write(((BooleanToken) t).booleanValue());
-            } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-                msgBuffer.write(((UnsignedByteToken) t).byteValue());
-            } else if (type.equals(BaseType.DOUBLE)) {
-                msgBuffer.write(((DoubleToken) t).doubleValue());
-            } else if (type.equals(BaseType.FLOAT)) {
-                msgBuffer.write(((FloatToken) t).floatValue());
-            } else if (type.equals(BaseType.INT)) {
-                msgBuffer.write(((IntToken) t).intValue());
-            } else if (type.equals(BaseType.LONG)) {
-                msgBuffer.write(((LongToken) t).longValue());
-            } else if (type.equals(BaseType.SHORT)) {
-                msgBuffer.write(((ShortToken) t).shortValue());
-            } else if (type.equals(BaseType.STRING)) {
-                msgBuffer.write(((StringToken) t).stringValue());
-            } else {
-                throw new IllegalActionException(
-                        "The current type of the token " + t
-                                + " is not handled");
-            }
-
-            try {
-                // Write the buffer in the output stream.
-                msgBuffer.send();
-            } catch (IOException e) {
-                throw new IllegalActionException(
-                        "Error to write CERTI message buffer"
-                                + " in ByteArrayOutputStream, reason: "
-                                + e.getMessage());
-            }
-
-            // Write the output stream in an array of bytes.
-            encodedValue = bos.toByteArray();
-
-            // If we deal with CERTI MessageBuffer then we only need to return
-            // the array of bytes.
-            return encodedValue;
-        }
-
-        // Case to handle "normal" event payload.
         if (type.equals(BaseType.BOOLEAN)) {
             encodedValue = EncodingHelpers
                     .encodeBoolean(((BooleanToken) t).booleanValue());
