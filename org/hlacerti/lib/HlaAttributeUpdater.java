@@ -36,14 +36,10 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
@@ -94,23 +90,6 @@ import ptolemy.kernel.util.Workspace;
  * of the attribute value this actor updates (as defined in the FOM). The data
  * type is used to define  the bytes that are transported via the HLA RTI.
  * Currently, only a small set of primitive data types are supported.
- * <p>
- * The <i>useCertiMessageBuffer</i> parameter works together with the data type
- * to interpret the bits that are transported over the RTI. Specifically, an
- * HLA RTI will transport arbitrary byte sequences regardless of what they
- * represent.  CERTI, the particular RTI that Ptolemy II uses, provides a
- * convenience feature that packs and unpacks the message bytes for a small set
- * of data types.  This feature takes into account the annoyance that the byte
- * order can be different on different platforms (big endian or little endian).
- * If the attribute that this actor is updating is reflected by a "foreign"
- * federate (not implemented in Ptolemy II), then this <i>useCertiMessageBuffer</i>
- * parameter should be set to true to ensure that byte order changes are
- * handled. And in this case, only the small set of data types supported by
- * CERTI can be used.  On the other hand, if the attribute is reflected by a
- * Ptolemy II model, and the corresponding {@link HlaAttributeReflector} does
- * not not specify to use the CERTI message buffer, then this parameter should
- * be false. See also {@link MessageProcessing} class.
- * <p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeUpdater.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -146,16 +125,8 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
         // HLA class instance name given by the user.
         instanceName = new StringParameter(this, "instanceName");
 
-        // CERTI message buffer encapsulation
-        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
-        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
-        useCertiMessageBuffer.setExpression("false");
-        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
-        attributeChanged(useCertiMessageBuffer);
-
         // Initialize default private values.
         _hlaManager = null;
-        _useCertiMessageBuffer = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -184,36 +155,8 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
      */
     public TypedIOPort input = null;
 
-    /** Indicate whether the attribute value is conveyed through
-     *  a CERTI message buffer. This is a boolean that defaults to false.
-     *  It should be set to true if the attribute to which this actor
-     *  listens is updated by a foreign simulator. It can be false
-     *  if the attribute is reflected by a federate implemented in Ptolemy II,
-     *  and if this corresponding parameter in the actor doing the reflecting
-     *  is also false.
-     */
-    public Parameter useCertiMessageBuffer;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Call the attributeChanged method of the parent. Check if the
-     *  user has set all information related to HLA to publish, for registering
-     *  instances
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If one of the parameters is
-     *  empty.
-     */
-    @Override
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-
-        if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
-                    .getToken()).booleanValue();
-        }
-        super.attributeChanged(attribute);
-    }
 
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
@@ -228,7 +171,6 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
         HlaAttributeUpdater newObject = (HlaAttributeUpdater) super.clone(workspace);
 
         newObject._hlaManager = _hlaManager;
-        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
 
         return newObject;
     }
@@ -336,23 +278,9 @@ public class HlaAttributeUpdater extends TypedAtomicActor implements HlaUpdatabl
         return input;
     }
 
-    /** Indicate if the HLA publisher actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA publisher actor uses the CERTI message and
-     *  false if it doesn't.
-     */
-    public boolean useCertiMessageBuffer() {
-        // XXX: FIXME: where is the exception management ?
-        return _useCertiMessageBuffer;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** A reference to the associated {@link HlaManager}. */
     private HlaManager _hlaManager;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    private boolean _useCertiMessageBuffer;
-
 }

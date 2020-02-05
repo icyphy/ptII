@@ -106,21 +106,6 @@ import ptolemy.kernel.util.Workspace;
  * the type of the <i>output</i> port. Second, it specifies how to interpret
  * the bytes that are transported via the HLA runtime infrastructure (RTI).
  * Currently, only a small set of primitive data types are supported.
- * <p>
- * The <i>useCertiMessageBuffer</i> parameter works together with the
- * <i>attributeType</i> parameter to interpret the bits that are transported
- * over the RTI. Specifically, an HLA RTI will transport arbitrary byte sequences
- * regardless of what they represent.  CERTI, the particular RTI that Ptolemy II
- * uses, provides a convenience feature that packs and unpacks the message bytes
- * for a small set of data types.  This feature takes into account the annoyance
- * that the byte order can be different on different platforms (big endian or
- * little endian). If the attribute that this actor is listening to is updated
- * by a "foreign" federate (not implemented in Ptolemy II), then this
- * <i>useCertiMessageBuffer</i> parameter should be set to true to ensure that
- * byte order changes are handled. And in this case, only the small set of data
- * types supported by CERTI can be used.  On the other hand, if the attribute
- * is updated by a Ptolemy II model, and that update does not not specify
- * to use the CERTI message buffer, then this parameter should be false.
  *
  *  @author Gilles Lasnier, Janette Cardoso, Edward A. Lee. Contributors: Patricia Derler, David Come
  *  @version $Id: HlaAttributeReflector.java 214 2018-04-01 13:32:02Z j.cardoso $
@@ -172,16 +157,8 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
             }
         });
 
-        // CERTI message buffer encapsulation.
-        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
-        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
-        useCertiMessageBuffer.setExpression("false");
-        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
-        attributeChanged(useCertiMessageBuffer);
-
         // Initialize default private values.
         _reflectedAttributeValues = new LinkedList<HlaTimedEvent>();
-        _useCertiMessageBuffer = false;
 
         // Set handle to impossible values <= XXX: FIXME: GiL: true ?
         _attributeHandle = Integer.MIN_VALUE;
@@ -223,16 +200,6 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
      */
     public TypedIOPort output;
 
-    /** Indicate whether the attribute value is conveyed through
-     *  a CERTI message buffer. This is a boolean that defaults to false.
-     *  It should be set to true if the attribute to which this actor
-     *  listens is updated by a foreign simulator. It can be false
-     *  if the attribute is updated by a federate implemented in Ptolemy II,
-     *  and if this corresponding parameter in the actor doing the updating
-     *  is also false.
-     */
-    public Parameter useCertiMessageBuffer;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -247,10 +214,7 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 
-        if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
-                    .getToken()).booleanValue();
-        } else if (attribute == attributeType) {
+        if (attribute == attributeType) {
             String newPotentialTypeName = attributeType.stringValue();
             // XXX: FIXME: What is the purpose of this test ?
             if (newPotentialTypeName == null) {
@@ -469,15 +433,6 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         _fireAt(event.timeStamp);
     }
 
-    /** Indicate if the HLA attribute reflector actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA actor uses the CERTI message buffer and false
-     *  if it doesn't.
-     */
-    public boolean useCertiMessageBuffer() {
-        return _useCertiMessageBuffer;
-    }
-
     /** Return the value of the <i>attributeName</i> parameter.
      *  @return The value of the <i>attributeName</i> parameter.
      *  @exception IllegalActionException If the class name is empty.
@@ -591,9 +546,6 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
 
     /** List of new values for the HLA attribute. */
     private LinkedList<HlaTimedEvent> _reflectedAttributeValues;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    private boolean _useCertiMessageBuffer;
 
     /** HLA attribute handle provided by the RTI for the attribute
      *  to subscribe to. */

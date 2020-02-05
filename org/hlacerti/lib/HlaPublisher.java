@@ -36,7 +36,6 @@ import java.util.List;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -127,16 +126,8 @@ public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
         classInstanceName.setExpression("\"HLAclassInstanceName\"");
         attributeChanged(classInstanceName);
 
-        // CERTI message buffer encapsulation
-        useCertiMessageBuffer = new Parameter(this, "useCertiMessageBuffer");
-        useCertiMessageBuffer.setTypeEquals(BaseType.BOOLEAN);
-        useCertiMessageBuffer.setExpression("false");
-        useCertiMessageBuffer.setDisplayName("use CERTI message buffer");
-        attributeChanged(useCertiMessageBuffer);
-
         // Initialize default private values.
         _hlaManager = null;
-        _useCertiMessageBuffer = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -153,9 +144,6 @@ public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
 
     /** The input port. */
     public TypedIOPort input = null;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    public Parameter useCertiMessageBuffer;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -191,9 +179,6 @@ public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
                 throw new IllegalActionException(this,
                         "Cannot have empty name !");
             }
-        } else if (attribute == useCertiMessageBuffer) {
-            _useCertiMessageBuffer = ((BooleanToken) useCertiMessageBuffer
-                    .getToken()).booleanValue();
         }
         super.attributeChanged(attribute);
     }
@@ -208,7 +193,6 @@ public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaPublisher newObject = (HlaPublisher) super.clone(workspace);
         newObject._hlaManager = _hlaManager;
-        newObject._useCertiMessageBuffer = _useCertiMessageBuffer;
         return newObject;
     }
 
@@ -324,23 +308,9 @@ public class HlaPublisher extends TypedAtomicActor implements HlaUpdatable {
         return input;
     }
 
-    /** Indicate if the HLA publisher actor uses the CERTI message
-     *  buffer API.
-     *  @return true if the HLA publisher actor uses the CERTI message and
-     *  false if it doesn't.
-     */
-    public boolean useCertiMessageBuffer() {
-        // XXX: FIXME: where is the exception management ?
-        return _useCertiMessageBuffer;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** A reference to the associated {@link HlaManager}. */
     private HlaManager _hlaManager;
-
-    /** Indicate if the event is wrapped in a CERTI message buffer. */
-    private boolean _useCertiMessageBuffer;
-
 }

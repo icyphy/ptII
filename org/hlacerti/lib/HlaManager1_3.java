@@ -941,7 +941,8 @@ public class HlaManager1_3 implements HlaManagerDelegate {
         Object[] tObj = _hlaAttributesToPublish.get(updater.getFullName());
 
         // Encode the value to be sent to the CERTI.
-        byte[] bAttributeValue = MessageProcessing.encodeHlaValue(updater, in);
+        boolean useCertiMessageBuffer = ((BooleanToken) hlaManager.useCertiMessageBuffer.getToken()).booleanValue();
+        byte[] bAttributeValue = MessageProcessing.encodeHlaValue(useCertiMessageBuffer, in);
         if (hlaManager.getDebugging()) {
             _hlaDebug("      start updateHlaAttribute() t_ptII = " + currentTime
                     + "; t_hla = " + _federateAmbassador.hlaLogicalTime);
@@ -2549,7 +2550,8 @@ public class HlaManager1_3 implements HlaManagerDelegate {
 
                             // Note: Sometimes a received RAV value is different than the UAV value sent.
                             // This could come from the decodeHlaValue and encodeHlaValue CERTI methods.
-                            value = MessageProcessing.decodeHlaValue(hs,
+                            boolean useCertiMessageBuffer = ((BooleanToken) hlaManager.useCertiMessageBuffer.getToken()).booleanValue();
+                            value = MessageProcessing.decodeHlaValue(useCertiMessageBuffer,
                                     _getTypeFromTab(tObj),
                                     theAttributes.getValue(i));
 
