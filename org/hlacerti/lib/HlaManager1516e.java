@@ -1429,9 +1429,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 try {
                     rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
                 } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
-                    callNotAllowedFromWithinCallback.printStackTrace();
+                    throw new IllegalActionException(hlaManager, callNotAllowedFromWithinCallback, "Call not allowed within callback");
                 } catch (RTIinternalError rtIinternalError) {
-                    rtIinternalError.printStackTrace();
+                    throw new IllegalActionException(hlaManager, rtIinternalError, "RTI internal error");
                 }
 
                 // HLA Reporter support.
