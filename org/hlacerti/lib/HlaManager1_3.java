@@ -1129,7 +1129,7 @@ public class HlaManager1_3 implements HlaManagerDelegate {
                     _hlaDebug("wrapup() - Resigned Federation execution");
                 }
             } catch (RTIexception e) {
-                _hlaDebug("wrapup() - RTIexception.");
+                _hlaDebug("wrapup() - RTIexception: " + e);
                 throw new IllegalActionException(hlaManager, e,
                         "RTIexception: " + e.getMessage());
             } finally {
@@ -1196,7 +1196,10 @@ public class HlaManager1_3 implements HlaManagerDelegate {
                         // Close the connection socket connection between jcerti (the Java
                         // proxy for the ambassador) and certi.
                         // Sadly, this nondeterministically triggers an IOException:
-                        _rtia.closeConnexion();
+                        // _rtia can be null if we are exporting to JNLP.
+                        if (_rtia != null) {
+                            _rtia.closeConnexion();
+                        }
                     } finally {
                         // Terminate RTIG subprocess.
                         if (_certiRtig != null && ((BooleanToken) hlaManager.killRTIG.getToken()).booleanValue()) {
