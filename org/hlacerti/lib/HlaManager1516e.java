@@ -621,7 +621,10 @@ public class HlaManager1516e implements HlaManagerDelegate {
                         // Close the connection socket connection between jcerti (the Java
                         // proxy for the ambassador) and certi.
                         // Sadly, this nondeterministically triggers an IOException:
-                        rtia.disconnect();
+                        // rtia can be null if we are exporting to JNLP.
+                        if (rtia != null) {                        
+                            rtia.disconnect();
+                        }
                     } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
                         callNotAllowedFromWithinCallback.printStackTrace();
                     } catch (FederateIsExecutionMember federateIsExecutionMember) {
