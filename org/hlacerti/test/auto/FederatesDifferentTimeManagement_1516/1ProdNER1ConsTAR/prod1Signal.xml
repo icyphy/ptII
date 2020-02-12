@@ -86,9 +86,9 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="prod1NT">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="prodNT1516">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TestNERTAR">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="TestNERTAR1516">
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="Signal.xml">
         </property>
@@ -98,7 +98,7 @@
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lah">
         </property>
-        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="prod1NT">
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="prodNT1516">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{109.19129774305543, 56.5313275049604}">
         </property>
