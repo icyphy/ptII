@@ -1,0 +1,162 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="1ProdNER1ConsTAR_1516e" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={182, 22, 957, 635}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[723, 525]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9753105352063534">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{379.52460691360494, 498.0184748394202}">
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/cons1Signal.xml: first federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 515.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/cons1Signal.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedReceiver1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/prod1Signal.xml: last federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 540.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/prod1Signal.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395, 280}">
+            </property>
+        </property>
+        <property name="IconLink" class="ptolemy.vergil.basic.export.web.IconLink" value="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII11.0/ptII/org/hlacerti/test/auto/StaticMultiInstance/1Value2Instances/DistributedSender1/index.html">
+            <property name="linkTarget" class="ptolemy.vergil.basic.export.web.LinkTarget" value="_self">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{450, 180}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Models:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 495.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;--------------------------------------------------------------&#10;Model type:  Test&#10;Feature: time management NER-NER 1516-2010&#10;Expected result: This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 230.0]">
+        </property>
+    </property>
+    <property name="Director" class="ptolemy.actor.Director">
+        <doc>Simple director that executes actors in the order in which they were created.</doc>
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 635.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Automated execution:&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 570.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.2,0.2,1.0}">
+        </property>
+        <property name="italic" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Description:&#10;- A sender using NER time management that produces the&#10;   following events e(v,t): e1(0,3); e2(1,6), e3(2,9), e4(3,12).&#10;   HLA says a federate at time t can only send an event at&#10;   t+lah. So the UAV will be re-timestamped, eg. &#10;   UAV(0,3+lah) for e1(0,3).&#10;   &#10;- A receiver using TAR time management. All events received&#10;   with timestamp t &lt; h+ TARtimeStep are re-timestamped to&#10;   h+TARtimeStep, where h= HLA logical time.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 320.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: This model fails if prod1Signal has zero lingerTime,&#10;so we have set a non-zero lingerTime. Perhaps this occurs&#10;because the producer federate unpublishes and resigns the&#10;federation before the consumer receives its message.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 680.0]">
+        </property>
+    </property>
+    <entity name="cons1Signal" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/cons1Signal.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in a new thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="1000L">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 640.0]">
+        </property>
+    </entity>
+    <entity name="prod1Signal" class="ptolemy.vergil.actor.lib.VisualModelReference">
+        <property name="modelFileOrURL" class="ptolemy.actor.parameters.FilePortParameter" value="FederatesDifferentTimeManagement_1516/1ProdNER1ConsTAR/prod1Signal.xml">
+        </property>
+        <property name="executionOnFiring" class="ptolemy.data.expr.StringParameter" value="run in calling thread">
+        </property>
+        <property name="lingerTime" class="ptolemy.data.expr.Parameter" value="500L">
+        </property>
+        <property name="spawnSeparateModels" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 705.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 630.0]">
+        </property>
+    </entity>
+</entity>
