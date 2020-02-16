@@ -294,7 +294,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
             // from the Federation in the Federate's priority timestamp queue,
             // so we tick() to get these events (if they exist).
             try {
-                rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                 if (hlaManager.get_EnableHlaReporter()) {
                     if (hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
@@ -581,12 +581,8 @@ public class HlaManager1516e implements HlaManagerDelegate {
                                 hlaDebug("wrapup() - Federate was stopped by the user.");
                                 break;
                             }
-                            try {
-                                // Give the other federates a chance to finish.
-                                Thread.sleep(2000l);
-                            } catch (InterruptedException e1) {
-                                // Ignore.
-                            }
+                            // Give the other federates a chance to finish.
+                            Thread.yield();
                         } catch (FederationExecutionDoesNotExist e) {
                             // No more federation. Some other federate must have
                             // succeeded in destroying it.
@@ -1226,7 +1222,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                    rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
@@ -1430,7 +1426,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
                 try {
-                    rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                    rtia.evokeCallback(MAX_BLOCKING_TIME);
                 } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
                     throw new IllegalActionException(hlaManager, callNotAllowedFromWithinCallback, "Call not allowed within callback");
                 } catch (RTIinternalError rtIinternalError) {
@@ -1627,7 +1623,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                    rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     logOtherTicks();
                 }
@@ -1661,7 +1657,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME,0);
+                rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                 logOtherTicks();
             } catch (RTIexception e) {
@@ -1703,7 +1699,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                 logOtherTicks();
             } catch (RTIexception e) {
@@ -1768,7 +1764,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                    rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
@@ -1801,7 +1797,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);
+                    rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
