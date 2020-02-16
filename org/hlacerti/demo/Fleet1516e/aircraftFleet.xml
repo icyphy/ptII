@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<objectModel>
+    <objects>
+	<objectClass>
+		<name>ObjectRoot</name>
+		<attribute> 
+			<name>privilegeToDelete</name>
+			<dataType>HLAfloat64LE</dataType>
+			<transportation>HLAreliable</transportation>
+			<order>TimeStamp</order>
+		</attribute>
+		<objectClass>
+			<name>RTIprivate</name>
+		</objectClass>
+		<objectClass>
+			<name>Aircraft</name>
+			<attribute>
+				<name>speed</name>
+				<dataType>HLAinteger64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+		</objectClass>
+	</objectClass>
+    </objects>
+</objectModel>
