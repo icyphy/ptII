@@ -1,0 +1,168 @@
+<?xml version="1.0"?>
+<objectModel>
+	<objects>
+		<objectClass>
+			<name>Vehicle</name>
+			<attribute>
+				<name>x</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>y</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+            <attribute>
+                <name>z</name>
+                <dataType>HLAfloat64LE</dataType>
+                <transportation>HLAreliable</transportation>
+                <order>TimeStamp</order>
+            </attribute>
+		</objectClass>
+		<objectClass>
+			<name>Boule</name>
+			<attribute>
+				<name>Color</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+		</objectClass>
+	</objects>
+	<interactions>
+		<interactionClass>
+			<name>Bing</name>
+		    	<transportation>HLAreliable</transportation>
+		    	<order>TimeStamp</order>
+		    	<parameter>
+		        	<name>BoulNum</name>
+		        		<dataType>HLAfloat64LE</dataType>
+		    		</parameter>
+		    	<parameter>
+		        	<name>DX</name>
+		        	<dataType>HLAfloat64LE</dataType>
+		    	</parameter>
+			<parameter> 
+				<name>DY</name>
+				<dataType>HLAfloat64LE</dataType>
+			</parameter>
+		</interactionClass>
+	    </interactions>
+	<routingSpace>
+        	<name>Geo</name>
+        	<dimension>
+            		<name>X</name>
+        	</dimension>
+        	<dimension>
+            		<name>Y</name>
+        	</dimension>
+    	</routingSpace>
+    		<synchronizations>
+        	<synchronization label="Init" dataType="NA" capability="RegisterAchieve"/>
+        	<synchronization label="Start" dataType="NA" capability="RegisterAchieve"/>
+    	</synchronizations>
+    	<transportations>
+        	<transportation name="HLAreliable" description="Provide reliable delivery of data in the sense that TCP/IP delivers its data reliably"/>
+        	<transportation name="HLAbestEffort" description="Make an effort to deliver data in the sense that UDP provides best-effort delivery"/>
+    	</transportations>
+	<dataTypes>
+		<basicDataRepresentations>
+			<basicData>
+				<name>HLAinteger16BE</name>
+				<size>16</size>
+				<interpretation>Integer in the range [-2^15, 2^15 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>16-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger32BE</name>
+				<size>32</size>
+				<interpretation>Integer in the range [-2^31, 2^31 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>32-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger64BE</name>
+				<size>64</size>
+				<interpretation>Integer in the range [-2^63, 2^63 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>64-bit two's complement signed integer first. The most significant bit contains the sign.
+				</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat32BE</name>
+				<size>32</size>
+				<interpretation>Single-precision floating point number</interpretation>
+				<endian>Big</endian>
+				<encoding>32-bit IEEE normalized single-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat64BE</name>
+				<size>64</size>
+				<interpretation>Double-precision floating point number</interpretation>
+				<endian>Big</endian>
+				<encoding>64-bit IEEE normalized double-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctetPairBE</name>
+				<size>16</size>
+				<interpretation>16-bit value</interpretation>
+				<endian>Big</endian>
+				<encoding>Assumed to be portable among devices.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger16LE</name>
+				<size>16</size>
+				<interpretation>Integer in the range [-2^15, 2^15 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>16-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger32LE</name>
+				<size>32</size>
+				<interpretation>Integer in the range [-2^31, 2^31 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>32-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger64LE</name>
+				<size>64</size>
+				<interpretation>Integer in the range [-2^63, 2^63 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>64-bit two's complement signed integer first. The most significant bit contains the sign.
+				</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat32LE</name>
+				<size>32</size>
+				<interpretation>Single-precision floating point number</interpretation>
+				<endian>Little</endian>
+				<encoding>32-bit IEEE normalized single-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat64LE</name>
+				<size>64</size>
+				<interpretation>Double-precision floating point number</interpretation>
+				<endian>Little</endian>
+				<encoding>64-bit IEEE normalized double-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctetPairLE</name>
+				<size>16</size>
+				<interpretation>16-bit value</interpretation>
+				<endian>Little</endian>
+				<encoding>Assumed to be portable among hardware devices.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctet</name>
+				<size>8</size>
+				<interpretation>8-bit value</interpretation>
+				<endian>Big</endian>
+				<encoding>Assumed to be portable among hardware devices.</encoding>
+			</basicData>
+		</basicDataRepresentations>
+	</dataTypes>
+</objectModel>
