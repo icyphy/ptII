@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<objectModel>
+    <objects>
+        <objectClass name="Signal">
+            <attribute name="val" transportation="HLAreliable" order="TimeStamp" />
+            <attribute name="PositionY" transportation="HLAreliable" order="TimeStamp" />
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass name="Bing" transportation="HLAreliable" order="TimeStamp">
+            <parameter name="BoulNum" />
+            <parameter name="DX" />
+            <parameter name="DY" />
+        </interactionClass>
+    </interactions>
+    <dimensions>
+    </dimensions>
+    <time>
+    </time>
+    <transportations>
+        <transportation name="HLAreliable" description="Provide reliable delivery of data in the sense that TCP/IP delivers its data reliably"/>
+        <transportation name="HLAbestEffort" description="Make an effort to deliver data in the sense that UDP provides best-effort delivery"/>
+    </transportations>
+</objectModel>
