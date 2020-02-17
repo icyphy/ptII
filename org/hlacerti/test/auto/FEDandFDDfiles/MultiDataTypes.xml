@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<objectModel>
+	<objects>
+		<objectClass>
+			<name>HLAobjectClass</name>
+			<attribute>
+				<name>val</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>val1</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>val2</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>val3</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>val4</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<attribute>
+				<name>val5</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+		</objectClass>
+	</objects>
+	<dataTypes>
+		<basicDataRepresentations>
+			<basicData>
+				<name>HLAinteger16BE</name>
+				<size>16</size>
+				<interpretation>Integer in the range [-2^15, 2^15 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>16-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger32BE</name>
+				<size>32</size>
+				<interpretation>Integer in the range [-2^31, 2^31 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>32-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger64BE</name>
+				<size>64</size>
+				<interpretation>Integer in the range [-2^63, 2^63 - 1]</interpretation>
+				<endian>Big</endian>
+				<encoding>64-bit two's complement signed integer first. The most significant bit contains the sign.
+				</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat32BE</name>
+				<size>32</size>
+				<interpretation>Single-precision floating point number</interpretation>
+				<endian>Big</endian>
+				<encoding>32-bit IEEE normalized single-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat64BE</name>
+				<size>64</size>
+				<interpretation>Double-precision floating point number</interpretation>
+				<endian>Big</endian>
+				<encoding>64-bit IEEE normalized double-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctetPairBE</name>
+				<size>16</size>
+				<interpretation>16-bit value</interpretation>
+				<endian>Big</endian>
+				<encoding>Assumed to be portable among devices.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger16LE</name>
+				<size>16</size>
+				<interpretation>Integer in the range [-2^15, 2^15 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>16-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger32LE</name>
+				<size>32</size>
+				<interpretation>Integer in the range [-2^31, 2^31 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>32-bit two's complement signed integer. The most significant bit contains the sign.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAinteger64LE</name>
+				<size>64</size>
+				<interpretation>Integer in the range [-2^63, 2^63 - 1]</interpretation>
+				<endian>Little</endian>
+				<encoding>64-bit two's complement signed integer first. The most significant bit contains the sign.
+				</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat32LE</name>
+				<size>32</size>
+				<interpretation>Single-precision floating point number</interpretation>
+				<endian>Little</endian>
+				<encoding>32-bit IEEE normalized single-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAfloat64LE</name>
+				<size>64</size>
+				<interpretation>Double-precision floating point number</interpretation>
+				<endian>Little</endian>
+				<encoding>64-bit IEEE normalized double-precision format. See IEEE Std 754-1985</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctetPairLE</name>
+				<size>16</size>
+				<interpretation>16-bit value</interpretation>
+				<endian>Little</endian>
+				<encoding>Assumed to be portable among hardware devices.</encoding>
+			</basicData>
+			<basicData>
+				<name>HLAoctet</name>
+				<size>8</size>
+				<interpretation>8-bit value</interpretation>
+				<endian>Big</endian>
+				<encoding>Assumed to be portable among hardware devices.</encoding>
+			</basicData>
+		</basicDataRepresentations>
+	</dataTypes>
+</objectModel>
