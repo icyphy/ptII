@@ -5,16 +5,16 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={37, 172, 877, 728}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[643, 618]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1655739650503314">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3523327088297024">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{283.54003906249994, 277.71024017575036}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.04003906250003, 231.69128282977886}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -35,7 +35,17 @@
         </property>
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 40.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 65.0]">
         </property>
     </property>
     <entity name="A2" class="ptolemy.actor.TypedCompositeActor">
