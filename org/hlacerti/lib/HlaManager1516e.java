@@ -2117,7 +2117,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
             // the received "theObject" handle.
             int classHandle = objectHandleToClassHandle.get(theObject.hashCode());
 
-            String instanceNameOrJokerName = discoverObjectInstanceMap.get(theObject);
+            String instanceNameOrJokerName = discoverObjectInstanceMap.get(theObject.hashCode());
             Set<AttributeHandle> attributeHandleSet = theAttributes.keySet();
             hlaDebug("attributeHandleSet.size = " + attributeHandleSet.size());
 
@@ -2132,6 +2132,11 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     HlaReflectable hs = (HlaReflectable) getPortFromTab(tObj).getContainer(); //???
 
                     if (hlaManager.getDebugging()) {
+                        String theAttributesString = "";
+                        Set<AttributeHandle> attributeKeys = theAttributes.keySet();
+                        for(AttributeHandle key : attributeKeys){
+                            theAttributesString += "[attributeHandle=" + key.hashCode() + ", value=" + new String(theAttributes.get(key)) + "]";
+                        }
                         hlaDebug("INNER callback: reflectAttributeValues():"
                                 + " theObject=" + theObject.hashCode()
                                 + " attributeHandle=" + attributeHandle.hashCode()
@@ -2153,10 +2158,10 @@ public class HlaManager1516e implements HlaManagerDelegate {
 //                        hlaDebug("-----instanceNameOrJokerName : " + instanceNameOrJokerName);
 //                        hlaDebug("-----instance handle : " + hs.getHlaInstanceName() + "==" + instanceNameOrJokerName);
                         if (attributeHandle.hashCode() == hs.getAttributeHandle()
-                                && classHandle == hs.getClassHandle())
-//                                && (instanceNameOrJokerName != null
-//                                && hs.getHlaInstanceName().compareTo(instanceNameOrJokerName) == 0))
-                        {
+                                && classHandle == hs.getClassHandle() //)
+                                && (instanceNameOrJokerName != null
+                                && hs.getHlaInstanceName().compareTo(instanceNameOrJokerName) == 0))
+                         {
                             hlaDebug("--- Attribute id match");
                             double timeValue = ((CertiLogicalTime1516E) theTime).getTime() / hlaManager.get_HlaTimeUnitValue();
                             ts = new Time(director, timeValue);
