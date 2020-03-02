@@ -1,0 +1,283 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MultiDataTypesProducer" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={246, 225, 602, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[368, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2020454236187734">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{185.912841796875, 277.3140712290503}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 95.0]">
+        </property>
+    </property>
+    <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.8,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last to be &#10;launched.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 140.0]">
+        </property>
+    </property>
+    <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="Producer1516">
+        </property>
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="MultiDataTypes1516">
+        </property>
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="MultiDataTypes.xml">
+        </property>
+        <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="Producer1516">
+        </property>
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 100.0]">
+        </property>
+    </property>
+    <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 225.0]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 107, 682, 654}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[448, 544]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{226.0, 286.29296875}">
+        </property>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 60.0]">
+            </property>
+        </port>
+        <port name="out2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 125.0]">
+            </property>
+        </port>
+        <port name="out3" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 195.0]">
+            </property>
+        </port>
+        <port name="out4" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 265.0]">
+            </property>
+        </port>
+        <port name="out5" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 340.0]">
+            </property>
+        </port>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 60.0]">
+            </property>
+        </entity>
+        <entity name="v=1 double" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="2.0">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 125.0]">
+            </property>
+        </entity>
+        <entity name="SingleEvent3" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="3.0">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 195.0]">
+            </property>
+        </entity>
+        <entity name="SingleEvent4" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="4.0">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="4">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 265.0]">
+            </property>
+        </entity>
+        <entity name="v=6double CB" class="ptolemy.actor.lib.SingleEvent">
+            <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
+            </property>
+            <property name="value" class="ptolemy.data.expr.Parameter" value="6.0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 340.0]">
+            </property>
+        </entity>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 195.0]">
+            </property>
+        </entity>
+        <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="Hello World!">
+            </property>
+            <doc>Create a constant sequence with a string value.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 60.0]">
+            </property>
+        </entity>
+        <entity name="Const2" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 265.0]">
+            </property>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="out" relation="relation2"/>
+        <link port="out2" relation="relation3"/>
+        <link port="out3" relation="relation5"/>
+        <link port="out4" relation="relation7"/>
+        <link port="out5" relation="relation8"/>
+        <link port="SingleEvent.output" relation="relation"/>
+        <link port="v=1 double.output" relation="relation3"/>
+        <link port="SingleEvent3.output" relation="relation4"/>
+        <link port="SingleEvent4.output" relation="relation6"/>
+        <link port="v=6double CB.output" relation="relation8"/>
+        <link port="Const.output" relation="relation5"/>
+        <link port="Const.trigger" relation="relation4"/>
+        <link port="StringConst.output" relation="relation2"/>
+        <link port="StringConst.trigger" relation="relation"/>
+        <link port="Const2.output" relation="relation7"/>
+        <link port="Const2.trigger" relation="relation6"/>
+    </entity>
+    <entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val1&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 150.0]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher2" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val2&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher3" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val3&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 225.0]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher4" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val4&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 265.0]">
+        </property>
+    </entity>
+    <entity name="HlaPublisher5" class="org.hlacerti.lib.HlaPublisher">
+        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val5&quot;">
+            <display name="Name of the attribute to publish"/>
+        </property>
+        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
+            <display name="Name of the HLA class instance"/>
+        </property>
+        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="use CERTI message buffer"/>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 305.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="CompositeActor.out" relation="relation"/>
+    <link port="CompositeActor.out2" relation="relation2"/>
+    <link port="CompositeActor.out3" relation="relation3"/>
+    <link port="CompositeActor.out4" relation="relation4"/>
+    <link port="CompositeActor.out5" relation="relation5"/>
+    <link port="HlaPublisher.input" relation="relation"/>
+    <link port="HlaPublisher2.input" relation="relation2"/>
+    <link port="HlaPublisher3.input" relation="relation3"/>
+    <link port="HlaPublisher4.input" relation="relation4"/>
+    <link port="HlaPublisher5.input" relation="relation5"/>
+</entity>
