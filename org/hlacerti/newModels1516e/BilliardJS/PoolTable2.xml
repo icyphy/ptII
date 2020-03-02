@@ -4,7 +4,7 @@
 <entity name="PoolTable2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={463, 158, 969, 703}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 158, 969, 703}, maximized=true}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 593]">
     </property>
@@ -20,7 +20,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-1765.0, -2630.0]">
         </property>
     </property>
-    <property name="endTime" class="ptolemy.data.expr.Parameter" value="3">
+    <property name="endTime" class="ptolemy.data.expr.Parameter" value="1600">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -80,7 +80,9 @@
     <entity name="ArrayPlotterXY" class="ptolemy.actor.lib.gui.ArrayPlotterXY">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={152, 548, 410, 281}, maximized=false}">
+        <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1219, 789, 410, 281}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[410, 237]">
         </property>
@@ -107,8 +109,8 @@
 <title>ArrayPlotterXY</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="200.0" max="200.0"/>
-<yRange min="50.0" max="50.0"/>
+<xRange min="0.0" max="500.0"/>
+<yRange min="0.0" max="100.0"/>
 <default marks="dots"/>
 </plot>?>
         </configure>
@@ -116,7 +118,7 @@
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="xBall1,  yBall1, xBall2, yBall2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={601, 624, 433, 274}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={403, 782, 433, 274}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[433, 230]">
         </property>
@@ -127,8 +129,8 @@
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>TimedPlotter</title>
-<xRange min="1.1" max="2.1"/>
-<yRange min="49.0" max="201.0"/>
+<xRange min="1.1" max="1599.1000000000001"/>
+<yRange min="0.0" max="500.0"/>
 </plot>?>
         </configure>
     </entity>
