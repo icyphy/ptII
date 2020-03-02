@@ -108,7 +108,7 @@
         </property>
     </property>
     <property name="TestException - Duplicate instance name detected" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaReflectable '.DuplicatedInstanceNameReceiver.HlaSub2' with the same HLA information specified by the HlaReflectable '.DuplicatedInstanceNameReceiver.HlaSub1' &#10;is already registered for subscription.&#10;  in .DuplicatedInstanceNameReceiver.HlaManager">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="A HlaReflectable '.DuplicatedInstanceNameReceiver_1516.HlaSub2' with the same HLA information specified by the HlaReflectable '.DuplicatedInstanceNameReceiver_1516.HlaSub1' &#10;is already registered for subscription.&#10;  in .DuplicatedInstanceNameReceiver_1516.HlaManager">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
