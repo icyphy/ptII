@@ -294,8 +294,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
             // from the Federation in the Federate's priority timestamp queue,
             // so we tick() to get these events (if they exist).
             try {
-                rtia.evokeCallback(MAX_BLOCKING_TIME);
-
+                rtia.evokeMultipleCallbacks(0, MAX_BLOCKING_TIME);// As fast as HLA 1.3 (NER-NER test): 2481 ms
+                //rtia.evokeCallback(MAX_BLOCKING_TIME); Simulation is too slow, ~39743ms instead of 2513ms
+                //rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // Too slow also, 39660ms
                 if (hlaManager.get_EnableHlaReporter()) {
                     if (hlaReporter.getTimeOfTheLastAdvanceRequest() > 0) {
                         //_hlaReporter._numberOfTicks.set(_hlaReporter._numberOfTAGs, _hlaReporter._numberOfTicks.get(_hlaReporter._numberOfTAGs) + 1);
@@ -1222,7 +1223,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeCallback(MAX_BLOCKING_TIME);
+                   rtia.evokeCallback(MAX_BLOCKING_TIME); //rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
@@ -1426,7 +1427,8 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
                 try {
-                    rtia.evokeCallback(MAX_BLOCKING_TIME);
+                    // Both evoke methods seem to give the same simulation speed
+                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
                 } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
                     throw new IllegalActionException(hlaManager, callNotAllowedFromWithinCallback, "Call not allowed within callback");
                 } catch (RTIinternalError rtIinternalError) {
@@ -1623,7 +1625,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeCallback(MAX_BLOCKING_TIME);
+                    
+                    // Both evoke methods seem to give the same simulation speed
+                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     logOtherTicks();
                 }
@@ -1657,7 +1661,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                rtia.evokeCallback(MAX_BLOCKING_TIME);
+                
+                // Both evoke methods seem to give the same simulation speed 
+                rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                 logOtherTicks();
             } catch (RTIexception e) {
@@ -1699,7 +1705,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
                 // results in a busy wait.
                 // NOTE: The second argument, which the API confusingly calls "max"
                 // but is usually less than "min", appears to not be used.
-                rtia.evokeCallback(MAX_BLOCKING_TIME);
+                
+                // Both evoke methods seem to give the same simulation speed
+                rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                 logOtherTicks();
             } catch (RTIexception e) {
@@ -1764,7 +1772,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeCallback(MAX_BLOCKING_TIME);
+                    
+                    // Both evoke methods seem to give the same simulation speed
+                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
@@ -1797,7 +1807,8 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     // results in a busy wait.
                     // NOTE: The second argument, which the API confusingly calls "max"
                     // but is usually less than "min", appears to not be used.
-                    rtia.evokeCallback(MAX_BLOCKING_TIME);
+                    // Both evoke methods seem to give the same simulation speed
+                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
 
                     // HLA Reporter support.
                     if (hlaManager.get_EnableHlaReporter()) {
