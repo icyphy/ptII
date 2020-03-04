@@ -31,6 +31,7 @@ import hla.rti1516e.RtiFactoryFactory;
 import hla.rti1516e.SynchronizationPointFailureReason;
 import hla.rti1516e.TransportationTypeHandle;
 import hla.rti1516e.encoding.ByteWrapper;
+import hla.rti1516e.encoding.DecoderException;
 import hla.rti1516e.encoding.HLAASCIIstring;
 import hla.rti1516e.exceptions.AttributeNotDefined;
 import hla.rti1516e.exceptions.AttributeNotOwned;
@@ -2180,8 +2181,12 @@ public class HlaManager1516e implements HlaManagerDelegate {
                             // This could come from the decodeHlaValue and encodeHlaValue CERTI methods.
                             ByteWrapper bw = theAttributes.getValueReference(attributeHandle);
                             byte[] valueByte = bw.array();
-                            value = MessageProcessing1516e.decodeHlaValue(getTypeFromTab(tObj), valueByte);
-                            te = new HlaTimedEvent(ts,
+                             try {
+                                 value = MessageProcessing1516e.decodeHlaValue(getTypeFromTab(tObj), valueByte);
+                             } catch (DecoderException e) {
+                                 e.printStackTrace();
+                             }
+                             te = new HlaTimedEvent(ts,
                                     new Object[] { getTypeFromTab(tObj), value},
                                     theObject.hashCode());
 
