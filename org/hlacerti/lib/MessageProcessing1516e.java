@@ -31,6 +31,8 @@ package org.hlacerti.lib;
 
 import certi.communication.MessageBuffer;
 import hla.rti.jlc.EncodingHelpers;
+import hla.rti1516e.encoding.*;
+import hla.rti1516e.jlc.*;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
@@ -60,7 +62,6 @@ public class MessageProcessing1516e {
     /** This generic method calls the {@link EncodingHelpers} API provided
      *  by CERTI to handle type decoding operations for HLA value attribute
      *  that has been reflected (RAV).
-     *  @param hs The targeted HLA subscriber actor.
      *  @param type The type to decode the token.
      *  @param buffer The encoded value to decode.
      *  @return The decoded value as an object.
@@ -68,25 +69,50 @@ public class MessageProcessing1516e {
      *  decoding has failed.
      */
     static public Object decodeHlaValue(Type type, byte[] buffer)
-            throws IllegalActionException {
+            throws IllegalActionException, DecoderException {
 
+        ByteWrapper byteWrapper = new ByteWrapper(buffer);
         if (type.equals(BaseType.BOOLEAN)) {
-            return EncodingHelpers.decodeBoolean(buffer);
-        } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-            return EncodingHelpers.decodeByte(buffer);
-        } else if (type.equals(BaseType.DOUBLE)) {
-            return EncodingHelpers.decodeDouble(buffer);
-        } else if (type.equals(BaseType.FLOAT)) {
-            return EncodingHelpers.decodeFloat(buffer);
-        } else if (type.equals(BaseType.INT)) {
-            return EncodingHelpers.decodeInt(buffer);
-        } else if (type.equals(BaseType.LONG)) {
-            return EncodingHelpers.decodeLong(buffer);
-        } else if (type.equals(BaseType.SHORT)) {
-            return EncodingHelpers.decodeShort(buffer);
-        } else if (type.equals(BaseType.STRING)) {
-            return EncodingHelpers.decodeString(buffer);
-        } else {
+            HLAboolean hlaBoolean = new HLAbooleanImpl();
+            hlaBoolean.decode(byteWrapper);
+            return hlaBoolean.getValue();
+        }
+        else if (type.equals(BaseType.UNSIGNED_BYTE)) {
+            HLAbyte hlaByte = new BasicHLAbyteImpl();
+            hlaByte.decode(byteWrapper);
+            return hlaByte.getValue();
+        }
+        else if (type.equals(BaseType.DOUBLE)) {
+            HLAfloat64BE hlaDouble = new BasicHLAfloat64BEImpl();
+            hlaDouble.decode(byteWrapper);
+            return hlaDouble.getValue();
+        }
+        else if (type.equals(BaseType.FLOAT)) {
+            HLAfloat32BE hlaFloat = new BasicHLAfloat32BEImpl();
+            hlaFloat.decode(byteWrapper);
+            return hlaFloat.getValue();
+        }
+        else if (type.equals(BaseType.INT)) {
+            HLAinteger32BE hlaInteger = new BasicHLAinteger32BEImpl();
+            hlaInteger.decode(byteWrapper);
+            return hlaInteger.getValue();
+        }
+        else if (type.equals(BaseType.LONG)) {
+            HLAinteger64BE hlaLong = new BasicHLAinteger64BEImpl();
+            hlaLong.decode(byteWrapper);
+            return hlaLong.getValue();
+        }
+        else if (type.equals(BaseType.SHORT)) {
+            HLAinteger16BE hlaShort =  new BasicHLAinteger16BEImpl();
+            hlaShort.decode(byteWrapper);
+            return hlaShort.getValue();
+        }
+        else if (type.equals(BaseType.STRING)) {
+            HLAASCIIstring hlaString = new HLAASCIIstringImpl();
+            hlaString.decode(byteWrapper);
+            return hlaString.getValue();
+        }
+        else {
             throw new IllegalActionException(
                     "The current type received by the HLA/CERTI Federation"
                             + " is not handled ");
@@ -97,7 +123,6 @@ public class MessageProcessing1516e {
      *  {@link MessageBuffer} API provided by CERTI to handle data encoding
      *  operation for updated value of HLA attribute that will be published
      *  to the federation.
-     *  @param hp The HLA publisher actor which sends the HLA attribute value.
      *  @param tok The token to encode, i.e. the HLA attribute value to encode.
      *  @return The encoded value as an array of byte.
      *  @exception IllegalActionException If the token is not handled or the
@@ -110,34 +135,45 @@ public class MessageProcessing1516e {
 
         // Get the corresponding type of the HLA attribute value.
         BaseType type = (BaseType) t.getType();
+        ByteWrapper byteWrapper;
 
         if (type.equals(BaseType.BOOLEAN)) {
-            encodedValue = EncodingHelpers
-                    .encodeBoolean(((BooleanToken) t).booleanValue());
+            HLAboolean hlaBoolean = new HLAbooleanImpl(((BooleanToken) t).booleanValue());
+            byteWrapper = new ByteWrapper(hlaBoolean.getEncodedLength());
+            hlaBoolean.encode(byteWrapper);
         } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-            encodedValue = EncodingHelpers
-                    .encodeByte(((UnsignedByteToken) t).byteValue());
+            HLAbyte hlaByte = new BasicHLAbyteImpl(((UnsignedByteToken) t).byteValue());
+            byteWrapper = new ByteWrapper(hlaByte.getEncodedLength());
+            hlaByte.encode(byteWrapper);
         } else if (type.equals(BaseType.DOUBLE)) {
-            encodedValue = EncodingHelpers
-                    .encodeDouble(((DoubleToken) t).doubleValue());
+            HLAfloat64BE hlaDouble = new BasicHLAfloat64BEImpl(((DoubleToken) t).doubleValue());
+            byteWrapper = new ByteWrapper(hlaDouble.getEncodedLength());
+            hlaDouble.encode(byteWrapper);
         } else if (type.equals(BaseType.FLOAT)) {
-            encodedValue = EncodingHelpers
-                    .encodeFloat(((FloatToken) t).floatValue());
+            HLAfloat32BE hlaFloat = new BasicHLAfloat32BEImpl(((FloatToken) t).floatValue());
+            byteWrapper = new ByteWrapper(hlaFloat.getEncodedLength());
+            hlaFloat.encode(byteWrapper);
         } else if (type.equals(BaseType.INT)) {
-            encodedValue = EncodingHelpers.encodeInt(((IntToken) t).intValue());
+            HLAinteger32BE hlaInt= new BasicHLAinteger32BEImpl(((IntToken) t).intValue());
+            byteWrapper = new ByteWrapper(hlaInt.getEncodedLength());
+            hlaInt.encode(byteWrapper);
         } else if (type.equals(BaseType.LONG)) {
-            encodedValue = EncodingHelpers
-                    .encodeLong(((LongToken) t).longValue());
+            HLAinteger64BE hlaLong= new BasicHLAinteger64BEImpl(((LongToken) t).longValue());
+            byteWrapper = new ByteWrapper(hlaLong.getEncodedLength());
+            hlaLong.encode(byteWrapper);
         } else if (type.equals(BaseType.SHORT)) {
-            encodedValue = EncodingHelpers
-                    .encodeShort(((ShortToken) t).shortValue());
+            HLAinteger16BE hlaShort= new BasicHLAinteger16BEImpl(((ShortToken) t).shortValue());
+            byteWrapper = new ByteWrapper(hlaShort.getEncodedLength());
+            hlaShort.encode(byteWrapper);
         } else if (type.equals(BaseType.STRING)) {
-            encodedValue = EncodingHelpers
-                    .encodeString(((StringToken) t).stringValue());
+            HLAASCIIstring hlaString = new HLAASCIIstringImpl(((StringToken) t).stringValue());
+            byteWrapper = new ByteWrapper(hlaString.getEncodedLength());
+            hlaString.encode(byteWrapper);
         } else {
             throw new IllegalActionException(
                     "The current type of the token " + t + " is not handled  ");
         }
+        encodedValue = byteWrapper.array();
 
         // Here we are sure that we don't deal with HLA  event CERTI MessageBuffer,
         // so just return the encoded value as array
