@@ -10,10 +10,10 @@
 <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
 </property>
 
-<entity name="HlaPublisher" class="org.hlacerti.lib.HlaPublisher"> 
+<entity name="HlaAttributeUpdater" class="org.hlacerti.lib.HlaAttributeUpdater"> 
 </entity>
 
-<entity name="HlaSubscriber" class="org.hlacerti.lib.HlaSubscriber">
+<entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
 </entity>
 
 </group>
