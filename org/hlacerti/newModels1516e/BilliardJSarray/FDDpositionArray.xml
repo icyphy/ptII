@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<objectModel>
+	<objects>
+		<objectClass>
+			<name>ObjectRoot</name>
+			<attribute>
+				<name>privilegeToDelete</name>
+				<dataType>HLAfloat64LE</dataType>
+				<transportation>HLAreliable</transportation>
+				<order>TimeStamp</order>
+			</attribute>
+			<objectClass>
+				<name>RTIprivate</name>
+			</objectClass>
+			<objectClass>
+				<name>Ball</name>
+				<attribute>
+					<name>Position</name>
+					<dataType>HLAfixedArray</dataType>
+					<transportation>HLAreliable</transportation>
+					<order>TimeStamp</order>
+				</attribute>
+                <attribute>
+                    <name>FixedRecordAttribute</name>
+                    <dataType>HLAfixedRecord</dataType>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                </attribute>
+				<attribute>
+					<name>IntegerAttribute</name>
+					<dataType>HLAInteger64BE</dataType>
+					<transportation>HLAreliable</transportation>
+					<order>TimeStamp</order>
+				</attribute>
+			</objectClass>
+		</objectClass>
+	</objects>
+
+</objectModel>
