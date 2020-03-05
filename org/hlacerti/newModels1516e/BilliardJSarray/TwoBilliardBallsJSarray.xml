@@ -54,11 +54,13 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate with two billiard balls&#10;using HLA 1516-2010 FixedArray.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate with two billiard balls&#10;using HLA 1516-2010 Array.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-30.0, 250.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -78,7 +80,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(double)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 155.0]">
         </property>
     </property>
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
@@ -341,15 +343,15 @@
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={462, 702, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1207, 762, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 200.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 493, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1218, 545, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -363,7 +365,7 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="ball1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 145.0]">
         </property>
     </entity>
     <entity name="HlaAttributeUpdater2" class="org.hlacerti.lib.HlaAttributeUpdater">
@@ -373,7 +375,7 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="ball2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 255.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

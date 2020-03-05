@@ -36,9 +36,7 @@ import hla.rti1516e.encoding.*;
 import hla.rti1516e.jlc.*;
 import hla.rti1516e.jlc.EncoderFactory;
 import ptolemy.data.*;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
+import ptolemy.data.type.*;
 import ptolemy.kernel.util.IllegalActionException;
 
 import java.lang.reflect.Array;
@@ -114,7 +112,8 @@ public class MessageProcessing1516e {
                         "The current baseType, "+ type.toString()+ ",  received by the HLA/CERTI Federation"
                                 + " is not handled ");
             }
-        } else if(type instanceof ArrayType){
+        }
+        else if(type instanceof ArrayType){
             Type elmtType = ((ArrayType) type).getElementType();
             //int length = ((ArrayType) type).length();
             List<Token> elementsTokens = new ArrayList<>();
@@ -224,7 +223,13 @@ public class MessageProcessing1516e {
             }
             //Create and return a new ArrayToken
             return new ArrayToken(array, array.length);
-        } else {
+        }
+        else if(true){//type instanceof Type){
+            throw new IllegalActionException(
+                    "The current RECORD type, " + type.toString() + ", received by the HLA/CERTI Federation"
+                            + " is not handled ");
+        }
+        else {
             throw new IllegalActionException(
                     "The current type, " + type.toString() + ", received by the HLA/CERTI Federation"
                             + " is not handled ");
@@ -285,7 +290,8 @@ public class MessageProcessing1516e {
                 throw new IllegalActionException(
                         "The current type of the token " + t + " is not handled  ");
             }
-        } else if (t.getType() instanceof ArrayType){
+        }
+        else if (t.getType() instanceof ArrayType){
             ArrayToken arrayToken = (ArrayToken) t;
             Type elmtType = arrayToken.getElementType();
             HLAvariableArrayImpl hlaVariableArray = new HLAvariableArrayImpl();
@@ -295,7 +301,8 @@ public class MessageProcessing1516e {
                     boolean value = ((BooleanToken) arrayToken.getElement(i)).booleanValue();
                     hlaVariableArray.addElement(new HLAbooleanImpl(value));
                 }
-            } else if (elmtType.equals(BaseType.UNSIGNED_BYTE)) {
+            }
+            else if (elmtType.equals(BaseType.UNSIGNED_BYTE)) {
                 for(int i = 0; i < arrayToken.length(); i++){
                     byte value = ((UnsignedByteToken) arrayToken.getElement(i)).byteValue();
                     hlaVariableArray.addElement(new BasicHLAbyteImpl(value));
@@ -336,7 +343,12 @@ public class MessageProcessing1516e {
             }
             byteWrapper = new ByteWrapper(hlaVariableArray.getEncodedLength());
             hlaVariableArray.encode(byteWrapper);
-        } else {
+        }
+        else if(t.getType() instanceof  RecordType) {
+            throw new IllegalActionException(
+                    "The RecordType of the token " + t + ", " + t.getType() +" is not handled  ");
+        }
+        else {
             throw new IllegalActionException(
                     "The current type of the token " + t + ", " + t.getType() +" is not handled  ");
         }
