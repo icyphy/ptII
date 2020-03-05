@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 279, 950, 603}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 279, 950, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 493]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.1006226809276">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.04541015625, 118.22567653926167}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.04541015625, 125.1283916873229}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="ReceiveArray">

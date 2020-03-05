@@ -140,8 +140,19 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         attributeType.addChoice("double");
         attributeType.addChoice("string");
         attributeType.addChoice("boolean");
-        attributeType.addChoice("array(int)");
-        attributeType.addChoice("array(string)");
+        attributeType.addChoice("short");
+        attributeType.addChoice("long");
+        attributeType.addChoice("float");
+        attributeType.addChoice("unsignedByte");
+        // Array token types available.
+        attributeType.addChoice("[int]");
+        attributeType.addChoice("[double]");
+        attributeType.addChoice("[string]");
+        attributeType.addChoice("[boolean]");
+        attributeType.addChoice("[short]");
+        attributeType.addChoice("[long]");
+        attributeType.addChoice("[float]");
+        attributeType.addChoice("[unsignedByte]");
 
         // Allow the user to change the output port's type directly.
         // Useful for setting a value to typeSelector after reading the MomL file.
@@ -219,6 +230,12 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
             Type newPotentialType = BaseType.forName(newPotentialTypeName);
             if (newPotentialType != null
                     && !newPotentialType.equals(output.getType())) {
+                output.setTypeEquals(newPotentialType);
+            } else if(newPotentialTypeName.startsWith("[") && newPotentialTypeName.endsWith("]")){
+                String elementTypeName = newPotentialTypeName.replaceAll("\\[|\\]" , "");
+                Type elementType = BaseType.forName(elementTypeName);
+                ArrayType arrayType = new ArrayType(elementType);
+                newPotentialType = arrayType;
                 output.setTypeEquals(newPotentialType);
             }
         }

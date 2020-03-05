@@ -4,13 +4,13 @@
 <entity name="PoolTableArray" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={610, 292, 790, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={816, 302, 790, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[556, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9980496423159435">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6118081180811807">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{235.53348814044148, 249.76003289222717}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{131.375, 152.08760445283883}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="EndSimu">
@@ -42,9 +42,9 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate PoolTable&#10;using HLA 1516-2010 FixedArray.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate PoolTable using HLA 1516-2010 Array.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 225.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -66,19 +66,19 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to&#10;be launched.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Last federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 5.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 65.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Need to change the data type in HlaAttribReflector.&#10;And may be the input port of Display.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(double)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 65.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
         </property>
     </property>
     <entity name="Ball1inPoolTable" class="ptolemy.actor.lib.gui.Display">
@@ -86,7 +86,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 125.0]">
         </property>
     </entity>
     <entity name="Ball2inPoolTable" class="ptolemy.actor.lib.gui.Display">
@@ -94,7 +94,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 195.0]">
         </property>
     </entity>
     <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
@@ -106,7 +106,7 @@
         </property>
         <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -123,7 +123,7 @@
         </property>
         <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
