@@ -113,26 +113,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 320.0]">
         </property>
     </entity>
-    <entity name="HlaSubscriber5" class="org.hlacerti.lib.HlaSubscriber">
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val5&quot;">
-            <display name="Name of the attribute to receive"/>
-        </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
-            <display name="Name of the HLA class instance"/>
-        </property>
-        <property name="typeSelector" class="ptolemy.data.expr.StringParameter" value="double">
-            <display name="type of the parameter"/>
-        </property>
-        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="use CERTI message buffer"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 390.0}">
-        </property>
-    </entity>
     <entity name="String" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={772, 200, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 150.0]">
         </property>
@@ -148,7 +132,7 @@
     <entity name="Double" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={784, 307, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 220.0}">
         </property>
@@ -162,7 +146,7 @@
     <entity name="int" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={780, 419, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 285.0]">
         </property>
@@ -176,7 +160,7 @@
     <entity name="Boolean" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={773, 528, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 355.0]">
         </property>
@@ -185,20 +169,6 @@
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 320.0]">
-        </property>
-    </entity>
-    <entity name="DoubleCertiBuffer" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={727, 624, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 425.0]">
-        </property>
-    </entity>
-    <entity name="Test5" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{6.0}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 390.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -217,15 +187,10 @@
         <vertex name="vertex1" value="[235.0, 320.0]">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[235.0, 390.0]">
-        </vertex>
-    </relation>
     <link port="HlaSubscriber.output" relation="relation"/>
     <link port="HlaSubscriber2.output" relation="relation2"/>
     <link port="HlaSubscriber3.output" relation="relation3"/>
     <link port="HlaSubscriber4.output" relation="relation4"/>
-    <link port="HlaSubscriber5.output" relation="relation5"/>
     <link port="String.input" relation="relation"/>
     <link port="Test.input" relation="relation"/>
     <link port="Double.input" relation="relation2"/>
@@ -234,6 +199,4 @@
     <link port="Test3.input" relation="relation3"/>
     <link port="Boolean.input" relation="relation4"/>
     <link port="Test4.input" relation="relation4"/>
-    <link port="DoubleCertiBuffer.input" relation="relation5"/>
-    <link port="Test5.input" relation="relation5"/>
 </entity>
