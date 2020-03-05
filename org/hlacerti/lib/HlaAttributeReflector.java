@@ -42,17 +42,10 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.FloatToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.ShortToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -147,6 +140,8 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         attributeType.addChoice("double");
         attributeType.addChoice("string");
         attributeType.addChoice("boolean");
+        attributeType.addChoice("array(int)");
+        attributeType.addChoice("array(string)");
 
         // Allow the user to change the output port's type directly.
         // Useful for setting a value to typeSelector after reading the MomL file.
@@ -502,37 +497,42 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
     private Token _buildToken(Object[] obj) throws IllegalActionException {
         Token value = null;
 
-        BaseType type = (BaseType) obj[0];
-        if (!type.equals(output.getType())) {
-            throw new IllegalActionException(this,
-                    "The type of the token to build doesn't match the output port type of "
-                            + this.getDisplayName());
-        }
-
-        if (type.equals(BaseType.BOOLEAN)) {
-            value = new BooleanToken((Boolean) obj[1]);
-        } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
-            Integer valInt = (Integer) obj[1];
-            value = new UnsignedByteToken(valInt.byteValue());
-        } else if (type.equals(BaseType.DOUBLE)) {
-            value = new DoubleToken((Double) obj[1]);
-        } else if (type.equals(BaseType.FLOAT)) {
-            value = new FloatToken((Float) obj[1]);
-        } else if (type.equals(BaseType.INT)) {
-            Integer valInt = (Integer) obj[1];
-            value = new IntToken(valInt.intValue());
-        } else if (type.equals(BaseType.LONG)) {
-            value = new LongToken((Long) obj[1]);
-        } else if (type.equals(BaseType.SHORT)) {
-            value = new ShortToken((Short) obj[1]);
-        } else if (type.equals(BaseType.STRING)) {
-            value = new StringToken((String) obj[1]);
+        if(obj[0] instanceof BaseType) {
+            BaseType type = (BaseType) obj[0];
+            if (!type.equals(output.getType())) {
+                throw new IllegalActionException(this,
+                        "The type of the token to build doesn't match the output port type of "
+                                + this.getDisplayName());
+            }
+            if (type.equals(BaseType.BOOLEAN)) {
+                value = new BooleanToken((Boolean) obj[1]);
+            } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
+                Integer valInt = (Integer) obj[1];
+                value = new UnsignedByteToken(valInt.byteValue());
+            } else if (type.equals(BaseType.DOUBLE)) {
+                value = new DoubleToken((Double) obj[1]);
+            } else if (type.equals(BaseType.FLOAT)) {
+                value = new FloatToken((Float) obj[1]);
+            } else if (type.equals(BaseType.INT)) {
+                Integer valInt = (Integer) obj[1];
+                value = new IntToken(valInt.intValue());
+            } else if (type.equals(BaseType.LONG)) {
+                value = new LongToken((Long) obj[1]);
+            } else if (type.equals(BaseType.SHORT)) {
+                value = new ShortToken((Short) obj[1]);
+            } else if (type.equals(BaseType.STRING)) {
+                value = new StringToken((String) obj[1]);
+            } else {
+                throw new IllegalActionException(this,
+                        "The current type is not supported by this implementation or JCERTI");
+                // FIXME: as defined in jcerti.src.hla.rti.jlc.EncodingHelpers.java used in
+                // {@link MessageProcessing} ?
+            }
+        } else if(obj[0] instanceof ArrayType) {
+            value = (ArrayToken) obj[1];
         } else {
             throw new IllegalActionException(this,
                     "The current type is not supported by this implementation or JCERTI");
-            // FIXME: as defined in jcerti.src.hla.rti.jlc.EncodingHelpers.java used in
-            // {@link MessageProcessing} ?
-
         }
 
         return value;
