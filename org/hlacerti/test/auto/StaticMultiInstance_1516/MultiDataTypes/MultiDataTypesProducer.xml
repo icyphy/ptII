@@ -92,11 +92,6 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 265.0]">
             </property>
         </port>
-        <port name="out5" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 340.0]">
-            </property>
-        </port>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
             <property name="time" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
@@ -125,14 +120,6 @@
             <property name="value" class="ptolemy.data.expr.Parameter" value="4">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 265.0]">
-            </property>
-        </entity>
-        <entity name="v=6double CB" class="ptolemy.actor.lib.SingleEvent">
-            <property name="time" class="ptolemy.data.expr.Parameter" value="5.0">
-            </property>
-            <property name="value" class="ptolemy.data.expr.Parameter" value="6.0">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 340.0]">
             </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -188,18 +175,14 @@
         </relation>
         <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <link port="out" relation="relation2"/>
         <link port="out2" relation="relation3"/>
         <link port="out3" relation="relation5"/>
         <link port="out4" relation="relation7"/>
-        <link port="out5" relation="relation8"/>
         <link port="SingleEvent.output" relation="relation"/>
         <link port="v=1 double.output" relation="relation3"/>
         <link port="SingleEvent3.output" relation="relation4"/>
         <link port="SingleEvent4.output" relation="relation6"/>
-        <link port="v=6double CB.output" relation="relation8"/>
         <link port="Const.output" relation="relation5"/>
         <link port="Const.trigger" relation="relation4"/>
         <link port="StringConst.output" relation="relation2"/>
@@ -247,19 +230,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 265.0]">
         </property>
     </entity>
-    <entity name="HlaPublisher5" class="org.hlacerti.lib.HlaPublisher">
-        <property name="attributeName" class="ptolemy.data.expr.Parameter" value="&quot;val5&quot;">
-            <display name="Name of the attribute to publish"/>
-        </property>
-        <property name="classInstanceName" class="ptolemy.data.expr.Parameter" value="&quot;inst1&quot;">
-            <display name="Name of the HLA class instance"/>
-        </property>
-        <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="false">
-            <display name="use CERTI message buffer"/>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 305.0]">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -268,16 +238,12 @@
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="CompositeActor.out" relation="relation"/>
     <link port="CompositeActor.out2" relation="relation2"/>
     <link port="CompositeActor.out3" relation="relation3"/>
     <link port="CompositeActor.out4" relation="relation4"/>
-    <link port="CompositeActor.out5" relation="relation5"/>
     <link port="HlaPublisher.input" relation="relation"/>
     <link port="HlaPublisher2.input" relation="relation2"/>
     <link port="HlaPublisher3.input" relation="relation3"/>
     <link port="HlaPublisher4.input" relation="relation4"/>
-    <link port="HlaPublisher5.input" relation="relation5"/>
 </entity>
