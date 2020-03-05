@@ -93,7 +93,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
@@ -107,11 +107,13 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="array1">
         </property>
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="array(int)">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 105.0]">
         </property>
     </entity>
     <entity name="DisplayArrayOfIntegers" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 783, 332, 151}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 783, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
