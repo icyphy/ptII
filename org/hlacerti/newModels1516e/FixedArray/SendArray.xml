@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={961, 448, 875, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 448, 875, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 522]">
     </property>
@@ -61,16 +61,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 215.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME:&#10;When the model will work, the parameter &quot;training mode&#10; in actor Test must be unset.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 245.0]">
-        </property>
-    </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -103,9 +93,14 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 200.0}">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
     <entity name="Array" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 3}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{1, 2, 4, 5}">
         </property>
         <doc>Create a constant sequence.</doc>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -116,22 +111,39 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[107.2293701171875, 162.453125]">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
     <entity name="DisplayArray" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1209, 808, 348, 111}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1209, 808, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 135.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 3}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 4, 5}}}">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 80.0]">
         </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
