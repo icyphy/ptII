@@ -87,7 +87,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.2,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: the FDD file was copied from uav_array.xml (used in jcerti demos).&#10;But there is two attributes: FixedArrayAttribute and FixedRecordAttribute.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: the FDD file was copied from uav_array.xml (used in jcerti demos).&#10;Need to add HLA variable array type.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 240.0]">
         </property>

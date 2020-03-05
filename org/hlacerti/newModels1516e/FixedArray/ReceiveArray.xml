@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={73, 394, 1034, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 279, 950, 603}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[800, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[716, 493]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.329759323098013">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.1006226809276">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.54541015625, 113.14236056170887}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{280.04541015625, 118.22567653926167}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="ReceiveArray">
@@ -53,16 +53,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 25.0]">
         </property>
     </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.8,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME:&#10;When the model will work, the parameter &quot;training mode&#10; in actor Test must be unset.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 180.0]">
-        </property>
-    </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
@@ -70,7 +60,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="First federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[110.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 145.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
@@ -92,13 +82,29 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 45.0]">
         </property>
     </property>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{3}">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 160.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(int)">
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 80.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1206, 375, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 105.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
     <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
         <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="FixedArrayAttribute">
@@ -107,17 +113,22 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="array1">
         </property>
-        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="array(int)">
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 105.0}">
         </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            </property>
+        </port>
     </entity>
-    <entity name="DisplayArrayOfIntegers" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={371, 783, 499, 208}, maximized=false}">
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 4, 5}}}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[359.2770454150208, 149.93836134249068]">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -126,7 +137,7 @@
         <vertex name="vertex1" value="[285.0, 105.0]">
         </vertex>
     </relation>
-    <link port="Test.input" relation="relation2"/>
+    <link port="Display.input" relation="relation2"/>
     <link port="HlaAttributeReflector.output" relation="relation2"/>
-    <link port="DisplayArrayOfIntegers.input" relation="relation2"/>
+    <link port="Test.input" relation="relation2"/>
 </entity>
