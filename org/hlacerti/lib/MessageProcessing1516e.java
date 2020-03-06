@@ -35,6 +35,7 @@ import hla.rti.jlc.EncodingHelpers;
 import hla.rti1516e.encoding.*;
 import hla.rti1516e.jlc.*;
 import hla.rti1516e.jlc.EncoderFactory;
+import jxl.read.biff.Record;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.kernel.util.IllegalActionException;
@@ -114,107 +115,232 @@ public class MessageProcessing1516e {
             }
         }
         else if(type instanceof ArrayType){
-            Type elmtType = ((ArrayType) type).getElementType();
-            //int length = ((ArrayType) type).length();
-            List<Token> elementsTokens = new ArrayList<>();
-
-            if (elmtType.equals(BaseType.BOOLEAN)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAboolean> factory = index -> EncoderFactory.getInstance().createHLAboolean();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    boolean value = ((HLAboolean) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new BooleanToken(value));
-                }
-
-            } else if (elmtType.equals(BaseType.UNSIGNED_BYTE)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAbyte> factory = index -> EncoderFactory.getInstance().createHLAbyte();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    byte value = ((HLAbyte) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new UnsignedByteToken(value));
-                }
-
-            } else if (elmtType.equals(BaseType.DOUBLE)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAfloat64BE> factory = index -> EncoderFactory.getInstance().createHLAfloat64BE();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    double value = ((HLAfloat64BE) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new DoubleToken(value));
-                }
-            } else if (elmtType.equals(BaseType.FLOAT)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAfloat32BE> factory = index -> EncoderFactory.getInstance().createHLAfloat32BE();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    float value = ((HLAfloat32BE) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new FloatToken(value));
-                }
-            } else if (elmtType.equals(BaseType.INT)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAinteger32BE> factory = index -> EncoderFactory.getInstance().createHLAinteger32BE();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    int value = ((HLAinteger32BE) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new IntToken(value));
-                }
-            } else if (elmtType.equals(BaseType.LONG)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAinteger64BE> factory = index -> EncoderFactory.getInstance().createHLAinteger64BE();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    long value = ((HLAinteger64BE) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new LongToken(value));
-                }
-
-            } else if (elmtType.equals(BaseType.SHORT)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAinteger16BE> factory = index -> EncoderFactory.getInstance().createHLAinteger16BE();
-                //Decode the buffer and put values in hlaVariableArray
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    long value = ((HLAinteger64BE) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new LongToken(value));
-                }
-
-            } else if (elmtType.equals(BaseType.STRING)) {
-                //Create a new VariableArray with the right factory
-                DataElementFactory<HLAASCIIstring> factory = index -> EncoderFactory.getInstance().createHLAASCIIstring();
-                HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
-                //Decode the buffer and put values in hlaVariableArray
-                hlaVariableArray.decode(byteWrapper);
-                //Transform hlaVariableArray into an ArrayToken (format used next)
-                for(int i = 0; i< hlaVariableArray.size(); i++) {
-                    String value = ((HLAASCIIstring) hlaVariableArray.get(i)).getValue();
-                    elementsTokens.add(new StringToken(value));
-                }
-            } else {
-                throw new IllegalActionException("The current array type of the token, "
-                        + type.toString() + ", is not handled  ");
+            String typeArray = "";
+            int length;
+            try {
+                length = ((ArrayType) type).length();
+                typeArray = "FixedArray";
+            } catch (Exception e) {
+                length = 0;
+                typeArray = "VariableArray";
             }
 
+//            System.out.println("/*/*/*/*/ Type de l'array à décoder : " +  type.toString()+ " /*/*//*");
+
+
+            Type elmtType = ((ArrayType) type).getElementType();
+            List<Token> elementsTokens = new ArrayList<>();
+
+            if(typeArray == "VariableArray") {
+                if (elmtType.equals(BaseType.BOOLEAN)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAboolean> factory = index -> EncoderFactory.getInstance().createHLAboolean();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        boolean value = ((HLAboolean) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new BooleanToken(value));
+                    }
+
+                }
+                else if (elmtType.equals(BaseType.UNSIGNED_BYTE)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAbyte> factory = index -> EncoderFactory.getInstance().createHLAbyte();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        byte value = ((HLAbyte) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new UnsignedByteToken(value));
+                    }
+
+                }
+                else if (elmtType.equals(BaseType.DOUBLE)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAfloat64BE> factory = index -> EncoderFactory.getInstance().createHLAfloat64BE();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        double value = ((HLAfloat64BE) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new DoubleToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.FLOAT)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAfloat32BE> factory = index -> EncoderFactory.getInstance().createHLAfloat32BE();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        float value = ((HLAfloat32BE) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new FloatToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.INT)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAinteger32BE> factory = index -> EncoderFactory.getInstance().createHLAinteger32BE();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        int value = ((HLAinteger32BE) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new IntToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.LONG)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAinteger64BE> factory = index -> EncoderFactory.getInstance().createHLAinteger64BE();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        long value = ((HLAinteger64BE) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new LongToken(value));
+                    }
+
+                }
+                else if (elmtType.equals(BaseType.SHORT)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAinteger16BE> factory = index -> EncoderFactory.getInstance().createHLAinteger16BE();
+                    //Decode the buffer and put values in hlaVariableArray
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        long value = ((HLAinteger64BE) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new LongToken(value));
+                    }
+
+                }
+                else if (elmtType.equals(BaseType.STRING)) {
+                    //Create a new VariableArray with the right factory
+                    DataElementFactory<HLAASCIIstring> factory = index -> EncoderFactory.getInstance().createHLAASCIIstring();
+                    HLAvariableArray hlaVariableArray = new HLAvariableArrayImpl(factory, 0);
+                    //Decode the buffer and put values in hlaVariableArray
+                    hlaVariableArray.decode(byteWrapper);
+                    //Transform hlaVariableArray into an ArrayToken (format used next)
+                    for (int i = 0; i < hlaVariableArray.size(); i++) {
+                        String value = ((HLAASCIIstring) hlaVariableArray.get(i)).getValue();
+                        elementsTokens.add(new StringToken(value));
+                    }
+                }
+                else {
+                    throw new IllegalActionException("The current array type of the token, "
+                            + type.toString() + ", is not handled  ");
+                }
+            } else if(typeArray == "FixedArray") {
+                System.out.println(typeArray + "<" + elmtType.toString() + ", " + length + ">");
+
+                HLAfixedArrayImpl fixedArray = new HLAfixedArrayImpl(length);
+                if (elmtType.equals(BaseType.BOOLEAN)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new HLAbooleanImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                     for (int i = 0; i < fixedArray.size(); i++) {
+                         boolean value = ((HLAboolean) fixedArray.get(i)).getValue();
+                         elementsTokens.add(new BooleanToken(value));
+                     }
+                }
+                else if (elmtType.equals(BaseType.UNSIGNED_BYTE)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAbyteImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        byte value = ((HLAbyte) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new UnsignedByteToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.DOUBLE)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAfloat64BEImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        double value = ((HLAfloat64BE) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new DoubleToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.FLOAT)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAfloat32BEImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        float value = ((HLAfloat32BE) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new FloatToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.INT)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAinteger32BEImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        int value = ((HLAinteger32BE) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new IntToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.LONG)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAinteger64BEImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        long value = ((HLAinteger64BE) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new LongToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.SHORT)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new BasicHLAinteger16BEImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        short value = ((HLAinteger16BE) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new ShortToken(value));
+                    }
+                }
+                else if (elmtType.equals(BaseType.STRING)) {
+                    //Create FixedArray structure (create all elements)
+                    for(int i = 0; i < length; i++)
+                        fixedArray.addElement(new HLAASCIIstringImpl());
+                    //Decode the buffer and put values in the fixedArray
+                    fixedArray.decode(byteWrapper);
+                    //Transform fixedArray into an ArrayToken (format used next)
+                    for (int i = 0; i < fixedArray.size(); i++) {
+                        String value = ((HLAASCIIstring) fixedArray.get(i)).getValue();
+                        elementsTokens.add(new StringToken(value));
+                    }
+                }
+                else {
+                    throw new IllegalActionException("The current array type of the token, "
+                            + type.toString() + ", is not handled  ");
+                }
+            }
             //Convert list of tokens in array (need an Token[] to ArrayToken constructor)
             Token[] array = new Token[elementsTokens.size()];
             for(int i = 0; i < elementsTokens.size(); i++) {
@@ -224,7 +350,8 @@ public class MessageProcessing1516e {
             //Create and return a new ArrayToken
             return new ArrayToken(array, array.length);
         }
-        else if(true){//type instanceof Type){
+
+        else if(type instanceof RecordType){
             throw new IllegalActionException(
                     "The current RECORD type, " + type.toString() + ", received by the HLA/CERTI Federation"
                             + " is not handled ");
@@ -292,6 +419,8 @@ public class MessageProcessing1516e {
             }
         }
         else if (t.getType() instanceof ArrayType){
+            System.out.println("/*/*/*/*/ Type de l'array : " +  t.getType().toString()+ " /*/*//*");
+
             ArrayToken arrayToken = (ArrayToken) t;
             Type elmtType = arrayToken.getElementType();
             HLAvariableArrayImpl hlaVariableArray = new HLAvariableArrayImpl();

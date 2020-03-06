@@ -1,0 +1,126 @@
+<project name="jcerti" basedir="." default="main">
+    <property name="home.dir"    value="." />
+    <property name="src.dir"     value="${home.dir}/src" />
+    <property name="lib.dir"     value="${home.dir}/lib" />
+    <property name="build.dir"   value="${home.dir}/build" />
+    <property name="dist.dir"    value="${build.dir}/dist" />
+    <property name="javadoc.dir" value="${dist.dir}/javadoc" />
+    <property name="class.dir"   value="${build.dir}/class" />
+    <property name="jar.dir"     value="${build.dir}/jar" />
+	<property name="jar.jcerti" value="${jar.dir}/jcerti.jar" />
+
+    <!-- Ant paths to optional jar files set by the configure script. -->
+    <path id="ptII.classpath.optional">
+
+    <!-- Lib definition : IzPack -->
+    <property name="lib.izpack.dir" value="${lib.dir}/IzPack" />
+    <path id="izpack.classpath">
+        <fileset dir="${lib.izpack.dir}">
+            <include name="*.jar" />
+            </fileset>
+    </path>
+
+	<!-- clean only erase compiled files and jar's 
+	     that is you won't throw away already built
+	     installer or zip distribution
+	  -->
+	<target name="clean">
+		<delete dir="${class.dir}" />
+		<delete dir="${jar.dir}" />
+	</target>
+
+	<!-- distribution clean, ANY produced file is deleted -->
+	<target name="distclean" depends="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+    <!-- Classpath -->
+    <path id="jcerti.classpath">
+        <pathelement location="${jar.jcerti}" />
+    </path>
+
+
+
+
+	<!-- Tests -->
+    <property name="test.src.dir" value="${home.dir}/src_test" />
+    <property name="testTypes.src.dir" value="${home.dir}/test/test" />
+    <property name="test.class.dir" value="${build.dir}/class_test" />
+    <property name="test.report.dir" value="${build.dir}/report_test" />
+    <property name="test.work.dir" value="${test.report.dir}/work" />
+    <property name="test.html.dir" value="${test.report.dir}/html" />
+	<property name="junit.jar" value="${home.dir}/lib/junit4.12/junit-4.12.jar"/>
+
+    <path id="jcerti.test.classpath">
+        <pathelement location="${test.class.dir}" />
+    </path>
+
+	<target name="prepare-test" depends="create-jar, test-clean">
+		<mkdir dir="${test.class.dir}" />
+		<javac srcdir="${test.src.dir}" destdir="${test.class.dir}" includeantruntime="false" target="1.8" source="1.8" deprecation="on" debug="true" debuglevel="lines,vars,source">
+			<include name="**/*.java" />
+			<classpath>
+				<path refid="jcerti.classpath" />
+			</classpath>
+		</javac>
+		<mkdir dir="${test.report.dir}" />
+		<mkdir dir="${test.work.dir}" />
+		<copy todir="${test.work.dir}" flatten="yes">
+			<fileset dir="${test.src.dir}" includes="**/*.xml"/>
+			<fileset dir="${test.src.dir}" includes="**/*.fed"/>
+		    <fileset dir="${test.src.dir}" includes="**/*.properties"/>
+		</copy>
+	</target>
+
+
+
+    <!-- Example from  src_test/certi1516e (HLA1516e)-->
+
+	<target name="SendFixedArray" depends="prepare-test" description="o run the jcerti UAV Send 1516e example">
+		<java classname="UavSend" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+
+	<target name="ReceiveFixedArray" depends="prepare-test" description="o run the jcerti UAV Receive 1516e example">
+		<java classname="UavReceive" fork="true" dir="${test.work.dir}">
+			<classpath refid="jcerti.classpath" />
+			<classpath refid="jcerti.test.classpath" />
+			<arg value="${jcerti.opt}" />
+			<arg value="1" />
+			<arg value="${timeStep}"/>
+			<arg value="${updateTime}"/>
+			<arg value="${lookahead}"/>
+		</java>
+	</target>
+	
+
+    <target name="test-clean">
+        <delete dir="${test.class.dir}" />
+        <delete dir="${test.report.dir}" />
+    </target>
+
+	<!-- help -->
+    <target name="help" description="o display help on ant build file use">
+        <echo>
+
+For launching the Java Federate:
+
+   ant #federateName#-run   [-Djcerti.opt="anyValue"]
+
+</echo>
+	</target>
+
+	<!-- distribution -->
+	<target name="prepare-dist" depends="clean">
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+
+</project>
