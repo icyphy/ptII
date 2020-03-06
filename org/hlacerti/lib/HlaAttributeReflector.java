@@ -34,6 +34,8 @@ package org.hlacerti.lib;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypeEvent;
@@ -153,6 +155,10 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
         attributeType.addChoice("[long]");
         attributeType.addChoice("[float]");
         attributeType.addChoice("[unsignedByte]");
+        // To use FixedArray. Use this only if the message doesn't come from Ptolemy
+        attributeType.addChoice("[int, 2]");
+        attributeType.addChoice("[int, 3]");
+        attributeType.addChoice("[double, 2]");
 
         // Allow the user to change the output port's type directly.
         // Useful for setting a value to typeSelector after reading the MomL file.
@@ -232,6 +238,18 @@ public class HlaAttributeReflector extends TypedAtomicActor implements HlaReflec
                     && !newPotentialType.equals(output.getType())) {
                 output.setTypeEquals(newPotentialType);
             } else if(newPotentialTypeName.startsWith("[") && newPotentialTypeName.endsWith("]")){
+                if(newPotentialTypeName.contains(",")){
+                    String[] typeInfos = ((newPotentialTypeName.replaceAll("\\[|\\]" , ""))).split(", ");
+                    Type elementType = BaseType.forName(typeInfos[0]);
+                    int size = new Integer(typeInfos[1]);
+
+                    if(elementType == null)
+                        throw new IllegalActionException("Type des elements : " + elementType.toString());
+
+                    ArrayType arrayType = new ArrayType(elementType, size);
+                    newPotentialType = arrayType;
+                    output.setTypeEquals(newPotentialType);
+                }
                 String elementTypeName = newPotentialTypeName.replaceAll("\\[|\\]" , "");
                 Type elementType = BaseType.forName(elementTypeName);
                 ArrayType arrayType = new ArrayType(elementType);
