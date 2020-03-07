@@ -4,7 +4,7 @@
 <entity name="PoolTableArray" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={816, 302, 790, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={573, 259, 790, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[556, 522]">
     </property>
@@ -44,7 +44,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Federate PoolTable using HLA 1516-2010 Array.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 260.0]">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -76,13 +76,13 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(double)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: before launching this federate, double-click on actors&#10;HlaAttributeReflector and check if attributeType is [double].">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 145.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 150.0]">
         </property>
     </property>
     <entity name="Ball1inPoolTable" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={674, 284, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={689, 142, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -90,11 +90,11 @@
         </property>
     </entity>
     <entity name="Ball2inPoolTable" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 802, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={699, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 230.0]">
         </property>
     </entity>
     <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
@@ -104,13 +104,13 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="ball1">
         </property>
-        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(double)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
             </property>
         </port>
     </entity>
@@ -121,13 +121,13 @@
         </property>
         <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="ball2">
         </property>
-        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="[double]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 230.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="arrayType(int)">
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[double]">
             </property>
         </port>
     </entity>

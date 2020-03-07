@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO Space FOM</name>
+        <type>FOM</type>
+        <version>0.1</version>
+        <modificationDate>2014-03-17</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>SISO Space Vehicle definitions</purpose>
+        <applicationDomain></applicationDomain>
+        <description>Definitions of vehicle related object classes.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Edwin Zack Crues</pocName>
+            <pocOrg>NASA Johnson Space Center</pocOrg>
+            <pocTelephone>281-483-2902</pocTelephone>
+            <pocEmail>edwin.z.crues@nasa.gov</pocEmail>
+        </poc>
+        <poc>
+            <pocType>Contributor</pocType>
+            <pocName>Daniel Verret</pocName>
+            <pocOrg>ForwardSim Inc.</pocOrg>
+            <pocTelephone>418-650-3493 ext 6000</pocTelephone>
+            <pocEmail>dverret@forwardsim.com</pocEmail>
+        </poc>
+        <poc>
+            <pocType></pocType>
+            <pocName></pocName>
+            <pocOrg></pocOrg>
+        </poc>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>ObjectRoot</name>
+            <objectClass>
+                <name>PhysicalEntity</name>
+                <sharing>PublishSubscribe</sharing>
+                <semantics>A man-made vehicle or major sub-element of a man-made vehicle. Space vehicles 
+have two reference frames intrinsically attached to them: a 'body frame' and a 'structural 
+frame'. Neither of these is part of the ReferenceFrame object hierarchy. The body frame 
+origin is the vehicle center of mass. The structural frame is located at some well-defined 
+point on the vehicle, but this point is not specified in this FOM. The offset of the body 
+frame origin from the structural frame origin is captured as the vehicle's center of mass 
+location attribute. The relative orientation of the structural and body frames is assumed 
+fixed (not time varying), but it is not specified in this FOM. All dynamics of the vehicle 
+are calculated by propogating the body frame with respect to the vehicle's 'parent 
+reference frame' which is an object instance in the ReferenceFrame hierarchy and is named 
+by the vehicle's parent_reference_frame attribute.</semantics>
+                <attribute>
+                    <name>entity_name</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>during initialization</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A non-empty string that identifies the vehicle. Each SpaceVehicle instance in 
+the federation must have a unique name.</semantics>
+                </attribute>
+                <attribute>
+                    <name>status</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>An informative string that documents the current status of the vehicle 
+(whatever that might be).</semantics>
+                </attribute>
+                <attribute>
+                    <name>parent_reference_frame</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>The non-empty string that identifies the reference frame with respect to which 
+the kinematic state attributes of this vehicle are calculated. This string must exactly 
+match the name of some ReferenceFrame instance in the federation.</semantics>
+                </attribute>
+                <attribute>
+                    <name>position</name>
+                    <dataType>PositionVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the position of the vehicle body frame origin (i.e., 
+the vehicle's center of mass) with respect to the parent reference frame. The components 
+of this vector are resolved onto the coordinate axes of the parent frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>velocity</name>
+                    <dataType>VelocityVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the velocity of the vehicle body frame origin (i.e., 
+the vehicle's center of mass) with respect to the parent reference frame. This is the 
+time derivative of the position vector as seen by an observer fixed in the parent frame. 
+The components of this vector are resolved onto the coordinate axes of the parent 
+frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>acceleration</name>
+                    <dataType>AccelerationVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the acceleration of the vehicle body frame origin 
+(i.e., the vehicle's center of mass) with respect to the parent reference frame. This is 
+the time derivative of the velocity vector as seen by an observer fixed in the parent 
+frame. The components of this vector are resolved onto the coordinate axes of the parent 
+frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>attitude</name>
+                    <dataType>AttitudeQuaternion</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>An attitude quaternion of the vehicle's body reference frame ('subject frame') 
+with respect to its parent reference frame ('referent frame').</semantics>
+                </attribute>
+                <attribute>
+                    <name>rotational_velocity</name>
+                    <dataType>AngularVelocityVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the angular velocity of the vehicle body frame with 
+respect to the parent reference frame. The components of this vector are resolved onto 
+the coordinate axes of the vehicle body frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>rotational_acceleration</name>
+                    <dataType>AngularAccelerationVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the angular acceleration of the vehicle body frame 
+with respect to the parent reference frame. This is the time derivative of the angular 
+velocity vector as seen by an observer fixed in the parent frame. The components of this 
+vector are resolved onto the coordinate axes of the vehicle body frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>mass</name>
+                    <dataType>Mass</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>The vehicle's mass.</semantics>
+                </attribute>
+                <attribute>
+                    <name>mass_rate</name>
+                    <dataType>MassRate</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>The rate of change of of the vehicle's mass.</semantics>
+                </attribute>
+                <attribute>
+                    <name>center_of_mass</name>
+                    <dataType>PositionVector</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3-vector that specifies the position of the vehicle center of mass (the body 
+frame origin) with respect to the origin of the vehicle's structural frame. The 
+components of this vector are resolved onto the coordinate axes of the structural 
+frame.</semantics>
+                </attribute>
+                <attribute>
+                    <name>inertia</name>
+                    <dataType>InertiaMatrix</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A 3x3 matrix that specifies the centroid moments and coefficients of inertia 
+with respect to the coordinate axes of the vehicle body frame</semantics>
+                </attribute>
+                <attribute>
+                    <name>time</name>
+                    <dataType>Time</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>DivestAcquire</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>This value serves as a 'time stamp' that specifies the simulated time (TT) to which the attributes values correspond. It may be used by federates that do not use HLA time management but still need to know when the attributes were valid. (E.g., a plotting federate that isn't time regulating or time constrained would need the time stamp in order to plot time series.)</semantics>
+                </attribute>
+                <attribute>
+                    <name>entity_type</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>during initialization</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A non-empty string that identifies the entity type. It is not a mandatory field but it will be used to differentiate from a fuel tank and a space vehicle for example.</semantics>
+                </attribute>
+                <objectClass>
+                    <name>SpaceVehicle</name>
+                    <sharing>PublishSubscribe</sharing>
+                    <semantics>The SpaceVehicle object class is an extension of the PhysicalEntity object class.  It is currently just a marker class but should contain attributes common to a generic space vehicle in the future.</semantics>
+                </objectClass>
+            </objectClass>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+        </interactionClass>
+    </interactions>
+    <dimensions/>
+    <tags>
+        <updateReflectTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+    <transportations/>
+    <dataTypes>
+        <basicDataRepresentations/>
+        <simpleDataTypes/>
+        <enumeratedDataTypes/>
+        <arrayDataTypes/>
+        <fixedRecordDataTypes/>
+        <variantRecordDataTypes/>
+    </dataTypes>
+</objectModel>
