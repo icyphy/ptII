@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO Space FOM Core</name>
+        <type>FOM</type>
+        <version>0.1</version>
+        <modificationDate>2014-03-17</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>SISO Space FOM Core definitions</purpose>
+        <applicationDomain></applicationDomain>
+        <description>Definitions of common, low level HLA settings and data types.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Edwin Zack Crues</pocName>
+            <pocOrg>NASA Johnson Space Center</pocOrg>
+            <pocTelephone>281-483-2902</pocTelephone>
+            <pocEmail>edwin.z.crues@nasa.gov</pocEmail>
+        </poc>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+        </interactionClass>
+    </interactions>
+    <dimensions/>
+    <time>
+        <timeStamp>
+            <dataType>HLAinteger64Time</dataType>
+            <semantics>Microseconds since the beginning of the federation execution.</semantics>
+        </timeStamp>
+        <lookahead>
+            <dataType>HLAinteger64Time</dataType>
+            <semantics>Microseconds</semantics>
+        </lookahead>
+    </time>
+    <tags>
+        <updateReflectTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+    <transportations/>
+    <switches>
+        <autoProvide isEnabled="false"/>
+        <conveyRegionDesignatorSets isEnabled="false"/>
+        <conveyProducingFederate isEnabled="false"/>
+        <attributeScopeAdvisory isEnabled="false"/>
+        <attributeRelevanceAdvisory isEnabled="false"/>
+        <objectClassRelevanceAdvisory isEnabled="false"/>
+        <interactionRelevanceAdvisory isEnabled="false"/>
+        <serviceReporting isEnabled="false"/>
+        <exceptionReporting isEnabled="false"/>
+        <delaySubscriptionEvaluation isEnabled="false"/>
+        <automaticResignAction resignAction="CancelThenDeleteThenDivest"/>
+    </switches>
+    <dataTypes>
+        <basicDataRepresentations/>
+        <simpleDataTypes>
+            <simpleData>
+                <name>Angle</name>
+                <representation>HLAfloat64LE</representation>
+                <units>radians (r)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar angular quantity.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Mass</name>
+                <representation>HLAfloat64LE</representation>
+                <units>kilograms (kg)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measurement of mass.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>MassRate</name>
+                <representation>HLAfloat64LE</representation>
+                <units>kilograms per second (kg/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A mesaurement of the rate of change of mass.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>MassMomentOfInertia</name>
+                <representation>HLAfloat64LE</representation>
+                <units>kilgram meter squared (kg*m*m)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar moment or coefficient of inertia. There are nine such scalars in a 
+moment of inertia matrix.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Position</name>
+                <representation>HLAfloat64LE</representation>
+                <units>meters (m)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar translational position.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Velocity</name>
+                <representation>HLAfloat64LE</representation>
+                <units>meters per second (m/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar translational velocity.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Acceleration</name>
+                <representation>HLAfloat64LE</representation>
+                <units>meters per second per second (m/s^2)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar translational acceleration.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Scalar</name>
+                <representation>HLAfloat64LE</representation>
+                <units>NA</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A unitless scalar value.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>AngularRate</name>
+                <representation>HLAfloat64LE</representation>
+                <units>radians per second (r/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar angular rate.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>AngularAcceleration</name>
+                <representation>HLAfloat64LE</representation>
+                <units>radians per second per second (r/s^2)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar angular acceleration.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Time</name>
+                <representation>HLAfloat64LE</representation>
+                <units>seconds (s)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measurement of time.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Energy</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Joule (J)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measure of energy.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Power</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Watt (W)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measure of power.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>SignalStength</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Decibels (dB)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measure of signal stength.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Temperature</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Kelvin (K)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measure of absolute temperature.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>TemperatureRate</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Kelvin per second (K/s)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A measure of the time rate of change of temperature.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Force</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Newton (N)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar measurement of force.</semantics>
+            </simpleData>
+            <simpleData>
+                <name>Torque</name>
+                <representation>HLAfloat64LE</representation>
+                <units>Newton meter (N*m)</units>
+                <resolution>NA</resolution>
+                <accuracy>NA</accuracy>
+                <semantics>A scalar measurement of torque.</semantics>
+            </simpleData>
+        </simpleDataTypes>
+        <enumeratedDataTypes/>
+        <arrayDataTypes>
+            <arrayData>
+                <name>PositionVector</name>
+                <dataType>Position</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the translational position of one point with respect to 
+another. This data type does not specify which points are involved, nor does it specify 
+the coordinate axes onto which the three components of the vector are 
+projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>VelocityVector</name>
+                <dataType>Velocity</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the time derivative of the vector position of some 
+point with repect to another as seen by an observer fixed in some reference frame. This 
+data type does not specify which points are involved, nor does it specify the observer 
+frame of reference, nor does it specify the coordinate axes onto which the three 
+components of the vector are projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>AccelerationVector</name>
+                <dataType>Acceleration</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the time derivative of a vector velocity of some point 
+with respect to another as seen by an observer fixed in some reference frame. This data 
+type does not specify which points are involved, nor does it specify the observer frame of 
+reference, nor does it specify the coordinate axes onto which the three components of the 
+vector are projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>AngularVelocityVector</name>
+                <dataType>AngularRate</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the orientation of one reference frame with respect to 
+another. This data type does not specify the reference frames, nor does it specify the 
+coordinate axes onto which the three components of the vector are projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>AngularAccelerationVector</name>
+                <dataType>AngularAcceleration</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the time derivative of an angular velocity vector as 
+seen by an observer fixed in some reference frame. This data type does not specify which 
+angular velocity, nor does it specify the observer frame of reference, nor does it specify 
+the coordinate axes onto which the three components of the vector are 
+projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>InertiaMatrix</name>
+                <dataType>MassMomentOfInertia</dataType>
+                <cardinality>9</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3x3 matrix that specifies the mass inertia matrix of a body about some 
+coordinate axes. The nine elements of the matrix are stored row-wise, namely: Ixx, Ixy, 
+Ixz, Iyx, Iyy, Iyz, Izx, Izy, Izz. The off-diagonal components Iij (i!=j) are the 
+so-called 'negative integrals'. This means that the elements in this inertia matrix satify 
+the equation H=Iw. Where H is the angular momentum vector, I is the inertia matrix and w 
+is the angular velocity vector. This data type does not specify the coordinate axes about 
+which the moments are calculated.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>Vector</name>
+                <dataType>Scalar</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A unitless 3-vector.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>Matrix</name>
+                <dataType>Scalar</dataType>
+                <cardinality>9</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A unitless 3x3 matrix. The nine elements of the matrix are stored row-wise, 
+namely: m11, m12, m13, m21, m22, m23, m31, m32, m33, where the first index is the row 
+index.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>ForceVector</name>
+                <dataType>Force</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the vector force.  This data type does not specify which points are involved, nor does it specify the coordinate axes onto which the three components of the vector are 
+projected.</semantics>
+            </arrayData>
+            <arrayData>
+                <name>TorqueVector</name>
+                <dataType>Torque</dataType>
+                <cardinality>3</cardinality>
+                <encoding>HLAfixedArray</encoding>
+                <semantics>A 3-vector that specifies the vector torque.  This data type does not specify which points are involved, nor does it specify the coordinate axes onto which the three components of the vector are projected.</semantics>
+            </arrayData>
+        </arrayDataTypes>
+        <fixedRecordDataTypes>
+            <fixedRecordData>
+                <name>ReferenceFrameTranslation</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The translational state of a subject reference frame with respect to a 'referent' 
+frame. This data type does not specify the two reference frames.</semantics>
+                <field>
+                    <name>position</name>
+                    <dataType>PositionVector</dataType>
+                    <semantics>Position of the subject frame origin with respect to the referent origin with 
+components resolved onto the subject coordinate axes.</semantics>
+                </field>
+                <field>
+                    <name>velocity</name>
+                    <dataType>VelocityVector</dataType>
+                    <semantics>Velocity of the subject frame origin with respect to its referent origin with 
+components resolved onto the subject coordinate axes.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>ReferenceFrameRotation</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>The rotational state of a reference frame with respect to a 'referent' 
+frame.</semantics>
+                <field>
+                    <name>attitude_quaternion</name>
+                    <dataType>AttitudeQuaternion</dataType>
+                    <semantics>Attitude quaternion that specfies the orientation of the subject frame with 
+respect to the referent.</semantics>
+                </field>
+                <field>
+                    <name>angular_velocity</name>
+                    <dataType>AngularVelocityVector</dataType>
+                    <semantics>Angular velocity of the subject frame with respect to the referent with 
+components resolved onto the subject coordinate axes.</semantics>
+                </field>
+            </fixedRecordData>
+            <fixedRecordData>
+                <name>AttitudeQuaternion</name>
+                <encoding>HLAfixedRecord</encoding>
+                <semantics>A quaternion quantifying the orientation of a 'subject' reference frame with respect to some other 'referent' frame. Quaternions consist one scalar component and a 3-element vector component and can be denoted Q = (s, V) where s is a scalar and V is a vector (x, y, z). 
+Confusion often arises regarding the meaning of the quaternion. (There are several similar but incompatible conventions.) This data type defines a so-called 'left unit transformation quaternion'. 
+It may be used to transform the elements of a vector V_R = (xR, yR, zR) resolved in the referent frame's coordinate axes into the corresponding elements of a vector V_S = (xS, yS, zS) resolved in the subject frame's coordinate axes (ie, determine the components of the same vector in another coordinate system). 
+The quaternion transformation formula is (0, V_A) = Q . (0, V_B) . Q*, where '.' denotes quaternion multiplication and * denotes quaternion conjugation. 
+The formula for multiplation of the quaternion Q1 = (s1, V1) where V1 is the vector (x1, y1, z1) by the quaternion Q2 = (s2, V2) where V2 is the vector (x2, y2, z2) is Q3 = Q1 . Q2 = (s3, V3) where s3 = s1 s2 - (x1 x2 + y1 y2 + z1 z2) and V3 = (x3, y3, z3) with x3 = s1 x2 + s2 x1 + (y1 z2 - z1 y2), y3 = s1 y2 + s2 y1 + (z1 x2 - x1 z2) and z3 = s1 z2 + s2 z1 + (x1 y2 - y1 x2). 
+The formula for conjugation of the quaternion Q = (s, V), where V is the vector (x, y, z) is Q* = (s, -V) = (s, (-x, -y, -z)).</semantics>
+                <field>
+                    <name>scalar</name>
+                    <dataType>Scalar</dataType>
+                    <semantics>The scalar component of the quaternion.</semantics>
+                </field>
+                <field>
+                    <name>vector</name>
+                    <dataType>Vector</dataType>
+                    <semantics>The vector component of the quaternion.</semantics>
+                </field>
+            </fixedRecordData>
+        </fixedRecordDataTypes>
+        <variantRecordDataTypes/>
+    </dataTypes>
+</objectModel>
