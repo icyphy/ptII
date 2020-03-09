@@ -1,8 +1,9 @@
 FIXME: check why the original FOM SISO_SpaceFOM_entity.xml.orig. raises an exception.
 
 As for the moment (current commit, after commit b3830017b) the objectClass name 
-must be HLAobjectRoot instead of HLAobjectRoot in SISO_SpaceFOM_entity.xml.
+must be ObjectRoot instead of HLAobjectRoot in SISO_SpaceFOM_entity.xml.
 The original SISO FDD file is SISO_SpaceFOM_entity.xml.orig.
+However, HLAobjectRoot is used in sdse_hla1516mod.xml, and it works well in the model SDSEfom.xml. 
 
 See:
 https://www.sisostds.org/stdsdev/tracking_final/ViewCommentInfo.cfm?Doc_ID=105&Comment_ID=5
