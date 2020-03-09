@@ -33,7 +33,7 @@
     </modelIdentification>
     <objects>
         <objectClass>
-            <name>HLAobjectRoot</name>
+            <name>ObjectRoot</name>
             <objectClass>
                 <name>PhysicalEntity</name>
                 <sharing>PublishSubscribe</sharing>

@@ -1,17 +1,17 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SpaceFOM" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SDSEfom" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ReceiveSpace.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="ReceiveSDSE1516.xml">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 230.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ReceiveSpace.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="ReceiveSDSE1516.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -31,13 +31,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 189, 816, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={861, 299, 816, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7564401475974925">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1448284354205533">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{171.829345703125, 314.74934440559446}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.819091796875, 392.6142919580419}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
@@ -46,15 +46,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Janette Cardoso">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 245.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SendSpace.xml">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SendSDSE1516.xml">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 260.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SendSpace.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SendSDSE1516.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -79,19 +79,19 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains Ptolemy federates of a Federation.&#10;It uses the SISO Space FOM Core. &#10;&#10;Run the following two models in this order:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains Ptolemy federates of a Federation.&#10;It uses the SDSE FOM. &#10;&#10;Run the following two models in this order:&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 165.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="File SISO_SpaceFOM_entity_mod.xml replaced HLAobjectRoot&#10;by ObjectRoot (in SISO_SpaceFOM_entity.xml).">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="&lt;objects&gt;&#10;      &lt;objectClass name=&quot;HLAobjectRoot&quot; nameNotes=&quot;&quot;&#10;            semantics=&quot;&quot; semanticsNotes=&quot;&quot; sharing=&quot;Neither&quot;&#10;            sharingNotes=&quot;&quot;&gt;&#10;            &lt;attribute name=&quot;HLAprivilegeToDeleteObject&quot;&#10;                dataType=&quot;NA&quot; dimensions=&quot;NA&quot; updateCondition=&quot;NA&quot;&#10;                updateType=&quot;NA&quot; ownership=&quot;NoTransfer&quot; transportation=&quot;HLAreliable&quot;&#10;                order=&quot;TimeStamp&quot; /&gt;&#10;       &lt;objectClass name=&quot;RTIprivate&quot;&gt;&lt;/objectClass&gt;&#10;       &lt;objectClass name=&quot;MyClass&quot;&gt;&#10;               &lt;attribute name=&quot;Yes&quot; dataType=&quot;HLAboolean&quot; transportation=&quot;HLAreliable&quot; order=&quot;TimeStamp&quot; /&gt;&#10;        &lt;/objectClass&gt;&#10;        &lt;objectClass name=&quot;JOYSTICK&quot;&gt;&#10;                &lt;attribute name=&quot;ELEVATOR&quot; transportation=&quot;HLAreliable&quot; order=&quot;TimeStamp&quot; /&gt;&#10;(...)&#10;        &lt;/objectClass&gt;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 295.0]">
         </property>
     </property>
 </entity>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<objectModel xsi:schemaLocation="http://standards.ieee.org/IEEE1516-2010 http://standards.ieee.org/downloads/1516/1516.2-2010/IEEE1516-DIF-2010.xsd" xmlns="http://standards.ieee.org/IEEE1516-2010" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelIdentification>
+        <name>SISO Space Environment FOM</name>
+        <type>FOM</type>
+        <version>0.1</version>
+        <modificationDate>2014-03-17</modificationDate>
+        <securityClassification>Unclassified</securityClassification>
+        <purpose>SISO Space Environment definitions</purpose>
+        <applicationDomain></applicationDomain>
+        <description>Definitions of environment related object classes.</description>
+        <useLimitation></useLimitation>
+        <poc>
+            <pocType>Primary author</pocType>
+            <pocName>Edwin Zack Crues</pocName>
+            <pocOrg>NASA Johnson Space Center</pocOrg>
+            <pocTelephone>281-483-2902</pocTelephone>
+            <pocEmail>edwin.z.crues@nasa.gov</pocEmail>
+        </poc>
+        <other></other>
+    </modelIdentification>
+    <objects>
+        <objectClass>
+            <name>HLAobjectRoot</name>
+            <objectClass>
+                <name>ReferenceFrame</name>
+                <sharing>PublishSubscribe</sharing>
+                <semantics>An observational reference frame along with a companion right-handed orthogonal 
+set of coordinate axes that are fixed in the frame.</semantics>
+                <attribute>
+                    <name>name</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>At initialization</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>A unique name for this reference frame instance. Reference frame names are 
+essential in forming 'links' between parent/child reference frames.</semantics>
+                </attribute>
+                <attribute>
+                    <name>parent_name</name>
+                    <dataType>HLAunicodeString</dataType>
+                    <updateType>Static</updateType>
+                    <updateCondition>At initialization</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>The name of this frame's parent reference frame. If this frame has no parent 
+(i.e., is a 'root' reference frame), then this string must be empty, otherwise the 
+non-empty string must correspond to the name attribute of some other ReferenceFrame 
+object instance in the simulation.</semantics>
+                </attribute>
+                <attribute>
+                    <name>translational_state</name>
+                    <dataType>ReferenceFrameTranslation</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>At a rate specified by the owning federate</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>This reference frame's translational state with respect to its parent frame. If 
+this frame has no parent, this attribute is meaningless.</semantics>
+                </attribute>
+                <attribute>
+                    <name>rotational_state</name>
+                    <dataType>ReferenceFrameRotation</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>At a rate specified by the owning federate</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>This reference frame's rotational state with respect to its parent frame. If 
+this frame has no parent, this attribute is meaningless.</semantics>
+                </attribute>
+                <attribute>
+                    <name>time</name>
+                    <dataType>Time</dataType>
+                    <updateType>Periodic</updateType>
+                    <updateCondition>when changes</updateCondition>
+                    <ownership>NoTransfer</ownership>
+                    <sharing>PublishSubscribe</sharing>
+                    <transportation>HLAreliable</transportation>
+                    <order>TimeStamp</order>
+                    <semantics>This value serves as a 'time stamp' that specifies the simulated time (TT) to which the attributes values correspond. It may be used by federates that do not use HLA time management but still need to know when the attributes were valid. (E.g., a plotting federate that isn't time regulating or time constrained would need the time stamp in order to plot time series.)</semantics>
+                </attribute>
+            </objectClass>
+        </objectClass>
+    </objects>
+    <interactions>
+        <interactionClass>
+            <name>HLAinteractionRoot</name>
+        </interactionClass>
+    </interactions>
+    <dimensions/>
+    <tags>
+        <updateReflectTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </updateReflectTag>
+        <sendReceiveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </sendReceiveTag>
+        <deleteRemoveTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </deleteRemoveTag>
+        <divestitureRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureRequestTag>
+        <divestitureCompletionTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </divestitureCompletionTag>
+        <acquisitionRequestTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </acquisitionRequestTag>
+        <requestUpdateTag>
+            <dataType>NA</dataType>
+            <semantics>NA</semantics>
+        </requestUpdateTag>
+    </tags>
+    <transportations/>
+    <dataTypes>
+        <basicDataRepresentations/>
+        <simpleDataTypes/>
+        <enumeratedDataTypes/>
+        <arrayDataTypes/>
+        <fixedRecordDataTypes/>
+        <variantRecordDataTypes/>
+    </dataTypes>
+</objectModel>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+	***************************************************************************
+    OpenSDSE - HLA Compliant Distributed Aircraft Simulation
+    Copyright (C) 2017  ISAE
+ 
+    This program is free software ; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation ; either version 2 of the License, or
+   (at your option) any later version.
+ 
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY ; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program ; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ 
+   ***************************************************************************
+
+  ***************************************************************************
+   OpenSDSE Federation Object Model including RPR formation flight (HLA 1516)
+   bugReport to : jean-baptiste.chaudron@isae.fr or d.saussie@polymtl.ca
+   ***************************************************************************
+   
+   Version 1.0
+   ***************************************************************************
+-->
+<!DOCTYPE objectModel SYSTEM "../../xml/ieee1516-2000/1516_2-2000/HLA.dtd" >
+<objectModel DTDversion="1516.2" appDomain="HLA testing"
+    appDomainNotes="" date="2018/01/08" dateNotes="" name="OpenSDSE_Federation"
+    nameNotes="" other="" otherNotes="" pocEmail="jean-baptiste.chaudron@isae-supaero.fr"
+    pocEmailNotes="" pocName="Jean-Baptiste Chaudron" pocNameNotes="" pocOrg="ISAE/DISC"
+    pocOrgNotes="" pocPhone="" pocPhoneNotes=""
+    purpose="Aircraft Simulation compliant with HLA standard (HLA 1.3, IEEE1516-2000 and IEEE-1516-2010)"
+    purposeNotes="" references="" referencesNotes="" sponsor=""
+    sponsorNotes="" type="FOM" typeNotes="" version="1.0" versionNotes="">
+	<objects>
+		<objectClass name="HLAobjectRoot" nameNotes=""
+            semantics="" semanticsNotes="" sharing="Neither"
+            sharingNotes="">
+            <attribute name="HLAprivilegeToDeleteObject"
+                dataType="NA" dimensions="NA" updateCondition="NA"
+                updateType="NA" ownership="NoTransfer" transportation="HLAreliable"
+                order="TimeStamp" />
+			<objectClass name="RTIprivate"></objectClass>
+
+            <objectClass name="MyClass">
+                <attribute name="Yes" dataType="HLAboolean" transportation="HLAreliable" order="TimeStamp" />
+            </objectClass>
+            
+            <objectClass name="TRIM_DATA">
+				<attribute name="RIGHT_ENGINE_THRUST_EQ" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ENGINE_THRUST_EQ" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RIGHT_ENGINE_THROTTLE_EQ" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ENGINE_THROTTLE_EQ" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="ELEVATOR_DEFLECTION_EQ" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="STABILIZER_DEFLECTION_EQ" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="JOYSTICK">
+				<attribute name="AILERON" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="ELEVATOR" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RUDDER" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="THROTTLE_LEFT" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="THROTTLE_RIGHT" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="FLAPS" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="SPOILERS" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="GEARS" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="BRAKES" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="COCKPIT">
+				<attribute name="AUTOPILOT_AP_ACTIVE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="AUTOPILOT_ATHR_ACTIVE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="AUTOPILOT_SPD" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="AUTOPILOT_HDG" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="AUTOPILOT_ALT" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="AUTOPILOT_VS" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+
+			<objectClass name="FLIGHT_CONTROLS">
+				<attribute name="RIGHT_AILERON_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_AILERON_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RIGHT_ELEVATOR_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ELEVATOR_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RUDDER_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RIGHT_ENGINE_COMMANDED_THROTTLE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ENGINE_COMMANDED_THROTTLE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="FLAPS_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="SPOILERS_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="STABILIZER_COMMANDED_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="GEARS_COMMANDED_POSITION" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="ACTUATORS">
+				<attribute name="RIGHT_AILERON_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_AILERON_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RIGHT_ELEVATOR_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ELEVATOR_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RUDDER_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="RIGHT_ENGINE_THRUST" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LEFT_ENGINE_THRUST" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="FLAPS_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="SPOILERS_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="STABILIZER_EFFECTIVE_DEFLECTION" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="GEARS_POSITION" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_POSITION">
+				<attribute name="LONGITUDE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="LATITUDE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="ALTITUDE" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_ORIENTATION">
+				<attribute name="PHI" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="THETA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="PSI" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_UVW_SPEED">
+				<attribute name="U_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="V_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="W_SPEED" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_PQR_ANGULAR_SPEED">
+				<attribute name="P_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="Q_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="R_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_ACCELERATION">
+				<attribute name="X_ACC" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="Y_ACC" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="Z_ACC" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_SPEED">
+				<attribute name="INDICATED_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="EQUIVALENT_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="CALIBRATED_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="TRUE_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="GROUND_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="VERTICAL_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MACH_NUMBER" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="AIRCRAFT_ADDITIONAL">
+				<attribute name="ALPHA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="BETA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="DYNAMIC_PRESSURE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="TANK_FILLING" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_POSITION">
+				<attribute name="MEAS_LONGITUDE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_LATITUDE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_ALTITUDE" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_ORIENTATION">
+				<attribute name="MEAS_PHI" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_THETA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_PSI" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_UVW_SPEED">
+				<attribute name="MEAS_U_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_V_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_W_SPEED" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_PQR_ANGULAR_SPEED">
+				<attribute name="MEAS_P_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_Q_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_R_ANG_SPEED" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_ACCELERATION">
+				<attribute name="MEAS_X_ACC" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_Y_ACC" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_Z_ACC" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_SPEED">
+				<attribute name="MEAS_INDICATED_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_EQUIVALENT_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_CALIBRATED_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_TRUE_AIRSPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_GROUND_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_VERTICAL_SPEED" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_MACH_NUMBER" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="MEAS_AIRCRAFT_ADDITIONAL">
+				<attribute name="MEAS_ALPHA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_BETA" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_DYNAMIC_PRESSURE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="MEAS_TANK_FILLING" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="ENVIRONMENT_VARIABLES">
+				<attribute name="TEMPERATURE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="DENSITY_OF_AIR" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="PRESSURE" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="SPEED_OF_SOUND" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+			<objectClass name="WIND_COMPONENTS">
+				<attribute name="U_WIND" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="V_WIND" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="W_WIND" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="P_WIND" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="Q_WIND" transportation="HLAreliable" order="TimeStamp" />
+				<attribute name="R_WIND" transportation="HLAreliable" order="TimeStamp" />
+			</objectClass>
+		</objectClass>
+	</objects>
+	<interactions>
+		<interactionClass name="Bing" transportation="HLAreliable" order="TimeStamp">
+			<parameter name="BoulNum" />
+			<parameter name="DX" />
+			<parameter name="DY" />
+		</interactionClass>
+  	</interactions>
+	<routingSpace name="Geo">
+	        <dimension name="X" />
+		<dimension name="Y" />
+	</routingSpace>
+</objectModel>
