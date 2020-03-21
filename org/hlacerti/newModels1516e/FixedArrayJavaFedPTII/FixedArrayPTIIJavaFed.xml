@@ -31,13 +31,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={276, 277, 816, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={503, 22, 915, 636}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[582, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[681, 526]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4350538701359157">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.5442343824446902">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{208.295654296875, 292.3905157342657}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{226.25976562499997, 251.07308355067062}">
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
@@ -54,9 +54,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo uses HLAfixedArray data type.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remark: This demo uses HLAfixedArray data type, sent by a Java federate.&#10;A Ptolemy federate can receive this data type, but cannot send it.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 310.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -66,7 +66,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Come back to terminal T2 and press Enter.&#10;The simulation starts.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 270.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -74,9 +74,34 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to a java federate (JCERTI demo)&#10;and Ptolemy federates of the  'uav' Federation.&#10;&#10;Open two more terminals and execute the following commands:&#10;T1: cd path-to-jcerti ; rtig&#10;T2: cd path-to-jcerti ; ant UAVSend_1516e_FixedArray&#10;&#10;Then, run the following two models in this order:&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to a java federate (JCERTI demo)&#10;and Ptolemy federates of the  'uav' Federation.&#10;&#10;Open two terminals and execute the following commands:&#10;T1: cd $PTII/org/hlacerti/newModels1516e/FixedArrayPTIIJavaFed&#10;      rtig&#10;T2: cd $PTII/org/hlacerti/newModels1516e/FixedArrayPTIIJavaFed&#10;      java -jar UavSendFixedArray.jar&#10;&#10;Then, run the following two models in this order:&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="SendFloat.xml">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 250.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="SendFloat.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235, 125}">
+            </property>
         </property>
     </property>
 </entity>
