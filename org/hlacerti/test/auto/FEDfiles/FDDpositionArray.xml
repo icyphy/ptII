@@ -20,20 +20,7 @@
 					<transportation>HLAreliable</transportation>
 					<order>TimeStamp</order>
 				</attribute>
-                <attribute>
-                    <name>FixedRecordAttribute</name>
-                    <dataType>HLAfixedRecord</dataType>
-                    <transportation>HLAreliable</transportation>
-                    <order>TimeStamp</order>
-                </attribute>
-				<attribute>
-					<name>IntegerAttribute</name>
-					<dataType>HLAInteger64BE</dataType>
-					<transportation>HLAreliable</transportation>
-					<order>TimeStamp</order>
-				</attribute>
 			</objectClass>
 		</objectClass>
 	</objects>
-
 </objectModel>

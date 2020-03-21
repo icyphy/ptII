@@ -21,8 +21,8 @@
 					<order>TimeStamp</order>
 				</attribute>
                 <attribute>
-                    <name>FixedRecordAttribute</name>
-                    <dataType>HLAfixedRecord</dataType>
+                    <name>VariableArrayAttribute</name>
+                    <dataType>HLAvariableArray</dataType>
                     <transportation>HLAreliable</transportation>
                     <order>TimeStamp</order>
                 </attribute>

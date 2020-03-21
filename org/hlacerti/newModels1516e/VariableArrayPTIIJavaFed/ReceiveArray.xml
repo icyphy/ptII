@@ -3,13 +3,13 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReceiveArray" class="ptolemy.actor.TypedCompositeActor">
     <property name="Rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="187.5, 122.5">
         </property>
         <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,1.0,0.8,1.0}">
         </property>
-        <property name="width" class="ptolemy.data.expr.Parameter" value="140.0">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="145.0">
         </property>
-        <property name="height" class="ptolemy.data.expr.Parameter" value="60.00000000000001">
+        <property name="height" class="ptolemy.data.expr.Parameter" value="115.00000000000001">
         </property>
         <property name="centered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -26,26 +26,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 0.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 399, 1026, 482}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 32, 815, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[792, 372]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[581, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6736985172259589">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4229559901486464">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.32543421405575, 46.52953682436963}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{312.638671875, 148.16694601028897}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="ReceiveArray">
         </property>
         <property name="federationName" class="ptolemy.data.expr.StringParameter" value="uav">
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="uav_array.xml">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="array.xml">
         </property>
         <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
         </property>
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="InitSync">
         </property>
-        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="launchRTIG" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 5.0]">
         </property>
@@ -76,7 +76,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Second federate to be launched.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 35.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="60.0">
@@ -103,9 +103,19 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(int,3)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(int)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 70.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,1.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="type:arrayType(int)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 210.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -115,21 +125,21 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From Java federate &#10;FixedArray.UavSend.java">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="From Java federate &#10;VariableArray.UavSend.java">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 30.0]">
         </property>
     </property>
-    <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
-        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="FixedArrayAttribute">
+    <entity name="HlaAttributeReflector2" class="org.hlacerti.lib.HlaAttributeReflector">
+        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="VariableArrayAttribute">
         </property>
         <property name="className" class="ptolemy.data.expr.StringParameter" value="SampleClass">
         </property>
-        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="HAF">
+        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="array1">
         </property>
-        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int,3)">
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 240.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -137,20 +147,74 @@
             </property>
         </port>
     </entity>
-    <entity name="JavaFederate" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={356, 213, 499, 208}, maximized=false}">
+    <entity name="PtolemyFederate" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={889, 651, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 240.0]">
+        </property>
+    </entity>
+    <entity name="JavaFedVariableArray" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={736, 225, 308, 98}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 95.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="HlaAttributeReflector" class="org.hlacerti.lib.HlaAttributeReflector">
+        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="VariableArrayAttribute">
         </property>
-        <vertex name="vertex1" value="[310.0, 95.0]">
-        </vertex>
+        <property name="className" class="ptolemy.data.expr.StringParameter" value="SampleClass">
+        </property>
+        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="HAF">
+        </property>
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 95.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="[int]">
+            </property>
+        </port>
+    </entity>
+    <entity name="HlaAttributeReflector3" class="org.hlacerti.lib.HlaAttributeReflector">
+        <property name="attributeName" class="ptolemy.data.expr.StringParameter" value="DoubleAttribute">
+        </property>
+        <property name="className" class="ptolemy.data.expr.StringParameter" value="SampleClass">
+        </property>
+        <property name="instanceName" class="ptolemy.data.expr.StringParameter" value="HAF">
+        </property>
+        <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="double">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 160.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaFedDouble" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={739, 331, 307, 103}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 160.0}">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="HlaAttributeReflector2.output" relation="relation"/>
+    <link port="PtolemyFederate.input" relation="relation"/>
+    <link port="JavaFedVariableArray.input" relation="relation2"/>
     <link port="HlaAttributeReflector.output" relation="relation2"/>
-    <link port="JavaFederate.input" relation="relation2"/>
+    <link port="HlaAttributeReflector3.output" relation="relation3"/>
+    <link port="JavaFedDouble.input" relation="relation3"/>
 </entity>

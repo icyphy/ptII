@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 55, 1047, 772}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 111, 944, 583}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[813, 662]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[710, 473]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.36809713474393">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.082770363525949">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.54541015625, 140.92303763231635}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.04541015625, 99.40980119977678}">
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="ReceiveArray">
@@ -93,11 +93,11 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 375, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={316, 536, 217, 97}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 95.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -115,7 +115,7 @@
         </property>
         <property name="attributeType" class="ptolemy.data.expr.StringParameter" value="arrayType(int)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 95.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -124,7 +124,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 4, 5}}}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{1, 2, 3}}}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -134,7 +134,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[345.0, 105.0]">
+        <vertex name="vertex1" value="[345.0, 95.0]">
         </vertex>
     </relation>
     <link port="Display.input" relation="relation2"/>
