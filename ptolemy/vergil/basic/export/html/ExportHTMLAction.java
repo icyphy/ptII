@@ -776,11 +776,13 @@ public class ExportHTMLAction extends AbstractAction
             printWriter.println("<!DOCTYPE html>");
             printWriter.println("<html>");
             printWriter.println("<head>");
+            printWriter.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+            printWriter.println("<style> * {font-family: sans-serif} p {max-width: 850px}</style>");
             printWriter.println("<meta charset=utf-8>");
 
             // Define the path to the SSI files on the ptolemy site.
             // ssiRoot always has a trailing slash.
-            final String ssiRoot = "https://ptolemy.org/";
+            final String ssiRoot = "https://ptolemy.berkeley.edu/";
 
             // Reference required script files.
             // If the model contains an instance of CopyJavaScriptFiles, then
