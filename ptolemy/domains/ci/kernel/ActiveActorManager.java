@@ -112,7 +112,7 @@ public class ActiveActorManager extends PtolemyThread {
                         if (_isPushSource) {
                             // this should be the case when the actor is an
                             // async data source, e.g. a datagram receiver
-                            yield();
+                            Thread.yield();
                         } else {
                             synchronized (_actor) {
                                 if (!_actor.prefire()) {
