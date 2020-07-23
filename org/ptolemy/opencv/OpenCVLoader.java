@@ -55,10 +55,15 @@ public class OpenCVLoader {
             String osName = System.getProperty("os.name");
             if (osName.startsWith("Mac OS X")) {
                 String portPath = "/opt/local/share/OpenCV/java/lib";
+                String PTII = System.getenv("PTII");
+                String vendorsPath = PTII + "/vendors/opencv/share/OpenCV/java/lib";
                 String[] paths = {
                         // FIXME: OpenCV-3.1.0 creates a .so file under Mac OS X.
                         portPath + nativeLibraryName + ".so",
-                        portPath + nativeLibraryName + ".dylib" };
+                        portPath + nativeLibraryName + ".dylib", 
+                        vendorsPath + nativeLibraryName + ".so",
+                        vendorsPath + nativeLibraryName + ".dylib"
+                };
                 for (int i = 0; i < paths.length; i++) {
                     if (new File(paths[i]).exists()) {
                         System.load(paths[i]);
