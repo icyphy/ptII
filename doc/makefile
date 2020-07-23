@@ -759,7 +759,7 @@ KRUFT = \
 	ptII.fb
 
 
-all: suball whatsnew.htm whatsnewVergil.htm
+all: suball
 	@echo "   To build the javadoc, javascrpt and actor indexes for the full version,"
 	@echo "   run \"make docs\""
 	@echo "   To build the javadoc, javascript and actor indexes for all versions,"
