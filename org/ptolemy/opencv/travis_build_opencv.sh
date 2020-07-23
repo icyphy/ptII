@@ -28,10 +28,24 @@ INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
 
 # Avoid "Package libdc1394-22-dev is not available, but is referred to by another package."
 # See https://github.com/travis-ci/travis-ci/issues/5221
-sudo apt-get update 
+OS=`uname`
+case "`uname -s`" in
+    *Darwin*)
+        # See https://github.com/macports/macports-ports/blob/master/graphics/opencv/Portfile
+        
+        sudo port install pkgconfig zlib bzip2 libpng jpeg jasper tiff webp ilmbase openexr ffmpeg
 
-# Install shared libraries necessary for compilation and runtime.  We need liblapack.so.3 etc.
-sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
+        # sudo port install freetype cmake jpeg tiff openexr libgphoto2 tbb eigen3 openblas lapack hdf5 gflags google-glog
+        #echo "Installing atlas may take hours.  Atlas provides BLAS and LAPACK, see https://ports.macports.org/port/atlas/summary and https://trac.macports.org/ticket/27600"
+        # sudo port install atlas +nofortran
+        ;;
+    *Linux*)
+        sudo apt-get update 
+
+        # Install shared libraries necessary for compilation and runtime.  We need liblapack.so.3 etc.
+        sudo apt-get install -y cmake pkg-config ninja-build zlib1g-dev libjpeg8-dev libtiff5-dev libopenexr-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev libdc1394-22-dev libxine2-dev libgphoto2-dev libgtk2.0-dev libtbb-dev libeigen3-dev libblas-dev liblapack-dev liblapacke-dev libatlas-base-dev libhdf5-dev libprotobuf-dev libgflags-dev libgoogle-glog-dev
+        ;;
+esac
 
 # The packages below did not work for me under Ubuntu 17.x:
 # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
@@ -140,7 +154,9 @@ if [ ! -d $INSTALL_FLAG ]; then
       -DCMAKE_BUILD_TYPE:STRING=Release \
       -DCMAKE_INSTALL_PREFIX:PATH=$INSTALL_PREFIX \
       -DOPENCV_ENABLE_NONFREE:BOOL=ON \
-      -DOPENCV_EXTRA_MODULES_PATH:PATH=$OPENCV_CONTRIB $OPENCV_BUILD/..
+      -DOPENCV_EXTRA_MODULES_PATH:PATH=$OPENCV_CONTRIB $OPENCV_BUILD/.. \
+      -DBUILD_opencv_freetype:BOOL=OFF \
+      -DENABLE_PRECOMPILED_HEADERS:BOOL=OFF
               
     make install && sudo mkdir -p "$(dirname "$INSTALL_FLAG")" && sudo touch "$INSTALL_FLAG";
     popd
@@ -150,12 +166,21 @@ fi
 
 sudo cp -r $INSTALL_PREFIX/include/* /usr/local/include/
 sudo cp -r $INSTALL_PREFIX/lib/* /usr/local/lib/
-if [ ! -d /usr/lib/jni ]; then
-    sudo mkdir /usr/lib/jni
-fi
-sudo cp $INSTALL_PREFIX/share/OpenCV/java/*so /usr/lib/jni/
-sudo mkdir -p /usr/share/OpenCV/java/
-sudo cp $INSTALL_PREFIX/share/OpenCV/java/*  /usr/share/OpenCV/java/
-sudo sh -c "echo \"$INSTALL_PREFIX/lib\" > /etc/ld.so.conf.d/opencv.conf"
-sudo sh -c "echo \"$INSTALL_PREFIX/share/OpenCV/java\" > /etc/ld.so.conf.d/opencv-java.conf"
-sudo ldconfig
+
+case "`uname -s`" in
+    *Linux*)
+        if [ ! -d /usr/lib/jni ]; then
+            sudo mkdir /usr/lib/jni
+        fi
+        sudo cp $INSTALL_PREFIX/share/OpenCV/java/*so /usr/lib/jni/
+        sudo mkdir -p /usr/share/OpenCV/java/
+        sudo cp $INSTALL_PREFIX/share/OpenCV/java/*  /usr/share/OpenCV/java/
+        sudo sh -c "echo \"$INSTALL_PREFIX/lib\" > /etc/ld.so.conf.d/opencv.conf"
+        sudo sh -c "echo \"$INSTALL_PREFIX/share/OpenCV/java\" > /etc/ld.so.conf.d/opencv-java.conf"
+        sudo ldconfig
+        ;;
+esac
+
+
+
+
