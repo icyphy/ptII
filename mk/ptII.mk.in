@@ -266,6 +266,8 @@ JDOCTAG = 	@JDOCTAG@
 
 # Javadoc taglet
 # Usually -tagletpath $(PTII) -taglet doc.doclets.RatingTaglet
+# Sadly, Java 10 changed Taglet so that it is not backward compatible, so doc/doclets/RatingTaglet.java was removed,
+# see https://github.com/icyphy/ptII/commit/934554746d971dfd8f79cf5aa8281f5d582d17c6
 JDOCTAGLET = 	@JDOCTAGLET@
 
 # Doccheck is a doclet that checks for bugs
