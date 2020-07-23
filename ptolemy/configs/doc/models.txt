@@ -16,6 +16,9 @@ $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
 $CLASSPATH/org/hlacerti/demo/Fleet/A1.xml
 $CLASSPATH/org/hlacerti/demo/Fleet/A2.xml
 $CLASSPATH/org/hlacerti/demo/Fleet/Fleet.xml
+$CLASSPATH/org/hlacerti/demo/Fleet1516e/A1.xml
+$CLASSPATH/org/hlacerti/demo/Fleet1516e/A2.xml
+$CLASSPATH/org/hlacerti/demo/Fleet1516e/Fleet1516e.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
