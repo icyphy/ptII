@@ -54,7 +54,6 @@ fi
 # Number of lines to show from the log file.
 lastLines=50
 
-
 if [ ! -d $PTII/reports/junit ]; then
     mkdir -p $PTII/reports/junit
 fi    
@@ -520,7 +519,9 @@ fi
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     exitIfNotCron
 
-    LOG=$PTII/logs/docs.txt
+    # Keep the log file in reports/junit so that we only need to
+    # invoke updateGhPages once per target.
+    log=$PTII/reports/junit/docs.txt
 
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
@@ -534,14 +535,16 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
     echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
-    $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $LOG
-    tail -$lastLines $LOG
+    $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $log
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
 
     # Need to update maxTimeout.  Will seconds be updated?
     maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
-    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $LOG
-    tail -$lastLines $LOG
+    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $log
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
 
     # Killing background sleep loop.
     kill %1
