@@ -105,6 +105,10 @@ puts "Validating the xml in /auto/ xml files after removing the configure blocks
 set tests [exec find $PTII . -name adm -prune -o -name codeDoc -prune -o -name "*.xml"]
 set autoTests {}
 foreach test $tests {
+    if [regexp {org/hlacerti/test/auto} $test] {
+        puts "Skipping $test because there are HLA FED files checked in under org/hlacerti/test/auto"
+        continue
+    }
     if [regexp {/auto/} $test] {
 	lappend autoTests $test
     }
