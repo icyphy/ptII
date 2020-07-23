@@ -1356,6 +1356,10 @@ public class JavaScript extends AbstractPlaceableActor
         // read it as a raw binary.  Otherwise read it using the encoding as the
         // Charset.  If there is no encoding, use the default Charset.
         try {
+            // Avoid "java.security.cert.CertificateException: No subject alternative DNS name matching accessors.org found."
+            // See https://www.oracle.com/java/technologies/javase/8u181-relnotes.html
+            System.setProperty("com.sun.jndi.ldap.object.disableEndpointIdentification", "true");
+
             URL url = FileUtilities.nameToURL(uri, baseDirectory,
                     getClass().getClassLoader());
             if (encoding != null && encoding.toLowerCase().equals("raw")) {
