@@ -384,7 +384,10 @@ PTOPENMODELICADOMAIN_JAR=	@PTOPENMODELICADOMAIN_JAR@
 #There are no OMC FMU .java files, so there is no PTOMC_PACKAGES.
 
 # PTOPENMODELICA_PACKAGES is used in doc/makefile.  
-PTOPENMODELICA_PACKAGES=	@PTOPENMODELICA_PACKAGES@
+# The checks for OpenModelica were removed from configure.in, so
+# we comment out PTOPENMODELICA_PACKAGES here so that
+# (cd $PTII/doc; make codeDoc/allNamedObjs.txt) works.
+#PTOPENMODELICA_PACKAGES=	@PTOPENMODELICA_PACKAGES@
 
 # Open Sound Control/Processing.org jar file used by org.ptolemy.js
 PTOSCP5_JAR =	@PTOSCP5_JAR@
