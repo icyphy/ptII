@@ -87,7 +87,7 @@ public class Auto32Tests extends ModelTests {
      * Execute a model. Timeout after 140000 ms.
      *
      * For information about how this class is used in the Travis build,
-     * see <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#in_browser target="_top">https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis</a>.
+     * see <a href="https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#in_browser" target="_top">https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis</a>.
      *
      * @param fullPath
      *            The full path to the model file to be executed. If the
