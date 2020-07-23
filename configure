@@ -965,7 +965,6 @@ infodir
 docdir
 oldincludedir
 includedir
-runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -1101,7 +1100,6 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
-runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1354,15 +1352,6 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
-  -runstatedir | --runstatedir | --runstatedi | --runstated \
-  | --runstate | --runstat | --runsta | --runst | --runs \
-  | --run | --ru | --r)
-    ac_prev=runstatedir ;;
-  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
-  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
-  | --run=* | --ru=* | --r=*)
-    runstatedir=$ac_optarg ;;
-
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1500,7 +1489,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir runstatedir
+		libdir localedir mandir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1653,7 +1642,6 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
-  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -5835,8 +5823,11 @@ else
        updateClasspath "$TOOLS_JAR"
     fi
     JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
+
+    # Sadly, Java 10 changed Taglet so that it is not backward compatible, so doc/doclets/RatingTaglet.java was removed,
+    # see https://github.com/icyphy/ptII/commit/934554746d971dfd8f79cf5aa8281f5d582d17c6
     # Use curly brackets so PTII gets expanded in the makefile
-    JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
+    #JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
 fi
 
 # The javadoc program
@@ -10325,7 +10316,13 @@ $as_echo "$as_me: WARNING: Either we could not find
     actors in $OPENCV_USER_DIR
     The OpenCV API can be downloaded from http://opencv.org.
     Under Mac OS X, try:
+       $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+    or
        sudo port install opencv +python27 +java
+    (Note that Macport will likely build a jar file that uses .class files that are
+    later than JDK 1.8 and thus incompatible with JDK 1.8, see
+    https://trac.macports.org/ticket/60193.)
+    Then rerun ./configure.
     See org/ptolemy/opencv/package.html for installation help." >&5
 $as_echo "$as_me: WARNING: '\"$JAVAC\" OpenCVTest.java' failed.
     perhaps the OpenCV Computer Vision API is not installed?
@@ -10333,7 +10330,13 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" OpenCVTest.java' failed.
     actors in $OPENCV_USER_DIR
     The OpenCV API can be downloaded from http://opencv.org.
     Under Mac OS X, try:
+       $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+    or
        sudo port install opencv +python27 +java
+    (Note that Macport will likely build a jar file that uses .class files that are
+    later than JDK 1.8 and thus incompatible with JDK 1.8, see
+    https://trac.macports.org/ticket/60193.)
+    Then rerun ./configure.
     See org/ptolemy/opencv/package.html for installation help." >&2;}
 
     fi
@@ -10344,8 +10347,12 @@ fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking if org/ptolemy/opencv will be compiled." >&5
 $as_echo_n "checking if org/ptolemy/opencv will be compiled.... " >&6; }
 if test -z "$PTOPENCV_DIR"; then
-   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: OpenCV was not found, so org/ptolemy/opencv will not be compiled." >&5
-$as_echo "$as_me: WARNING: OpenCV was not found, so org/ptolemy/opencv will not be compiled." >&2;}
+   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: OpenCV was not found, so org/ptolemy/opencv will not be compiled.
+   Try running $PTII/org/ptolemy/opencv/travis_build_opencv.sh; ./configure
+   " >&5
+$as_echo "$as_me: WARNING: OpenCV was not found, so org/ptolemy/opencv will not be compiled.
+   Try running $PTII/org/ptolemy/opencv/travis_build_opencv.sh; ./configure
+   " >&2;}
    updateExcludes "org/ptolemy/opencv/"
 else
    # Print a message to summarize what's happening and make any extraneous "ok" lines less confusing.
@@ -14418,7 +14425,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $LIB
 $as_echo "$LIBEXPAT_INCLUDE_DIR/expat.h" >&6; }; fi
     else
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
+       dirs="$PTII/vendors/libexpat /usr/local/include /opt/local/include /usr/include"
        for dir in $dirs
        do
            if test -f "$dir/expat.h"; then
@@ -14433,12 +14440,18 @@ $as_echo "$LIBEXPAT_INCLUDE_DIR/expat.h" >&6; }; fi
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
-    However, Ptolemy will run without this facility." >&5
+    However, Ptolemy will run without this facility.
+    To install expat under MacOS, try
+       sudo port install expat
+    and then rerun configure." >&5
 $as_echo "$as_me: WARNING: Failed to find expat.h
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
-    However, Ptolemy will run without this facility." >&2;}
+    However, Ptolemy will run without this facility.
+    To install expat under MacOS, try
+       sudo port install expat
+    and then rerun configure." >&2;}
        fi
    fi
 fi
