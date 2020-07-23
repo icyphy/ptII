@@ -2055,8 +2055,11 @@ else
        updateClasspath "$TOOLS_JAR"
     fi
     JDOCTAG="-tag Pt.AcceptedRating -tag Pt.ProposedRating"
+
+    # Sadly, Java 10 changed Taglet so that it is not backward compatible, so doc/doclets/RatingTaglet.java was removed,
+    # see https://github.com/icyphy/ptII/commit/934554746d971dfd8f79cf5aa8281f5d582d17c6
     # Use curly brackets so PTII gets expanded in the makefile
-    JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
+    #JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
 fi 
 
 # The javadoc program
@@ -4066,7 +4069,13 @@ else
     actors in $OPENCV_USER_DIR
     The OpenCV API can be downloaded from http://opencv.org.
     Under Mac OS X, try:
+       $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+    or
        sudo port install opencv +python27 +java
+    (Note that Macport will likely build a jar file that uses .class files that are
+    later than JDK 1.8 and thus incompatible with JDK 1.8, see
+    https://trac.macports.org/ticket/60193.)
+    Then rerun ./configure.
     See org/ptolemy/opencv/package.html for installation help.])
 
     fi
@@ -4076,7 +4085,9 @@ fi
 
 AC_MSG_CHECKING([if org/ptolemy/opencv will be compiled.])
 if test -z "$PTOPENCV_DIR"; then
-   AC_MSG_WARN([OpenCV was not found, so org/ptolemy/opencv will not be compiled.])
+   AC_MSG_WARN([OpenCV was not found, so org/ptolemy/opencv will not be compiled.
+   Try running $PTII/org/ptolemy/opencv/travis_build_opencv.sh; ./configure
+   ])
    updateExcludes "org/ptolemy/opencv/"
 else
    # Print a message to summarize what's happening and make any extraneous "ok" lines less confusing.
@@ -6773,7 +6784,7 @@ else
        PT_MSG_RESULT([$LIBEXPAT_INCLUDE_DIR/expat.h])
     else 
        # FIXME: This will not work if $PTII has spaces
-       dirs="$PTII/vendors/libexpat /usr/local/include /usr/include"
+       dirs="$PTII/vendors/libexpat /usr/local/include /opt/local/include /usr/include"
        for dir in $dirs
        do
            if test -f "$dir/expat.h"; then
@@ -6786,7 +6797,10 @@ else
     Checked the following directories:
     $dirs
     The LBNL Simulation facility in \$PTII/lbnl/lib/util requires libexpat.
-    However, Ptolemy will run without this facility.])
+    However, Ptolemy will run without this facility.
+    To install expat under MacOS, try
+       sudo port install expat
+    and then rerun configure.])
        fi
    fi
 fi
