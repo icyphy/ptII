@@ -537,6 +537,12 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # See $PTII/.travis.yml to print messages for other builds
     while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
+    # Run ant so that ptolemy.moml.filter.ActorIndex is created.
+    echo "Running ant: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    $TIMEOUTCOMMAND $maxTimeout ant 2>&1 | egrep -v "$SECRET_REGEX" > $log
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
+
     # Need to update maxTimeout.  Will seconds be updated?
     maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
