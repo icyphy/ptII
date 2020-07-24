@@ -519,9 +519,12 @@ fi
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     exitIfNotCron
 
-    # Keep the log file in reports/junit so that we only need to
+    if [ ! -d $PTII/doc/codeDoc ]; then
+        mkdir -p $PTII/doc/codeDoc
+    fi    
+    # Keep the log file in doc/codeDoc/ so that we only need to
     # invoke updateGhPages once per target.
-    log=$PTII/reports/junit/docs.txt
+    log=$PTII/doc/codeDoc/docs.txt
 
     # Create the Javadoc jar files for use by the installer and deploy
     # them to Github pages.
@@ -543,6 +546,8 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
     echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $log
+    ls -l $PTII/doc/coding
+    ls -l $PTII/doc/codeDoc/org/hlacerti/lib
     echo "$0: Start of last $lastLines lines of $log"
     tail -$lastLines $log
 
