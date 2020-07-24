@@ -1015,8 +1015,13 @@ codeDoc/allNamedObjs.txt: codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Create the actor index.  See $PTII/ptolemy/vergil/actor/docViewerHelp.htm
 indexActors: codeDoc/ptolemy/actor/lib/RampIdx.xml
+
+../ptolemy/moml/filter/ActorIndex.class:
+	(cd ../ptolemy/moml/filter; $(MAKE))
+
 codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
-			../ptolemy/configs/doc/models.txt
+			../ptolemy/configs/doc/models.txt \
+			../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
@@ -1066,7 +1071,8 @@ codeDocBcvtb/doc/codeDoc/allNamedObjs.txt: \
 		codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/bcvtb/bcvtbModels.txt
+codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/bcvtb/bcvtbModels.txt \
+			../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
@@ -1115,7 +1121,8 @@ codeDocCapeCode/doc/codeDoc/allNamedObjs.txt: \
 		codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocCapeCode/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/capecode/capecodeModels.txt
+codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocCapeCode/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/capecode/capecodeModels.txt \
+			../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
@@ -1165,7 +1172,8 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 		codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
 
 # Build the index of actors 
-codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt
+codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt \
+			../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
@@ -1216,7 +1224,8 @@ codeDocViptos/doc/codeDoc/allNamedObjs.txt: codeDocViptos/doc/codeDoc/ptolemy/ac
 # Build the index of actors 
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocViptos/doc/codeDoc/allNamedObjs.txt \
-		../ptolemy/configs/viptos/viptosModels.txt
+		../ptolemy/configs/viptos/viptosModels.txt \
+		../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
@@ -1267,7 +1276,8 @@ codeDocVisualSense/doc/codeDoc/allNamedObjs.txt: codeDocVisualSense/doc/codeDoc/
 # Build the index of actors 
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		codeDocVisualSense/doc/codeDoc/allNamedObjs.txt \
-		../ptolemy/configs/visualsense/visualsenseModels.txt
+		../ptolemy/configs/visualsense/visualsenseModels.txt \
+		../ptolemy/moml/filter/ActorIndex.class
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
 	"$(JAVA)" -Xmx7654m \
