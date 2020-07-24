@@ -515,7 +515,7 @@ if [ ! -z "$PT_TRAVIS_CLEAN" ]; then
     updateGhPages -clean
 fi
 
-# Build the docs, which are used by other targets.
+# Build the docs using make.
 if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     exitIfNotCron
 
@@ -537,15 +537,50 @@ if [ ! -z "$PT_TRAVIS_DOCS" ]; then
     # See $PTII/.travis.yml to print messages for other builds
     while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
 
+    # Need to update maxTimeout.  Will seconds be updated?
+    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
+    echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
+    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $log
+    ls -l $PTII/doc/coding
+    ls -l $PTII/doc/codeDoc/org/hlacerti/lib
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
+
+    # Killing background sleep loop.
+    kill %1
+
+    updateGhPages $PTII/doc/codeDoc doc/
+
+    # Note that .travis.yml deploys the codeDoc jar files.
+fi
+
+# Build the docs using ant, which are used by other targets.
+if [ ! -z "$PT_TRAVIS_DOCS_ANT" ]; then
+    exitIfNotCron
+
+    if [ ! -d $PTII/doc/codeDoc ]; then
+        mkdir -p $PTII/doc/codeDoc
+    fi    
+    # Keep the log file in doc/codeDoc/ so that we only need to
+    # invoke updateGhPages once per target.
+    log=$PTII/doc/codeDoc/docsAnt.txt
+
+    # Create the Javadoc jar files for use by the installer and deploy
+    # them to Github pages.
+
+    # Note that there is a chance that the installer will use javadoc
+    # jar files that are slightly out of date.
+
+    # Echo status messages so that Travis knows we are alive.
+    # If you need to get status about available memory, insert "free -m" inside the loop while building docs.
+    # See $PTII/.travis.yml to print messages for other builds
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
     echo "Running ant javadoc jsdoc: maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
     $TIMEOUTCOMMAND $maxTimeout ant javadoc jsdoc 2>&1 | egrep -v "$SECRET_REGEX" > $log
     echo "$0: Start of last $lastLines lines of $log"
     tail -$lastLines $log
 
-    # Need to update maxTimeout.  Will seconds be updated?
-    maxTimeout=`expr 3000 - $SECONDS - $timeAfterBuild`
-    echo "Running (cd doc; make install): maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`"
-    (cd doc; $TIMEOUTCOMMAND $maxTimeout make install) 2>&1 | egrep -v "$SECRET_REGEX" >> $log
     ls -l $PTII/doc/coding
     ls -l $PTII/doc/codeDoc/org/hlacerti/lib
     echo "$0: Start of last $lastLines lines of $log"
