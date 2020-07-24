@@ -8,6 +8,7 @@ env:
     # Don't include PT_TRAVIS_CLEAN=true here, we run it as a separate
     # clean stage before running the tests.
     # - PT_TRAVIS_CLEAN=true
+    # Build the docs using make.  We build the docs later using ant.
     - PT_TRAVIS_DOCS=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_INSTALLERS=true
@@ -28,6 +29,8 @@ env:
     - PT_TRAVIS_TEST_EXPORT5_XML=true
     - PT_TRAVIS_TEST_EXPORT6_XML=true
     - PT_TRAVIS_TEST_EXPORT7_XML=true
+    # Build the docs using ant last so that we don't conflict with the build of docs using make.
+    - PT_TRAVIS_DOCS_ANT=true
     #   - PT_TRAVIS_TEST_REPORT_SHORT=true
   global:
     # Environment variables shared between all builds(in alphabetical order)
