@@ -385,8 +385,13 @@ $(PTCLASSALLJAR): $(PTCLASSALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	if [ ! -z "$(PTCLASSALLJARS)" ]; then \
 		for jar in $(PTCLASSALLJARS) ; do \
-			echo "Unjarring $$jar"; \
-			(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xf ../$$jar); \
+			case $$jar in \
+				*.jar) 	echo "Unjarring $$jar"; \
+					(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xf ../$$jar); \
+					;; \
+				*) 	echo "$$jar does not end in .jar, so it won't be unjared"; \
+					;; \
+			esac \
 		done \
 	else \
 		echo "PTCLASSALLJARS was not set, so no need to unjar."; \
@@ -411,8 +416,13 @@ $(PTAUXALLJAR): $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED)
 	-cp *.class $(OTHER_FILES_TO_BE_JARED) $(PTJAR_TMPDIR)/$(ME)
 	if [ ! -z "$(PTAUXALLJARS)" ]; then \
 		for jar in $(PTAUXALLJARS) $(JCLASS) $(OTHER_FILES_TO_BE_JARED); do \
-			echo "Unjarring $$jar"; \
-			(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xvf ../$$jar); \
+			case $$jar in \
+				*.jar) 	echo "Unjarring $$jar"; \
+					(cd $(PTJAR_TMPDIR); "$(JAR)" $(JAR_FLAGS) -xvf ../$$jar); \
+					;; \
+				*) 	echo "$$jar does not end in .jar, so it won't be unjared"; \
+					;; \
+			esac \
 		done \
 	else \
 		echo "PTAUXALLJARS was not set, so no need to unjar."; \
