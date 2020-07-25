@@ -121,6 +121,30 @@ foreach i $configs {
     set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
 
     test "$i-6.1" "Test docClassNameToURL" {
+        # If this test fails under Travis, the the problem could be
+        # that actors have been added to the repository, yet the
+        # codeDoc*.jar files in
+        # https://github.com/icyphy/ptII/releases/download/nightly/
+        # have not been updated.  $PTII/.travis.yml has a deploy
+        # section that should copy the jar files if PT_TRAVIS_DOCS ==
+        # true.  Note that Travis no longer supports Oracle JDK 8 and
+        # JDK 11 does not have backward compatible support for
+        # javadoc, so travis is failing to update the download/nightly
+        # directory.  Even if Travis updates the codeDoc.jar files,
+        # then under JDK 11 the actor index files will not be present
+        # because JDK 11 is missing javadoc backward compatibility.
+
+        # One possible fix is to build the jar files under JDK 8 with
+        # (cd $PTII/doc; make install)
+        # Then upload codeDoc.jar to the nightly release.
+        # 1. Go to https://github.com/icyphy/ptII/releases
+        # 2. Find the nightly release
+        # 3. Click on edit
+        # 4. Delete the old codeDoc.jar
+        # 5. Upload the new codeDoc.jar
+        # For details, see 
+        # https://docs.github.com/en/github/administering-a-repository/managing-releases-in-a-repository
+
 	# In general, if we call getName on a public field in an actor,
 	# then the name that is returned should be the same as the name
 	# of the field.
