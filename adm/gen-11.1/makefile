@@ -3155,7 +3155,14 @@ $(WINJRE32_TAR): $(INSTALLER_SRCS)
 jre32: $(WINJRE32_TAR)
 	ls -l $<
 	file $<
-	tar -zxf $<
+	-tar -zxf $<
+	if [ ! -f jre32/README-Ptolemy.txt ]; then \
+		echo "jre32/README-Ptolemy.txt does not exist after attempted untar of $<"; \
+		echo "Downloading WinJre32 again? $@: `date`"; \
+		wget -O $< https://ptolemy.berkeley.edu/ptolemyII/WinJre32.tar.gz; \
+		ls -l $<; \
+		tar -zxf $<; \
+	fi
 
 WINJRE64_TAR=$(INSTALLER_SRCS)/WinJre64.tar.gz
 $(WINJRE64_TAR): $(INSTALLER_SRCS)
@@ -3168,6 +3175,13 @@ jre64: $(WINJRE64_TAR)
 	ls -l $<
 	file $<
 	tar -zxf $<
+	if [ ! -f jre64/README-Ptolemy.txt ]; then \
+		echo "jre64/README-Ptolemy.txt does not exist after attempted untar of $<"; \
+		echo "Downloading WinJre64 again? $@: `date`"; \
+		wget -O $< https://ptolemy.berkeley.edu/ptolemyII/WinJre64.tar.gz; \
+		ls -l $<; \
+		tar -zxf $<; \
+	fi
 
 # This is the main target for creating installers.
 setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_LINUX).tar.gz $(CAPECODE_SETUP_64).exe $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_LINUX).tar.gz #$(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg
