@@ -566,16 +566,18 @@ VISUALSENSE_DOCS = \
 #	ptolemy.domains.wireless.lib.network.mac
 
 
-# PTBACKTRACK_ECLPISE_PACKAGES is set by configure
-PTBACKTRACK_PACKAGES = \
-	ptolemy.backtrack \
-	ptolemy.backtrack.automatic.ptolemy.actor.lib \
-	ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
-	ptolemy.backtrack.manual.ptolemy.actor.lib \
-	ptolemy.backtrack.ui \
-	ptolemy.backtrack.util \
-	ptolemy.backtrack.xmlparser \
-	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
+# Backtracking was removed in 2019, see
+# https://github.com/icyphy/ptII/commit/46c5f71339fb63bd5d50b629a4687a6c063c1449
+# # PTBACKTRACK_ECLPISE_PACKAGES is set by configure
+# PTBACKTRACK_PACKAGES = \
+# 	ptolemy.backtrack \
+# 	ptolemy.backtrack.automatic.ptolemy.actor.lib \
+# 	ptolemy.backtrack.automatic.ptolemy.domains.sdf.lib \
+# 	ptolemy.backtrack.manual.ptolemy.actor.lib \
+# 	ptolemy.backtrack.ui \
+# 	ptolemy.backtrack.util \
+# 	ptolemy.backtrack.xmlparser \
+# 	$(PTBACKTRACK_ECLIPSE_PACKAGES) 
 
 # Exclude ptolemy.backtrack.automatic.*, to fix these we would need
 # to modify the Eclipse transformer so that we can get comments from
