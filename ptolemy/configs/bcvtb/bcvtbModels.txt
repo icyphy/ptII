@@ -65,7 +65,6 @@ $CLASSPATH/ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/LogisticMap/LogisticMap.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml
-$CLASSPATH/ptolemy/domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/ModelDisplay/ModelDisplay.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/MultipleRuns/MultipleRuns.xml
 $CLASSPATH/ptolemy/domains/sdf/demo/NoisySinewave/NoisySinewave.xml
