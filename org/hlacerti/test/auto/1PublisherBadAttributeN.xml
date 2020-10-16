@@ -4,13 +4,13 @@
 <entity name="1PublisherBadAttributeN" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 24, 839, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={884, 363, 839, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[605, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3994774197135074">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4113373978466728">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-246.26440015889835, 45.10706435381354}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-248.05078125, 43.569875919117635}">
     </property>
     <property name="lah" class="ptolemy.data.expr.Parameter" value="0.01">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -77,7 +77,7 @@
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
         <property name="federateName" class="ptolemy.data.expr.StringParameter" value="BadAttributeN">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="1PublisherBadAttributeName">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="PublisherBadAttributeName">
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="FEDfiles/1PublisherBadAttributeName.fed">
         </property>
