@@ -5,7 +5,7 @@
 			<name>HLAobjectClass</name>
 			<attribute>
 				<name>val</name>
-				<dataType>HLAfloat64LE</dataType>
+				<dataType>HLAinteger32LE</dataType>
 				<transportation>HLAreliable</transportation>
 				<order>TimeStamp</order>
 			</attribute>
@@ -23,13 +23,13 @@
 			</attribute>
 			<attribute>
 				<name>val3</name>
-				<dataType>HLAfloat64LE</dataType>
+				<dataType>HLAinteger32LE</dataType>
 				<transportation>HLAreliable</transportation>
 				<order>TimeStamp</order>
 			</attribute>
 			<attribute>
 				<name>val4</name>
-				<dataType>HLAfloat64LE</dataType>
+				<dataType>HLAoctetPairLE</dataType>
 				<transportation>HLAreliable</transportation>
 				<order>TimeStamp</order>
 			</attribute>

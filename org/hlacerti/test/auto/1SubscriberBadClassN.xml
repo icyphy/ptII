@@ -76,9 +76,9 @@
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
-        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="1SubsBadClassN">
+        <property name="federateName" class="ptolemy.data.expr.StringParameter" value="SubsBadClassN">
         </property>
-        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="1SubscriberBadClassName">
+        <property name="federationName" class="ptolemy.data.expr.StringParameter" value="SubscriberBadClassName">
         </property>
         <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="FEDfiles/1SubscriberBadClassName.fed">
         </property>

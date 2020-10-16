@@ -5,7 +5,7 @@
             <name>Signal</name>
             <attribute>
                 <name>val</name>
-                <dataType>HLAfloat64LE</dataType>
+                <dataType>HLAinteger32LE</dataType>
                 <transportation>HLAreliable</transportation>
                 <order>TimeStamp</order>
             </attribute>
