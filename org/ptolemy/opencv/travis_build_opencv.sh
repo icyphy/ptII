@@ -63,9 +63,12 @@ if [ ! -d $INSTALL_FLAG ]; then
         echo "$0: $OPENCV_BUILD  does not exist or is not a directory, so we download files and create the directory."
 	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
-            echo "$0: Downloading $OPENCV_TAR"
-	    wget --quiet -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
-	    echo "$0: Done downloading $OPENCV_TAR"
+            echo "$0: Downloading $OPENCV_TAR at `date`"
+            # Use --show-progress to avoid 10 minute time out, see also
+            # https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
+            # Note that this could cause travis log length problems
+	    wget --quiet --show-progress -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
+	    echo "$0: Done downloading $OPENCV_TAR at `date`"
 	fi
 	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
