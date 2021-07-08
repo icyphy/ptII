@@ -161,7 +161,7 @@ install:
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
   # Use travis_wait to avoid 10 minute timeout with downloading opencv.
   # See https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
-  - travis_wait 20 sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+  - travis_wait sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
   # Building CERTI will result in a log of more than 10,000 lines, so we just show the last 50.
@@ -230,9 +230,6 @@ stages:
   # The clean stage runs first to remove JUnit output from the gh-pages branch.
   - clean
   #
-  # Prime the cache
-  - primeCache
-  #
   # Most of the targets in the test stage only run if the job is a cron
   # job or RUN_TESTS=true.
   - test
@@ -247,12 +244,6 @@ jobs:
     - stage: clean
       script: $PTII/bin/ptIITravisBuild.sh $SECONDS
       env: PT_TRAVIS_CLEAN=true
-    # Prime the cache.  If the OpenCV version changes, update org/ptolemy/opencv/travis_build_opencv.sh
-    - stage: primeCache
-      script:
-        - mkdir -p /tmp/opencv
-        - travis_wait 20 wget --quiet --show-progress -O /tmp/opencv/opencv-3.4.1 https://github.com/opencv/opencv/archive/3.4.1.tar.gz
-        - travis_wait wget --quiet --show-progress -O /tmp/opencv/opencv_contrib-3.4.1.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
     #
     # The test stage uses the script target above.
     ## - stage: test
@@ -267,7 +258,6 @@ jobs:
 # See https://docs.travis-ci.com/user/cachingg
 cache:
   directories:
-    - /tmp/opencv
     - $PTII/vendors/adm/gen-11.1/node
     - $CERTI_HOME_TRAVIS
     - $PTII/vendors/installer
