@@ -26,6 +26,8 @@ INSTALL_PREFIX=$PTII/vendors/opencv
 INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
 
 
+echo "$0: Start. `date`"
+
 # Avoid "Package libdc1394-22-dev is not available, but is referred to by another package."
 # See https://github.com/travis-ci/travis-ci/issues/5221
 OS=`uname`
@@ -184,6 +186,7 @@ case "`uname -s`" in
         ;;
 esac
 
+echo "$0: Done! `date`"
 
 
 
