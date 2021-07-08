@@ -72,19 +72,26 @@ if [ ! -d $INSTALL_FLAG ]; then
         else
             ls -l $OPENCV_TAR_DIR
         fi
+
 	OPENCV_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}.tar.gz
+        # Download OpenCV from the Ptolemy website because it is faster than multiple jobs hitting GitHub.
+        #OPENCV_REPO=https://github.com/opencv/opencv/archive
+        OPENCV_REPO=https://ptolemy.berkeley.edu/opencv
 	if [ ! -f $OPENCV_TAR ]; then
             echo "$0: Downloading $OPENCV_TAR at `date`"
             # Use --show-progress to avoid 10 minute time out, see also
             # https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
             # Note that this could cause travis log length problems
-	    wget --quiet --show-progress -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
+	    wget --quiet --show-progress -O $OPENCV_TAR ${OPENCV_REPO}/${OPENCV_VERSION}.tar.gz
 	    echo "$0: Done downloading $OPENCV_TAR at `date`"
 	fi
+
 	OPENCV_CONTRIB_TAR=${OPENCV_TAR_DIR}/opencv_contrib-${OPENCV_VERSION}.tar.gz
+        #OPENCV_CONTRIB_REPO=https://github.com/opencv/opencv_contrib/archive
+        OPENCV_CONTRIB_REPO=https://ptolemy.berkeley.edu/opencv_contrib
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
             echo "$0: Downloading $OPENCV_CONTRIB_TAR"
-	    wget --quiet --show-progress -O $OPENCV_CONTRIB_TAR  https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
+	    wget --quiet --show-progress -O $OPENCV_CONTRIB_TAR ${OPENCV_CONTRIB_REPO}/${OPENCV_VERSION}.tar.gz
 	    echo "$0: Done downloading $OPENCV_CONTRIB_TAR"
 	fi
 
