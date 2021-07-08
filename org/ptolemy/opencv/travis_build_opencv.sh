@@ -16,6 +16,7 @@
 
 set -eux -o pipefail
 
+# If the OPENCV_VERSION changes, update $PTII/.travis.yml
 OPENCV_VERSION=${OPENCV_VERSION:-3.4.1}
 URL=https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 URL_CONTRIB=https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip
@@ -63,7 +64,15 @@ if [ ! -d $INSTALL_FLAG ]; then
     fi
     if [ ! -d $OPENCV_BUILD ]; then
         echo "$0: $OPENCV_BUILD  does not exist or is not a directory, so we download files and create the directory."
-	OPENCV_TAR=/tmp/opencv-${OPENCV_VERSION}.tar.gz
+        # Note that the primeCache stage of Travis should download the tar files.
+        OPENCV_TAR_DIR=/tmp/opencv
+        if [ ! -d ${OPENCV_TAR_DIR} ]; then
+            echo "$0: making ${OPENCV_TAR_DIR}"
+            mkdir -p $OPENCV_TAR_DIR
+        else
+            ls -l $OPENCV_TAR_DIR
+        fi
+	OPENCV_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_TAR ]; then
             echo "$0: Downloading $OPENCV_TAR at `date`"
             # Use --show-progress to avoid 10 minute time out, see also
@@ -72,10 +81,10 @@ if [ ! -d $INSTALL_FLAG ]; then
 	    wget --quiet --show-progress -O $OPENCV_TAR https://github.com/opencv/opencv/archive/${OPENCV_VERSION}.tar.gz
 	    echo "$0: Done downloading $OPENCV_TAR at `date`"
 	fi
-	OPENCV_CONTRIB_TAR=/tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz
+	OPENCV_CONTRIB_TAR=${OPENCV_TAR_DIR}/opencv_contrib-${OPENCV_VERSION}.tar.gz
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
             echo "$0: Downloading $OPENCV_CONTRIB_TAR"
-	    wget --quiet -O /tmp/opencv_contrib-${OPENCV_VERSION}.tar.gz https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
+	    wget --quiet --show-progress -O $OPENCV_CONTRIB_TAR  https://github.com/opencv/opencv_contrib/archive/${OPENCV_VERSION}.tar.gz
 	    echo "$0: Done downloading $OPENCV_CONTRIB_TAR"
 	fi
 
