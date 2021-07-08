@@ -252,6 +252,7 @@ jobs:
       script:
         - mkdir -p /tmp/opencv
         - travis_wait 20 wget --quiet --show-progress -O /tmp/opencv/opencv-3.4.1 https://github.com/opencv/opencv/archive/3.4.1.tar.gz
+        - travis_wait wget --quiet --show-progress -O /tmp/opencv/opencv_contrib-3.4.1.tar.gz https://github.com/opencv/opencv_contrib/archive/3.4.1.tar.gz
     #
     # The test stage uses the script target above.
     ## - stage: test
