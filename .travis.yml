@@ -78,6 +78,8 @@ before_install:
   # Add npm to path for AccessorSSHCodeGenerator.tcl
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASHRC_SOURCED=1" >> ~/.bashrc
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASH_PROFILE_SOURCED=1" >> ~/.bash_profile
+  # Neded so that 'ssh localhost' will have PTII set for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
+  - sudo echo "PermitUserEnvironment yes" >> /etc/ssh/sshd_config || true
   # Under Ubuntu, /bin/sh runs dash, which reads ~/.profile
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export PROFILE_SOURCED=1" >> ~/.profile
   - ls -l ~/.bashrc ~/.bash_profile ~/.profile
@@ -199,6 +201,9 @@ install:
   # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
   - ssh-keygen -N '' -f ~/.ssh/id_rsa
   - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+  # Need to set "PermitUserEnvironment yes" in /etc/ssh/sshd_config for ~/.ssh/environment to be read (see above).
+  - echo "PTII=$PTII" >> ~/.ssh/environment
+  - echo "PATH=$PATH" >> ~/.ssh/environment
   - ssh localhost cat /etc/issue
   - sudo ln -s `which npm` /usr/local/bin/npm
   - sudo ln -s `which node` /usr/local/bin/node
