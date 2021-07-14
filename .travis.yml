@@ -159,9 +159,7 @@ install:
   # Longer running installations:
 
   # Use the Travis cache, see https://docs.travis-ci.com/user/cachingp
-  # Use travis_wait to avoid 10 minute timeout with downloading opencv.
-  # See https://docs.travis-ci.com/user/common-build-problems/#build-times-out-because-no-output-was-received
-  - travis_wait sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
+  - sudo -E $PTII/org/ptolemy/opencv/travis_build_opencv.sh
 
   # If ${CERTI_HOME_TRAVIS}/share/scripts/myCERTI_env.sh does not exist, then download and build CERTI.
   # Building CERTI will result in a log of more than 10,000 lines, so we just show the last 50.
