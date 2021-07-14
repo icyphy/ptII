@@ -78,9 +78,12 @@ before_install:
   # Add npm to path for AccessorSSHCodeGenerator.tcl
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASHRC_SOURCED=1" >> ~/.bashrc
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASH_PROFILE_SOURCED=1" >> ~/.bash_profile
-  - ls -l ~/.bashrc ~/.bash_profile
+  # Under Ubuntu, /bin/sh runs dash, which reads ~/.profile
+  - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export PROFILE_SOURCED=1" >> ~/.profile
+  - ls -l ~/.bashrc ~/.bash_profile ~/.profile
   - cat ~/.bashrc
   - cat ~/.bash_profile
+  - cat ~/.profile
 
 # The following recommended solution does not seem
 dist: xenial
