@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 #
-# Copyright (c) 1994-2019 The Regents of the University of California.
+# Copyright (c) 1994-2021 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -228,7 +228,7 @@ release_windows:
 
 ####
 release_mac:
-	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar PYTHON=python2 clean all src.jar setup
 
 release_mac_capecode_mac_tar:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar capecode_setup_mac_app_tar
@@ -3017,7 +3017,7 @@ izpack:
 #L4J_DIR=c:/Program Files/Launch4j
 
 
-L4J_TAR=$(INSTALLER_SRCS)/launch4j-3.11.tgz
+L4J_TAR=$(INSTALLER_SRCS)/launch4j-3.14.tgz
 
 $(L4J_TAR): $(INSTALLER_SRCS)
 	if [ ! -f $(L4J_TAR) ]; then \
@@ -3026,7 +3026,7 @@ $(L4J_TAR): $(INSTALLER_SRCS)
 		Linux) osfile=linux-x64;; \
 	    esac; \
 	    echo "Downloading $(L4J_TAR) for $$osfile: `date`"; \
-	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.11%2Flaunch4j-3.11-$$osfile.tgz" -O $(L4J_TAR); \
+	    wget --quiet "https://osdn.net/frs/g_redir.php?m=kent&f=launch4j%2Flaunch4j-3%2F3.14%2Flaunch4j-3.14-$$osfile.tgz" -O $(L4J_TAR); \
         fi
 
 l4j_dir:$(L4J_DIR)
@@ -3494,9 +3494,10 @@ $(CAPECODE_SETUP_LINUX).tar.gz: $(CAPECODE_SETUP_LINUX).jar
 
 
 IZPACK2APP=$(IZPACK_DIR)/utils/wrappers/izpack2app/izpack2app.py
+PYTHON=python2
 setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
-	python $(IZPACK2APP) $^ $@ 
+	$(PYTHON) $(IZPACK2APP) $^ $@ 
 	# Touch the directories and files in the Mac .app so that when it is untar'd, it has a recent mod time.
 	find $@ -type f -exec touch {} \; 
 	find $@ -type d -exec touch {} \; 
@@ -3506,7 +3507,7 @@ capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
 	df -k
 	du -k $(PTII) | sort -nr | head -100
-	python $(IZPACK2APP) $^ $@ 
+	$(PYTHON) $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
 	find $@ -type d -exec touch {} \; 
 
