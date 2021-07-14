@@ -10,6 +10,9 @@
 
 if [ -z "$PTII" ]; then
     echo "$0: \$PTII must be set."
+    echo "$0: sorted environment is:"
+    env | sort
+    echo "$0: exiting"
     exit 3
 fi
 
