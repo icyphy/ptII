@@ -79,7 +79,8 @@ before_install:
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASHRC_SOURCED=1" >> ~/.bashrc
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export BASH_PROFILE_SOURCED=1" >> ~/.bash_profile
   # Neded so that 'ssh localhost' will have PTII set for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
-  - sudo echo "PermitUserEnvironment yes" >> /etc/ssh/sshd_config || true
+  - echo 'echo "PermitUserEnvironment yes" >> /etc/ssh/sshd_config' > /tmp/update_sshd_config || true
+  - sudo sh /tmp/update_sshd_config || true 
   # Under Ubuntu, /bin/sh runs dash, which reads ~/.profile
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export PROFILE_SOURCED=1" >> ~/.profile
   - ls -l ~/.bashrc ~/.bash_profile ~/.profile
