@@ -83,7 +83,9 @@ before_install:
   - sudo sh /tmp/update_sshd_config || true
   - ls -l /etc/ssh
   - tail /etc/ssh/sshd_config
-  - pkill -1 sshd || true
+  - grep PermitUserEnvironment /etc/ssh/sshd_config || true
+  - sudo service ssh restart || true
+  - ps auxgw | grep sshd
   # Under Ubuntu, /bin/sh runs dash, which reads ~/.profile
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export PROFILE_SOURCED=1" >> ~/.profile
   - ls -l ~/.bashrc ~/.bash_profile ~/.profile
