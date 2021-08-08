@@ -86,6 +86,17 @@ before_install:
   - grep PermitUserEnvironment /etc/ssh/sshd_config || true
   - sudo service ssh restart || true
   - ps auxgw | grep sshd
+  # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
+  - ssh-keygen -N '' -f ~/.ssh/id_rsa || true
+  - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys || true
+  # Need to set "PermitUserEnvironment yes" in /etc/ssh/sshd_config for ~/.ssh/environment to be read (see above).
+  - echo "PTII=$PTII" >> ~/.ssh/environment
+  - echo "PATH=$PATH" >> ~/.ssh/environment
+  - cat ~/.ssh/environment
+  - ssh localhost cat /etc/issue
+  - sudo ln -s `which npm` /usr/local/bin/npm
+  - sudo ln -s `which node` /usr/local/bin/node
+  - ssh localhost  npm --version || true
   # Under Ubuntu, /bin/sh runs dash, which reads ~/.profile
   - echo "export PTII=$PTII; export PATH=$PTII/bin:\${PATH}; export PROFILE_SOURCED=1" >> ~/.profile
   - ls -l ~/.bashrc ~/.bash_profile ~/.profile
@@ -204,17 +215,6 @@ install:
 
   - ./configure --enable-verbose
 
-  # Set up and test 'ssh localhost' for $PTII/ptolemy/cg/kernel/generic/accessor/test/AccessorSSHCodeGenerator.tcl
-  - ssh-keygen -N '' -f ~/.ssh/id_rsa
-  - cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-  # Need to set "PermitUserEnvironment yes" in /etc/ssh/sshd_config for ~/.ssh/environment to be read (see above).
-  - echo "PTII=$PTII" >> ~/.ssh/environment
-  - echo "PATH=$PATH" >> ~/.ssh/environment
-  - ssh localhost cat /etc/issue
-  - sudo ln -s `which npm` /usr/local/bin/npm
-  - sudo ln -s `which node` /usr/local/bin/node
-  - ssh localhost  npm --version || true
-  
 script:
   - ant clean >& $PTII/logs/ant_clean.txt
  
