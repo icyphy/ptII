@@ -3536,7 +3536,7 @@ else
 fi 
 
 #--------------------------------------------------------------------
-#       JXL is the Java Excel library, which is GPL'd.
+#       JXL is the Java Excel library, which is GNU Lesser General Public License v3
 #	For more information, see 
 #       http://jexcelapi.sourceforge.net/
 #--------------------------------------------------------------------
@@ -3551,8 +3551,8 @@ PTJXL_JAR=
 # We only need to look for JXL if the actor/lib/excel directory is present
 EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
 
-if test ! -d "$EXCEL_USER_DIR"; then
-    PT_MSG_STATUS([$EXCEL_USER_DIR is not present,
+if test ! -d "$EXCEL_USER_DIR" -a test ! -d "$HLACERT_USER_DIR/lib"; then
+    PT_MSG_STATUS([$EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
     so we need not find JXL - The Java Excel API.])
 else
     AC_MSG_CHECKING([for the Java Excel API (JXL)])
@@ -3575,7 +3575,7 @@ else
     as $PTEXCEL_JAR.
     Perhaps the Java Excel API (JXL)  is not installed?
     You need not download the JXL interface unless you
-    would like to use the Excel actor.])
+    would like to use the Excel actor or hlacerti.])
 	# Note that we don't substitute in the ${PTII} here
 	PTJXL_JAR='${PTII}/ptolemy/actor/lib/excel/jxl.jar'
     fi
@@ -3583,6 +3583,9 @@ fi
 
 if test -z "$PTEXCEL_DIR"; then
    updateExcludes "ptolemy/actor/lib/excel/"
+   updateExcludes "org/hlacerti"
+   # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
+   PTHLACERTI_PACKAGES="org.hlacerti.lib"
 else
    updateClasspath "$PTJXL_JAR"
 fi 
