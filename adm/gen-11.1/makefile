@@ -1032,8 +1032,6 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		doc/tutorial/domains \
 		lib/javax.servlet-api-3.0.1.jar  \
 		lib/javax.servlet-api-license.htm \
-		lib/jetty-all-8.1.5-v20120716.jar \
-		lib/jetty-all-license.htm \
 		lib/smack.jar \
 		lib/smack-license.htm \
 		lib/smackx.jar \
