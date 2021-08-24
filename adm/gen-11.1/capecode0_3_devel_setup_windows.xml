@@ -411,7 +411,7 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.1.devel/jar_dist/lib/ptcolt.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.8.2.jar"
+            <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.14.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 
 <!--/LinuxInclude -->
@@ -444,7 +444,7 @@
 
             <file src="../dists/ptII11.1.devel/jar_dist/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.8.2.jar"
+            <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.14.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
 <!--/LinuxInclude -->
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
@@ -453,7 +453,7 @@
 
 	    <file src="../dists/ptII11.1.devel/jar_dist/lib/jna-4.0.0-variadic.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
-	    <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.8.2.jar"
+	    <file src="../dists/ptII11.1.devel/jar_dist/lib/jsoup-1.14.2.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.1.devel/jar_dist/lib/opencv-320.jar"
 	          targetdir="$INSTALL_PATH/lib"/>

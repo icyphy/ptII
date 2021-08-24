@@ -228,6 +228,8 @@ release_windows:
 
 ####
 release_mac:
+	# Izpack gets compiled with --release 8, which is only present in versions after JDK 8
+	javac --release 8 -version
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.1.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar PYTHON=python2 clean all src.jar setup
 
 release_mac_capecode_mac_tar:
@@ -2836,7 +2838,7 @@ izpackFix: $(IZPACK_DIR)
 # IzpackSetup creates a link for accessors/web/node_modules/@accessors-hosts
 # To build it use: make PTIIHOME=$PTII IzpackSetup.class
 # See https://izpack.atlassian.net/wiki/display/IZPACK/Executing+a+Java+Class+with+ProcessPanel
-# Require --release 8 so that IzpackSetup will run with the JDK 8 JVMs we ship.
+# Require --release 8 so that IzpackSetup will run with the JDK 8 JVMs we ship.  --release 8 probably will not work with JDK 1.8.
 PTADMJAVAC=javac --release 8
 IzpackSetup.class: IzpackSetup.java
 	$(PTADMJAVAC) -classpath `ls -1 $(IZPACK_DIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACK_DIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
