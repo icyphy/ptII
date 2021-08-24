@@ -616,7 +616,7 @@ See $PTII/doc/coding/maven.htm
       <!-- jsoup HTML parser library @ http://jsoup.org/ -->
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
-      <version>1.7.3</version>
+      <version>1.14.2</version>
     </dependency>
 
     <dependency> 
@@ -720,8 +720,10 @@ See $PTII/doc/coding/maven.htm
            <exclude>org/terraswarm/accessor/accessors/web/hosts/cordova/plugins/**</exclude>
 	   <exclude>pt-modules/**</exclude>
 	   <exclude>ptdb/**</exclude>
+           <exclude>ptolemy/actor/corba/**</exclude> <!-- org.omg.CORBA.* classes are not present in Java 9? and later. -->
 	   <exclude>ptolemy/actor/lib/joystick/**</exclude>
 	   <exclude>ptolemy/actor/lib/mail/**</exclude>
+	   <exclude>ptolemy/media/viewer/**</exclude> <!-- ptolemy/media/viewer/AudioPlayer.java uses internal sun.* classes not present in Java 9. -->
 	   <exclude>ptolemy/homer/**</exclude>
 	   <exclude>ptolemy/vergil/basic/imprt/g4ltl/**</exclude>
            <exclude>**/adm/**</exclude>
@@ -1009,6 +1011,8 @@ See $PTII/doc/coding/maven.htm
   </build>
   <profiles>
     <!-- See https://issues.apache.org/jira/browse/ODFTOOLKIT-299 -->
+<!--
+    tools.jar was removed sometime after JDK 1.8
     <profile>
       <id>default-tools.jar</id>
       <activation>
@@ -1027,7 +1031,11 @@ See $PTII/doc/coding/maven.htm
         </dependency>
       </dependencies>
     </profile>
-    <profile><!-- For JDK 6 and OpenJDK with Sun as java.vendor -->
+-->
+
+    <!-- For JDK 6 and OpenJDK with Sun as java.vendor -->
+<!--
+    <profile>
       <id>tools-Sun.jar</id>
       <activation>
         <property>
@@ -1045,6 +1053,7 @@ See $PTII/doc/coding/maven.htm
 	</dependency>
       </dependencies>
     </profile>
+-->
   </profiles>
   <distributionManagement>
     <repository>

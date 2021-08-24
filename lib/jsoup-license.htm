@@ -6,9 +6,9 @@
 </head>
 <body>
 <h1>License for jsoup HTML parser </h1>
-<p>jsoup is used by org/ptolemy/ptango for HTML parsing and validation.</p>
+<p>jsoup is used by the export HTML facility in $PTII/ptolemy/vergil/basic/export/html.
 
-<p>jsoup-1.8.2 was downloaded from <a href="http://jsoup.org#in_browser" target="_top">http://jsoup.org</a> on 05/26/2015.</p>
+<p>jsoup-1.14.2 was downloaded from <a href="http://jsoup.org#in_browser" target="_top">http://jsoup.org</a> on August 24, 2021.</p>
 
 <p>To update jsoup:</p>
 <ol>
@@ -26,10 +26,10 @@
   <li> Check in your changes.
     <pre>
       cd $PTII
-      svn delete --force lib/jsoup-old.old.old.jar
-      svn commit -m "Updated jsoup to jsoup-x.y.z.jar" configure.in lib/jsoup-old.old.old.jar lib/jsoup-x.y.z.jar lib/jsoup-license.htm .classpath.default
+      git rm -f lib/jsoup-old.old.old.jar
+      git commit -m "Updated jsoup to jsoup-x.y.z.jar" configure.in lib/jsoup-old.old.old.jar lib/jsoup-x.y.z.jar lib/jsoup-license.htm .classpath.default
       autoconf
-      svn commit -m "configure.in changed." configure
+      git  commit -m "configure.in changed." configure
     </pre>
   </li>
 </ol>
@@ -37,29 +37,13 @@
 <p>jsoup is licensed under the MIT license found at
 <a href="http://jsoup.org/license" target="_top">http://jsoup.org/license#in_browser</a>.  
 </p>
-
-   <div class="content"> 
-    <div class="col1"> 
-     <h1>jsoup License</h1> 
-     <p>The jsoup code-base (include source and compiled packages) are distributed under the open source MIT license as described below.</p> 
+<h1>jsoup License</h1> 
+     <p>The jsoup code-base (including source and compiled packages) are distributed under the open source MIT license as described below.</p> 
      <h3>The MIT License</h3> 
-     <p>Copyright &copy; 2009 - 2013 <a href="http://jonathanhedley.com#in_browser" target="_top">Jonathan Hedley</a> (<a href="mailto:jonathan@hedley.net">jonathan@hedley.net</a>)</p> 
-     <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p> 
+     <p>Copyright © 2009 - 2021 <a href="https://jhy.io/">Jonathan Hedley</a> (<a href="https://jsoup.org/">https://jsoup.org/</a>)</p> 
+     <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p> 
      <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p> 
-     <p>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p> 
-    </div>
-    <!-- /col1 --> 
-    <div class="col2"> 
-    </div>
-    <!-- /col2 --> 
-   </div>
-   <!-- /content--> 
-   
-    <div class="footer"> 
-    <b>jsoup HTML parser</b> &copy; 2009 - 2013 
-    <a href="http://jhy.io/#in_browser" rel="author" target="_top"><b>Jonathan Hedley</b></a> 
-   </div> 
-  </div>
-
+     <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p> 
+    
 </body>
 </html>
