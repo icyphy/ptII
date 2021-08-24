@@ -9484,7 +9484,7 @@ else
 fi
 
 #--------------------------------------------------------------------
-#       JXL is the Java Excel library, which is GPL'd.
+#       JXL is the Java Excel library, which is GNU Lesser General Public License v3
 #	For more information, see
 #       http://jexcelapi.sourceforge.net/
 #--------------------------------------------------------------------
@@ -9499,10 +9499,10 @@ PTJXL_JAR=
 # We only need to look for JXL if the actor/lib/excel directory is present
 EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
 
-if test ! -d "$EXCEL_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EXCEL_USER_DIR is not present,
+if test ! -d "$EXCEL_USER_DIR" -a test ! -d "$HLACERT_USER_DIR/lib"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
     so we need not find JXL - The Java Excel API." >&5
-$as_echo "$EXCEL_USER_DIR is not present,
+$as_echo "$EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
     so we need not find JXL - The Java Excel API." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the Java Excel API (JXL)" >&5
@@ -9532,12 +9532,12 @@ $as_echo "$PTJXL_JAR" >&6; }; fi
     as $PTEXCEL_JAR.
     Perhaps the Java Excel API (JXL)  is not installed?
     You need not download the JXL interface unless you
-    would like to use the Excel actor." >&5
+    would like to use the Excel actor or hlacerti." >&5
 $as_echo "$as_me: WARNING: Failed to find jxl.jar
     as $PTEXCEL_JAR.
     Perhaps the Java Excel API (JXL)  is not installed?
     You need not download the JXL interface unless you
-    would like to use the Excel actor." >&2;}
+    would like to use the Excel actor or hlacerti." >&2;}
 	# Note that we don't substitute in the ${PTII} here
 	PTJXL_JAR='${PTII}/ptolemy/actor/lib/excel/jxl.jar'
     fi
@@ -9545,6 +9545,9 @@ fi
 
 if test -z "$PTEXCEL_DIR"; then
    updateExcludes "ptolemy/actor/lib/excel/"
+   updateExcludes "org/hlacerti"
+   # PTHLACERTI_PACKAGES is used in ptII/doc/makefile
+   PTHLACERTI_PACKAGES="org.hlacerti.lib"
 else
    updateClasspath "$PTJXL_JAR"
 fi
