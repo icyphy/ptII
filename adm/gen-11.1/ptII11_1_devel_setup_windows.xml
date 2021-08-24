@@ -19,7 +19,7 @@
         <appname>Ptolemy II</appname>
         <appversion>11.1.devel</appversion>
 	<appsubpath>Ptolemy/ptII11.1.devel</appsubpath>
-        <url>http://ptolemy.eecs.berkeley.edu/ptolemyII</url>
+        <url>http://ptolemy.berkeley.edu/ptolemyII</url>
 	<javaversion>1.8</javaversion>
     </info>
     
