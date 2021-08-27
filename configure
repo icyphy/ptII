@@ -754,6 +754,7 @@ PTJMODELICA_PACKAGES
 PTJMODELICA_DIR
 PTJMF_PACKAGES
 PTJMF_DIR
+PTJJS_PACKAGES
 PTJJS_DIR
 PTJCERTI_JAR
 PTJAVAMAIL_PACKAGES
@@ -4517,7 +4518,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.7 i
         $pre1_7packages" >&2;}
     for package in $pre1_7packages
     do
-	updateExcludes $package
+	updateExcludes "${package}."
     done
 fi
 
@@ -4527,6 +4528,8 @@ PTJJS_DIR=
 PTACCESSOR_DIR=
 # Set to include packages that require Java 1.8, but do not require Vertx or other optional packages and used in doc/makefile.
 PTJAVA18_PACKAGES=
+# Set to include packages that require Nashorn, the JavaScript engine used in Accessors.
+PTJJS_PACKAGES=
 
 if test "$PRE_JDK18" = "yes" ; then
     # These must have trailing slash or the updateExcludes shell function will not work.
@@ -4543,49 +4546,102 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 	updateExcludes $package
     done
 else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking Nashorn, the JavaScript engine, used by Accessors" >&5
+$as_echo_n "checking Nashorn, the JavaScript engine, used by Accessors... " >&6; }
+	startdir=$PTII
+	cd "$srcdir/config"
+        jjs_packages='org.terraswarm.accessor
+        ptolemy.actor.lib.jjs
+        ptolemy.actor.lib.jjs.modules
+        ptolemy.actor.lib.jjs.modules.IMUSensor
+        ptolemy.actor.lib.jjs.modules.audio
+        ptolemy.actor.lib.jjs.modules.cameras
+        ptolemy.actor.lib.jjs.modules.contextAware
+        ptolemy.actor.lib.jjs.modules.contextAwareTest
+        ptolemy.actor.lib.jjs.modules.crypto
+        ptolemy.actor.lib.jjs.modules.dataConverter
+        ptolemy.actor.lib.jjs.modules.discovery
+        ptolemy.actor.lib.jjs.modules.eventbus
+        ptolemy.actor.lib.jjs.modules.httpClient
+        ptolemy.actor.lib.jjs.modules.httpServer
+        ptolemy.actor.lib.jjs.modules.imageDisplay
+        ptolemy.actor.lib.jjs.modules.iotAuth
+        ptolemy.actor.lib.jjs.modules.localStorage
+        ptolemy.actor.lib.jjs.modules.mqtt
+        ptolemy.actor.lib.jjs.modules.serial
+        ptolemy.actor.lib.jjs.modules.serial.test
+        ptolemy.actor.lib.jjs.modules.shell
+        ptolemy.actor.lib.jjs.modules.speechRecognition
+        ptolemy.actor.lib.jjs.modules.textDisplay
+        ptolemy.actor.lib.jjs.modules.udpSocket
+        ptolemy.actor.lib.jjs.modules.userInterface
+        ptolemy.actor.lib.jjs.modules.webSocket
+        ptolemy.actor.lib.jjs.modules.xbee
+        ptolemy.actor.lib.jjs.modules.xbee.test
+        ptolemy.actor.lib.jjs.udpSocket
+        ptolemy.actor.lib.modules.socket
+        ptolemy.actor.lib.modules.textDisplay
+        ptolemy.cg.adapter.generic.accessor
+        ptolemy.cg.adapter.generic.accessor.adapters.org.terraswarm.accessor
+        ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs
+        ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor
+        ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.org.terraswarm.accessor
+        ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.org.terraswarm.accessor
+        ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.jjs
+        ptolemy.cg.kernel.generic.accessor
+        ptolemy.vergil.basic.imprt.accessor'
 
-        # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.modules.imageDisplay ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
-        # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
-        PTJJS_DIR=jjs
-        # org.terraswarm.accessor depends on jjs/JavaScript.java so we
-        # list org.terraswarm.accessor with jjs/JavaScript
-        PTACCESSOR_DIR=accessor
-        PTACCESSOR_DIR_FULL="$PTII/org/terraswarm/$PTACCESSOR_DIR"
+	if "$JAVAC" -classpath "$PTII/config$CLASSPATHSEPARATOR$PTII/lib/nashorn-core-15.3.jar" NashornTest.java ; then
+           if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: NashornTest.java compiled" >&5
+$as_echo "NashornTest.java compiled" >&6; }; fi
 
-        if test -d "$PTACCESSOR_DIR_FULL" ; then
+           updateClasspath $PTII/lib/nashorn-core-15.3.jar
+           # Packages that do not use vertx or other packages, but do use Java 1.8.
+           PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter"
+           # Packages that use Nashorn, the JavaScript engine
+           PTJJS_PACKAGES="$jjs_packages"
+           # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
+           PTJJS_DIR=jjs
+           # org.terraswarm.accessor depends on jjs/JavaScript.java so we
+           # list org.terraswarm.accessor with jjs/JavaScript
+           PTACCESSOR_DIR=accessor
+           PTACCESSOR_DIR_FULL="$PTII/org/terraswarm/$PTACCESSOR_DIR"
 
-           ACCESSORS_REPO=https://github.com/icyphy/accessors
+           if test -d "$PTACCESSOR_DIR_FULL" ; then
 
-           if test -d "$PTACCESSOR_DIR_FULL/accessors/.svn" ; then
-              { $as_echo "$as_me:${as_lineno-$LINENO}: checking $PTACCESSOR_DIR_FULL/accessors/.svn exists, but we are now using git for the accessors repo." >&5
+              ACCESSORS_REPO=https://github.com/icyphy/accessors
+
+              if test -d "$PTACCESSOR_DIR_FULL/accessors/.svn" ; then
+                  { $as_echo "$as_me:${as_lineno-$LINENO}: checking $PTACCESSOR_DIR_FULL/accessors/.svn exists, but we are now using git for the accessors repo." >&5
 $as_echo_n "checking $PTACCESSOR_DIR_FULL/accessors/.svn exists, but we are now using git for the accessors repo.... " >&6; }
-              if test -d "$PTACCESSOR_DIR_FULL/accessors-svn" ; then
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $PTACCESSOR_DIR_FULL/accessors-svn exists, but so does $PTACCESSOR_DIR_FULL/accessors/.svn?
+                  if test -d "$PTACCESSOR_DIR_FULL/accessors-svn" ; then
+                     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $PTACCESSOR_DIR_FULL/accessors-svn exists, but so does $PTACCESSOR_DIR_FULL/accessors/.svn?
     Please remove $PTACCESSOR_DIR_FULL/accessors." >&5
 $as_echo "$as_me: WARNING: $PTACCESSOR_DIR_FULL/accessors-svn exists, but so does $PTACCESSOR_DIR_FULL/accessors/.svn?
     Please remove $PTACCESSOR_DIR_FULL/accessors." >&2;}
-              else
-                  mv "$PTACCESSOR_DIR_FULL/accessors" "$PTACCESSOR_DIR_FULL/accessors-svn"
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: The $PTACCESSOR_DIR_FULL/accessors directory has been moved to $PTACCESSORS_DIR_FULL/accessors-svn and the accessors git repo will be checked out." >&5
+                  else
+                     mv "$PTACCESSOR_DIR_FULL/accessors" "$PTACCESSOR_DIR_FULL/accessors-svn"
+                     { $as_echo "$as_me:${as_lineno-$LINENO}: result: The $PTACCESSOR_DIR_FULL/accessors directory has been moved to $PTACCESSORS_DIR_FULL/accessors-svn and the accessors git repo will be checked out." >&5
 $as_echo "The $PTACCESSOR_DIR_FULL/accessors directory has been moved to $PTACCESSORS_DIR_FULL/accessors-svn and the accessors git repo will be checked out." >&6; }
+                  fi
               fi
-           fi
 
-           { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $PTACCESSOR_DIR_FULL/accessors/, used by CapeCode and Accessors" >&5
+              { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $PTACCESSOR_DIR_FULL/accessors/, used by CapeCode and Accessors" >&5
 $as_echo_n "checking for $PTACCESSOR_DIR_FULL/accessors/, used by CapeCode and Accessors... " >&6; }
 
-           if test -d "$PTACCESSOR_DIR_FULL/accessors" ; then
-              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+              if test -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+                  if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-           else
-              # The accessors mechanism needs to have a repo checked out.
+              else
+                  # The accessors mechanism needs to have a repo checked out.
 
-              # If the git command is present, try to check out the repo
-              { $as_echo "$as_me:${as_lineno-$LINENO}: checking for git" >&5
+                  # If the git command is present, try to check out the repo
+                  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for git" >&5
 $as_echo_n "checking for git... " >&6; }
-              # Extract the first word of "git", so it can be a program name with args.
+                  # Extract the first word of "git", so it can be a program name with args.
 set dummy git; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -4625,26 +4681,26 @@ $as_echo "no" >&6; }
 fi
 
 
-              if test ! -x "$GIT"; then
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find a git binary so accessors that extend the TerraSwarm accessors will not work." >&5
+                  if test ! -x "$GIT"; then
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find a git binary so accessors that extend the TerraSwarm accessors will not work." >&5
 $as_echo "$as_me: WARNING: Could not find a git binary so accessors that extend the TerraSwarm accessors will not work." >&2;}
-              else
-                  GIT_CLONE_COMMAND="git clone $ACCESSORS_REPO"
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: result: About to check out the accessors repo using
+                  else
+                      GIT_CLONE_COMMAND="git clone $ACCESSORS_REPO"
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: result: About to check out the accessors repo using
     $GIT_CLONE_COMMAND" >&5
 $as_echo "About to check out the accessors repo using
     $GIT_CLONE_COMMAND" >&6; }
 
-                  (cd $PTACCESSOR_DIR_FULL; $GIT_CLONE_COMMAND)
-              fi
+                      (cd $PTACCESSOR_DIR_FULL; $GIT_CLONE_COMMAND)
+                  fi
 
-              { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the $PTACCESSOR_DIR_FULL/accessors directory again" >&5
+                  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the $PTACCESSOR_DIR_FULL/accessors directory again" >&5
 $as_echo_n "checking for the $PTACCESSOR_DIR_FULL/accessors directory again... " >&6; }
 
-              if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
-                  FINAL_WARNING="$FINAL_WARNING Could not check out the accessor repo in $PTACCESSOR_DIR_FULL.  Accessors probably won't work.  See above for details."
+                  if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+                      FINAL_WARNING="$FINAL_WARNING Could not check out the accessor repo in $PTACCESSOR_DIR_FULL.  Accessors probably won't work.  See above for details."
 
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not check out the accessors git repo.
+                      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not check out the accessors git repo.
     Accessors that extend the TerraSwarm accessors will probably not work well unless the repo is checked out.
     To check out the accessors repo:
 
@@ -4664,13 +4720,29 @@ $as_echo "$as_me: WARNING: Could not check out the accessors git repo.
       ./configure
 
 " >&2;}
-               else
-                   if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+                   else
+                       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; fi
-              fi
-           fi
+                   fi
+               fi
+            fi
+
+        else
+           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Nashorn failed to compile, perhaps you are using an Oracle JDK 15 or later,  which means that accessors will NOT be built.
+Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later.
+           " >&5
+$as_echo "$as_me: WARNING: Nashorn failed to compile, perhaps you are using an Oracle JDK 15 or later,  which means that accessors will NOT be built.
+Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later.
+           " >&2;}
+           FINAL_WARNING="$FINAL_WARNING Nashorn failed to compile, perhaps you are using an Oracle JDK 14 or later,  which means that accessors will NOT be built. Is this what you want? Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later."
+           for package in $jjs_packages
+           do
+               updateExcludes "`echo $package | sed 's@\.@/@g'`/"
+           done
+           updateExcludes "ptolemy/actor/lib/jjs/**/*.java"
         fi
+        cd "$startdir"
 fi
 
 # ptolemy/media/viewer/AudioPlayer.java uses internal sun.* classes not present in Java 9.
@@ -13093,7 +13165,7 @@ PTSPACE_DIR=
 # PTSPACEDOMAIN_PACKAGES is used in ptII/doc/makefile
 PTSPACEDOMAIN_PACKAGES=
 
-# MySQL Jar mysql-connector-java-5.1.6-bin.jar
+# MySQL Jar mysql-connector-java-8.0.26.jar
 MYSQL_JAR=
 
 # Oracle Java Database jar (ojdbc5.jar or ojdbc6.jar)
@@ -13118,7 +13190,7 @@ $as_echo "$SPACE_USER_DIR and $DATABASE_USER_DIR
     MYSQL_JAR=
     ORACLE_OJDBC_JAR=
 else
-    MYSQL_TARGET_JAR=mysql-connector-java-5.1.6-bin.jar
+    MYSQL_TARGET_JAR=mysql-connector-java-8.0.26.jar
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for mysql jar, used by the database actors" >&5
 $as_echo_n "checking for mysql jar, used by the database actors... " >&6; }
 
@@ -15070,6 +15142,9 @@ fi
 
 
 # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+
+
+# PTJJS_PACKAGES used in ptII/doc/makefile
 
 
 # Set to jmf if jmf.jar was found
