@@ -3645,7 +3645,7 @@
 
     <!-- ptolemy/actor/lib/database/ojdbc6.jar -->
 
-    <!-- ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar -->
+    <!-- ptolemy/actor/lib/database/mysql-connector-java-8.0.26.jar -->
 
     <!-- ant/apache-ant-license.jar -->
     <jar defaultexcludes="yes"
@@ -5152,7 +5152,7 @@
 
     <!-- ptolemy/actor/lib/database/ojdbc6.jar -->
 
-    <!-- ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar -->
+    <!-- ptolemy/actor/lib/database/mysql-connector-java-8.0.26.jar -->
 
     <!-- doc/codeDocViptos.jar -->
     <jar defaultexcludes="yes"

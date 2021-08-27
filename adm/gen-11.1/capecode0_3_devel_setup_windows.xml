@@ -336,7 +336,7 @@
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/accessor"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/database/database.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
+            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-8.0.26.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
 
 	    <file src="../dists/ptII11.1.devel/jar_dist/lib/universalJavaApplicationStub-license.jar"

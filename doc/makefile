@@ -3,7 +3,7 @@
 # Version: $Id$
 # Makefile Author: Christopher Hylands
 #
-# Copyright (c) 1997-2019 The Regents of the University of California.
+# Copyright (c) 1997-2021 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -467,6 +467,7 @@ CAPECODEPACKAGES = \
 	$(PTJAVA18_PACKAGES) \
 	$(PTJAVAFX_PACKAGES) \
 	$(PTJAVAMAIL_PACKAGES) \
+	$(PTJJS_PACKAGES) \
 	$(PTJSON_PACKAGES) \
 	$(PTJSOUP_PACKAGE) \
 	$(PTMACHINE_LEARNING_PACKAGES) \

@@ -69,7 +69,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # want make checkjunk to barf on them.
 # Don't include demo here, we don't want make sources to run make demo
 MISC_FILES = \
-	mysql-connector-java-5.1.6-bin.jar
+	mysql-connector-java-8.0.26.jar
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
