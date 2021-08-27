@@ -657,7 +657,7 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/domains/space/space.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/space"/>
-            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
+            <file src="../dists/ptII11.1.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-8.0.26.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.1.devel/jar_dist/com/jgoodies/jgoodies.jar"
                   targetdir="$INSTALL_PATH/com/jgoodies"/>

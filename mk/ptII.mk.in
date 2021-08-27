@@ -586,7 +586,7 @@ JAVACC_OPTIONS = @JAVACC_OPTIONS@
 # The JavaCV jar file, used in actor/lib/opencv/javacv for computer vision
 JAVACV_JAR =	@JAVACV_JAR@
 
-# Mysql Java Database jar (mysql-connector-java-5.1.6-bin.jar),
+# Mysql Java Database jar (mysql-connector-java-8.0.26.jar
 # used by domains/space and actor/lib/database
 MYSQL_JAR =		@MYSQL_JAR@
 
