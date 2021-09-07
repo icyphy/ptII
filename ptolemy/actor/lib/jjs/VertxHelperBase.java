@@ -41,7 +41,7 @@ import javax.imageio.ImageIO;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

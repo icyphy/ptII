@@ -31,7 +31,7 @@ package ptolemy.actor.lib.jjs.modules.audio;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 
 /** Helper for the ClipPlayer in the audio.js module.

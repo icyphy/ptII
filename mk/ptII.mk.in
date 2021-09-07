@@ -175,6 +175,9 @@ LIBEXPAT_LIB_DIR = @LIBEXPAT_LIB_DIR@
 
 ########## You should not have to change anything below this line ######
 
+# Set to lib/asm-all-5.2.jar if ASM, which is used by Nashorn, the JavaScript engine, is found.
+PTASM_JAR =			@PTASM_JAR@
+
 # Set to backtrack if Java 1.5 or later is present used in ptolemy/makefile
 PTBACKTRACK_DIR =		@PTBACKTRACK_DIR@
 
@@ -825,6 +828,9 @@ PTJYTHON_DIR=	@PTJYTHON_DIR@
 # Ptolemy II packages that use Python
 # PTJYTHON_PACKAGES is used in ptII/doc/makefile
 PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
+
+# Set to lib/nashorn-core-15.3.jar if Nashorn, the JavaScript interpreter is found
+PTNASHORN_JAR = @PTNASHORN_JAR@
 
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found

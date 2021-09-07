@@ -48,7 +48,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.PfxOptions;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.util.FileUtilities;

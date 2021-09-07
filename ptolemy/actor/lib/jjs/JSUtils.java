@@ -30,7 +30,7 @@ COPYRIGHTENDKEY
 
 import java.util.Map;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /** A collection of utilities for common procedures in the interaction between
  *  Java and JavaScript code through Nashorn.

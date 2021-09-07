@@ -37,7 +37,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.kernel.util.IllegalActionException;

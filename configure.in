@@ -2,7 +2,6 @@ dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run to configure the 
 dnl	Makefile in this directory.
 
-# Version: $Id$
 # Copyright (c) 1997-2021 The Regents of the University of California.
 # All rights reserved. 
 #
@@ -749,8 +748,18 @@ case "$JVERSION" in
                esac
 	       UPGRADE_JVM=yes;;
 	1.7.*) UPGRADE_JVM=yes;;
+        1.8.*) STANDALONE_NASHORN_PROBLEM=yes;;
+        9.*) STANDALONE_NASHORN_PROBLEM=yes;;
+        10.*) STANDALONE_NASHORN_PROBLEM=yes;;
        	*)     ;;
 esac
+
+if test "$STANDALONE_NASHORN_PROBLEM" = "yes"; then
+    AC_MSG_WARN([As of September, 2021, Ptolemy II is using
+    the standalone Nashorn.jar.
+    Please upgrade to JDK 11 or later to use the standalone Nashorn jar
+    and thus support CapeCode.])
+fi
 
 if test "$UPGRADE_JVM" = "yes"; then
     case "`uname -s`" in
@@ -774,8 +783,9 @@ if test "$UPGRADE_JVM" = "yes"; then
 	- actor/lib/vhdl
 	- ptalon
     JDK 1.6 or later is needed to use javax.swing.GroupLayout.
-    JDK 1.8 is needed for Nashorn, nio and many other features.
+    JDK 1.8 is needed for nio and many other features.
     Please upgrade your JDK to 1.8 or later and try again.
+    To use Nashorn and support CapeCode, upgrade to JDK 11 or later.
     $upgradeMessage]) 	
 else
    # -breakiterator is only present in jdk1.4 and later
@@ -1162,6 +1172,11 @@ if test "$PRE_JDK17" = "yes" ; then
     done
 fi
 
+# JDK 8-10 don't support the standalone Nashorn, but we keep the logic for checking
+# for the builtin Nashorn in case someone needs to do a back port.
+# See https://github.com/icyphy/accessors/issues/23
+# See https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions
+
 # Set to jjs if Nashorn (present in Java 1.8) is found.
 PTJJS_DIR=
 # Set to accessor and used in org/terraswarm/makefile if Nashorn is found.
@@ -1228,10 +1243,67 @@ else
         ptolemy.cg.kernel.generic.accessor
         ptolemy.vergil.basic.imprt.accessor'
 
-	if "$JAVAC" -classpath "$PTII/config$CLASSPATHSEPARATOR$PTII/lib/nashorn-core-15.3.jar" NashornTest.java ; then        
+
+        # Determine whether to use the standalone Nashorn
+        # The standalone Nashorn was compiled with a JDK that is not compatible
+        # with JDK 8 - 10.  So much for write once, run anywhere.
+        # This means that Ptolemy with JDK 8-10 will not include Nashorn and will not
+        # support CapeCode.
+        # See https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions
+        case "$JVERSION" in
+             1.8.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             9.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             10.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             *) USE_STANDALONE_NASHORN=yes;;
+        esac
+
+        nashorn_classpath=""
+        if test "$USE_STANDALONE_NASHORN" = "yes"; then
+            PT_MSG_RESULT([Java version $JVERSION > 10, checking for asm-all.jar and nashorn-core.jar])
+            asm_jar="$PTII/lib/asm-all-5.2.jar"
+            AC_ARG_WITH(asm, [  --with-asml=$asm_jar use asm-core-xx.y.jar
+                       defaults to $asm_jar],
+                     	ASM_JAR=$withval,
+                        ASM_JAR=$asm_jar)
+            AC_MSG_CHECKING([Java version $JVERSION > 10, checking for asm-all.jar, used by standalone Nashorn])
+            if test -f "$ASM_JAR" ; then
+                PT_MSG_RESULT($ASM_JAR)
+                PTASM_JAR=$ASM_JAR
+                nashorn_classpath=${CLASSPATHSEPARATOR}${ASM_JAR}
+            else
+                AC_MSG_WARN([Failed to find $ASM_JAR, which is use by the standalone version of Nashorn, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need asm-all.jar and nashorn.jar
+    which defaults to $asm_jar])
+            fi
+            nashorn_jar="$PTII/lib/nashorn-core-15.3.jar"
+            AC_ARG_WITH(nashorn, [  --with-nashornl=$nashorn_jar use nashorn-core-xx.y.jar
+                       defaults to $nashorn_jar],
+                     	NASHORN_JAR=$withval,
+                        NASHORN_JAR=$nashorn_jar)
+            AC_MSG_CHECKING([Java version $JVERSION > 10, checking for standalone Nashorn])                        
+            if test -f "$NASHORN_JAR" ; then
+                PT_MSG_RESULT($NASHORN_JAR)
+                PTNASHORN_JAR=$NASHORN_JAR
+                nashorn_classpath=$nashorn_classpath${CLASSPATHSEPARATOR}${NASHORN_JAR}
+            else
+                AC_MSG_WARN([Failed to find Nashorn.jar, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need nashorn.jar
+    which defaults to $nashorn_jar])
+            fi
+        else
+            AC_MSG_WARN([Java version $JVERSION is > 8 and < 11,
+    so the standalone version of Nashorn is not supported.
+    CapeCode will not work.  Is this really what you want?])
+        fi
+
+        AC_MSG_CHECKING([Compiling a Nashorn test program with classpath $PTII/config$nashorn_classpath])
+	if "$JAVAC" -classpath $PTII/config$nashorn_classpath NashornTest.java ; then        
            PT_MSG_RESULT(NashornTest.java compiled)
-           
-           updateClasspath $PTII/lib/nashorn-core-15.3.jar
+
+           if test "$USE_STANDALONE_NASHORN" = "yes"; then
+               updateClasspath $ASM_JAR
+               updateClasspath $NASHORN_JAR
+           fi
            # Packages that do not use vertx or other packages, but do use Java 1.8.
            PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter"
            # Packages that use Nashorn, the JavaScript engine
@@ -1301,9 +1373,9 @@ else
 
         else
            AC_MSG_WARN([Nashorn failed to compile, perhaps you are using an Oracle JDK 15 or later,  which means that accessors will NOT be built.
-Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later.
+Try an Oracle JDK after JDK 10 or try OpenJDK 15 or later.
            ])
-           FINAL_WARNING="$FINAL_WARNING Nashorn failed to compile, perhaps you are using an Oracle JDK 14 or later,  which means that accessors will NOT be built. Is this what you want? Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later."
+           FINAL_WARNING="$FINAL_WARNING Nashorn failed to compile, perhaps you are using an Oracle JDK before JDK 11,  which means that accessors will NOT be built. Is this what you want? Try an Oracle JDK after JDK 10 or try OpenJDK 15 or later."
            for package in $jjs_packages
            do
                updateExcludes "`echo $package | sed 's@\.@/@g'`/"
@@ -3616,7 +3688,7 @@ PTJXL_JAR=
 # We only need to look for JXL if the actor/lib/excel directory is present
 EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
 
-if test ! -d "$EXCEL_USER_DIR" -a test ! -d "$HLACERT_USER_DIR/lib"; then
+if test ! -d "$EXCEL_USER_DIR" -a ! -d "$HLACERT_USER_DIR/lib"; then
     PT_MSG_STATUS([$EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
     so we need not find JXL - The Java Excel API.])
 else
@@ -7201,6 +7273,9 @@ if test ! -z "$PTADD_MODULES"; then
    AC_SUBST(PTADD_MODULES_COMMAND_LINE)
 fi
 
+# Set to lib/asm-all-5.2.jar if ASM, which is used by Nashorn, the JavaScript engine, is found.
+AC_SUBST(PTASM_JAR)
+
 # Set to backtrack if Java 1.5 or later is present
 AC_SUBST(PTBACKTRACK_DIR)
 
@@ -7672,6 +7747,9 @@ if test ! -z "$PTMODULE_PATH"; then
    PTMODULE_PATH_COMMAND_LINE="--module-path $PTMODULE_PATH"
    AC_SUBST(PTMODULE_PATH_COMMAND_LINE)
 fi
+
+# Set to lib/nashorn-core-15.3.jar if Nashorn, the JavaScript interpreter is found
+AC_SUBST(PTNASHORN_JAR)
 
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found

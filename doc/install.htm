@@ -22,7 +22,7 @@ from sources.
 
 <h2><a name="impatient">Instructions for the impatient</a></h2>
 
-Install Java 1.8 or newer and run:
+Install Java 11 or newer and run:
 
 <pre>
 cd ptII
@@ -47,9 +47,12 @@ sections below.
 <h3><a name="java">Java</a></h3>
 
 <p><b>The development version available via git</b> is best built
-    with Java 1.8</p>
-<p>Oracle calls calls
-Java 1.8 "Java SE Development Kit 8". To download the JDK, see
+  with Java 11</p>
+<p>Ptolemy II 11.0 supported JDK 1.8, aka JDK 8.  In September, 2021, the development tree
+  was updated to use the standalone Nashorn jar, which requires JDK 11 or later.
+  See <a href="https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions#in_browser" target="_top">Using Nashorn with different Java versions</a>.
+</p>
+<p>To download the JDK, see
 <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/downloads/index.html</code></a>.</p>
 
 
@@ -233,7 +236,7 @@ cp c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext/vecmath.jar  c:/Program\ Files
 <h4>Java 3D under Mac OS X</h4>
 <p>Under Mac OS X 10.7 and Java 1.6 supplied by Apple, Java 3D is installed by default and works.</p>
 
-<p>Under Mac OS X 10.9 and Java 1.8 supplied by Oracle, Java 3D can be made to work, but requires Jogl and that Java 3D is not in
+<p>Under Mac OS X 10.9 and Java 1.8 and later supplied by Oracle, Java 3D can be made to work, but requires Jogl and that Java 3D is not in
   <code>/System/Library/Java/Extensions</code>. The configure script checks for these issues, but below are instructions.
 </p>
 
