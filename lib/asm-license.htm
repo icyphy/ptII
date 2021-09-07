@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>License for ASM Java bytecode manipulation and analysis framework</title>
+</head>
+<body>
+<h1>License for ASM Java bytecode manipulation and analysis framework</h1>
+<p>ASM is used by the standalone version of Nashorn.</p>
+
+<p>Nashorn is the JavaScript engine used by accessors.  Oracle JDK 8 through 14 include a builtin version of Nashorn.  Oracle JDK 15 and later need to use a standalone Nashorn.</p>
+
+<p>asm-all-5.2.jar was downloaded from <a href="https://mvnrepository.com/artifact/org.ow2.asm/asm-all/5.2#in_browser" target="_top">https://mvnrepository.com/artifact/org.ow2.asm/asm-all/5.2</a> on August 27, 2021.</p>
+
+<p>To update asm-all-*.jar:</p>
+<ol>
+  <li>Download the most recent asm-all-*.jar <a href="https://mvnrepository.com/artifact/org.ow2.asm/asm-all/5.2#in_browser" target="_top">https://mvnrepository.com/artifact/org.ow2.asm/asm-all</a></li>
+  <li>Edit <code>$PTII/configure.in</code> and run:
+    <pre>
+      cd $PTII
+      autoconf
+      ./configure
+      ant clean
+      ant
+    </pre>
+  </li>
+  <li> Edit <code>$PTII/.classpath.default</code> and <code>$PTII/mk/jnlp.mk</code> and update the version number of asm</li>
+  <li> Check in your changes.
+    <pre>
+      cd $PTII
+      git rm -f lib/asm-all-old.old.jar
+      git commit -m "Updated asm to asmp-x.y.z.jar" configure.in lib/asm-all-.old.old.jar lib/asm-all-x.y.jar lib/asm-license.htm .classpath.default
+      autoconf
+      git  commit -m "configure.in changed." configure
+    </pre>
+  </li>
+</ol>
+    
+<p>asm is licensed under the 3-Clause BSD license found at
+<a href="https://asm.ow2.io/license.html#in_browser" target="_top">https://asm.ow2.io/license.html</a>.  
+</p>
+<h1>License</h1>
+    <p>ASM is released under the following 3-Clause BSD License:</p>
+    <pre>ASM: a very small and fast Java bytecode manipulation framework
+Copyright (c) 2000-2011 INRIA, France Telecom
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+1. Redistributions of source code must retain the above copyright
+  notice, this list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright
+  notice, this list of conditions and the following disclaimer in the
+  documentation and/or other materials provided with the distribution.
+3. Neither the name of the copyright holders nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+THE POSSIBILITY OF SUCH DAMAGE.
+</pre>
+
+</body>
+</html>
