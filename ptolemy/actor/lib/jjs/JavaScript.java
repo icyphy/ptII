@@ -55,7 +55,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
@@ -1237,7 +1237,7 @@ public class JavaScript extends AbstractPlaceableActor
         Object options = null;
         Runnable callback = null;
         if (arguments.length > 0) {
-            // Sometimes the second argument will be jdk.nashorn.internal.runtime.Undefined, so we skip it.
+            // Sometimes the second argument will be org.openjdk.nashorn.internal.runtime.Undefined, so we skip it.
             if (!arguments[0].toString().equals("undefined")) {
                 options = arguments[0];
             }

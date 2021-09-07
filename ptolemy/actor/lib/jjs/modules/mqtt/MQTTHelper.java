@@ -45,7 +45,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
 

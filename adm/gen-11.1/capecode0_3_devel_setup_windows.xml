@@ -346,6 +346,12 @@
 
 
 <!--LinuxInclude -->
+	    <file src="../dists/ptII11.1.devel/jar_dist/lib/asm-all-5.2.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+	    <file src="../dists/ptII11.1.devel/jar_dist/lib/nashorn-core-15.3.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+
+
             <file src="../dists/ptII11.1.devel/jar_dist/lib/javax.mail.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.1.devel/jar_dist/lib/nrjavaserial-3.11.0.devel.jar"

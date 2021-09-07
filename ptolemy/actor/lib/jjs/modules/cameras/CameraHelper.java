@@ -40,7 +40,7 @@ import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
 import com.github.sarxos.webcam.ds.dummy.WebcamDummyDriver;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.data.AWTImageToken;

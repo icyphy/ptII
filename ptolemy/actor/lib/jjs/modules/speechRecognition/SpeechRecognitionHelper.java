@@ -34,7 +34,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.logging.Logger;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelRuntimeException;

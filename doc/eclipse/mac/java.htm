@@ -8,15 +8,20 @@
   <body>
     <h1>Mac OS X: Installing Java</h1>
 
-    <p>Java 1.8 (also known as Java 8) is preferred.
+    <p>Java 11 (also known as Java 8) is preferred.
 
     <p><b>The development version available via git</b> is best built
-      with Oracle Java 1.8 (also know as Java 8)
+      with Oracle Java 11 or later
       because the Accessors use Nashorn.  It is possible to build Ptolemy II
       with older versions of Java or with OpenJDK, but these configurations
       are not supported.
       It is possible to build the development version using Java 9 or Java 10, but
       Java 9 has not been tested with Eclipse and Ptolemy II.
+    </p>
+
+    <p>Ptolemy II 11.0 supported JDK 1.8, aka JDK 8.  In September, 2021, the development tree
+  was updated to use the standalone Nashorn jar, which requires JDK 11 or later.
+  See <a href="https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions#in_browser" target="_top">Using Nashorn with different Java versions</a>.
     </p>
 
     <blockquote>
@@ -37,11 +42,11 @@
 	of Ptolemy II is built using Java 1.7 on a nightly basis as part
 	of the Kepler build.</p>
 
-      <p>The development version of Ptolemy II requires Oracle Java 1.8 to use
+      <p>The development version of Ptolemy II requires Oracle Java 11 or later to use
 	Nashorn in ptolemy/actor/lib/jjs and IntStream in
-	org/ptolemy/machineLearning.  Over time, more and more code will
-	require Java 1.8.  The <code>$PTII/build.default.xml</code> works
-	best with Java 1.8</p>
+	org/ptolemy/machineLearning.
+	The <code>$PTII/build.default.xml</code> works
+	best with Java 11</p>
 
       <p>The Oracle (formerly Sun) Java Development Kit (JDK) is preferred.</p>  
       <p>The IBM JDK will work under Linux.</p>
@@ -56,12 +61,12 @@
       java -version
     </pre>
 
-    <p>If you are running Java 1.8 or later,
+    <p>If you are running Java 11 or later,
       then <a href="eclipse.htm">go to the next step</a>.</p>
 
     <p>If you are running Java 1.7 or earlier, then go to
       <a href="http://www.oracle.com/technetwork/java/javase/downloads/index.html#in_browser" target="_top">http://www.oracle.com/technetwork/java/javase/downloads/index.html</a>
-      and install Java 1.8, then <a href="eclipse.htm">go to the next step</a>.</p>
+      and install Java 11 or later then <a href="eclipse.htm">go to the next step</a>.</p>
 
   </body>
 </html>

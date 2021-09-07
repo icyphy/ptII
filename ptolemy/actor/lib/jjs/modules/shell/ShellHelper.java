@@ -38,7 +38,7 @@ import java.io.OutputStreamWriter;
 import java.lang.ProcessBuilder.Redirect;
 import java.nio.charset.StandardCharsets;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 
 ///////////////////////////////////////////////////////////////////
 //// ShellHelper

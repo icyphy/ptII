@@ -40,7 +40,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NamedObj;

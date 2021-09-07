@@ -44,7 +44,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.kernel.util.IllegalActionException;

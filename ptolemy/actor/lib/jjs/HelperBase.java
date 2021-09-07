@@ -39,8 +39,8 @@ import java.util.TreeSet;
 import javax.imageio.ImageIO;
 
 import io.vertx.core.buffer.Buffer;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-//import jdk.nashorn.internal.objects.NativeArray;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
+//import org.openjdk.nashorn.internal.objects.NativeArray;
 import ptolemy.data.ImageToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -456,9 +456,9 @@ public class HelperBase {
      */
     protected static byte[] _toJavaBytes(Object object)
             throws IllegalActionException {
-        // FIXME: jdk.nashorn.internal.objects.NativeArray is not exported in Java 9
+        // FIXME: org.openjdk.nashorn.internal.objects.NativeArray is not exported in Java 9
         // At compilation time, the error is:
-        // (package jdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed module)
+        // (package org.openjdk.nashorn.internal.objects is declared in module jdk.scripting.nashorn, which does not export it to the unnamed module)
         if (object instanceof ScriptObjectMirror /* || object instanceof NativeArray*/) {
             Collection<Object> values = null;
             // if (object instanceof ScriptObjectMirror) {

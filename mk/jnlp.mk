@@ -258,6 +258,8 @@ PTXBEE_JARS = \
 # library to drag and drop into models.
 
 JJS_JARS = \
+	$(PTASM_JAR) \
+	$(PTNASHORN_JAR) \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
@@ -293,10 +295,12 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/demo/CapeCodeDemos.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
+	$(PTASM_JAR) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTGDP_JAR) \
 	$(JNA_JAR) \
 	$(PTJAVAMAIL_JARS) \
+	$(PTNASHORN_JAR) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
 	lib/opencv-320.jar \

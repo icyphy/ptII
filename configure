@@ -699,6 +699,7 @@ PTOSCP5_JAR
 PTOPENCV_PACKAGES
 PTOPENCV_INCLUDE_DIR
 PTOPENCV_DIR
+PTNASHORN_JAR
 PTMODULE_PATH_COMMAND_LINE
 PTMODULE_PATH_ANT
 PTMODULE_PATH
@@ -833,6 +834,7 @@ PTBACKTRACK_ECLIPSE_JARS
 PTBACKTRACK_ECLIPSE_DOC_JARS
 PTBACKTRACK_ECLIPSE_DIR
 PTBACKTRACK_DIR
+PTASM_JAR
 PTADD_MODULES_COMMAND_LINE
 PTADD_MODULES_ANT_JAVAC
 PTADD_MODULES_ANT
@@ -992,6 +994,8 @@ enable_verbose
 with_find
 with_java
 with_java32
+with_asm
+with_nashorn
 with_gawk
 with_boost
 with_cmkit
@@ -1683,6 +1687,10 @@ Optional Packages:
   --with-java32=DIR         use 32-bit Java binaries from DIR,
                            defaults to the value of the
                            PTJAVA32_DIR environment variable
+  --with-asml=$asm_jar use asm-core-xx.y.jar
+                       defaults to $asm_jar
+  --with-nashornl=$nashorn_jar use nashorn-core-xx.y.jar
+                       defaults to $nashorn_jar
   --with-gawk=PATH         use the gawk command from PATH with maven and ptolemy/configs/doc/makefile,
                    /usr/bin/gawk
   --with-boost-include=DIR      use boost includes from DIR DIR/boost/numeric/odeint.hpp should exist,
@@ -3874,8 +3882,22 @@ $as_echo "$as_me: WARNING: Java 1.6.x is the first JVM in your path.
                esac
 	       UPGRADE_JVM=yes;;
 	1.7.*) UPGRADE_JVM=yes;;
+        1.8.*) STANDALONE_NASHORN_PROBLEM=yes;;
+        9.*) STANDALONE_NASHORN_PROBLEM=yes;;
+        10.*) STANDALONE_NASHORN_PROBLEM=yes;;
        	*)     ;;
 esac
+
+if test "$STANDALONE_NASHORN_PROBLEM" = "yes"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: As of September, 2021, Ptolemy II is using
+    the standalone Nashorn.jar.
+    Please upgrade to JDK 11 or later to use the standalone Nashorn jar
+    and thus support CapeCode." >&5
+$as_echo "$as_me: WARNING: As of September, 2021, Ptolemy II is using
+    the standalone Nashorn.jar.
+    Please upgrade to JDK 11 or later to use the standalone Nashorn jar
+    and thus support CapeCode." >&2;}
+fi
 
 if test "$UPGRADE_JVM" = "yes"; then
     case "`uname -s`" in
@@ -3899,8 +3921,9 @@ if test "$UPGRADE_JVM" = "yes"; then
 	- actor/lib/vhdl
 	- ptalon
     JDK 1.6 or later is needed to use javax.swing.GroupLayout.
-    JDK 1.8 is needed for Nashorn, nio and many other features.
+    JDK 1.8 is needed for nio and many other features.
     Please upgrade your JDK to 1.8 or later and try again.
+    To use Nashorn and support CapeCode, upgrade to JDK 11 or later.
     $upgradeMessage" "$LINENO" 5
 else
    # -breakiterator is only present in jdk1.4 and later
@@ -4522,6 +4545,11 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.7 i
     done
 fi
 
+# JDK 8-10 don't support the standalone Nashorn, but we keep the logic for checking
+# for the builtin Nashorn in case someone needs to do a back port.
+# See https://github.com/icyphy/accessors/issues/23
+# See https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions
+
 # Set to jjs if Nashorn (present in Java 1.8) is found.
 PTJJS_DIR=
 # Set to accessor and used in org/terraswarm/makefile if Nashorn is found.
@@ -4592,12 +4620,95 @@ $as_echo_n "checking Nashorn, the JavaScript engine, used by Accessors... " >&6;
         ptolemy.cg.kernel.generic.accessor
         ptolemy.vergil.basic.imprt.accessor'
 
-	if "$JAVAC" -classpath "$PTII/config$CLASSPATHSEPARATOR$PTII/lib/nashorn-core-15.3.jar" NashornTest.java ; then
+
+        # Determine whether to use the standalone Nashorn
+        # The standalone Nashorn was compiled with a JDK that is not compatible
+        # with JDK 8 - 10.  So much for write once, run anywhere.
+        # This means that Ptolemy with JDK 8-10 will not include Nashorn and will not
+        # support CapeCode.
+        # See https://github.com/szegedi/nashorn/wiki/Using-Nashorn-with-different-Java-versions
+        case "$JVERSION" in
+             1.8.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             9.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             10.*) DONT_USE_STANDALONE_NASHORN=yes;;
+             *) USE_STANDALONE_NASHORN=yes;;
+        esac
+
+        nashorn_classpath=""
+        if test "$USE_STANDALONE_NASHORN" = "yes"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Java version $JVERSION > 10, checking for asm-all.jar and nashorn-core.jar" >&5
+$as_echo "Java version $JVERSION > 10, checking for asm-all.jar and nashorn-core.jar" >&6; }; fi
+            asm_jar="$PTII/lib/asm-all-5.2.jar"
+
+# Check whether --with-asm was given.
+if test "${with_asm+set}" = set; then :
+  withval=$with_asm; ASM_JAR=$withval
+else
+  ASM_JAR=$asm_jar
+fi
+
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking Java version $JVERSION > 10, checking for asm-all.jar, used by standalone Nashorn" >&5
+$as_echo_n "checking Java version $JVERSION > 10, checking for asm-all.jar, used by standalone Nashorn... " >&6; }
+            if test -f "$ASM_JAR" ; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ASM_JAR" >&5
+$as_echo "$ASM_JAR" >&6; }; fi
+                PTASM_JAR=$ASM_JAR
+                nashorn_classpath=${CLASSPATHSEPARATOR}${ASM_JAR}
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $ASM_JAR, which is use by the standalone version of Nashorn, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need asm-all.jar and nashorn.jar
+    which defaults to $asm_jar" >&5
+$as_echo "$as_me: WARNING: Failed to find $ASM_JAR, which is use by the standalone version of Nashorn, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need asm-all.jar and nashorn.jar
+    which defaults to $asm_jar" >&2;}
+            fi
+            nashorn_jar="$PTII/lib/nashorn-core-15.3.jar"
+
+# Check whether --with-nashorn was given.
+if test "${with_nashorn+set}" = set; then :
+  withval=$with_nashorn; NASHORN_JAR=$withval
+else
+  NASHORN_JAR=$nashorn_jar
+fi
+
+            { $as_echo "$as_me:${as_lineno-$LINENO}: checking Java version $JVERSION > 10, checking for standalone Nashorn" >&5
+$as_echo_n "checking Java version $JVERSION > 10, checking for standalone Nashorn... " >&6; }
+            if test -f "$NASHORN_JAR" ; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $NASHORN_JAR" >&5
+$as_echo "$NASHORN_JAR" >&6; }; fi
+                PTNASHORN_JAR=$NASHORN_JAR
+                nashorn_classpath=$nashorn_classpath${CLASSPATHSEPARATOR}${NASHORN_JAR}
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find Nashorn.jar, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need nashorn.jar
+    which defaults to $nashorn_jar" >&5
+$as_echo "$as_me: WARNING: Failed to find Nashorn.jar, the JavaScript Engine.
+    Oracle JDK 8 through 11 has Nashorn build in, other versions need nashorn.jar
+    which defaults to $nashorn_jar" >&2;}
+            fi
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Java version $JVERSION is > 8 and < 11,
+    so the standalone version of Nashorn is not supported.
+    CapeCode will not work.  Is this really what you want?" >&5
+$as_echo "$as_me: WARNING: Java version $JVERSION is > 8 and < 11,
+    so the standalone version of Nashorn is not supported.
+    CapeCode will not work.  Is this really what you want?" >&2;}
+        fi
+
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking Compiling a Nashorn test program with classpath $PTII/config$nashorn_classpath" >&5
+$as_echo_n "checking Compiling a Nashorn test program with classpath $PTII/config$nashorn_classpath... " >&6; }
+	if "$JAVAC" -classpath $PTII/config$nashorn_classpath NashornTest.java ; then
            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: NashornTest.java compiled" >&5
 $as_echo "NashornTest.java compiled" >&6; }; fi
 
-           updateClasspath $PTII/lib/nashorn-core-15.3.jar
+           if test "$USE_STANDALONE_NASHORN" = "yes"; then
+               updateClasspath $ASM_JAR
+               updateClasspath $NASHORN_JAR
+           fi
            # Packages that do not use vertx or other packages, but do use Java 1.8.
            PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter"
            # Packages that use Nashorn, the JavaScript engine
@@ -4730,12 +4841,12 @@ $as_echo "ok" >&6; }; fi
 
         else
            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Nashorn failed to compile, perhaps you are using an Oracle JDK 15 or later,  which means that accessors will NOT be built.
-Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later.
+Try an Oracle JDK after JDK 10 or try OpenJDK 15 or later.
            " >&5
 $as_echo "$as_me: WARNING: Nashorn failed to compile, perhaps you are using an Oracle JDK 15 or later,  which means that accessors will NOT be built.
-Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later.
+Try an Oracle JDK after JDK 10 or try OpenJDK 15 or later.
            " >&2;}
-           FINAL_WARNING="$FINAL_WARNING Nashorn failed to compile, perhaps you are using an Oracle JDK 14 or later,  which means that accessors will NOT be built. Is this what you want? Try an Oracle JDK between 1.8 and 14 or try OpenJDK 15 or later."
+           FINAL_WARNING="$FINAL_WARNING Nashorn failed to compile, perhaps you are using an Oracle JDK before JDK 11,  which means that accessors will NOT be built. Is this what you want? Try an Oracle JDK after JDK 10 or try OpenJDK 15 or later."
            for package in $jjs_packages
            do
                updateExcludes "`echo $package | sed 's@\.@/@g'`/"
@@ -9571,7 +9682,7 @@ PTJXL_JAR=
 # We only need to look for JXL if the actor/lib/excel directory is present
 EXCEL_USER_DIR="$PTII/ptolemy/actor/lib/excel"
 
-if test ! -d "$EXCEL_USER_DIR" -a test ! -d "$HLACERT_USER_DIR/lib"; then
+if test ! -d "$EXCEL_USER_DIR" -a ! -d "$HLACERT_USER_DIR/lib"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
     so we need not find JXL - The Java Excel API." >&5
 $as_echo "$EXCEL_USER_DIR and $HLACERTI_USER_DIR/lib are not present,
@@ -14866,6 +14977,9 @@ if test ! -z "$PTADD_MODULES"; then
 
 fi
 
+# Set to lib/asm-all-5.2.jar if ASM, which is used by Nashorn, the JavaScript engine, is found.
+
+
 # Set to backtrack if Java 1.5 or later is present
 
 
@@ -15337,6 +15451,9 @@ if test ! -z "$PTMODULE_PATH"; then
    PTMODULE_PATH_COMMAND_LINE="--module-path $PTMODULE_PATH"
 
 fi
+
+# Set to lib/nashorn-core-15.3.jar if Nashorn, the JavaScript interpreter is found
+
 
 # Set to opencv and used in
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found

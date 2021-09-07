@@ -42,7 +42,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
 import io.vertx.core.datagram.DatagramSocket;
 import io.vertx.core.datagram.DatagramSocketOptions;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.actor.lib.jjs.modules.socket.SocketHelper.ByteArrayBackedInputStream;
 import ptolemy.data.AWTImageToken;

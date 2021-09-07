@@ -33,7 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.Tableau;

@@ -46,7 +46,7 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 import io.vertx.core.buffer.Buffer;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.openjdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
