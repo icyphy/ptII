@@ -12,6 +12,7 @@
 	<classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
 	<classpathentry kind="lib" path="lib/StructuralCoder.jar"/>
 	<classpathentry kind="lib" path="lib/YieldAdapter.jar"/>
+	<classpathentry kind="lib" path="lib/asm-all-5.2.jar"/>
 	<classpathentry kind="lib" path="lib/bridj-0.7.0.jar"/>
 	<classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
 	<classpathentry kind="lib" path="lib/chic.jar"/>
@@ -40,6 +41,7 @@
 	<classpathentry kind="lib" path="lib/matlabMacOSX.jar"/>
 	<classpathentry kind="lib" path="lib/matlabSunOS.jar"/>
 	<classpathentry kind="lib" path="lib/matlabWindows.jar"/>
+	<classpathentry kind="lib" path="lib/nashorn-core-15.3.jar"/>
 	<classpathentry kind="lib" path="lib/netty-buffer-4.1.19.Final.jar"/>
 	<classpathentry kind="lib" path="lib/netty-codec-4.1.19.Final.jar"/>
 	<classpathentry kind="lib" path="lib/netty-codec-dns-4.1.19.Final.jar"/>
