@@ -32,6 +32,8 @@ See [PtolemyII/CapeCode](http://accessors.org/wiki/PtolemyII) for [CapeCode](htt
   <td> 
         <a href="https://github.com/icyphy/ptII/releases/download/nightly/ptII11.1.devel.setup.mac.app.tar.gz">ptII11.1.devel.setup.mac.app.tar.gz</a>
         <br/>(Untar, then right click on the .app file and select Open. See <a href="https://ptolemy.berkeley.edu/ptolemyII/ptII11.0/mac.htm">Notes for macOS</a>.
+        <br/>September 2021: Note that running Vergil.app on the Mac will probably fail with <code>LSOpenURLsWithRole() failed with error -10810 ...</code>.  See <a href="https://github.com/icyphy/ptII/issues/335>JDK shipped with nightly build installers needs to be updated</a>.
+
   </td>
  </tr>
 
