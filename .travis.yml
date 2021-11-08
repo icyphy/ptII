@@ -142,7 +142,7 @@ install:
   - ls -l $PTII/vendors || true
   - ls -l $PTII/vendors/javafx || true
   - if [ ! -d $PTII/vendors/javafx ]; then echo "Creating $PTII/vendors/javafx"; mkdir $PTII/vendors/javafx; fi
-  - if [ ! -d $PTII/vendors/javafx/javafx-sdk-11.0.2 ]; then wget --quiet -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; if [ -f /tmp/javafx.zip ] ; then (cd vendors/javafx; ls -l /tmp/javafx.zip; file /tmp/javafx.zip; unzip /tmp/javafx.zip) fi; fi
+  - if [ ! -d $PTII/vendors/javafx/javafx-sdk-11.0.2 ]; then wget -O /tmp/javafx.zip 'http://gluonhq.com/download/javafx-11-0-2-sdk-linux/' || true; ls -l /tmp/javafx.zip|| true; file /tmp/javafx.zip; if [ -s /tmp/javafx.zip ] ; then (cd vendors/javafx; unzip /tmp/javafx.zip) fi; fi
   - ls -l $PTII/vendors/javafx || true
 
   #######
