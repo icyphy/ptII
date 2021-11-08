@@ -1047,6 +1047,7 @@ with_sphinx_core
 with_pdfrenderer
 with_batikjar
 with_svgsalamanderjar
+with_rsyntaxeditor
 with_tini
 with_giotto
 with_waba
@@ -13682,9 +13683,9 @@ else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for RSyntaxEditor" >&5
 $as_echo_n "checking for RSyntaxEditor... " >&6; }
 
-# Check whether --with-batikjar was given.
-if test "${with_batikjar+set}" = set; then :
-  withval=$with_batikjar; PTRSYNTAXTEXTAREA_JAR=$withval
+# Check whether --with-rsyntaxeditor was given.
+if test "${with_rsyntaxeditor+set}" = set; then :
+  withval=$with_rsyntaxeditor; PTRSYNTAXTEXTAREA_JAR=$withval
 else
   PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar
 fi
