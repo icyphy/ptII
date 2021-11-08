@@ -6264,7 +6264,7 @@ if test ! -d "$PTII/ptolemy/actor/gui/syntax"; then
     so we need not find RSyntaxEditor.])
 else
     AC_MSG_CHECKING([for RSyntaxEditor])
-    AC_ARG_WITH(batikjar, [  --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
+    AC_ARG_WITH(rsyntaxeditor, [  --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
                           defaults to \$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar],
 	PTRSYNTAXTEXTAREA_JAR=$withval,
 	PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar)
