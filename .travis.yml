@@ -1,3 +1,5 @@
+dist: bionic
+
 # Configure requires $PTII
 env:
   matrix:
