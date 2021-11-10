@@ -1,5 +1,3 @@
-dist: bionic
-
 # Configure requires $PTII
 env:
   matrix:
@@ -108,7 +106,7 @@ before_install:
   - cat ~/.profile
 
 # The following recommended solution does not seem
-dist: xenial
+dist: bionic
 services:
   - xvfb
 
