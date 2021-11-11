@@ -62,21 +62,52 @@ if [ ! -d $INSTALL_FLAG ]; then
     else
         ls -R $INSTALL_PREFIX
     fi
+
+    OPENCV_REPO=https://ptolemy.berkeley.edu/opencv
+    # Note that the primeCache stage of Travis should download the tar files.
+    OPENCV_TAR_DIR=/tmp/opencv
+    if [ ! -d ${OPENCV_TAR_DIR} ]; then
+        echo "$0: making ${OPENCV_TAR_DIR}"
+        mkdir -p $OPENCV_TAR_DIR
+    else
+        ls -l $OPENCV_TAR_DIR
+    fi
+
+    case "`uname -s`" in
+        *Linux*)
+            OPENCV_LINUX_REPO=${OPENCV_REPO}/opencv-${OPENCV_VERSION}-linux.tar.gz
+            # Download prebuilt OpenCV from the Ptolemy website because it is faster than building each time.
+            OPENCV_BUILD_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}-linux.tar.gz
+	    if [ ! -f $OPENCV_BUILD_TAR]; then
+		echo "$0: Starting download of $OPENCV_LINUX_REPO at `date`"
+		# Don't stop the script if wget fails.
+		wget --quiet --show-progress -O $OPENCV_BUILD_TAR  $OPENCV_LINUX_REPO || true
+		echo "$0: Done downloading $OPENCV_BUILD_TAR from $OPENCV_LINUX_REPO at `date`"
+	    fi
+            if [ -f $OPENCV_BUILD_TAR ]; then
+                tar -C `dirname ${INSTALL_PREFIX}` -zxf $OPENCV_BUILD_TAR
+                touch $HOME/fresh-cache
+            else
+                echo "########################################################################"
+                echo "$0: Failed to download $OPENCV_LINUX_REPO, $OPENCV_BUILD_TAR does not exist?  We will build OpenCV (sigh)."
+                echo "To update $OPENCV_LINUX_REPO, log in to travis using debug mode"
+                echo "(see https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Debugging_2)"
+                echo "tar up $(INSTALL_PREFIX) and update $OPEN_LINUX_REPO"
+                echo "########################################################################"
+            fi
+            ;;
+    esac
+fi
+
+# If we are not under linux or the download failed, then try building.
+if [ ! -d $INSTALL_FLAG ]; then
     if [ ! -d $OPENCV_BUILD ]; then
         echo "$0: $OPENCV_BUILD  does not exist or is not a directory, so we download files and create the directory."
-        # Note that the primeCache stage of Travis should download the tar files.
-        OPENCV_TAR_DIR=/tmp/opencv
-        if [ ! -d ${OPENCV_TAR_DIR} ]; then
-            echo "$0: making ${OPENCV_TAR_DIR}"
-            mkdir -p $OPENCV_TAR_DIR
-        else
-            ls -l $OPENCV_TAR_DIR
-        fi
 
 	OPENCV_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}.tar.gz
         # Download OpenCV from the Ptolemy website because it is faster than multiple jobs hitting GitHub.
         #OPENCV_REPO=https://github.com/opencv/opencv/archive
-        OPENCV_REPO=https://ptolemy.berkeley.edu/opencv
+
 	if [ ! -f $OPENCV_TAR ]; then
             echo "$0: Downloading $OPENCV_TAR at `date`"
             # Use --show-progress to avoid 10 minute time out, see also
