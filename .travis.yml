@@ -105,8 +105,9 @@ before_install:
   - cat ~/.bash_profile
   - cat ~/.profile
 
-# The following recommended solution does not seem
-dist: bionic
+# Under bionic, org/hlacerti/build-certi.sh faild because of cert problems,
+# so we try focal.
+dist: focal
 services:
   - xvfb
 
@@ -152,16 +153,10 @@ install:
   
   # - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar || true; fi 
 
+  # Don't use the cached version of jogl, used the checked in version. 
   # FIXME: We must unjar so that the shared libraries are found.
-  - ls -l $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar || true
-  - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar || true
-
-  # - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar wget https://jogamp.org/deployment/v2.3.2/jar/jogl-all-natives-linux-amd64.jar || true; fi
-
-  # FIXME: We must unjar so that the shared libraries are found.
-  - ls -l $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar || true
-  - jar -xvf $PTII/vendors/jogl/lib/natives/linux-amd64/jogl-all-natives-linux-amd64.jar || true
-
+  - ls -l $PTII/vendors/jogl/lib/Linux/jogl-all-natives-linux-amd64.jar || true
+  - jar -xvf $PTII/vendors/jogl/lib/Linux/jogl-all-natives-linux-amd64.jar || true
   - ls -lR $PTII/vendors/jogl || true
 
   #######
