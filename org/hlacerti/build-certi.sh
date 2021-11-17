@@ -25,13 +25,13 @@ fi
 # fi
     
 CERTI_SRC=$SRC/certi-4.0.0
-if [ ! -f $CERTI_SRC ]; then
+if [ ! -d $CERTI_SRC ]; then
     # No longer need this branch (as of Oct. 2018).
     # git clone -b br_jbch_4.0.0 https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
     git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC
 
-    if [ ! -f $CERTI_SRC ]; then
-        echo "$0: Hmm.  $CERTI_SRC was not created by running"
+    if [ ! -d $CERTI_SRC ]; then
+        echo "$0: Hmm.  The $CERTI_SRC directory is not present, it was not created by running"
         echo "   git clone https://git.savannah.nongnu.org/git/certi.git $CERTI_SRC"
         echo "   If the error message above is "
         echo "   'SSL certificate problem: certificate has expired'"
@@ -40,6 +40,7 @@ if [ ! -f $CERTI_SRC ]; then
         echo "   Under macOS 10.14, as root consider editing /etc/ssl/cert.pem"
         echo "   and removing the DST Root CA X3 cert."
         echo "   See https://stackoverflow.com/questions/69387175/git-for-windows-ssl-certificate-problem-certificate-has-expired/69396425#69396425"
+        echo "   See https://savannah.nongnu.org/support/?110546"
         exit 2
     fi        
     echo "Patching $CERTI_SRC/CMakeLists.txt by moving a double quote and avoiding \"clang: error: no such file or directory: ';-flat_namespace'\" "
