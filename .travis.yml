@@ -106,10 +106,13 @@ before_install:
   - cat ~/.profile
 
 # Under bionic, org/hlacerti/build-certi.sh faild because of cert problems,
-# so we try focal.
-# However "service ssh restart" causes travis to hang under focal, so
+# so we try focal.n
+# However, "service ssh restart" causes travis to hang under focal, so
+# we follow https://www.mail-archive.com/savannah-hackers@gnu.org/msg22517.html and
 # we go back to bionic.
-dist: bionic
+# However, there are problems running the Java3D models in export5, so
+# we go back to xenial.
+dist: xenial
 services:
   - xvfb
 
@@ -135,6 +138,8 @@ install:
   #   p7zip-full for installing jogl as part of the installers.
   #   pdflatex for the DOP Center image.
   - sudo apt-get install -y apt-transport-https ca-certificates coreutils genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  # See https://www.mail-archive.com/savannah-hackers@gnu.org/msg22517.html
+  - sed --in-place '/DST_Root_CA_X3.crt/s/^/!/' /etc/ca-certificates.conf || true
   # For certificate problems with build-certi.sh
   - sudo update-ca-certificates || true
 
