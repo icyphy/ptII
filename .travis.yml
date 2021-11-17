@@ -107,7 +107,9 @@ before_install:
 
 # Under bionic, org/hlacerti/build-certi.sh faild because of cert problems,
 # so we try focal.
-dist: focal
+# However "service ssh restart" causes travis to hang under focal, so
+# we go back to bionic.
+dist: bionic
 services:
   - xvfb
 
@@ -123,6 +125,8 @@ install:
   - sudo apt-get update 
 
   # Below are the packages that are needed, in alphabetical order:
+  #   apt-transport-https ca-certificates for certificate problems with build-certi.sh
+  #      See https://savannah.nongnu.org/support/?110546
   #   coreutils for timeout, used by ptIITravisBuild.sh
   #   genisoimage for building Darwin dmg files under Linux.
   #   eclipse and eclipse-rcp for backtracking.
@@ -130,7 +134,9 @@ install:
   #   libv4l for  Bridj for the camera.
   #   p7zip-full for installing jogl as part of the installers.
   #   pdflatex for the DOP Center image.
-  - sudo apt-get install -y coreutils genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  - sudo apt-get install -y apt-transport-https ca-certificates coreutils genisoimage eclipse eclipse-rcp libjava3d-java libv4l-dev p7zip-full texlive-latex-base || true
+  # For certificate problems with build-certi.sh
+  - sudo update-ca-certificates || true
 
   # Install JAI.  If the wget fails, then don't stop the build.
   - if [ ! -f $PTII/vendors/jai-1_1_3/lib/jai_core.jar ]; then wget --quiet https://ptolemy.berkeley.edu/ptolemyII/jai/1.1.3/linux-amd64/jai-1_1_3-lib-linux-amd64.tar.gz -O /tmp/jai.tar.gz || true; if [ -f /tmp/jai.tar.gz ] ; then (cd vendors; ls -l /tmp/jai.tar.gz; file /tmp/jai.tar.gz; tar -zxvf /tmp/jai.tar.gz) fi; fi
@@ -153,7 +159,7 @@ install:
   
   # - if [ ! -f $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar ]; then wget --quiet -O $PTII/vendors/jogl/lib/natives/linux-amd64/gluegen-rt-natives-linux-amd64.jar https://jogamp.org/deployment/v2.3.2/jar/gluegen-rt-natives-linux-amd64.jar || true; fi 
 
-  # Don't use the cached version of jogl, used the checked in version. 
+  # Don't use the ccahed version of jogl, used the checked in version. 
   # FIXME: We must unjar so that the shared libraries are found.
   - ls -l $PTII/vendors/jogl/lib/Linux/jogl-all-natives-linux-amd64.jar || true
   - jar -xvf $PTII/vendors/jogl/lib/Linux/jogl-all-natives-linux-amd64.jar || true
