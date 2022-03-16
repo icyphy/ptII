@@ -3,11 +3,12 @@ This is the Ptolemy II README.md File
 Ptolemy II consists of a group of Java packages that support
 heterogeneous concurrent modeling and design.   
 
-The Ptolemy II documentation can be found in [$PTII/doc/index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/index.htm)
+The Ptolemy II documentation can be found in $PTII/doc/index.htm or [http://ptolemy.berkeley.edu/ptolemyII/ptIIlatest/doc/index.htm](http://ptolemy.berkeley.edu/ptolemyII/ptIIlatest/doc/index.htm)
 
 * To develop Ptolemy II code, we recommend that you follow the
-[Ptolemy II Eclipse Instructions located in $PTII/doc/eclipse/index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/eclipse/index.htm)
-** To build from the command line, see [$PTII/doc/install_index.htm](https://cdn.rawgit.com/icyphy/ptII/master/doc/install_index.htm)
+[Ptolemy II Eclipse Instructions located in $PTII/doc/eclipse/index.htm or [ptolemy.berkeley.edu/ptolemyII/ptIIlatest/doc/eclipse/index.htm](ptolemy.berkeley.edu/ptolemyII/ptIIlatest/doc/eclipse/index.htm)
+* To build from the command line, see $PTII/doc/install_index.htm or [https://www.icyphy.org/ptII/](https://www.icyphy.org/ptII/)
+
 * [Main Ptolemy II website](http://ptolemy.berkeley.edu/ptolemyII)
 * [Contributing](CONTRIBUTING.md)
 * [Downloads and Travis Logs](https://icyphy.github.io/ptII/)
