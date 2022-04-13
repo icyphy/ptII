@@ -78,7 +78,7 @@ if [ ! -d $INSTALL_FLAG ]; then
             OPENCV_LINUX_REPO=${OPENCV_REPO}/opencv-${OPENCV_VERSION}-linux.tar.gz
             # Download prebuilt OpenCV from the Ptolemy website because it is faster than building each time.
             OPENCV_BUILD_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}-linux.tar.gz
-	    if [ ! -f $OPENCV_BUILD_TAR]; then
+	    if [ ! -f $OPENCV_BUILD_TAR ]; then
 		echo "$0: Starting download of $OPENCV_LINUX_REPO at `date`"
 		# Don't stop the script if wget fails.
 		wget --quiet --show-progress -O $OPENCV_BUILD_TAR  $OPENCV_LINUX_REPO || true
