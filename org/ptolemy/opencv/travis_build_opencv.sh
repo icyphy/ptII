@@ -92,7 +92,8 @@ if [ ! -d $INSTALL_FLAG ]; then
                 echo "$0: Failed to download $OPENCV_LINUX_REPO, $OPENCV_BUILD_TAR does not exist?  We will build OpenCV (sigh)."
                 echo "To update $OPENCV_LINUX_REPO, log in to travis using debug mode"
                 echo "(see https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Debugging_2)"
-                echo "tar up $INSTALL_PREFIX and update $OPEN_LINUX_REPO"
+                echo "tar up $INSTALL_PREFIX, update $OPEN_LINUX_REPO with scp to swarmnuc2008"
+                echo "and then invalidate the Travis caches.
                 echo "########################################################################"
             fi
             ;;
