@@ -81,8 +81,12 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
+# Override test_auto in ptcommon.mk and Set CERTI_FOM_PATH so that CertiRtig.java can read it.
+test_auto_hla:
+	CERTI_FOM_PATH=org/hlacerti/test/auto/FEDfiles $(JTCLSH) $(ROOT)/util/testsuite/auto.tcl
+
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto_hla #test_auto
 	$(JTCLSH) alljtests.tcl
 
 test_jgraphical: test_auto
