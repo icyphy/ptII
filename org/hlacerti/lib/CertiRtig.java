@@ -247,6 +247,7 @@ public class CertiRtig extends NamedObj {
         } else {
             certiFomPath = "CERTI_FOM_PATH=" + certiHome + "/share/federations/";
         }
+        System.out.println("CertiRtig: " + certiFomPath);
         _environmentArray[1] = certiFomPath;
 
         _directoryAsFile = new File(fedFileName.getParent());
