@@ -1272,13 +1272,16 @@ public class HlaManager1516e implements HlaManagerDelegate {
                     }
                     proposedTime = newPtolemyTime;
                 }
+                
 
                 // Store reflected attributes RAV as events on HlaReflectable actors.
                 // Notice that proposedTime here is a multiple of hlaManager.get_HlaTimeStep().
                 putReflectedAttributesOnHlaReflectables(proposedTime);
-
-                // Reinitialize variable
+              
+                
+                // Reinitialize variables
                 federateAmbassador.hasReceivedRAV = false;
+                federateAmbassador.hasReceivedEffectiveRAV = false;               
 
                 // Ptolemy time is updated
                 if (hlaManager.getDebugging()) {
@@ -1331,14 +1334,16 @@ public class HlaManager1516e implements HlaManagerDelegate {
     /** Time advancement method for event-based federates. This method
      *  uses NER RTI service to propose a time t' to advance to
      *  in a HLA simulation. The federate wants to advance to
-     *  <i>proposedTime</i> but if a RAV(t'') is received in this time advance
-     *  phase, then <i>proposeTime</i> returns t'', the time granted by the RTI.
-     *  All RAV received are put in the HlaReflectable actors.
-     *  Eventually a new NER(t') will be called until t' will be granted. See [6],
-     *  algorithm 3.
+     *  <i>proposedTime</i> but if an effective RAV(t'') is received in this 
+     *  time advance phase, then <i>proposeTime</i> returns t'', the time granted 
+     *  by the RTI. Eventually a new NER(t') will be called until t' will be 
+     *  granted. See [6], algorithm 3.
      *  A federate has two timelines: the Ptolemy timeline ptolemyTime and the
      *  HLA timeline hlaLogicalTime. When NER is used, they have the same value
      *  in the general case.
+     *  Notice that a federate receives RAVs for all instances of a class it
+     *  has subscribed to. The HlaReflectable actors will filter the (effective)
+     *  instances used by the federate.
 
      *  @param proposedTime time stamp of the last found event.
      *  @return the granted time from the HLA simulation.
@@ -1356,6 +1361,10 @@ public class HlaManager1516e implements HlaManagerDelegate {
             {
         // Custom string representation of proposedTime.
         String strProposedTime = proposedTime.toString();
+        
+        //  A boolean, we have to loop on NER if the received RAV do not allow a time advancement for Ptolemy,
+        //  e.g. no HLASubscribers for them (instance filtering)
+        boolean newLoopOnNER;
 
         // HLA Reporter support.
         if (hlaManager.get_EnableHlaReporter()) {
@@ -1384,106 +1393,139 @@ public class HlaManager1516e implements HlaManagerDelegate {
         // Call the NER service if the time Ptolemy wants to advance to is
         // bigger than current HLA time
         if (certiProposedTime.compareTo(hlaLogicaltime) > 0) {
-            // Wait the time grant from the HLA/CERTI Federation (from the RTI).
-            federateAmbassador.timeAdvanceGrant = false;
 
-            if (hlaManager.get_EnableHlaReporter()) {
-                // Set time of last time advance request.
-                hlaReporter.setTimeOfTheLastAdvanceRequest(System.nanoTime());
-            }
+            do {
+				
+			    federateAmbassador.hasReceivedRAV = false;
+	            federateAmbassador.hasReceivedEffectiveRAV = false;
+				
+	            if (hlaManager.get_EnableHlaReporter()) {
+	                // Set time of last time advance request.
+	                hlaReporter.setTimeOfTheLastAdvanceRequest(System.nanoTime());
+	            }
+	
+	            // Call CERTI NER HLA service.
+	            federateAmbassador.timeAdvanceGrant = false;
+	            try {
+	                rtia.nextMessageRequest(certiProposedTime);
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+	
+	            if (hlaManager.get_EnableHlaReporter()) {
+	                // Increment counter of NER calls.
+	                hlaReporter.incrNumberOfNERs();
+	            }
+	
+	            while (!(federateAmbassador.timeAdvanceGrant)) {
+	                if (director.isStopRequested()) {
+	                    // Stop is requested by the user.
+	                    // Not sure what to do here, but we can't just keep waiting.
+	                    throw new IllegalActionException(hlaManager,
+	                            "Stop requested while waiting for a time advance grant from the RTIG.");
+	                }
+	                if (hlaManager.getDebugging()) {
+	                    hlaDebug("        proposeTime(t(lastFoundEvent)="
+	                            + strProposedTime + ") - eventsBasedTimeAdvance("
+	                            + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
+	                            + ") by calling tick(MAX_BLOCKING_TIME, 0)");
+	                }
+	                // Wait for a callback. This will return immediately if there
+	                // is already a callback pending (and before returning, it will
+	                // call that callback). If there is no callback pending, it will
+	                // wait up to MAX_BLOCKING_TIME and then return even if there is
+	                // no callback.
+	                // Do not use tick2() here because it can block the director
+	                // if no callback is received. Also, do not use tick() because it
+	                // results in a busy wait.
+	                // NOTE: The second argument, which the API confusingly calls "max"
+	                // but is usually less than "min", appears to not be used.
+	                try {
+	                    // Both evoke methods seem to give the same simulation speed
+	                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
+	                } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
+	                    throw new IllegalActionException(hlaManager, callNotAllowedFromWithinCallback, "Call not allowed within callback");
+	                } catch (RTIinternalError rtIinternalError) {
+	                    throw new IllegalActionException(hlaManager, rtIinternalError, "RTI internal error");
+	                }
+	
+	                // HLA Reporter support.
+	                if (hlaManager.get_EnableHlaReporter()) {
+	                    hlaReporter._numberOfTicks2++;
+	                    hlaReporter._numberOfTicks.set(hlaReporter._numberOfTAGs,
+	                            hlaReporter._numberOfTicks
+	                                    .get(hlaReporter._numberOfTAGs) + 1);
+	                }
+	
+	            } // end while
+	
+	            // A TAG was received then the HLA current time is updated for this federate
+	            federateAmbassador.hlaLogicalTime = federateAmbassador.grantedHlaLogicalTime;
+	
+	            // If a RAV was received, the time stamp of TAG is the same as the
+	            // RAV, and in the general case, the proposedTime will return with
+	            // this time stamp (converted to Time, the Ptolemy time representation).
+	            if (federateAmbassador.hasReceivedRAV) {
+										
+	                Time newPtolemyTime = convertToPtolemyTime(
+	                        (CertiLogicalTime1516E) federateAmbassador.grantedHlaLogicalTime);
+	
+	                // True in the general case. If several RAV callbacks are received
+	                // with the same time stamp, the microsteps of the corresponding
+	                // Ptolemy events are increased in the order of the RAV reception.
+	                if (newPtolemyTime.compareTo(ptolemyTime) > 0) {
+	                    proposedTime = newPtolemyTime;
+	                } else {
+	                    // However, it could happen that the RAV (and so the TAG)
+	                    // received corresponds to an HLA time increased by a
+	                    // value epsilon but, because of the time representation
+	                    // conversion, it appears as equal to Ptolemy current time t.
+	                    // In this case, inserting a new event at e(t;HlaUpdater)
+	                    // can be a problem to the director, since all existing
+	                    // events e(t;HlaSubs) have already been treated.
+	                    // In order to advance the Ptolemy time, the time resolution
+	                    // is added to the current time t, since it is the shortest
+	                    // value that can be add for advancing the time beyond t.
+	                    proposedTime = ptolemyTime.add(r);
+	                }
+	
+	                if (federateAmbassador.hasReceivedEffectiveRAV) {
+	                    // Store reflected attributes RAV as events on HlaReflectable actors.
+	                     putReflectedAttributesOnHlaReflectables(proposedTime);
+					 }
 
-            // Call CERTI NER HLA service.
-            try {
-                rtia.nextMessageRequest(certiProposedTime);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+	            } // end  if receivedRAV then
+	            	            
+	     	    if (federateAmbassador.hasReceivedRAV){
+					if (federateAmbassador.hasReceivedEffectiveRAV){
+				        newLoopOnNER = false;
+				        if (hlaManager.getDebugging()) {
+                            hlaDebug("in EventsBasedTimeAdvance hasReceivedRAV and hasReceivedEffectiveRAV" );	
+                        } 
+				    }
+				    else{
+				    	// The received RAV(t'') is from an instance not used 
+				    	// for this federate. Need to check if there is more
+				    	// received RAV(t*), t* > proposedTime.
+				        newLoopOnNER= true;
+				        if (hlaManager.getDebugging()) {
+                            hlaDebug("in EventsBasedTimeAdvance hasReceivedRAV and not hasReceivedEffectiveRAV" );	
+                        }				        
+				    }
+				}
+				else {					
+				    newLoopOnNER = false;
+				    if (hlaManager.getDebugging()) {
+                        hlaDebug("in EventsBasedTimeAdvance not hasReceivedRAV" );	
+                    }				    
+				}
+	            
+	      } while (newLoopOnNER);
 
-            if (hlaManager.get_EnableHlaReporter()) {
-                // Increment counter of NER calls.
-                hlaReporter.incrNumberOfNERs();
-            }
+        } //  end if certiProposedTime.compareTo(hlaLogicaltime)
+       
 
-            while (!(federateAmbassador.timeAdvanceGrant)) {
-                if (director.isStopRequested()) {
-                    // Stop is requested by the user.
-                    // Not sure what to do here, but we can't just keep waiting.
-                    throw new IllegalActionException(hlaManager,
-                            "Stop requested while waiting for a time advance grant from the RTIG.");
-                }
-                if (hlaManager.getDebugging()) {
-                    hlaDebug("        proposeTime(t(lastFoundEvent)="
-                            + strProposedTime + ") - eventsBasedTimeAdvance("
-                            + strProposedTime + ") - " + " waiting TAG(" //jc: + certiProposedTime.getTime()
-                            + ") by calling tick(MAX_BLOCKING_TIME, 0)");
-                }
-                // Wait for a callback. This will return immediately if there
-                // is already a callback pending (and before returning, it will
-                // call that callback). If there is no callback pending, it will
-                // wait up to MAX_BLOCKING_TIME and then return even if there is
-                // no callback.
-                // Do not use tick2() here because it can block the director
-                // if no callback is received. Also, do not use tick() because it
-                // results in a busy wait.
-                // NOTE: The second argument, which the API confusingly calls "max"
-                // but is usually less than "min", appears to not be used.
-                try {
-                    // Both evoke methods seem to give the same simulation speed
-                    rtia.evokeMultipleCallbacks(MAX_BLOCKING_TIME, 0); // rtia.evokeCallback(MAX_BLOCKING_TIME);
-                } catch (CallNotAllowedFromWithinCallback callNotAllowedFromWithinCallback) {
-                    throw new IllegalActionException(hlaManager, callNotAllowedFromWithinCallback, "Call not allowed within callback");
-                } catch (RTIinternalError rtIinternalError) {
-                    throw new IllegalActionException(hlaManager, rtIinternalError, "RTI internal error");
-                }
-
-                // HLA Reporter support.
-                if (hlaManager.get_EnableHlaReporter()) {
-                    hlaReporter._numberOfTicks2++;
-                    hlaReporter._numberOfTicks.set(hlaReporter._numberOfTAGs,
-                            hlaReporter._numberOfTicks
-                                    .get(hlaReporter._numberOfTAGs) + 1);
-                }
-
-            } // end while
-
-            // A TAG was received then the HLA current time is updated for this federate
-            federateAmbassador.hlaLogicalTime = federateAmbassador.grantedHlaLogicalTime;
-
-            // If a RAV was received, the time stamp of TAG is the same as the
-            // RAV, and in the general case, the proposedTime will return with
-            // this time stamp (converted to Time, the Ptolemy time representation).
-            if (federateAmbassador.hasReceivedRAV) {
-                Time newPtolemyTime = convertToPtolemyTime(
-                        (CertiLogicalTime1516E) federateAmbassador.grantedHlaLogicalTime);
-
-                // True in the general case. If several RAV callbacks are received
-                // with the same time stamp, the microsteps of the corresponding
-                // Ptolemy events are increased in the order of the RAV reception.
-                if (newPtolemyTime.compareTo(ptolemyTime) > 0) {
-                    proposedTime = newPtolemyTime;
-                } else {
-                    // However, it could happen that the RAV (and so the TAG)
-                    // received corresponds to an HLA time increased by a
-                    // value epsilon but, because of the time representation
-                    // conversion, it appears as equal to Ptolemy current time t.
-                    // In this case, inserting a new event at e(t;HlaUpdater)
-                    // can be a problem to the director, since all existing
-                    // events e(t;HlaSubs) have already been treated.
-                    // In order to advance the Ptolemy time, the time resolution
-                    // is added to the current time t, since it is the shortest
-                    // value that can be add for advancing the time beyond t.
-                    proposedTime = ptolemyTime.add(r);
-                }
-
-                // Store reflected attributes RAV as events on HlaReflectable actors.
-                putReflectedAttributesOnHlaReflectables(proposedTime);
-
-                federateAmbassador.hasReceivedRAV = false;
-
-            } // end  if receivedRAV then
-
-        } //  end if
-
+ 
         return proposedTime;
 
     }
@@ -1578,8 +1620,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
         }
 
         // At this point we have handled all events for all registered,
-        // HlaReflectable actors, so we may clear the receivedRAV boolean.
-        federateAmbassador.hasReceivedRAV = false;
+        // HlaReflectable actors for proposedTime.
 
         if (hlaManager.getDebugging()) {
             hlaDebug("        _putRAVOnHlaSubs(" + proposedTime.toString()
@@ -1992,6 +2033,9 @@ public class HlaManager1516e implements HlaManagerDelegate {
 
         /** Indicates if an RAV has been received. */
         public boolean hasReceivedRAV;
+        
+        /** Indicates if an RAV has been received and concerns an HLASubscriber */
+        public boolean hasReceivedEffectiveRAV;      
 
         /** Indicates if the request of synchronization by the Federate is
          *  validated by the HLA/CERTI Federation. This value is set by callback
@@ -2060,6 +2104,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
             this.timeConstrained = false;
             this.timeRegulator = false;
             this.hasReceivedRAV = false;
+            this.hasReceivedEffectiveRAV = false;
 
             // Configure HlaUpdatable actors from model */
             if (!hlaAttributesToPublish.isEmpty()) {
@@ -2120,6 +2165,7 @@ public class HlaManager1516e implements HlaManagerDelegate {
                                            SupplementalReflectInfo reflectInfo)
                 throws FederateInternalError {
 
+            hasReceivedRAV = true;
             if (hlaManager.getDebugging()) {
                 hlaDebug("      t_ptII = " + director.getModelTime()
                         + "; t_hla = " + ((CertiLogicalTime1516E)federateAmbassador.hlaLogicalTime).getTime()
@@ -2201,8 +2247,8 @@ public class HlaManager1516e implements HlaManagerDelegate {
                                         + hs.getFullName());
                             }
 
-                            // Notify RAV reception.
-                            hasReceivedRAV = true;
+                            // Notify effective RAV reception.
+                            hasReceivedEffectiveRAV = true;
 
                             if (hlaManager.get_EnableHlaReporter()) {
                                 hlaReporter.updateRAVsInformation(hs,
