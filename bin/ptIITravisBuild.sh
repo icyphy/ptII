@@ -31,6 +31,7 @@
 #   PT_TRAVIS_P=true GITHUB_TOKEN=fixme sh -x $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_CLEAN=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_DOCS=true $PTII/bin/ptIITravisBuild.sh
+#   RUN_TESTS=true PT_TRAVIS_OPENCV=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_GITHUB_ISSUE_JUNIT=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_PRIME_INSTALLER=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_CAPECODE1_XML=true $PTII/bin/ptIITravisBuild.sh
@@ -46,6 +47,13 @@
 #   RUN_TESTS=true PT_TRAVIS_TEST_INSTALLERS=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_TEST_REPORT_SHORT=true $PTII/bin/ptIITravisBuild.sh
 #   RUN_TESTS=true PT_TRAVIS_JUNITREPORT=true $PTII/bin/ptIITravisBuild.sh
+
+if [ -z "$PTII" ]; then
+    echo "$0: PTII environment variable must be set."
+    exit 2
+fi
+
+cd $PTII
 
 if [ ! -d $PTII/logs ]; then
     mkdir $PTII/logs
@@ -118,10 +126,14 @@ echo "$0: maxTimeout: $maxTimeout, which will be at `expr $maxTimeout + $SECONDS
 # We use the timeout utility so that we can use kill -9
 # Mac: sudo port timeout
 
+# Under Darwin, use --line-buffered with egrep so that we can see the output in the log file.
+GREP_LINE_BUFFERED_ARG=""
+
 case `uname -s` in
     Darwin)
-        echo "If necessary, install timeout with 'sudo port install timeout'"
+        echo "If, under Darwin, the timeout command fails then, install timeout with 'sudo port install timeout'"
         TIMEOUTCOMMAND='timeout -9'
+        GREP_LINE_BUFFERED_ARG=--line-buffered
         ;;
     *)
         usage=`timeout --help 2>&1`
@@ -600,6 +612,38 @@ if [ ! -z "$PT_TRAVIS_DOCS_ANT" ]; then
     # Note that .travis.yml deploys the codeDoc jar files.
 fi
 
+
+# Build OpenCV.  Building OpenCV takes a long time, so 
+# the other builds usually download a prebuilt tar file
+# from the Ptolemy site.  This target always builds
+# Travis and does not download the tar file.
+if [ ! -z "$PT_TRAVIS_OPENCV" ]; then
+    exitIfNotCron
+
+
+    # Keep the log file in vendors/opencv so that we need only
+    # invoke updateGhPages once per target.
+    log=$PTII/reports/travis_build_opencv.log
+
+    # Echo status messages so that Travis knows we are alive.
+    # If you need to get status about available memory, insert "free -m" inside the loop while building docs.
+    # See $PTII/.travis.yml to print messages for other builds
+    while sleep 60; do echo "=====[ $SECONDS seconds still running ]====="; done &
+
+    echo "Running ant build-travis-opencv:  This could take 20 minutes! maxTimeout: $maxTimeout, SECONDS: $SECONDS, `date`, log: $log"
+    $TIMEOUTCOMMAND $maxTimeout ant build-travis-opencv 2>&1 | egrep $GREP_LINE_BUFFERED_ARG -v "$SECRET_REGEX" > $log
+    echo "$0: Start of last $lastLines lines of $log"
+    tail -$lastLines $log
+
+    ls -l $PTII/vendors/opencv
+    ls -l $PTII/vendors/opencv/share/OpenCV/java
+
+    # Killing background sleep loop.
+    kill %1
+
+    #updateGhPages $PTII/doc/codeDoc doc/
+
+fi
 
 # Quickly test Travis.
 #

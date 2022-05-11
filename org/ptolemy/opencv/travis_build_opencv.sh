@@ -21,11 +21,21 @@ OPENCV_VERSION=${OPENCV_VERSION:-3.4.1}
 URL=https://github.com/opencv/opencv/archive/$OPENCV_VERSION.zip
 URL_CONTRIB=https://github.com/opencv/opencv_contrib/archive/$OPENCV_VERSION.zip
 SRC=$HOME/src
-OPENCV_BUILD=$SRC/opencv-$OPENCV_VERSION/build
+OPENCV_SRC=$SRC/opencv-$OPENCV_VERSION
+OPENCV_BUILD=$OPENCV_SRC/build
+OPENCV_CONTRIB_SRC=$SRC/opencv_contrib-$OPENCV_VERSION
 OPENCV_CONTRIB=$SRC/opencv_contrib-$OPENCV_VERSION/modules
 INSTALL_PREFIX=$PTII/vendors/opencv
 INSTALL_FLAG=$INSTALL_PREFIX/share/OpenCV/java
 
+echo $#
+
+FORCE=false
+if [ $# -eq 1 ]; then
+   if [ $1 = '--force' ]; then
+       FORCE=true
+   fi
+fi
 
 echo "$0: Start. `date`"
 
@@ -35,8 +45,8 @@ OS=`uname`
 case "`uname -s`" in
     *Darwin*)
         # See https://github.com/macports/macports-ports/blob/master/graphics/opencv/Portfile
-        
-        sudo port install pkgconfig zlib bzip2 libpng jpeg jasper tiff webp ilmbase openexr ffmpeg
+        # See https://apple.stackexchange.com/questions/23494/what-option-should-i-give-the-sudo-command-to-have-the-password-asked-through-a for how to get the password from stdin.
+        pw="$(osascript -e 'Tell application "System Events" to display dialog "Password:" default answer "" with hidden answer' -e 'text returned of result' 2>/dev/null)" && echo "$pw" | sudo -S port install pkgconfig zlib bzip2 libpng jpeg jasper tiff webp ilmbase openexr ffmpeg
 
         # sudo port install freetype cmake jpeg tiff openexr libgphoto2 tbb eigen3 openblas lapack hdf5 gflags google-glog
         #echo "Installing atlas may take hours.  Atlas provides BLAS and LAPACK, see https://ports.macports.org/port/atlas/summary and https://trac.macports.org/ticket/27600"
@@ -53,6 +63,11 @@ esac
 # The packages below did not work for me under Ubuntu 17.x:
 # sudo apt-get install -y libjasper-dev libpng12-dev libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev
 
+if [ "$FORCE" = "true" ]; then
+   echo "$0: Called with --force, removing $INSTALL_FLAG to force build"
+   rm -rf $INSTALL_FLAG
+fi
+   
 if [ ! -d $INSTALL_FLAG ]; then
     echo "$0: $INSTALL_FLAG does not exist or is not a directory."
     # Because set -e was invoked, ls will return non-zero if the
@@ -65,7 +80,13 @@ if [ ! -d $INSTALL_FLAG ]; then
 
     OPENCV_REPO=https://ptolemy.berkeley.edu/opencv
     # Note that the primeCache stage of Travis should download the tar files.
+
     OPENCV_TAR_DIR=/tmp/opencv
+    if [ "$FORCE" = "true" ]; then
+        echo "$0: called with --force, removing $OPENCV_TAR_DIR"
+        rm -rf $OPENCV_TAR_DIR
+    fi
+
     if [ ! -d ${OPENCV_TAR_DIR} ]; then
         echo "$0: making ${OPENCV_TAR_DIR}"
         mkdir -p $OPENCV_TAR_DIR
@@ -78,11 +99,15 @@ if [ ! -d $INSTALL_FLAG ]; then
             OPENCV_LINUX_REPO=${OPENCV_REPO}/opencv-${OPENCV_VERSION}-linux.tar.gz
             # Download prebuilt OpenCV from the Ptolemy website because it is faster than building each time.
             OPENCV_BUILD_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}-linux.tar.gz
-	    if [ ! -f $OPENCV_BUILD_TAR ]; then
-		echo "$0: Starting download of $OPENCV_LINUX_REPO at `date`"
-		# Don't stop the script if wget fails.
-		wget --quiet --show-progress -O $OPENCV_BUILD_TAR  $OPENCV_LINUX_REPO || true
-		echo "$0: Done downloading $OPENCV_BUILD_TAR from $OPENCV_LINUX_REPO at `date`"
+            if [ "$FORCE" = "true" ]; then
+                echo "$0: Called with --force, skipping download of $OPENCV_BUILD_TAR from$OPENCV_LINUX_REPO"
+            else
+	        if [ ! -f $OPENCV_BUILD_TAR ]; then
+		    echo "$0: Starting download of $OPENCV_LINUX_REPO at `date`"
+		    # Don't stop the script if wget fails.
+		    wget --quiet --show-progress -O $OPENCV_BUILD_TAR  $OPENCV_LINUX_REPO || true
+		    echo "$0: Done downloading $OPENCV_BUILD_TAR from $OPENCV_LINUX_REPO at `date`"
+                fi
 	    fi
             if [ -f $OPENCV_BUILD_TAR ]; then
                 tar -C `dirname ${INSTALL_PREFIX}` -zxf $OPENCV_BUILD_TAR
@@ -102,10 +127,19 @@ fi
 
 # If we are not under linux or the download failed, then try building.
 if [ ! -d $INSTALL_FLAG ]; then
+    if [ "$FORCE" = "true" ]; then
+        echo "$0: called with --force, removing $OPENCV_BUILD"
+        rm -rf $OPENCV_BUILD
+    fi
+
     if [ ! -d $OPENCV_BUILD ]; then
         echo "$0: $OPENCV_BUILD  does not exist or is not a directory, so we download files and create the directory."
 
 	OPENCV_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}.tar.gz
+        if [ "$FORCE" = "true" ]; then
+            echo "$0: called with --force, removing $OPENCV_TAR"
+            rm -f $OPENCV_TAR
+        fi
         # Download OpenCV from the Ptolemy website because it is faster than multiple jobs hitting GitHub.
         #OPENCV_REPO=https://github.com/opencv/opencv/archive
 
@@ -121,6 +155,10 @@ if [ ! -d $INSTALL_FLAG ]; then
 	OPENCV_CONTRIB_TAR=${OPENCV_TAR_DIR}/opencv_contrib-${OPENCV_VERSION}.tar.gz
         #OPENCV_CONTRIB_REPO=https://github.com/opencv/opencv_contrib/archive
         OPENCV_CONTRIB_REPO=https://ptolemy.berkeley.edu/opencv_contrib
+        if [ "$FORCE" = "true" ]; then
+            echo "$0: called with --force, removing $OPENCV_CONTRIB_TAR"
+            rm -f $OPENCV_CONTRIB_TAR
+        fi
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
             echo "$0: Downloading $OPENCV_CONTRIB_TAR"
 	    wget --quiet --show-progress -O $OPENCV_CONTRIB_TAR ${OPENCV_CONTRIB_REPO}/${OPENCV_VERSION}.tar.gz
@@ -131,8 +169,24 @@ if [ ! -d $INSTALL_FLAG ]; then
 	    mkdir $SRC
 	fi
 
+        if [ "$FORCE" = "true" ]; then
+            echo "$0: called with --force, removing $OPENCV_SRC $OPENCV_CONTRIB_SRC" 
+            rm -rf $OPENCV_SRC $OPENCV_CONTRIB_SRC
+        fi
 	(cd $SRC; tar -zxf $OPENCV_TAR)
 	(cd $SRC; tar -zxf $OPENCV_CONTRIB_TAR)
+
+        case "`uname -s`" in
+            *Darwin*)
+                echo "Patching $OPENCV_CONTRIB/stereo/src/descriptor.cpp"
+                # https://svnweb.freebsd.org/ports/head/graphics/opencv/files/patch-modules_stereo_src_descriptor.cpp?view=markup&pathrev=476652
+                cp $OPENCV_CONTRIB/stereo/src/descriptor.cpp $OPENCV_CONTRIB/stereo/src/descriptor.cpp.orig
+                sed -e 's/CV_Assert(image.size > 0);/CV_Assert(*image.size > 0);/' \
+                    -e 's/CV_Assert(cost.size > 0);/CV_Assert(*cost.size > 0);/' \
+                    $OPENCV_CONTRIB/stereo/src/descriptor.cpp.orig > $OPENCV_CONTRIB/stereo/src/descriptor.cpp
+                diff $OPENCV_CONTRIB/stereo/src/descriptor.cpp.orig $OPENCV_CONTRIB/stereo/src/descriptor.cpp || true
+                ;;
+        esac
 
         mkdir -p $OPENCV_BUILD
     fi
