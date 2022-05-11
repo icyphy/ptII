@@ -4,6 +4,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      PTII: $GITHUB_WORKSPACE
 
     steps:
     - uses: actions/checkout@v3
