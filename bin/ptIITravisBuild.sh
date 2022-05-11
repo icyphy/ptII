@@ -641,7 +641,7 @@ if [ ! -z "$PT_TRAVIS_OPENCV" ]; then
     # Killing background sleep loop.
     kill %1
 
-    #updateGhPages $PTII/doc/codeDoc doc/
+    updateGhPages $log reports
 
 fi
 
