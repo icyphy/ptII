@@ -263,7 +263,7 @@ public class AutoTests extends ModelTests {
         // https://docs.travis-ci.com/user/environment-variables/
         String travis = System.getenv("TRAVIS");
         if (travis != null && travis.equals("true")) {
-            String[] travisSkip = { "org/hlacerti/test/auto",
+            String[] travisSkip = { //"org/hlacerti/test/auto",
                     "org/terraswarm/accessor/test/auto/GetDate.xml",
                     "org/terraswarm/accessor/accessors/web/services/test/auto/ReverseGeoCoderTest.xml",
                     "ptolemy/actor/lib/jjs/modules/audio/test/auto/SpeechSynthesisTest.xml",
