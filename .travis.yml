@@ -10,6 +10,7 @@ env:
     # - PT_TRAVIS_CLEAN=true
     # Build the docs using make.  We build the docs later using ant.
     - PT_TRAVIS_DOCS=true
+    - PT_TRAVIS_OPENCV=true
     # - PT_TRAVIS_PRIME_INSTALLER=true
     - PT_TRAVIS_TEST_INSTALLERS=true
     - PT_TRAVIS_TEST_CAPECODE1_XML=true

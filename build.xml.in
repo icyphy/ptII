@@ -746,6 +746,19 @@ For example:
     </javac>
   </target>
 
+  <target name="build-travis-opencv"
+	  description="Build opencv for Travis."
+	  >
+      <echo>
+        Building opencv for Travis.
+      </echo>
+      <exec dir="${basedir}"
+	    executable="org/ptolemy/opencv/travis_build_opencv.sh"
+	    timeout="${timeout.long}">
+            <arg value="--force"/>
+      </exec>
+  </target>
+  
   <!-- Bundle for Java 1.8 under Mac OS X.  See $PTII/doc/coding/installers.htm 
        Get vendors/misc/appbundler-1.0.jar from https://java.net/projects/appbundler/downloads
     -->
