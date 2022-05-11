@@ -5,7 +5,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PTII: ${{env.GITHUB_WORKSPACE}}
+      PTII: ${{github.workspace}}
 
     steps:
     - uses: actions/checkout@v3
