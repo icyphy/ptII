@@ -65,7 +65,7 @@ esac
 
 if [ "$FORCE" = "true" ]; then
    echo "$0: Called with --force, removing $INSTALL_FLAG to force build"
-   rm -rf $INSTALL_FLAG
+   sudo rm -rf $INSTALL_FLAG
 fi
    
 if [ ! -d $INSTALL_FLAG ]; then
@@ -84,7 +84,8 @@ if [ ! -d $INSTALL_FLAG ]; then
     OPENCV_TAR_DIR=/tmp/opencv
     if [ "$FORCE" = "true" ]; then
         echo "$0: called with --force, removing $OPENCV_TAR_DIR"
-        rm -rf $OPENCV_TAR_DIR
+        # If there are files in $OPENCV_TAR_DIR that are owned by root, then rm -rf will fail.
+        sudo rm -rf $OPENCV_TAR_DIR
     fi
 
     if [ ! -d ${OPENCV_TAR_DIR} ]; then
@@ -111,13 +112,13 @@ if [ ! -d $INSTALL_FLAG ]; then
 	    fi
             if [ -f $OPENCV_BUILD_TAR ]; then
                 tar -C `dirname ${INSTALL_PREFIX}` -zxf $OPENCV_BUILD_TAR
-                touch $HOME/fresh-cache
+                sudo touch $HOME/fresh-cache
             else
                 echo "########################################################################"
                 echo "$0: Failed to download $OPENCV_LINUX_REPO, $OPENCV_BUILD_TAR does not exist?  We will build OpenCV (sigh)."
                 echo "To update $OPENCV_LINUX_REPO, log in to travis using debug mode"
                 echo "(see https://wiki.eecs.berkeley.edu/ptexternal/Main/Travis#Debugging_2)"
-                echo "tar up $INSTALL_PREFIX, update $OPEN_LINUX_REPO with scp to swarmnuc2008"
+                echo "tar up $INSTALL_PREFIX, update $OPENCV_LINUX_REPO with scp to swarmnuc2008"
                 echo "and then invalidate the Travis caches."
                 echo "########################################################################"
             fi
@@ -129,7 +130,7 @@ fi
 if [ ! -d $INSTALL_FLAG ]; then
     if [ "$FORCE" = "true" ]; then
         echo "$0: called with --force, removing $OPENCV_BUILD"
-        rm -rf $OPENCV_BUILD
+        sudo rm -rf $OPENCV_BUILD
     fi
 
     if [ ! -d $OPENCV_BUILD ]; then
@@ -138,7 +139,7 @@ if [ ! -d $INSTALL_FLAG ]; then
 	OPENCV_TAR=${OPENCV_TAR_DIR}/opencv-${OPENCV_VERSION}.tar.gz
         if [ "$FORCE" = "true" ]; then
             echo "$0: called with --force, removing $OPENCV_TAR"
-            rm -f $OPENCV_TAR
+            sudo rm -f $OPENCV_TAR
         fi
         # Download OpenCV from the Ptolemy website because it is faster than multiple jobs hitting GitHub.
         #OPENCV_REPO=https://github.com/opencv/opencv/archive
@@ -157,7 +158,7 @@ if [ ! -d $INSTALL_FLAG ]; then
         OPENCV_CONTRIB_REPO=https://ptolemy.berkeley.edu/opencv_contrib
         if [ "$FORCE" = "true" ]; then
             echo "$0: called with --force, removing $OPENCV_CONTRIB_TAR"
-            rm -f $OPENCV_CONTRIB_TAR
+            sudo rm -f $OPENCV_CONTRIB_TAR
         fi
 	if [ ! -f $OPENCV_CONTRIB_TAR ]; then
             echo "$0: Downloading $OPENCV_CONTRIB_TAR"
@@ -171,7 +172,7 @@ if [ ! -d $INSTALL_FLAG ]; then
 
         if [ "$FORCE" = "true" ]; then
             echo "$0: called with --force, removing $OPENCV_SRC $OPENCV_CONTRIB_SRC" 
-            rm -rf $OPENCV_SRC $OPENCV_CONTRIB_SRC
+            sudo rm -rf $OPENCV_SRC $OPENCV_CONTRIB_SRC
         fi
 	(cd $SRC; tar -zxf $OPENCV_TAR)
 	(cd $SRC; tar -zxf $OPENCV_CONTRIB_TAR)
@@ -267,7 +268,7 @@ if [ ! -d $INSTALL_FLAG ]; then
               
     make install && sudo mkdir -p "$(dirname "$INSTALL_FLAG")" && sudo touch "$INSTALL_FLAG";
     popd
-    touch $HOME/fresh-cache
+    sudo touch $HOME/fresh-cache
 
 fi
 
