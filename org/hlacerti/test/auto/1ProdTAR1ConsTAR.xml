@@ -4,13 +4,13 @@
 <entity name="1ProdTAR1ConsTAR" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.1.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={322, 88, 949, 638}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 49, 949, 644}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 528]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9872068230277186">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9565236977845145">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{371.06803455723525, 516.3563714902807}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{382.52197265625, 524.7721728169327}">
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- FederatesDifferentTimeManagement/1ProdTAR1ConsTAR/cons1Signal.xml: first federate to be launched.">
@@ -89,7 +89,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;--------------------------------------------------------------&#10;Model type:  Test&#10;Feature: time management NER-NER&#10;Expected result: This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PtolemyII - HLA/CERTI framework&#10;--------------------------------------------------------------&#10;Model type:  Test&#10;Feature: time management TAR-TAR&#10;Expected result: This test must succeed&#10;----------------------------------------------------------------&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 250.0]">
         </property>
