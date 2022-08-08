@@ -1,0 +1,28 @@
+Ptolemy 1516e uses new HLA types:
+
+Simple types : 
+	boolean -> HLAboolean
+	unsigned_byte -> HLAbyte
+	double -> HLAfloat62BE
+	float -> HLAfloat32BE
+	int -> HLAinteger32BE
+	long -> HLAinteger64BE
+	short -> HLAinteger16BE
+	string -> HLASCIIstring
+
+Array : 
+FixedArray and VariableArray
+The difference between the 2 types is that VariableArray know and encode its size, and FixedArray don't
+Ptolemy use only one type of Array (ArrayType) and we encode/decode it with VariableArray.
+
+* To sent/receive Array with Ptolemy, we must use format this input to received VariableArray, with this format :
+[type] OR arrayType(type)
+For example : [int] OR arrayType(int)
+
+* Ptolemy can aslo received FixedArray already encoded, but can't encode FixedArray itself.
+To receive a FixedArray, you have to use this format :
+[type, size] OR arrayType(type, size).
+For example : [int, 3] or arrayType(int, 3)
+
+WARNING : if you try to use [type, size] to decode a VariableArray, the result will be wrong.
+Sometimes, during the execution, Ptolemy "save" the type at the format [type, size], and even if it write type is [type], it doesn't work. To fix this, the type format have to be set in Customize/Port/Type.

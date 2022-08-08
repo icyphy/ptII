@@ -18,13 +18,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={726, 91, 609, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 25, 660, 427}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[375, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[426, 311]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9927395824894719">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{124.990966796875, 280.0539008989726}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{150.67746147260272, 173.78232488762842}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="13">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -135,9 +135,9 @@
         </property>
     </property>
     <entity name="producer" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={667, 583, 225, 169}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={655, 395, 286, 191}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[225, 125]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[286, 141]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 185.0]">
         </property>
@@ -148,8 +148,8 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="3.0" max="3.0"/>
-<yRange min="0.0" max="0.0"/>
+<xRange min="4.0" max="12.0"/>
+<yRange min="0.0" max="2.0"/>
 <default connected="no"/>
 </plot>?>
         </configure>
