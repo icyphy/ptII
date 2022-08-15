@@ -8,13 +8,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 70.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={534, 268, 861, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={534, 268, 861, 638}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[627, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.7592592592592593">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.9872293490299942">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.3578947368421, 184.93278166118424}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{201.54736328125003, 168.23956625272237}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
@@ -23,7 +23,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="When using NER time management, a message&#10;RAV(t') coming throught the RTI corresponds &#10;to an event e(t').">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 170.0}">
         </property>
     </property>
     <property name="HlaManager" class="org.hlacerti.lib.HlaManager">
@@ -36,6 +36,16 @@
         <property name="synchronizeStartTo" class="ptolemy.data.expr.StringParameter" value="F2">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 75.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The DiscreteClock in A2 can be removed but the stopTime&#10;parameter of the DE director must be set to a non-zero&#10;value. Otherwise the logical time of this federate cannot&#10;advance and no value is reflected by the HlaAttributeReflector.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 215.0}">
         </property>
     </property>
     <entity name="A2" class="ptolemy.actor.TypedCompositeActor">
