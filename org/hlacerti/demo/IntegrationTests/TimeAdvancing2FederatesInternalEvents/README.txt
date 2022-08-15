@@ -8,5 +8,5 @@ No federate sends any UAV.
 First of all set Ptolemy and CERTI environment variables as explained in the 
 manual in $PTII/org/hlacerti/manual-ptii-hla.pdf.
 
-Open the file Federation2federatesAdvancingTime.xml with the links to above models and
+Open the file TimeAdvancing2FederatesInternalEvents.xml with the links to above models and
 some explanation.
