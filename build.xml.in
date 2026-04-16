@@ -55,7 +55,7 @@
   <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
-  <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+  <property name="jsdoc.home" value="vendors/jsdoc" />
 
   <!-- The location of the jsdoc command, used by the jsdoc target. -->
   <property name="jsdoc.command" value="${jsdoc.home}/jsdoc.js" />
@@ -1046,7 +1046,7 @@ For example:
   </target>
 
   <target name="jsdoc"
-          depends="jsdoc-update, jsdoc-getFromWiki"
+          depends="jsdoc-getFromWiki"
           description="Run jsdoc to generate documentation for JavaScript files."
           >
     <echo>Invoke jsdoc to generate documentation for .js files.
@@ -1058,6 +1058,7 @@ For example:
     The output appears in doc/codeDoc/js/index.html
     </echo>
     <exec executable="${jsdoc.command}"
+	  failonerror="false"
 	  timeout="${timeout.short}">
       <arg value="--verbose" />
       <arg value="--recurse" />
