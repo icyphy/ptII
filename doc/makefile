@@ -340,8 +340,8 @@ CGPACKAGES = \
 	ptolemy.cg.lib.syntactic
 
 # Java packages for copernicus
+# ptolemy.copernicus.applet excluded: uses sun.security.util, inaccessible on JDK 9+
 COPERNICUSPACKAGES = \
-	ptolemy.copernicus.applet \
 	ptolemy.copernicus.gui \
 	ptolemy.copernicus.kernel \
 	ptolemy.copernicus.shallow \
@@ -650,7 +650,6 @@ ALLPACKAGES = \
 	$(VISUALSENSEPACKAGES) \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
-	doc.doclets \
 	org.ptolemy.qss \
 	org.ptolemy.qss.solver \
 	org.ptolemy.qss.util \
@@ -735,11 +734,11 @@ ALLPACKAGES = \
 	util.testsuite
 
 # All the Vergil "full"  generated documentation
+# codeDoc/ptolemy/actor/lib/Ramp.xml and RampIdx.xml require PtDoclet
+# which uses the com.sun.javadoc API removed in JDK 13.
 FULL_DOCS = \
 	codeDoc/js/index.html \
-	codeDoc/tree.html \
-	codeDoc/ptolemy/actor/lib/Ramp.xml \
-	codeDoc/ptolemy/actor/lib/RampIdx.xml
+	codeDoc/tree.html
 
 
 # 'make clean' removes files listed in $(KRUFT)
@@ -819,6 +818,10 @@ codeDoc/js/index.html:
 		echo "Cloning https://github.com/terraswarm/jsdoc.git"; \
 		(cd $(ROOT)/vendors; git clone https://github.com/terraswarm/jsdoc.git); \
         fi
+	-if [ ! -d $(ROOT)/vendors/jsdoc/node_modules ]; then \
+		echo "Installing jsdoc npm dependencies"; \
+		(cd $(ROOT)/vendors/jsdoc; npm install); \
+	fi
 	-if [ ! -f $(ROOT)/build.xml ]; then \
 		echo "$(ROOT)/build.xml does not exist, running ./configure"; \
 		(cd $(ROOT); ./configure); \
