@@ -964,7 +964,6 @@ For example:
 	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
-	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
       <doclet name="doc.doclets.PtDoclet" path="${basedir}" />
     </javadoc>
@@ -1018,14 +1017,6 @@ For example:
 
   <target name="javadoc.doclets">
     <echo>Compile doc/doclets.
-tools.jar is necessary for compilation of doc/doclets/.
-If compilation fails, try setting JAVA_HOME to the location of the JDK.
-For example:
-  [bldmastr@sisyphus ptII]$ which java
-  /usr/bin/java
-  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
-  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
-  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
     </echo>
     <javac debug="true"
 	   debuglevel="${debuglevel}"
@@ -1040,7 +1031,6 @@ For example:
       <src path="${basedir}/ptolemy/util" />
       <classpath>
 	<path refid="ptII.classpath" />
-	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
     </javac>    
   </target>

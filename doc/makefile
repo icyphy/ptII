@@ -650,6 +650,7 @@ ALLPACKAGES = \
 	$(VISUALSENSEPACKAGES) \
 	$(PTPTALON_PACKAGES) \
 	$(USER_PACKAGES) \
+	doc.doclets \
 	org.ptolemy.qss \
 	org.ptolemy.qss.solver \
 	org.ptolemy.qss.util \
@@ -734,11 +735,11 @@ ALLPACKAGES = \
 	util.testsuite
 
 # All the Vergil "full"  generated documentation
-# codeDoc/ptolemy/actor/lib/Ramp.xml and RampIdx.xml require PtDoclet
-# which uses the com.sun.javadoc API removed in JDK 13.
 FULL_DOCS = \
 	codeDoc/js/index.html \
-	codeDoc/tree.html
+	codeDoc/tree.html \
+	codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDoc/ptolemy/actor/lib/RampIdx.xml
 
 
 # 'make clean' removes files listed in $(KRUFT)
@@ -1004,16 +1005,23 @@ PTDOCPACKAGES = $(ALLPACKAGES)
 # Comment out the above line and uncomment this line for testing.
 #PTDOCPACKAGES = ptolemy.actor.lib
 
-# The ptdoc doclet (does not work yet) 
-PTDOCLET = -doclet doc.doclets.PtDoclet
+# The ptdoc doclet.
+# JDK 9+ requires -docletpath explicitly; the CLASSPATH env var is not used.
+# The docletpath is "." because the javadoc command runs from $PTII (via cd ..).
+PTDOCLET = -doclet doc.doclets.PtDoclet -docletpath .
 # Path relative to $PTII
 PTDOCFLAGS = -d doc/codeDoc -quiet
+
+# Compile the PtDoclet before running it.
+$(ROOT)/doc/doclets/PtDoclet.class: $(ROOT)/doc/doclets/PtDoclet.java $(ROOT)/doc/doclets/PtIndexer.java
+	(cd $(ROOT); "$(JAVAC)" -classpath . doc/doclets/PtDoclet.java doc/doclets/PtIndexer.java)
+
 ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
-codeDoc/ptolemy/actor/lib/Ramp.xml:
+codeDoc/ptolemy/actor/lib/Ramp.xml: $(ROOT)/doc/doclets/PtDoclet.class
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
+			$(PTDOCFLAGS) \
 			$(PTDOCPACKAGES) )
 
 # All the namedObjs for which we have documentation.
@@ -1068,8 +1076,8 @@ codeDocBcvtb/doc/codeDoc/tree.html:
 codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			-d doc/codeDocBcvtb/doc/codeDoc \
 			$(PTDOCLET) \
+			-d doc/codeDocBcvtb/doc/codeDoc \
 			$(BCVTBPACKAGES) )
 
 # All the namedObjs for which we have documentation.
@@ -1118,8 +1126,8 @@ codeDocCapeCode/doc/codeDoc/tree.html:
 codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			-d doc/codeDocCapeCode/doc/codeDoc \
 			$(PTDOCLET) \
+			-d doc/codeDocCapeCode/doc/codeDoc \
 			$(CAPECODEPACKAGES) )
 
 # All the namedObjs for which we have documentation.
@@ -1169,8 +1177,8 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			-d doc/codeDocHyVisual/doc/codeDoc \
 			$(PTDOCLET) \
+			-d doc/codeDocHyVisual/doc/codeDoc \
 			$(HYVISUALPACKAGES) )
 
 # All the namedObjs for which we have documentation.
@@ -1220,8 +1228,8 @@ codeDocViptos/doc/codeDoc/tree.html:
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			-d doc/codeDocViptos/doc/codeDoc \
 			$(PTDOCLET) \
+			-d doc/codeDocViptos/doc/codeDoc \
 	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # All the namedObjs for which we have documentation.
@@ -1272,8 +1280,8 @@ codeDocVisualSense/doc/codeDoc/tree.html:
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
 		"$(JAVADOC)" $(JDOCMEMORY) \
-			-d doc/codeDocVisualSense/doc/codeDoc \
 			$(PTDOCLET) \
+			-d doc/codeDocVisualSense/doc/codeDoc \
 		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # All the namedObjs for which we have documentation.
