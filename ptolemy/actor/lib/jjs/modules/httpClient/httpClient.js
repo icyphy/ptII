@@ -458,9 +458,9 @@ function IncomingMessage(response, body) {
         // headersMap is of type org.vertx.java.core.MultiMap
         var headersMap = response.headers();
         var headers = {};
-        // 'for each' is a Nashorn extension, so jsdoc will complain.
-        // See https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions
-        for each (var name in headersMap.names()) {
+        var nameIterator = headersMap.names().iterator();
+        while (nameIterator.hasNext()) {
+            var name = nameIterator.next();
             // Vert.x header keys are in lowercase.
             headers[name.toLowerCase()] = headersMap.get(name);
         }
