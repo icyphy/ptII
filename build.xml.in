@@ -55,7 +55,7 @@
   <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
-  <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
+  <property name="jsdoc.home" value="vendors/jsdoc" />
 
   <!-- The location of the jsdoc command, used by the jsdoc target. -->
   <property name="jsdoc.command" value="${jsdoc.home}/jsdoc.js" />
@@ -964,7 +964,6 @@ For example:
 	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
-	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
       <doclet name="doc.doclets.PtDoclet" path="${basedir}" />
     </javadoc>
@@ -1018,14 +1017,6 @@ For example:
 
   <target name="javadoc.doclets">
     <echo>Compile doc/doclets.
-tools.jar is necessary for compilation of doc/doclets/.
-If compilation fails, try setting JAVA_HOME to the location of the JDK.
-For example:
-  [bldmastr@sisyphus ptII]$ which java
-  /usr/bin/java
-  [bldmastr@sisyphus ptII]$ ls -l /usr/bin/java
-  lrwxrwxrwx 1 root root 26 Jul 31 10:12 /usr/bin/java -> /usr/java/default/bin/java
-  [bldmastr@sisyphus ptII]$ export JAVA_HOME=/usr/java/default
     </echo>
     <javac debug="true"
 	   debuglevel="${debuglevel}"
@@ -1040,13 +1031,12 @@ For example:
       <src path="${basedir}/ptolemy/util" />
       <classpath>
 	<path refid="ptII.classpath" />
-	<pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
       </classpath>
     </javac>    
   </target>
 
   <target name="jsdoc"
-          depends="jsdoc-update, jsdoc-getFromWiki"
+          depends="jsdoc-getFromWiki"
           description="Run jsdoc to generate documentation for JavaScript files."
           >
     <echo>Invoke jsdoc to generate documentation for .js files.
@@ -1058,6 +1048,7 @@ For example:
     The output appears in doc/codeDoc/js/index.html
     </echo>
     <exec executable="${jsdoc.command}"
+	  failonerror="false"
 	  timeout="${timeout.short}">
       <arg value="--verbose" />
       <arg value="--recurse" />
