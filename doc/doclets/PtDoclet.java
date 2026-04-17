@@ -1,6 +1,6 @@
 /* Javadoc Doclet that generates PtDoc XML
 
- Copyright (c) 2006-2018 The Regents of the University of California.
+ Copyright (c) 2006-2026 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,18 +32,41 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.FieldDoc;
-import com.sun.javadoc.ProgramElementDoc;
-import com.sun.javadoc.RootDoc;
-import com.sun.javadoc.SeeTag;
-import com.sun.javadoc.Tag;
+import javax.lang.model.SourceVersion;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
+import javax.tools.Diagnostic;
+
+import com.sun.source.doctree.DocCommentTree;
+import com.sun.source.doctree.DocTree;
+import com.sun.source.doctree.LinkTree;
+import com.sun.source.doctree.ReferenceTree;
+import com.sun.source.doctree.TextTree;
+import com.sun.source.doctree.UnknownBlockTagTree;
+import com.sun.source.util.DocTrees;
+
+import jdk.javadoc.doclet.Doclet;
+import jdk.javadoc.doclet.DocletEnvironment;
+import jdk.javadoc.doclet.Reporter;
 
 import ptolemy.util.StringUtilities;
 
 /** Generate PtDoc output.
  *  See ptolemy/vergil/basic/DocML_1.dtd for the dtd.
+ *
+ *  <p>This is the JDK 9+ port of the original PtDoclet, which used the
+ *  removed com.sun.javadoc API. It now implements the jdk.javadoc.doclet.Doclet
+ *  interface and uses javax.lang.model and com.sun.source.doctree APIs.
  *
  *  <p>If javadoc is called with -d <i>directoryName</i>, then
  *  documentation will be generated in <i>directoryName</i>.
@@ -59,45 +82,101 @@ import ptolemy.util.StringUtilities;
  *  @version $Id$
  *  @since Ptolemy II 5.2
  */
-public class PtDoclet {
-    /** Given a command line option, return the number of command line
-     *  arguments needed by that option.
-     *  @param option The command line option
-     *  @return If the option is "-d", return 2; otherwise, return 0.
-     */
-    public static int optionLength(String option) {
-        if (option.equals("-d")) {
-            return 2;
-        }
-        return 0;
+public class PtDoclet implements Doclet {
+
+    @Override
+    public void init(Locale locale, Reporter reporter) {
+        _reporter = reporter;
     }
 
-    /** Process the java files and generate PtDoc XML.  Only classes
-     *  that extend ptolemy.actor.TypedAtomicActor are processed, all
-     *  other classes are ignored.
-     *  @param root The root of the java doc tree.
-     *  @return Always return true;
-     *  @exception IOException If there is a problem writing the documentation.
-     *  @exception ClassNotFoundException If there is a problem finding
-     *  the class of one of the fields.
-     */
-    public static boolean start(RootDoc root)
-            throws IOException, ClassNotFoundException {
+    @Override
+    public String getName() {
+        return "PtDoclet";
+    }
+
+    @Override
+    public Set<? extends Option> getSupportedOptions() {
+        return Set.of(new Option() {
+            @Override
+            public int getArgumentCount() {
+                return 1;
+            }
+
+            @Override
+            public String getDescription() {
+                return "Output directory";
+            }
+
+            @Override
+            public Kind getKind() {
+                return Kind.STANDARD;
+            }
+
+            @Override
+            public List<String> getNames() {
+                return List.of("-d");
+            }
+
+            @Override
+            public String getParameters() {
+                return "directory";
+            }
+
+            @Override
+            public boolean process(String option, List<String> arguments) {
+                _outputDirectory = arguments.get(0);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
+    }
+
+    @Override
+    public boolean run(DocletEnvironment environment) {
         System.out.println("Ptolemy version of PtDoc, with Kepler extensions");
         if (!StringUtilities.getProperty("KEPLER").equals("")) {
             System.out.println("PtDoclet: KEPLER = "
                     + StringUtilities.getProperty("KEPLER"));
         }
 
-        // Used for keyword search of documentation
+        _docTrees = environment.getDocTrees();
+        _elementUtils = environment.getElementUtils();
+        _typeUtils = environment.getTypeUtils();
+        _environment = environment;
         _ptIndexer = new PtIndexer();
 
-        _outputDirectory = _getOutputDirectory(root.options());
-        // We cache the names of all actors for which we generate text.
+        Class typedIOPortClass;
+        Class parameterClass;
+        Class stringAttributeClass;
+        try {
+            typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
+            parameterClass = Class.forName("ptolemy.data.expr.Parameter");
+            stringAttributeClass = Class
+                    .forName("ptolemy.kernel.util.StringAttribute");
+        } catch (ClassNotFoundException ex) {
+            _reporter.print(Diagnostic.Kind.ERROR,
+                    "Failed to load Ptolemy classes: " + ex.getMessage());
+            return false;
+        }
+
+        TypeElement namedObjElement = _elementUtils
+                .getTypeElement("ptolemy.kernel.util.NamedObj");
+        if (namedObjElement == null) {
+            _reporter.print(Diagnostic.Kind.ERROR,
+                    "Could not find ptolemy.kernel.util.NamedObj on the classpath.");
+            return false;
+        }
+        TypeMirror namedObjType = namedObjElement.asType();
+
         FileWriter allNamedObjsWriter = null;
         try {
             if (_outputDirectory == null) {
-                throw new IOException("There was no output directory specified?  Use -d directory.");
+                throw new IOException(
+                        "No output directory specified. Use -d directory.");
             }
             File outputDirectoryFile = new File(_outputDirectory);
             if (!outputDirectoryFile.isDirectory()) {
@@ -109,144 +188,284 @@ public class PtDoclet {
             allNamedObjsWriter = new FileWriter(
                     _outputDirectory + File.separator + "allNamedObjs.txt");
 
-            ClassDoc namedObjDoc = root
-                    .classNamed("ptolemy.kernel.util.NamedObj");
+            Set<? extends Element> specifiedElements = environment
+                    .getSpecifiedElements();
 
-            Class typedIOPortClass = Class.forName("ptolemy.actor.TypedIOPort");
-            Class parameterClass = Class.forName("ptolemy.data.expr.Parameter");
-            // The expression in the Expression actor is a StringAttribute.
-            Class stringAttributeClass = Class
-                    .forName("ptolemy.kernel.util.StringAttribute");
-
-            ClassDoc[] classes = root.classes();
-            for (ClassDoc classe : classes) {
-                String className = classe.toString();
-                if (classe.subclassOf(namedObjDoc)) {
-                    _writeDoc(className,
-                            _generateClassLevelDocumentation(classe)
-                                    + _generateFieldDocumentation(classe,
-                                            typedIOPortClass, "port")
-                                    + _generateFieldDocumentation(classe,
-                                            parameterClass, "property")
-                                    + _generateFieldDocumentation(classe,
-                                            stringAttributeClass, "property")
-                                    + "</doc>\n");
-
-                    allNamedObjsWriter.write(className + "\n");
-                }
+            for (Element element : specifiedElements) {
+                _processElement(element, namedObjType, typedIOPortClass,
+                        parameterClass, stringAttributeClass,
+                        allNamedObjsWriter);
             }
+        } catch (IOException ex) {
+            _reporter.print(Diagnostic.Kind.ERROR, ex.getMessage());
+            return false;
         } finally {
             if (allNamedObjsWriter != null) {
-                allNamedObjsWriter.close();
+                try {
+                    allNamedObjsWriter.close();
+                } catch (IOException ex) {
+                    // Ignore.
+                }
             }
         }
-        // Running (cd $PTII/ptolemy/plot; make dists) comments
-        // out lines with _ptIndexer in them.
-        File ptIndexerSer = new File(_outputDirectory, "PtIndexer.ser");
-        _ptIndexer.write(ptIndexerSer.getCanonicalPath());
+
+        try {
+            File ptIndexerSer = new File(_outputDirectory, "PtIndexer.ser");
+            _ptIndexer.write(ptIndexerSer.getCanonicalPath());
+        } catch (IOException ex) {
+            _reporter.print(Diagnostic.Kind.ERROR,
+                    "Failed to write PtIndexer: " + ex.getMessage());
+            return false;
+        }
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Process customTags and return text that contains links to the
-     *  javadoc output.
-     *  @param programElementDoc The class for which we are generating
-     *  documentation.
+    /** Recursively process an element, looking for TypeElements (classes)
+     *  that are subclasses of NamedObj.
      */
-    private static String _customTagCommentText(
-            ProgramElementDoc programElementDoc) {
-
-        // Process the comment as an array of tags.  Doc.commentText()
-        // should do this, but it does not.
-        String documentation = "";
-
-        Tag tag[] = programElementDoc.tags("UserLevelDocumentation");
-        StringBuffer textTag = new StringBuffer();
-        for (Tag element : tag) {
-            textTag.append(element.text());
+    private void _processElement(Element element, TypeMirror namedObjType,
+            Class typedIOPortClass, Class parameterClass,
+            Class stringAttributeClass, FileWriter allNamedObjsWriter)
+            throws IOException {
+        if (element.getKind() == ElementKind.PACKAGE) {
+            for (Element enclosed : element.getEnclosedElements()) {
+                _processElement(enclosed, namedObjType, typedIOPortClass,
+                        parameterClass, stringAttributeClass,
+                        allNamedObjsWriter);
+            }
+            return;
         }
+        if (element instanceof TypeElement) {
+            TypeElement typeElement = (TypeElement) element;
+            String className = typeElement.getQualifiedName().toString();
 
-        if (textTag.toString().length() > 0) {
-            documentation = "<UserLevelDocumentation>"
-                    + StringUtilities.escapeForXML(textTag.toString())
-                    + "</UserLevelDocumentation>";
+            try {
+                if (_typeUtils.isSubtype(typeElement.asType(),
+                        _typeUtils.erasure(namedObjType))) {
+                    _writeDoc(className,
+                            _generateClassLevelDocumentation(typeElement)
+                                    + _generateFieldDocumentation(typeElement,
+                                            typedIOPortClass, "port")
+                                    + _generateFieldDocumentation(typeElement,
+                                            parameterClass, "property")
+                                    + _generateFieldDocumentation(typeElement,
+                                            stringAttributeClass, "property")
+                                    + "</doc>\n");
+
+                    allNamedObjsWriter.write(className + "\n");
+                }
+            } catch (Throwable throwable) {
+                System.out.println(
+                        "PtDoclet: Error processing " + className + ": "
+                                + throwable.getMessage());
+            }
+
+            for (Element enclosed : typeElement.getEnclosedElements()) {
+                if (enclosed.getKind() == ElementKind.CLASS
+                        || enclosed.getKind() == ElementKind.INTERFACE) {
+                    _processElement(enclosed, namedObjType, typedIOPortClass,
+                            parameterClass, stringAttributeClass,
+                            allNamedObjsWriter);
+                }
+            }
         }
-
-        return documentation;
     }
 
-    /** Process inlineTags and return text that contains links to the
-     *  javadoc output.
-     *  @param programElementDoc The class for which we are generating
-     *  documentation.
+    /** Extract the text content of a list of DocTree nodes, handling
+     *  inline {@link} tags by producing HTML anchor elements.
      */
-    private static String _inlineTagCommentText(
-            ProgramElementDoc programElementDoc) {
-        // Process the comment as an array of tags.  Doc.commentText()
-        // should do this, but it does not.
-        StringBuffer documentation = new StringBuffer();
-        Tag tag[] = programElementDoc.inlineTags();
-        for (Tag element : tag) {
-            if (element instanceof SeeTag) {
-                SeeTag seeTag = (SeeTag) element;
-                documentation.append("<a href=\"");
-                // The dot separated class or package name, if any.
-                String classOrPackageName = null;
-                boolean isIncluded = false;
-                if (seeTag.referencedPackage() != null) {
-                    classOrPackageName = seeTag.referencedPackage().toString();
-                    isIncluded = seeTag.referencedPackage().isIncluded();
-                }
-                if (seeTag.referencedClass() != null) {
-                    classOrPackageName = seeTag.referencedClass()
-                            .qualifiedName();
-                    isIncluded = seeTag.referencedClass().isIncluded();
-                }
-
-                // {@link ...} tags usually have a null label.
-                String target = seeTag.label();
-                if (target == null || target.length() == 0) {
-                    target = seeTag.referencedMemberName();
-                    if (target == null || target.length() == 0) {
-                        target = seeTag.referencedClassName();
-                    }
-                }
-                if (classOrPackageName != null) {
-                    if (target != null && target.indexOf("(") != -1) {
-                        // The target has a paren, so can't be a port or
-                        // parameter, so link to the html instead of the .xml.
-
-                        isIncluded = false;
-                    }
-
-                    // If the .xml file is not included in the output,
-                    // then link to the .html file
-                    documentation.append(_relativizePath(_outputDirectory,
-                            classOrPackageName, programElementDoc, isIncluded));
-                }
-                if (seeTag.referencedMember() != null) {
-                    documentation
-                            .append("#" + seeTag.referencedMember().name());
-                }
-                documentation.append("\">" + target + "</a>");
-            } else {
-                documentation.append(element.text());
-            }
+    private String _inlineTagCommentText(Element element) {
+        DocCommentTree docCommentTree = _docTrees.getDocCommentTree(element);
+        if (docCommentTree == null) {
+            return "";
+        }
+        StringBuilder documentation = new StringBuilder();
+        for (DocTree docTree : docCommentTree.getFullBody()) {
+            _appendDocTree(documentation, docTree, element);
         }
         return documentation.toString();
     }
 
-    /** Generate the classLevel documentation for a class
-     *  @param classDoc The class for which we are generating documentation.
+    /** Append the text representation of a single DocTree node. */
+    private void _appendDocTree(StringBuilder sb, DocTree docTree,
+            Element contextElement) {
+        switch (docTree.getKind()) {
+        case TEXT:
+            sb.append(((TextTree) docTree).getBody());
+            break;
+        case LINK:
+        case LINK_PLAIN:
+            LinkTree linkTree = (LinkTree) docTree;
+            ReferenceTree ref = linkTree.getReference();
+            String refSig = ref.getSignature();
+            List<? extends DocTree> label = linkTree.getLabel();
+
+            String labelText = "";
+            if (label != null && !label.isEmpty()) {
+                StringBuilder labelSb = new StringBuilder();
+                for (DocTree lt : label) {
+                    labelSb.append(lt.toString());
+                }
+                labelText = labelSb.toString().trim();
+            }
+            if (labelText.isEmpty()) {
+                labelText = refSig;
+            }
+
+            String qualifiedRef = _resolveReference(refSig, contextElement);
+            if (qualifiedRef != null) {
+                String contextQualifiedName = _getQualifiedName(contextElement);
+                boolean isIncluded = false;
+                TypeElement refElement = _elementUtils
+                        .getTypeElement(qualifiedRef);
+                if (refElement != null) {
+                    isIncluded = _environment.isIncluded(refElement);
+                }
+                if (labelText.indexOf("(") != -1) {
+                    isIncluded = false;
+                }
+                sb.append("<a href=\"");
+                sb.append(_relativizePath(_outputDirectory, qualifiedRef,
+                        contextQualifiedName, false, isIncluded));
+                sb.append("\">");
+                sb.append(labelText);
+                sb.append("</a>");
+            } else {
+                sb.append(labelText);
+            }
+            break;
+        default:
+            sb.append(docTree.toString());
+            break;
+        }
+    }
+
+    /** Try to resolve a reference string to a fully qualified class name. */
+    private String _resolveReference(String refSig, Element contextElement) {
+        if (refSig == null || refSig.isEmpty()) {
+            return null;
+        }
+        String classRef = refSig;
+        int hashIndex = classRef.indexOf('#');
+        if (hashIndex >= 0) {
+            classRef = classRef.substring(0, hashIndex);
+        }
+        int parenIndex = classRef.indexOf('(');
+        if (parenIndex >= 0) {
+            classRef = classRef.substring(0, parenIndex);
+        }
+        classRef = classRef.trim();
+        if (classRef.isEmpty()) {
+            return _getQualifiedName(contextElement);
+        }
+        TypeElement resolved = _elementUtils.getTypeElement(classRef);
+        if (resolved != null) {
+            return resolved.getQualifiedName().toString();
+        }
+        Element enclosing = contextElement;
+        while (enclosing != null && !(enclosing instanceof TypeElement)) {
+            enclosing = enclosing.getEnclosingElement();
+        }
+        if (enclosing instanceof TypeElement) {
+            String pkg = _elementUtils
+                    .getPackageOf(enclosing).getQualifiedName().toString();
+            if (!pkg.isEmpty()) {
+                resolved = _elementUtils.getTypeElement(pkg + "." + classRef);
+                if (resolved != null) {
+                    return resolved.getQualifiedName().toString();
+                }
+            }
+        }
+        return classRef;
+    }
+
+    /** Get the qualified name for an element. For fields, returns the
+     *  enclosing class's qualified name + "." + field name.
      */
-    private static StringBuffer _generateClassLevelDocumentation(
-            ClassDoc classDoc) {
-        // This method is a private method so that the start() method
-        // is easier to read.
-        String className = classDoc.toString();
-        String shortClassName = null;
+    private String _getQualifiedName(Element element) {
+        if (element instanceof TypeElement) {
+            return ((TypeElement) element).getQualifiedName().toString();
+        }
+        if (element instanceof VariableElement) {
+            Element enclosing = element.getEnclosingElement();
+            if (enclosing instanceof TypeElement) {
+                return ((TypeElement) enclosing).getQualifiedName().toString()
+                        + "." + element.getSimpleName().toString();
+            }
+        }
+        return element.toString();
+    }
+
+    /** Get text for a custom block tag (e.g. @UserLevelDocumentation). */
+    private String _customTagCommentText(Element element) {
+        DocCommentTree docCommentTree = _docTrees.getDocCommentTree(element);
+        if (docCommentTree == null) {
+            return "";
+        }
+        StringBuilder textTag = new StringBuilder();
+        for (DocTree docTree : docCommentTree.getBlockTags()) {
+            if (docTree.getKind() == DocTree.Kind.UNKNOWN_BLOCK_TAG) {
+                UnknownBlockTagTree unknownTag = (UnknownBlockTagTree) docTree;
+                if ("UserLevelDocumentation"
+                        .equals(unknownTag.getTagName())) {
+                    for (DocTree content : unknownTag.getContent()) {
+                        textTag.append(content.toString());
+                    }
+                }
+            }
+        }
+        if (textTag.length() > 0) {
+            return "<UserLevelDocumentation>"
+                    + StringUtilities.escapeForXML(textTag.toString())
+                    + "</UserLevelDocumentation>";
+        }
+        return "";
+    }
+
+    /** Get the text of a named block tag (e.g. @author, @since). */
+    private String _getBlockTagText(Element element, String tagName) {
+        DocCommentTree docCommentTree = _docTrees.getDocCommentTree(element);
+        if (docCommentTree == null) {
+            return "";
+        }
+        StringBuilder textTag = new StringBuilder();
+        for (DocTree docTree : docCommentTree.getBlockTags()) {
+            String dtKindName = null;
+            switch (docTree.getKind()) {
+            case AUTHOR:
+                dtKindName = "author";
+                break;
+            case SINCE:
+                dtKindName = "since";
+                break;
+            case VERSION:
+                dtKindName = "version";
+                break;
+            case UNKNOWN_BLOCK_TAG:
+                dtKindName = ((UnknownBlockTagTree) docTree).getTagName();
+                break;
+            default:
+                continue;
+            }
+            if (tagName.equals(dtKindName)) {
+                String raw = docTree.toString();
+                int firstSpace = raw.indexOf(' ');
+                if (firstSpace >= 0) {
+                    textTag.append(raw.substring(firstSpace + 1).trim());
+                }
+            }
+        }
+        return textTag.toString();
+    }
+
+    /** Generate the class-level documentation for a TypeElement. */
+    private StringBuffer _generateClassLevelDocumentation(
+            TypeElement typeElement) {
+        String className = typeElement.getQualifiedName().toString();
+        String shortClassName;
         if (className.lastIndexOf(".") == -1) {
             shortClassName = className;
         } else {
@@ -258,177 +477,97 @@ public class PtDoclet {
                 _header + "<doc name=\"" + shortClassName + "\" class=\""
                         + className + "\">\n" + "  <description>\n"
                         + StringUtilities
-                                .escapeForXML(_inlineTagCommentText(classDoc))
+                                .escapeForXML(_inlineTagCommentText(typeElement))
                         + "  </description>\n");
 
-        Tag[] tags = null;
-        // Handle other class tags.
         String[] classTags = { "author", "version", "since",
                 "Pt.ProposedRating", "Pt.AcceptedRating",
                 "UserLevelDocumentation" };
         for (String classTag : classTags) {
-            tags = classDoc.tags(classTag);
-            if (tags.length > 0) {
-                StringBuffer textTag = new StringBuffer();
-                for (Tag tag : tags) {
-                    textTag.append(tag.text());
-                }
+            String tagText = _getBlockTagText(typeElement, classTag);
+            if (tagText.length() > 0) {
                 documentation.append("  <" + classTag + ">"
-                        + StringUtilities.escapeForXML(textTag.toString())
-                        + "</" + classTag + ">\n");
+                        + StringUtilities.escapeForXML(tagText) + "</"
+                        + classTag + ">\n");
             }
         }
         return documentation;
     }
 
     /** Generate documentation for all fields that are derived from a
-     *  specific base class.  The class inheritance tree is traversed
-     *  up to and including NamedObj and then the traversal stops.
-     *  @param classDoc The ClassDoc for the class we are documenting.
-     *  @param fieldBaseClass The base class for the field we are documenting.
-     *  @param element The XML element that is generated.
-     *  @return The documentation for all fields that are derived from
-     *  the fieldBaseClass parameter.
-     *  @exception ClassNotFoundException If the class of a field cannot
-     *  be found.
+     *  specific base class.
      */
-    private static String _generateFieldDocumentation(ClassDoc classDoc,
-            Class fieldBaseClass, String element)
-            throws ClassNotFoundException {
-        StringBuffer documentation = new StringBuffer();
-        FieldDoc[] fields = classDoc.fields();
-        // FIXME: get fields from superclasses?
-        for (FieldDoc field : fields) {
-            String className = field.type().toString();
-            //System.out.println(element + ": Processing " + className);
+    private String _generateFieldDocumentation(TypeElement typeElement,
+            Class fieldBaseClass, String xmlElement) {
+        StringBuilder documentation = new StringBuilder();
+        List<VariableElement> fields = ElementFilter
+                .fieldsIn(typeElement.getEnclosedElements());
+        for (VariableElement field : fields) {
+            String fieldTypeName = field.asType().toString();
 
             try {
-                if (className.equals("javax.media.j3d.Canvas3D") || className
-                        .equals("com.sun.j3d.utils.universe.SimpleUniverse")) {
-                    throw new Exception("Skipping " + className
-                            + ",it starts up X11 and interferes with the "
+                if (fieldTypeName.equals("javax.media.j3d.Canvas3D")
+                        || fieldTypeName.equals(
+                                "com.sun.j3d.utils.universe.SimpleUniverse")) {
+                    throw new Exception("Skipping " + fieldTypeName
+                            + ", it starts up X11 and interferes with the "
                             + "nightly build");
                 }
-                Class type = Class.forName(className);
+                Class type = Class.forName(fieldTypeName);
                 if (fieldBaseClass.isAssignableFrom(type)) {
-                    documentation.append(
-                            "    <!--" + className + "-->\n" + "    <" + element
-                                    + " name=\"" + field.name() + "\">"
-                                    + StringUtilities.escapeForXML(
-                                            _inlineTagCommentText(field))
-                                    + _customTagCommentText(field) + "</"
-                                    + element + ">\n");
+                    documentation.append("    <!--" + fieldTypeName + "-->\n"
+                            + "    <" + xmlElement + " name=\""
+                            + field.getSimpleName() + "\">"
+                            + StringUtilities
+                                    .escapeForXML(_inlineTagCommentText(field))
+                            + _customTagCommentText(field) + "</" + xmlElement
+                            + ">\n");
                 }
             } catch (ClassNotFoundException ex) {
-                // Ignored, we probably have a primitive type like boolean.
-                // Java 1.5 Type.isPrimitive() would help here.
+                // Ignored, probably a primitive type.
             } catch (Throwable throwable) {
-                // Ignore, probably a loader error for Java3D
-                System.out.println("Failed to find class " + className);
+                System.out.println("Failed to find class " + fieldTypeName);
                 throwable.printStackTrace();
             }
         }
-
-        //         // Go up the hierarchy
-        //         ClassDoc superClassDoc = classDoc.superclass();
-        //         if (superClassDoc != null) {
-        //             //System.out.println(element + ": SuperClass " + superClassDoc);
-
-        //             try {
-        //                 Class superClass = Class.forName(superClassDoc.toString());
-        //                 // Go no higher than TypedAtomicActor
-        //                 if (_namedObjClass.isAssignableFrom(superClass)) {
-        //                     documentation.append(_generateFieldDocumentation(
-        //                                                  superClassDoc,
-        //                                                  fieldBaseClass, element));
-        //                 }
-        //             } catch (Throwable throwable) {
-        //                 System.err.println("Failed to find superclass "
-        //                         + superClassDoc + "\n" + throwable);
-        //             }
-        //         }
         return documentation.toString();
-    }
-
-    /** Process the doclet command line arguments and return the value
-     *  of the -d parameter, if any.
-     *  @param options The command line options.
-     *  @return the value of the -d parameter, if any, otherwise return null.
-     */
-    private static String _getOutputDirectory(String[][] options) {
-        for (String[] option : options) {
-            if (option[0].equals("-d")) {
-                return option[1];
-            }
-        }
-        return null;
     }
 
     /** Given two dot separated classpath names, return a relative
      *  path to the corresponding doc file.
-     *  This method is used to create relative paths
-     *  @param baseDirectory The top level directory where the classes are written.
-     *  @param destinationClassName The dot separated fully qualified class name.
-     *  @param programElementDoc The documentation for the base class.
-     *  @param isIncluded True if the destination class is included in the
-     *  set of classes we are documenting.  If isIncluded is true,
-     *  we create a link to the .xml file.  If isIncluded is false, we
-     *  create a link to the javadoc .html file.
-     *  @return a relative path from the base class to the destination class.
      */
     private static String _relativizePath(String baseDirectory,
-            String destinationClassName, ProgramElementDoc programElementDoc,
-            boolean isIncluded) {
-        // Use / here because these will be used in URLS
-        //String baseFileName = baseClassName.replace('.', "/");
-        String baseClassName = programElementDoc.qualifiedName();
+            String destinationClassName, String baseClassName,
+            boolean isField, boolean isIncluded) {
         String destinationFileName = destinationClassName.replace('.', '/');
         if (baseDirectory != null) {
-            // FIXME: will this work if baseDirectory is null?
-            //baseFileName = baseDirectory + "/" + baseFileName;
             destinationFileName = baseDirectory + "/" + destinationFileName;
         }
-        //URI baseURI = new File(baseFileName).toURI();
         URI destinationURI = new File(destinationFileName).toURI();
         URI baseDirectoryURI = new File(baseDirectory).toURI();
         URI relativeURI = baseDirectoryURI.relativize(destinationURI);
 
-        // Determine offsite from baseClassName to baseDirectory
         String baseClassParts[] = baseClassName.split("\\.");
         StringBuffer relativePath = new StringBuffer();
 
-        int offset = 1;
-        if (programElementDoc instanceof FieldDoc) {
-            // Fields have names like foo.bar.bif, where bif is the method
-            offset = 2;
-        }
+        int offset = isField ? 2 : 1;
         for (int i = 0; i < baseClassParts.length - offset; i++) {
             relativePath.append("../");
         }
 
-        // If the target is not in the list of actors we are creating
-        // documentation for, then link to the .html file that
-        // presumably was generated by javadoc; otherwise, link to the
-        // .xml file
         String extension = isIncluded ? ".xml" : ".html";
 
         if (_verbose) {
             System.out.println("PtDoclet: relativize: " + baseDirectory + " "
-                               + baseClassName + " " + baseClassParts.length + " " + offset
-                               + " " + relativePath + relativeURI.getPath() + extension);
+                    + baseClassName + " " + baseClassParts.length + " " + offset
+                    + " " + relativePath + relativeURI.getPath() + extension);
         }
 
         return relativePath + relativeURI.getPath() + extension;
     }
 
-    /** Write the output to a file.
-     *  @param className The dot separated fully qualified classname,
-     *  which is used to specify the directory and filename to which
-     *  the documentation is written.
-     *  @param documentation The documentation that is written.
-     *  @exception IOException If there is a problem writing the documentation.
-     */
-    private static void _writeDoc(String className, String documentation)
+    /** Write the output to a file. */
+    private void _writeDoc(String className, String documentation)
             throws IOException {
         String fileBaseName = className.replace('.', File.separatorChar)
                 + ".xml";
@@ -436,18 +575,16 @@ public class PtDoclet {
         _ptIndexer.append(className, documentation);
 
         if (!StringUtilities.getProperty("KEPLER").equals("")) {
-            // If we are running in Kepler, the put the output somewhere else.
             fileBaseName = className.substring(className.lastIndexOf('.') + 1)
                     + ".doc.xml";
         }
 
-        String fileName = null;
+        String fileName;
         if (_outputDirectory != null) {
             fileName = _outputDirectory + File.separator + fileBaseName;
         } else {
             fileName = fileBaseName;
         }
-        // If necessary, create the directory.
         File directoryFile = new File(fileName).getParentFile();
         if (!directoryFile.exists()) {
             if (!directoryFile.mkdirs()) {
@@ -470,15 +607,21 @@ public class PtDoclet {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Header string for XML PtDoc output. */
     private static String _header = "<?xml version=\"1.0\" standalone=\"yes\"?>\n<!DOCTYPE doc PUBLIC \"-//UC Berkeley//DTD DocML 1//EN\"\n    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/DocML_1.dtd\">\n";
 
-    /** Directory to which the output is to be written. */
-    private static String _outputDirectory;
+    private String _outputDirectory;
 
-    /** Index of keywords in the documentation. */
-    private static PtIndexer _ptIndexer;
+    private PtIndexer _ptIndexer;
 
-    /** Set to true for verbose messages. */
     private static boolean _verbose = false;
+
+    private Reporter _reporter;
+
+    private DocTrees _docTrees;
+
+    private Elements _elementUtils;
+
+    private Types _typeUtils;
+
+    private DocletEnvironment _environment;
 }
