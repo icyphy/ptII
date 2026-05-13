@@ -35,7 +35,7 @@ package org.json;
 @since Ptolemy II 10.0
  * @version 2008-09-18
  */
-public class JSONException extends Exception {
+public class JSONException extends RuntimeException {
     /**
      *
      */

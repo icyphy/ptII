@@ -1,0 +1,48 @@
+<!-- $Id$ -->
+<html>
+<head>
+<title>org.ptolemy.agent</title>
+</head>
+<body>
+The org.ptolemy.agent package.
+
+<p>This package adds an "automatic modeling agent" capability on top of
+Ptolemy II. It embeds the Ptolemy II kernel (MoMLParser, Manager,
+CompositeEntity, etc.) into a long-running REST/WebSocket service so
+that a Large Language Model (LLM) can drive model construction through
+a small set of tool functions, and so that a decoupled web frontend
+can render the model and plot simulation results.
+
+<p>The Ptolemy II kernel itself is NOT modified. All integration goes
+through existing public APIs:
+<ul>
+<li>{@link ptolemy.moml.MoMLParser} for parsing initial models or
+    fragments produced by tools.</li>
+<li>{@link ptolemy.moml.MoMLChangeRequest} for incremental edits
+    (add entity, connect, set parameter, delete).</li>
+<li>{@link ptolemy.actor.Manager} for running simulations and
+    reporting state via {@link ptolemy.actor.ExecutionListener}.</li>
+<li>{@link ptolemy.actor.lib.Recorder} actors are injected
+    automatically to collect output signals.</li>
+</ul>
+
+<p>Sub-packages:
+<ul>
+<li><b>session</b> — {@code PtolemySession}, {@code SessionManager},
+    {@code SignalCollector}, {@code GraphSerializer}.</li>
+<li><b>server</b> — {@code AgentServerMain}, {@code SimpleHttpServer},
+    and the REST/WS route handlers.</li>
+<li><b>tools</b> — pluggable {@code AgentTool} implementations
+    (add_entity, connect, set_parameter, run, ...).</li>
+<li><b>llm</b> — {@code LLMClient} abstraction plus an OpenAI-compatible
+    implementation.</li>
+<li><b>agent</b> — the ReAct-style {@code AgentLoop} that wires tools
+    and LLM together.</li>
+<li><b>library</b> — {@code LibraryIndex} that exposes the available
+    actor catalog (from {@code ptolemy/configs/basicLibrary.xml}) to
+    the LLM and the frontend.</li>
+</ul>
+
+<p>@since Ptolemy II 11.1
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!-- $Id$ -->
+<html>
+<head><title>org.ptolemy.agent.agent</title></head>
+<body>
+The ReAct-style {@link org.ptolemy.agent.agent.AgentLoop} that drives
+multi-step model construction. The loop takes a user goal, asks the
+LLM what to do, executes the requested tool, feeds the result back to
+the LLM, and repeats until the LLM produces a final reply or a step
+budget is exhausted.
+
+<p>This is intentionally a thin orchestration layer; all the heavy
+lifting lives in {@link org.ptolemy.agent.tools} and
+{@link org.ptolemy.agent.llm}.
+
+<p>@since Ptolemy II 11.1
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!--
+  Seed model for the "RepairModel" demo. A Ramp source, a Scale by
+  factor 2.0, and a Discard sink. The Ramp.output is connected to the
+  Scale's input, but the Scale.output is DELIBERATELY left dangling.
+  The agent is expected to validate(), notice the issue, connect
+  Scale.output to Discard.input, and run() the model.
+-->
+<entity name="RepairSeed" class="ptolemy.actor.TypedCompositeActor">
+  <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
+    <property name="iterations" class="ptolemy.data.expr.Parameter"
+              value="5"/>
+  </property>
+
+  <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+    <property name="init" class="ptolemy.data.expr.Parameter" value="0.0"/>
+    <property name="step" class="ptolemy.data.expr.Parameter" value="1.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[80.0, 100.0]"/>
+  </entity>
+
+  <entity name="Scale" class="ptolemy.actor.lib.Scale">
+    <property name="factor" class="ptolemy.data.expr.Parameter" value="2.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[220.0, 100.0]"/>
+  </entity>
+
+  <entity name="Sink" class="ptolemy.actor.lib.Discard">
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[360.0, 100.0]"/>
+  </entity>
+
+  <!-- One good wire ... -->
+  <relation name="r1" class="ptolemy.actor.TypedIORelation"/>
+  <link port="Ramp.output" relation="r1"/>
+  <link port="Scale.input" relation="r1"/>
+
+  <!-- ... and one wire missing on purpose between Scale.output
+       and Sink.input. The agent should add it. -->
+</entity>

@@ -1,0 +1,121 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!--
+  Seed model for the "TunePID" demo. A first-order plant
+  dy/dt = (u - y) / tau is driven by a PID controller comparing the
+  output against a unit step setpoint. Gains are intentionally bad so
+  the agent has something concrete to tune.
+
+  After loading this model in the agent UI, ask the chat to tune Kp,
+  Ki and Kd to hit the setpoint with minimum overshoot.
+-->
+<entity name="TunePIDSeed" class="ptolemy.actor.TypedCompositeActor">
+  <property name="ContinuousDirector"
+            class="ptolemy.domains.continuous.kernel.ContinuousDirector">
+    <property name="stopTime" class="ptolemy.data.expr.Parameter"
+              value="10.0"/>
+    <property name="initStepSize" class="ptolemy.data.expr.Parameter"
+              value="0.01"/>
+    <property name="maxStepSize" class="ptolemy.data.expr.Parameter"
+              value="0.05"/>
+  </property>
+
+  <!-- Step setpoint = 1.0 -->
+  <entity name="setpoint" class="ptolemy.actor.lib.Const">
+    <property name="value" class="ptolemy.data.expr.Parameter" value="1.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[40.0, 120.0]"/>
+  </entity>
+
+  <!-- Error = setpoint - plant_output -->
+  <entity name="error" class="ptolemy.actor.lib.AddSubtract">
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[160.0, 120.0]"/>
+  </entity>
+
+  <!-- Proportional gain (intentionally too small). -->
+  <entity name="Kp" class="ptolemy.actor.lib.Scale">
+    <property name="factor" class="ptolemy.data.expr.Parameter" value="0.1"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[280.0, 60.0]"/>
+  </entity>
+
+  <!-- Integral gain (intentionally zero). -->
+  <entity name="Ki" class="ptolemy.actor.lib.Scale">
+    <property name="factor" class="ptolemy.data.expr.Parameter" value="0.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[280.0, 140.0]"/>
+  </entity>
+
+  <entity name="iIntegrator" class="ptolemy.actor.lib.Integrator">
+    <property name="initialState" class="ptolemy.data.expr.Parameter"
+              value="0.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[380.0, 140.0]"/>
+  </entity>
+
+  <!-- Derivative gain (intentionally zero). -->
+  <entity name="Kd" class="ptolemy.actor.lib.Scale">
+    <property name="factor" class="ptolemy.data.expr.Parameter" value="0.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[280.0, 220.0]"/>
+  </entity>
+
+  <!-- Sum of P + I + D contributions = control signal. -->
+  <entity name="ctrl" class="ptolemy.actor.lib.AddSubtract">
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[480.0, 140.0]"/>
+  </entity>
+
+  <!-- Plant: first-order tau = 1 second. -->
+  <entity name="plantIntegrator" class="ptolemy.actor.lib.Integrator">
+    <property name="initialState" class="ptolemy.data.expr.Parameter"
+              value="0.0"/>
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[600.0, 140.0]"/>
+  </entity>
+  <entity name="plantSubtract" class="ptolemy.actor.lib.AddSubtract">
+    <property name="_location" class="ptolemy.kernel.util.Location"
+              value="[540.0, 200.0]"/>
+  </entity>
+
+  <relation name="rsp" class="ptolemy.actor.TypedIORelation"/>
+  <link port="setpoint.output" relation="rsp"/>
+  <link port="error.plus" relation="rsp"/>
+
+  <relation name="rerr" class="ptolemy.actor.TypedIORelation"/>
+  <link port="error.output" relation="rerr"/>
+  <link port="Kp.input" relation="rerr"/>
+  <link port="Ki.input" relation="rerr"/>
+  <link port="Kd.input" relation="rerr"/>
+
+  <relation name="rki" class="ptolemy.actor.TypedIORelation"/>
+  <link port="Ki.output" relation="rki"/>
+  <link port="iIntegrator.input" relation="rki"/>
+
+  <relation name="rcp" class="ptolemy.actor.TypedIORelation"/>
+  <link port="Kp.output" relation="rcp"/>
+  <link port="ctrl.plus" relation="rcp"/>
+
+  <relation name="rci" class="ptolemy.actor.TypedIORelation"/>
+  <link port="iIntegrator.output" relation="rci"/>
+  <link port="ctrl.plus" relation="rci"/>
+
+  <relation name="rcd" class="ptolemy.actor.TypedIORelation"/>
+  <link port="Kd.output" relation="rcd"/>
+  <link port="ctrl.plus" relation="rcd"/>
+
+  <relation name="rctrl" class="ptolemy.actor.TypedIORelation"/>
+  <link port="ctrl.output" relation="rctrl"/>
+  <link port="plantSubtract.plus" relation="rctrl"/>
+
+  <relation name="rplant" class="ptolemy.actor.TypedIORelation"/>
+  <link port="plantSubtract.output" relation="rplant"/>
+  <link port="plantIntegrator.input" relation="rplant"/>
+
+  <relation name="rfb" class="ptolemy.actor.TypedIORelation"/>
+  <link port="plantIntegrator.output" relation="rfb"/>
+  <link port="plantSubtract.minus" relation="rfb"/>
+  <link port="error.minus" relation="rfb"/>
+</entity>

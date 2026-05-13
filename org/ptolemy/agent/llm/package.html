@@ -1,0 +1,21 @@
+<!-- $Id$ -->
+<html>
+<head><title>org.ptolemy.agent.llm</title></head>
+<body>
+LLM client abstraction and a default OpenAI-compatible implementation.
+
+<p>{@link org.ptolemy.agent.llm.LLMClient} is intentionally tiny: it
+takes a prompt and a tool list, returns the model's reply or its
+requested tool calls. The default {@link
+org.ptolemy.agent.llm.OpenAIClient} speaks the OpenAI Chat Completions
+JSON over plain {@code HttpURLConnection}, so no third-party HTTP
+client is required to run M2.
+
+<p>{@code OpenAIClient} also works against any OpenAI-compatible
+endpoint (e.g. Azure OpenAI, vLLM, llama.cpp's server, Together,
+Ollama with the {@code /v1/chat/completions} endpoint enabled). Set
+the {@code OPENAI_BASE_URL} environment variable to switch providers.
+
+<p>@since Ptolemy II 11.1
+</body>
+</html>

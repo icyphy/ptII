@@ -1,0 +1,35 @@
+<!-- $Id$ -->
+<html>
+<head><title>org.ptolemy.agent.tools</title></head>
+<body>
+Pluggable "tools" the agent (or a human user) can invoke to mutate a
+Ptolemy II model and to inspect it.
+
+<p>The {@link org.ptolemy.agent.tools.AgentTool} interface is the
+unit of pluggability. Every tool advertises a JSON Schema that the
+LLM consumes through OpenAI-style function calling, and executes by
+emitting a {@link ptolemy.moml.MoMLChangeRequest} against the target
+session.
+
+<p>Tools available in M2:
+<ul>
+<li>{@code add_entity}   &mdash; instantiate any actor inside the
+    top-level composite</li>
+<li>{@code connect}      &mdash; connect two ports through a new
+    {@code TypedIORelation}</li>
+<li>{@code set_parameter} &mdash; set a parameter value on an existing
+    entity</li>
+<li>{@code delete}       &mdash; remove an entity</li>
+<li>{@code run}          &mdash; run the simulation to completion</li>
+<li>{@code list_library} &mdash; list curated actor classes for the LLM</li>
+<li>{@code validate}     &mdash; parse-validate a MoML fragment without
+    applying it</li>
+</ul>
+
+<p>The same registry is consumed by the LLM agent loop and by the
+frontend canvas (M3+), so manual edits and automated edits go through
+the exact same code path.
+
+<p>@since Ptolemy II 11.1
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!-- $Id$ -->
+<html>
+<head><title>org.ptolemy.agent.session</title></head>
+<body>
+Wrappers that turn a Ptolemy II model + Manager into a long-lived,
+RPC-friendly "session".
+
+<p>A {@link org.ptolemy.agent.session.PtolemySession} owns one
+top-level {@code CompositeActor}, its {@link ptolemy.actor.Manager},
+and a small collection of automatically-injected
+{@link ptolemy.actor.lib.Recorder} actors that capture every top-level
+output port so that the simulation results can be retrieved as JSON.
+
+<p>{@link org.ptolemy.agent.session.SessionManager} tracks sessions
+by id and is thread-safe.
+
+<p>@since Ptolemy II 11.1
+</body>
+</html>
