@@ -194,6 +194,7 @@ public class ToolRegistry {
                 .register(new DeleteTool())
                 .register(new RunSimulationTool())
                 .register(new ListLibraryTool())
+                .register(new ListEntitiesTool())
                 .register(new DescribeActorTool())
                 .register(new ValidateTool());
         return r;

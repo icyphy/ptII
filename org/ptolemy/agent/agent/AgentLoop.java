@@ -167,6 +167,24 @@ public class AgentLoop {
                     new java.util.ArrayDeque<String>();
             final int RECENT_WINDOW = 8;
 
+            // Sliding window of the last N thought-prefixes (first 120
+            // chars of each LLM response). When the same prefix shows
+            // up MAX_REPEAT_THOUGHT times in a row the agent is stuck
+            // saying the same thing over and over (a known LLM failure
+            // mode) and we hard-stop the loop with a clear message so
+            // the budget isn't burned silently.
+            java.util.Deque<String> recentThoughts =
+                    new java.util.ArrayDeque<String>();
+            final int THOUGHT_WINDOW       = 4;
+            final int MAX_REPEAT_THOUGHT   = 3;
+            // Same idea for tool calls: identical (toolName + JSON args)
+            // executed back-to-back is also a stall signal that needs
+            // hard termination, not just a coaching note.
+            java.util.Deque<String> recentCallSig =
+                    new java.util.ArrayDeque<String>();
+            final int CALL_SIG_WINDOW      = 6;
+            final int MAX_REPEAT_CALL_SIG  = 3;
+
             for (int step = 0; step < _hardLimit; step++) {
                 LLMResponse reply;
                 try {
@@ -186,6 +204,35 @@ public class AgentLoop {
                 // Intermediate thought (content alongside tool calls).
                 if (!reply.content().isEmpty()) {
                     trace.addThought(reply.content());
+                    // Detect "broken record" mode — same thought 3+
+                    // times in a row. Hard-terminate; coaching alone
+                    // does not break this LLM failure mode.
+                    String snippet = reply.content().trim();
+                    if (snippet.length() > 120) {
+                        snippet = snippet.substring(0, 120);
+                    }
+                    int sameThoughts = 0;
+                    for (String prior : recentThoughts) {
+                        if (prior.equals(snippet)) {
+                            sameThoughts++;
+                        }
+                    }
+                    if (sameThoughts >= MAX_REPEAT_THOUGHT - 1) {
+                        trace.finish(false,
+                                "Agent stuck in a loop: produced the"
+                                + " same intermediate thought "
+                                + (sameThoughts + 1)
+                                + " times in a row, last attempt: \""
+                                + snippet
+                                + "\". Try rephrasing the goal, or use"
+                                + " a different tool — list_entities"
+                                + " enumerates the current model.");
+                        return trace;
+                    }
+                    recentThoughts.addLast(snippet);
+                    while (recentThoughts.size() > THOUGHT_WINDOW) {
+                        recentThoughts.removeFirst();
+                    }
                 }
 
                 messages.put(reply.toAssistantMessage());
@@ -193,6 +240,39 @@ public class AgentLoop {
                 boolean anySuccess = false;
                 for (LLMResponse.ToolCall call : reply.toolCalls()) {
                     trace.addToolCall(call.toolName, call.arguments);
+
+                    // Hard repeat-call detector: same toolName + same
+                    // exact JSON args 3 times in a 6-call window means
+                    // the LLM is grinding on a no-op. Stop the loop.
+                    String fullSig = call.toolName + "::"
+                            + (call.arguments == null
+                                    ? "{}"
+                                    : call.arguments.toString());
+                    int sigRepeats = 0;
+                    for (String prior : recentCallSig) {
+                        if (prior.equals(fullSig)) sigRepeats++;
+                    }
+                    if (sigRepeats >= MAX_REPEAT_CALL_SIG - 1) {
+                        JSONObject stopObs = new JSONObject();
+                        stopObs.put("ok", false);
+                        stopObs.put("message",
+                                "loop-detector: identical "
+                                + call.toolName
+                                + " call repeated " + (sigRepeats + 1)
+                                + " times — terminating to save budget");
+                        trace.addToolResult(call.toolName, stopObs);
+                        trace.finish(false,
+                                "Agent stuck calling " + call.toolName
+                                + " with the same arguments "
+                                + (sigRepeats + 1) + " times in a row."
+                                + " Try a different tool or"
+                                + " rephrase your goal.");
+                        return trace;
+                    }
+                    recentCallSig.addLast(fullSig);
+                    while (recentCallSig.size() > CALL_SIG_WINDOW) {
+                        recentCallSig.removeFirst();
+                    }
 
                     // Anti-thrash: inspect the recent-call window for
                     // patterns that indicate the agent is undoing its

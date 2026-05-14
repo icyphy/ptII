@@ -193,10 +193,7 @@ public final class GraphSerializer {
         @SuppressWarnings("unchecked")
         List<Relation> relations = current.relationList();
         for (Relation relation : relations) {
-            JSONObject edge = edgeJson(relation, current);
-            if (edge != null) {
-                edges.put(edge);
-            }
+            edgesForRelation(relation, current, edges);
         }
 
         return root;
@@ -329,17 +326,26 @@ public final class GraphSerializer {
         return fallback;
     }
 
-    private static JSONObject edgeJson(Relation relation,
-            CompositeEntity scope) {
+    /** Produce one or more edges for a relation, one per
+     *  (source-port, destination-port) pairing. A normal two-port
+     *  relation produces exactly one edge. A fan-out relation that has
+     *  one source port and N destination ports produces N edges; a
+     *  multiport fan-in with N sources and one destination also
+     *  produces N edges. This ensures every connection is visible
+     *  on the canvas even when the model uses shared relations. */
+    private static void edgesForRelation(Relation relation,
+            CompositeEntity scope, JSONArray out) {
         @SuppressWarnings("unchecked")
         List<?> linked = relation.linkedPortList();
-        // For now we only render two-port relations as a single edge,
-        // which covers all of the canonical demos. Multi-way
-        // relations are flattened into a star later.
-        IOPort src = null;
-        IOPort dst = null;
-        boolean srcIsBoundary = false;
-        boolean dstIsBoundary = false;
+
+        // Separate ports into sources and destinations, respecting
+        // composite-boundary semantics (an input boundary inside a
+        // composite acts as a data source because signals flow IN).
+        List<IOPort> sources = new java.util.ArrayList<IOPort>();
+        List<IOPort> destinations = new java.util.ArrayList<IOPort>();
+        List<Boolean> srcBoundary = new java.util.ArrayList<Boolean>();
+        List<Boolean> dstBoundary = new java.util.ArrayList<Boolean>();
+
         for (Object o : linked) {
             if (!(o instanceof IOPort)) {
                 continue;
@@ -348,58 +354,72 @@ public final class GraphSerializer {
             if (isHidden(port.getContainer())) {
                 continue;
             }
-            // A port on the scope itself is a boundary port. Inside the
-            // composite, an input boundary acts as a SOURCE, and an
-            // output boundary acts as a SINK.
             boolean onBoundary = (port.getContainer() == scope);
             if (onBoundary) {
+                // Boundary input → signals flow inward → acts as source
                 if (port.isInput()) {
-                    if (src == null) {
-                        src = port;
-                        srcIsBoundary = true;
-                    }
+                    sources.add(port);
+                    srcBoundary.add(true);
                 } else if (port.isOutput()) {
-                    if (dst == null) {
-                        dst = port;
-                        dstIsBoundary = true;
-                    }
+                    destinations.add(port);
+                    dstBoundary.add(true);
                 }
-                continue;
-            }
-            if (port.isOutput()) {
-                if (src == null) {
-                    src = port;
-                }
+            } else if (port.isOutput()) {
+                sources.add(port);
+                srcBoundary.add(false);
             } else if (port.isInput()) {
-                if (dst == null) {
-                    dst = port;
-                }
+                destinations.add(port);
+                dstBoundary.add(false);
             }
         }
-        if (src == null || dst == null) {
-            return null;
+        if (sources.isEmpty() || destinations.isEmpty()) {
+            return;
         }
-        JSONObject edge = new JSONObject();
-        edge.put("id", relation.getName());
-        if (srcIsBoundary) {
-            String pseudo = "__boundary__" + src.getName();
-            edge.put("source", pseudo);
-            edge.put("sourceHandle", pseudo + "." + src.getName());
-        } else {
-            NamedObj owner = src.getContainer();
-            edge.put("source", owner.getName());
-            edge.put("sourceHandle", owner.getName() + "." + src.getName());
+
+        // Produce one edge per (source, destination) pair. For the
+        // common 1-source / N-destination fan-out pattern this yields
+        // one edge per wire. For N-source / 1-destination multiport
+        // fan-in it similarly yields one edge per wire.
+        for (int si = 0; si < sources.size(); si++) {
+            IOPort src = sources.get(si);
+            boolean sIsBoundary = srcBoundary.get(si);
+            for (int di = 0; di < destinations.size(); di++) {
+                IOPort dst = destinations.get(di);
+                boolean dIsBoundary = dstBoundary.get(di);
+
+                JSONObject edge = new JSONObject();
+                // Edge id: relation name, suffixed when fan
+                String edgeId = relation.getName();
+                if (sources.size() > 1 || destinations.size() > 1) {
+                    edgeId = edgeId + "_" + si + "_" + di;
+                }
+                edge.put("id", edgeId);
+
+                if (sIsBoundary) {
+                    String pseudo = "__boundary__" + src.getName();
+                    edge.put("source", pseudo);
+                    edge.put("sourceHandle",
+                            pseudo + "." + src.getName());
+                } else {
+                    NamedObj owner = src.getContainer();
+                    edge.put("source", owner.getName());
+                    edge.put("sourceHandle",
+                            owner.getName() + "." + src.getName());
+                }
+                if (dIsBoundary) {
+                    String pseudo = "__boundary__" + dst.getName();
+                    edge.put("target", pseudo);
+                    edge.put("targetHandle",
+                            pseudo + "." + dst.getName());
+                } else {
+                    NamedObj owner = dst.getContainer();
+                    edge.put("target", owner.getName());
+                    edge.put("targetHandle",
+                            owner.getName() + "." + dst.getName());
+                }
+                out.put(edge);
+            }
         }
-        if (dstIsBoundary) {
-            String pseudo = "__boundary__" + dst.getName();
-            edge.put("target", pseudo);
-            edge.put("targetHandle", pseudo + "." + dst.getName());
-        } else {
-            NamedObj owner = dst.getContainer();
-            edge.put("target", owner.getName());
-            edge.put("targetHandle", owner.getName() + "." + dst.getName());
-        }
-        return edge;
     }
 
     private static boolean isHidden(NamedObj obj) {
