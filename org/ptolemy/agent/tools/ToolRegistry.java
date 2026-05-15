@@ -95,6 +95,7 @@ public class ToolRegistry {
         if (tool == null) {
             return AgentResult.fail("unknown tool: " + name);
         }
+        AgentResult result;
         try {
             JSONObject safeArgs = args == null ? new JSONObject() : args;
             if (!"validate".equals(name)
@@ -108,12 +109,205 @@ public class ToolRegistry {
             AgentResult preflight = ToolCallValidator.validate(name, session,
                     safeArgs);
             if (preflight != null) {
-                return preflight;
+                result = preflight;
+            } else {
+                result = tool.execute(session, safeArgs);
             }
-            return tool.execute(session, safeArgs);
         } catch (Throwable t) {
-            return AgentResult.fail(name + " crashed: " + t.getMessage());
+            result = AgentResult.fail(name + " crashed: " + t.getMessage());
         }
+        if (result != null && !result.ok() && session != null) {
+            _accrueClassFailures(name, session, args, result);
+        }
+        return result;
+    }
+
+    /** Best-effort attribution of a tool failure to specific actor
+     *  classes in the current model.  Records ONCE per (className,
+     *  dispatch) so a single bad call cannot inflate a class's
+     *  counter by referencing it multiple times.  The signal is
+     *  consumed by {@link org.ptolemy.agent.session.ModelContext} so
+     *  the LLM sees its own failure history each round and can pick
+     *  a different actor without being hard-vetoed. */
+    private static void _accrueClassFailures(String tool,
+            PtolemySession session, JSONObject args, AgentResult result) {
+        if (session.toplevel() == null) {
+            return;
+        }
+        if (args == null) {
+            args = new JSONObject();
+        }
+        java.util.Set<String> recorded =
+                new java.util.HashSet<String>();
+        ptolemy.kernel.CompositeEntity scope = _scope(session, args);
+        if (scope == null) {
+            return;
+        }
+        // add_entity / add_composite carry an explicit className.
+        if ("add_entity".equals(tool) || "add_composite".equals(tool)) {
+            String cls = args.optString("className", "").trim();
+            _recordClass(session, cls, recorded);
+            return;
+        }
+        // connect / connect_many / set_parameter / delete fail in a
+        // way that points at one or more existing entities; attribute
+        // to those entities' classes — but only the side(s) the
+        // failure payload flags via `field`, so a valid endpoint
+        // paired with a bad one does not get blamed.
+        if ("connect".equals(tool)) {
+            java.util.Set<String> blameFields = _badFields(result);
+            if (blameFields.isEmpty() || blameFields.contains("from")) {
+                _recordEntityClassFromRef(scope, session,
+                        args.optString("from", ""), recorded);
+            }
+            if (blameFields.isEmpty() || blameFields.contains("to")) {
+                _recordEntityClassFromRef(scope, session,
+                        args.optString("to", ""), recorded);
+            }
+        } else if ("connect_many".equals(tool)) {
+            org.json.JSONArray edges = args.optJSONArray("edges");
+            org.json.JSONArray rejected = result.data()
+                    .optJSONArray("rejected");
+            if (rejected != null && rejected.length() > 0) {
+                // connect_many rolled back on rejected[].  Attribute
+                // only to the failing endpoint(s) of each rejected
+                // edge so unrelated edges don't get blamed.
+                for (int i = 0; i < rejected.length(); i++) {
+                    JSONObject row = rejected.optJSONObject(i);
+                    if (row == null) {
+                        continue;
+                    }
+                    JSONObject edge = row.optJSONObject("edge");
+                    if (edge == null) {
+                        continue;
+                    }
+                    java.util.Set<String> blameFields =
+                            _badFieldsFromIssueArray(
+                                    row.optJSONArray("issues"));
+                    if (blameFields.isEmpty()
+                            || blameFields.contains("from")) {
+                        _recordEntityClassFromRef(scope, session,
+                                edge.optString("from", ""), recorded);
+                    }
+                    if (blameFields.isEmpty()
+                            || blameFields.contains("to")) {
+                        _recordEntityClassFromRef(scope, session,
+                                edge.optString("to", ""), recorded);
+                    }
+                }
+            } else if (edges != null) {
+                // Failure outside the preflight stage (e.g. Ptolemy
+                // refused the MoML); without per-edge attribution,
+                // blame everything in the batch.
+                for (int i = 0; i < edges.length(); i++) {
+                    JSONObject e = edges.optJSONObject(i);
+                    if (e == null) {
+                        continue;
+                    }
+                    _recordEntityClassFromRef(scope, session,
+                            e.optString("from", ""), recorded);
+                    _recordEntityClassFromRef(scope, session,
+                            e.optString("to", ""), recorded);
+                }
+            }
+        } else if ("set_parameter".equals(tool)
+                || "delete".equals(tool)) {
+            String entity = args.optString("entity",
+                    args.optString("name", "")).trim();
+            if (!entity.isEmpty()) {
+                ptolemy.kernel.ComponentEntity ent =
+                        scope.getEntity(entity);
+                if (ent != null) {
+                    _recordClass(session, ent.getClassName(), recorded);
+                }
+            }
+        }
+    }
+
+    /** Resolve the scope (top level or named child composite) from a
+     *  tool's argument bag.  Returns null when no model is loaded. */
+    private static ptolemy.kernel.CompositeEntity _scope(
+            PtolemySession session, JSONObject args) {
+        ptolemy.kernel.CompositeEntity top =
+                (ptolemy.kernel.CompositeEntity) session.toplevel();
+        if (top == null) {
+            return null;
+        }
+        String parent = args.optString("parent", "").trim();
+        if (parent.isEmpty()) {
+            return top;
+        }
+        ptolemy.kernel.ComponentEntity child = top.getEntity(parent);
+        if (child instanceof ptolemy.kernel.CompositeEntity) {
+            return (ptolemy.kernel.CompositeEntity) child;
+        }
+        return top;
+    }
+
+    private static void _recordEntityClassFromRef(
+            ptolemy.kernel.CompositeEntity scope, PtolemySession session,
+            String reference, java.util.Set<String> recorded) {
+        if (reference == null || reference.isEmpty()) {
+            return;
+        }
+        int dot = reference.lastIndexOf('.');
+        if (dot <= 0) {
+            return;
+        }
+        String entityName = reference.substring(0, dot);
+        ptolemy.kernel.ComponentEntity ent = scope.getEntity(entityName);
+        if (ent == null) {
+            // The entity does not exist; the failure is more likely a
+            // typo than a class-level problem.  Skip.
+            return;
+        }
+        _recordClass(session, ent.getClassName(), recorded);
+    }
+
+    private static void _recordClass(PtolemySession session,
+            String className, java.util.Set<String> recorded) {
+        if (className == null || className.isEmpty()) {
+            return;
+        }
+        if (recorded.add(className)) {
+            session.recordClassFailure(className);
+        }
+    }
+
+    /** Extract the set of {@code field} values from a top-level
+     *  failure payload's {@code data.issues[*]} so we know which
+     *  side(s) of a connect call were the actual cause.  Returns an
+     *  empty set when the payload has no structured issues — in
+     *  which case the caller blames both endpoints conservatively. */
+    private static java.util.Set<String> _badFields(AgentResult result) {
+        if (result == null) {
+            return java.util.Collections.emptySet();
+        }
+        org.json.JSONObject data = result.data();
+        if (data == null) {
+            return java.util.Collections.emptySet();
+        }
+        org.json.JSONArray issues = data.optJSONArray("issues");
+        return _badFieldsFromIssueArray(issues);
+    }
+
+    private static java.util.Set<String> _badFieldsFromIssueArray(
+            org.json.JSONArray issues) {
+        java.util.Set<String> out = new java.util.HashSet<String>();
+        if (issues == null) {
+            return out;
+        }
+        for (int i = 0; i < issues.length(); i++) {
+            JSONObject issue = issues.optJSONObject(i);
+            if (issue == null) {
+                continue;
+            }
+            String field = issue.optString("field", "");
+            if ("from".equals(field) || "to".equals(field)) {
+                out.add(field);
+            }
+        }
+        return out;
     }
 
     /** Build an OpenAI-style tools array suitable for the

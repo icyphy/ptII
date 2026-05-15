@@ -250,7 +250,10 @@ public class AgentPipeline {
 
     /** One-shot LLM call with no tools. Produces a markdown plan
      *  using {@link PromptTemplates#PLANNER_PROMPT}. Best-effort: on
-     *  any error the build phase still runs without a plan. */
+     *  any error the build phase still runs without a plan.  The
+     *  planner also receives the capability scan as a soft prior so
+     *  it does not default to generic Expression-based plans when
+     *  domain-specific actors already exist in the library. */
     private String _runPlanner(String userGoal) {
         if (_llm == null || !_llm.isAvailable()) {
             return null;
@@ -263,6 +266,15 @@ public class AgentPipeline {
             messages.put(new JSONObject()
                     .put("role", "user")
                     .put("content", userGoal));
+            String recipe = CapabilityProbe.promptBlock(
+                    CapabilityProbe.probe(userGoal,
+                            org.ptolemy.agent.library.LibraryIndex
+                                    .shared()));
+            if (recipe != null && !recipe.isEmpty()) {
+                messages.put(new JSONObject()
+                        .put("role", "user")
+                        .put("content", recipe));
+            }
             LLMResponse reply = _llm.chat(messages, new JSONArray());
             String content = reply == null ? null : reply.content();
             return content == null || content.isEmpty() ? null : content;

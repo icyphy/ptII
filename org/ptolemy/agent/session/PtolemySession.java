@@ -124,6 +124,13 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
     /** Auto-injected recorders that capture top-level output ports. */
     private SignalCollector _collector;
 
+    /** Per-session counter of {@code className} occurrences that
+     *  failed in this session.  Used by {@link ModelContext} to
+     *  surface failure history to the LLM so it can choose
+     *  alternatives without being hard-vetoed.  Insertion-ordered. */
+    private final java.util.Map<String, Integer> _classFailures =
+            new java.util.LinkedHashMap<String, Integer>();
+
     /** Last execution exception (if any), wiped at each new run. */
     private volatile Throwable _lastError;
 
@@ -451,6 +458,28 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         return out;
     }
 
+    /** Record one failed attempt to materialize an entity of class
+     *  {@code className} in this session.  Best-effort: nulls and
+     *  empty strings are ignored.  Counters are wiped together with
+     *  the model in {@link #disposeModel()}.
+     *  @param className Class that failed, e.g.
+     *      {@code ptolemy.actor.lib.Expression}. */
+    public synchronized void recordClassFailure(String className) {
+        if (className == null || className.isEmpty()) {
+            return;
+        }
+        Integer current = _classFailures.get(className);
+        _classFailures.put(className,
+                current == null ? 1 : current + 1);
+    }
+
+    /** @return Snapshot of class-failure counts in this session.
+     *      Empty when nothing has failed. */
+    public synchronized java.util.Map<String, Integer> classFailures() {
+        return new java.util.LinkedHashMap<String, Integer>(
+                _classFailures);
+    }
+
     /** Forcibly clean up the model. The session itself remains and may
      *  be reused by calling {@link #loadFile} or {@link #loadMoml}
      *  again. */
@@ -466,6 +495,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         _detachProbesQuietly();
         _toplevel = null;
         _collector = null;
+        _classFailures.clear();
         _state = "IDLE";
     }
 

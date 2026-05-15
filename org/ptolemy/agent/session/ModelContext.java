@@ -83,7 +83,39 @@ public final class ModelContext {
                 .put("nodes", nodes.length())
                 .put("edges", edges.length())
                 .put("directors", directors.length()));
+        JSONObject failures = _classFailures(session);
+        if (failures != null) {
+            out.put("classFailures", failures);
+        }
         return out;
+    }
+
+    /** Build the class-failure history block for the current session.
+     *  Returns null when nothing has failed yet; an object with a
+     *  {@code counts} map plus a short advisory otherwise.  Surfacing
+     *  this each round lets the LLM notice its own dead-end attempts
+     *  and pivot to an alternative actor without being hard-vetoed. */
+    private static JSONObject _classFailures(PtolemySession session) {
+        java.util.Map<String, Integer> counts = session.classFailures();
+        if (counts == null || counts.isEmpty()) {
+            return null;
+        }
+        JSONObject inner = new JSONObject();
+        for (java.util.Map.Entry<String, Integer> entry : counts
+                .entrySet()) {
+            inner.put(entry.getKey(), entry.getValue().intValue());
+        }
+        JSONObject block = new JSONObject();
+        block.put("format", "session-class-failure-counts");
+        block.put("advisory",
+                "These actor classes have failed in this session."
+                        + " After 2 or more failures of the same"
+                        + " class, strongly consider an alternative"
+                        + " from the capability scan's"
+                        + " recommendedActors before re-using the"
+                        + " same class again.");
+        block.put("counts", inner);
+        return block;
     }
 
     /** Render the context as a prompt block. */

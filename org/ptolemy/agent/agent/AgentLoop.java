@@ -156,6 +156,17 @@ public class AgentLoop {
             JSONArray messages = new JSONArray();
             messages.put(message("system", _systemPrompt));
             messages.put(message("user", userGoal));
+            // Pre-planning capability scan: surface relevant library
+            // actors and well-known pitfalls (e.g. Expression's
+            // PortParameter trap) so the model has a soft prior
+            // before reaching for a generic fallback class.
+            String recipe = CapabilityProbe.promptBlock(
+                    CapabilityProbe.probe(userGoal,
+                            org.ptolemy.agent.library.LibraryIndex
+                                    .shared()));
+            if (recipe != null && !recipe.isEmpty()) {
+                messages.put(message("user", recipe));
+            }
             messages.put(message("user",
                     PromptTemplates.modelContextNote(
                             ModelContext.forSession(session))));
