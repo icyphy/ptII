@@ -202,6 +202,7 @@ public class ToolRegistry {
                 .register(new AddCompositeTool())
                 .register(new GroupIntoCompositeTool())
                 .register(new ConnectTool())
+                .register(new ConnectManyTool())
                 .register(new DisconnectTool())
                 .register(new SetParameterTool())
                 .register(new DeleteTool())
