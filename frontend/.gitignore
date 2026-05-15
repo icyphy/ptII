@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-ssr
+*.local
+.vite
+.env
+.env.local
+tsconfig.tsbuildinfo

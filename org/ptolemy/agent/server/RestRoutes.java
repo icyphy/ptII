@@ -386,24 +386,23 @@ public final class RestRoutes {
             if (openVergil && result.ok()) {
                 try {
                     String absPath = new File(path).getAbsolutePath();
-                    String[] cmd;
-                    if (System.getProperty("os.name", "")
-                            .toLowerCase().contains("win")) {
-                        String vergilCmd = ptii + File.separator
-                                + "bin" + File.separator + "vergil.bat";
-                        if (!new File(vergilCmd).exists()) {
-                            vergilCmd = ptii + File.separator
-                                    + "bin" + File.separator + "vergil";
-                        }
-                        cmd = new String[] { "cmd", "/c", vergilCmd, absPath };
-                    } else {
-                        cmd = new String[] { ptii + "/bin/vergil", absPath };
+                    String[] cmd = _vergilCommand(ptii, absPath);
+                    ProcessBuilder builder = new ProcessBuilder(cmd)
+                            .directory(new File(ptii));
+                    File log = new File(ptii + File.separator
+                            + "agent-output" + File.separator
+                            + "vergil.log");
+                    File parent = log.getParentFile();
+                    if (parent != null && !parent.exists()) {
+                        parent.mkdirs();
                     }
-                    new ProcessBuilder(cmd)
-                            .directory(new File(ptii))
-                            .inheritIO()
-                            .start();
+                    builder.redirectErrorStream(true);
+                    builder.redirectOutput(ProcessBuilder.Redirect
+                            .appendTo(log));
+                    builder.start();
                     payload.put("vergilLaunched", true);
+                    payload.put("vergilCommand", String.join(" ", cmd));
+                    payload.put("vergilLog", log.getAbsolutePath());
                 } catch (Exception e) {
                     payload.put("vergilLaunched", false);
                     payload.put("vergilError", e.getMessage());
@@ -411,6 +410,43 @@ public final class RestRoutes {
             }
             JsonResponse.ok(ex, payload);
         });
+    }
+
+    /** Build a command that opens the saved model in Vergil. Prefer the
+     *  traditional launcher scripts when present, but fall back to the
+     *  Java entry point used by the operations guide because source
+     *  checkouts often do not include {@code bin/vergil(.bat)}. */
+    private static String[] _vergilCommand(String ptii, String modelPath)
+            throws IOException {
+        File root = new File(ptii == null || ptii.isEmpty() ? "." : ptii)
+                .getAbsoluteFile();
+        boolean windows = System.getProperty("os.name", "")
+                .toLowerCase().contains("win");
+        File script = new File(root, "bin" + File.separator
+                + (windows ? "vergil.bat" : "vergil"));
+        if (script.exists()) {
+            return windows
+                    ? new String[] { "cmd", "/c", script.getAbsolutePath(),
+                            modelPath }
+                    : new String[] { script.getAbsolutePath(), modelPath };
+        }
+
+        File javaHome = new File(System.getProperty("java.home", ""));
+        File javaBin = new File(javaHome, "bin" + File.separator
+                + (windows ? "javaw.exe" : "java"));
+        if (!javaBin.exists()) {
+            javaBin = new File(javaHome, "bin" + File.separator
+                    + (windows ? "java.exe" : "java"));
+        }
+        if (!javaBin.exists()) {
+            throw new IOException("could not find Java launcher under "
+                    + javaHome.getAbsolutePath());
+        }
+        String cp = root.getAbsolutePath() + File.pathSeparator
+                + new File(root, "lib" + File.separator + "*")
+                        .getAbsolutePath();
+        return new String[] { javaBin.getAbsolutePath(), "-cp", cp,
+                "ptolemy.vergil.VergilApplication", modelPath };
     }
 
     private static JSONObject parseJsonOrEmpty(String body) {

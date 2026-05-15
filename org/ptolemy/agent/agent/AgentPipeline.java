@@ -128,6 +128,7 @@ public class AgentPipeline {
         // step fires the external listener EXACTLY ONCE while still
         // landing in the combined steps list.
         final AgentTrace combined = new AgentTrace();
+        combined.putDiagnostic("driver", "pipeline");
         final AgentTraceListener fanOut = step -> {
             // Suppress each phase's own "final" step — the pipeline
             // synthesises ONE combined final at the very end so the
@@ -145,12 +146,29 @@ public class AgentPipeline {
         _emitMarker(fanOut, combined,
                 "[Phase 0/3: planning the model …]");
         String plan = _runPlanner(userGoal);
+        JSONObject parsedPlan = AgentPlan.parse(plan);
+        JSONArray planIssues = AgentPlan.validationIssues(parsedPlan);
+        if (parsedPlan != null) {
+            combined.putDiagnostic("plan", parsedPlan);
+        }
+        combined.putDiagnostic("planValidationIssues", planIssues);
         if (plan != null && !plan.isEmpty()) {
             AgentTrace.Step planStep = new AgentTrace.Step(0, "thought",
-                    "plan", null, plan);
+                    "plan", null, parsedPlan == null ? plan
+                            : parsedPlan.toString(2));
             combined.appendStepSilent(planStep);
             if (listener != null) {
                 listener.onStep(planStep);
+            }
+        }
+        if (planIssues.length() > 0) {
+            AgentTrace.Step validationStep = new AgentTrace.Step(0,
+                    "thought", "plan_validation", null,
+                    "Planner JSON validation notes: "
+                            + planIssues.toString());
+            combined.appendStepSilent(validationStep);
+            if (listener != null) {
+                listener.onStep(validationStep);
             }
         }
 
@@ -158,9 +176,7 @@ public class AgentPipeline {
         String builderInput = (plan == null || plan.isEmpty())
                 ? userGoal
                 : "User goal:\n" + userGoal + "\n\n"
-                        + "Pre-approved plan from the planning"
-                        + " phase (follow it EXACTLY; do not"
-                        + " re-plan; just execute):\n\n" + plan;
+                        + AgentPlan.builderInstruction(parsedPlan, plan);
 
         _emitMarker(fanOut, combined,
                 "[Phase 1/3: build flat model — no composites yet]");
@@ -193,6 +209,8 @@ public class AgentPipeline {
         _emitMarker(fanOut, combined,
                 "[Phase 2/3: refactor into composites — " + groupable
                         + " atomic actors at top level]");
+        JSONArray refactorSuggestions = RefactorAdvisor.suggestions(session);
+        combined.putDiagnostic("refactorSuggestions", refactorSuggestions);
 
         String refactorGoal = ""
                 + "REFACTOR phase. The flat model is built and runs. Your"
@@ -201,7 +219,13 @@ public class AgentPipeline {
                 + " and run ONCE at the end to confirm behaviour is"
                 + " preserved.\n\n"
                 + "Original user goal (for context only):\n"
-                + userGoal;
+                + userGoal
+                + AgentPlan.refactorInstruction(parsedPlan)
+                + (refactorSuggestions.length() == 0 ? ""
+                        : "\n\nAlgorithmic grouping suggestions from"
+                                + " RefactorAdvisor:\n```json\n"
+                                + refactorSuggestions.toString(2)
+                                + "\n```");
 
         AgentTrace refactor = _refactorer.run(session, refactorGoal,
                 fanOut);

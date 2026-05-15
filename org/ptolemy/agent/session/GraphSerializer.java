@@ -245,6 +245,7 @@ public final class GraphSerializer {
         node.put("id", entity.getName());
         node.put("displayName", entity.getName());
         node.put("className", entity.getClassName());
+        node.put("isComposite", entity instanceof CompositeEntity);
 
         node.put("position", positionJson(entity));
 

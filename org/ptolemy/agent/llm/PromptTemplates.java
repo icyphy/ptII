@@ -27,6 +27,8 @@
  */
 package org.ptolemy.agent.llm;
 
+import org.json.JSONObject;
+
 ///////////////////////////////////////////////////////////////////
 //// PromptTemplates
 
@@ -235,36 +237,45 @@ public final class PromptTemplates {
         + "Reply concisely. Prefer tool calls over prose.\n";
 
     /** Planner-phase prompt. The planner does NOT touch the model.
-     *  Its sole job is to convert a free-form user goal into a tight,
-     *  numbered plan that the Builder agent can execute almost
+     *  Its sole job is to convert a free-form user goal into a typed,
+     *  machine-checkable plan that the Builder agent can execute almost
      *  mechanically. Producing this plan up-front prevents the Builder
      *  from getting lost in a 20-actor neural-network-shaped model. */
     public static final String PLANNER_PROMPT = ""
         + "You are the PLANNING phase of a Ptolemy II modeling pipeline."
         + " You DO NOT call any tools. You produce a short structured"
-        + " plan in markdown that another agent (the Builder) will"
+        + " JSON plan that another agent (the Builder) will"
         + " execute next.\n"
         + "\n"
-        + "Reply with EXACTLY the following sections (and NOTHING else):\n"
+        + "Reply with EXACTLY ONE JSON object and NOTHING else. Do not"
+        + " wrap it in markdown. The JSON shape is:\n"
         + "\n"
-        + "## Domain\n"
-        + "One of: SDF, DE, Continuous. Pick SDF for discrete pipelines"
+        + "{\n"
+        + "  \"domain\": \"SDF|DE|Continuous\",\n"
+        + "  \"director\": {\"className\": \"...\","
+        + " \"parameters\": {\"iterations\": \"50\"}},\n"
+        + "  \"actors\": [\n"
+        + "    {\"name\": \"x\", \"className\": \"ptolemy...\","
+        + " \"parameters\": {}, \"role\": \"source\"}\n"
+        + "  ],\n"
+        + "  \"connections\": [\n"
+        + "    {\"from\": \"source.output\", \"to\": \"dest.input\"}\n"
+        + "  ],\n"
+        + "  \"futureComposites\": [\n"
+        + "    {\"name\": \"Controller\", \"members\": [\"a\", \"b\"],"
+        + " \"purpose\": \"...\"}\n"
+        + "  ],\n"
+        + "  \"validationGoal\": \"one sentence\"\n"
+        + "}\n"
+        + "\n"
+        + "Domain is one of: SDF, DE, Continuous. Pick SDF for discrete pipelines"
         + " (Const→Scale→Recorder, LSTM cells, sample-by-sample),"
         + " Continuous for ODE-style problems (RC filter, mass-spring),"
         + " DE for event-driven.\n"
         + "\n"
-        + "## Director\n"
-        + "Full class name plus the key parameters to set"
-        + " (iterations / stopTime).\n"
-        + "\n"
-        + "## Actors (top-level, FLAT — no composites yet)\n"
-        + "A numbered list. For EACH actor give:\n"
-        + "  - chosen name (short, e.g. `x_t`, `sig_f`, `mul_fc`)\n"
-        + "  - className (full Ptolemy class, e.g."
-        + " `ptolemy.actor.lib.Const`)\n"
-        + "  - parameters: name=value pairs\n"
-        + "  - role (one short phrase, used later by the Refactor agent"
-        + " to group actors into composites)\n"
+        + "Actors are top-level and FLAT -- no composites yet. For EACH"
+        + " actor give chosen name, full className, parameters object,"
+        + " and role. Roles are later used by the Refactor phase.\n"
         + "Prefer concrete, single-purpose actors. For neural-network"
         + " activations: use `ptolemy.actor.lib.Sigmoid` and"
         + " `ptolemy.actor.lib.TrigFunction` (function=tanh) if they"
@@ -272,21 +283,9 @@ public final class PromptTemplates {
         + " an explicit `:: double` cast on `input` to keep the type"
         + " checker happy, e.g. `1.0/(1.0+exp(-(input::double)))`.\n"
         + "\n"
-        + "## Connections\n"
-        + "An ASCII list of edges, one per line, in the form"
-        + " `source.port -> dest.port`. Cover EVERY required wire."
+        + "Connections must cover EVERY required wire."
         + " Multiple destinations from the same source port are"
         + " allowed (fan-out is supported by the connect tool).\n"
-        + "\n"
-        + "## Future Composites\n"
-        + "List the composites the Refactor agent should later create."
-        + " For each: `name = {actor1, actor2, ...}` plus a one-line"
-        + " purpose. Leave empty if the model is small enough to"
-        + " stay flat.\n"
-        + "\n"
-        + "## Validation goal\n"
-        + "One sentence: what success looks like (e.g. \"recorder"
-        + " captures a single h_t value around 0.1-0.5\").\n"
         + "\n"
         + "Be concise. Do not chat. Do not invent class names you"
         + " are not confident about — if unsure, write"
@@ -471,5 +470,14 @@ public final class PromptTemplates {
                         : moml.substring(0, 4000) + "\n...<truncated>");
         return "Current model MoML for your reference:\n"
                 + "```xml\n" + trimmed + "\n```";
+    }
+
+    /** Build a turn message conveying the structured model context.
+     *  @param context JSON produced by ModelContext.
+     *  @return A user-role message body. */
+    public static String modelContextNote(JSONObject context) {
+        JSONObject safe = context == null ? new JSONObject() : context;
+        return "Current model context for tool planning:\n```json\n"
+                + safe.toString(2) + "\n```";
     }
 }

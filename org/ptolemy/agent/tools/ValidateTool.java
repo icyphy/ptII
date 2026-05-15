@@ -97,25 +97,40 @@ public class ValidateTool implements AgentTool {
         int relations = relationList.size();
         int links = 0;
         int directors = 0;
+        boolean hasRecorder = false;
+        boolean hasContinuousActor = false;
+        String directorClass = "";
 
         JSONArray issues = new JSONArray();
+        JSONArray diagnostics = new JSONArray();
         for (Attribute attr : attributeList) {
             String klass = attr.getClassName();
             if (attr instanceof Director || (klass != null
                     && klass.endsWith("Director"))) {
                 directors++;
+                if (directorClass.length() == 0 && klass != null) {
+                    directorClass = klass;
+                }
             }
         }
         if (entities == 0) {
-            issues.put("model is empty: no entities found");
+            _issue(issues, diagnostics, "ERROR", "EMPTY_MODEL", "model",
+                    "model is empty: no entities found");
         }
         if (directors == 0) {
-            issues.put(
+            _issue(issues, diagnostics, "ERROR", "NO_DIRECTOR", "director",
                     "no director declared at top level: simulation will fail");
         }
         for (ComponentEntity entity : entityList) {
             if (_isHidden(entity.getName())) {
                 continue;
+            }
+            String entityClass = entity.getClassName();
+            if (entityClass != null && entityClass.endsWith(".Recorder")) {
+                hasRecorder = true;
+            }
+            if (_requiresContinuousDirector(entityClass)) {
+                hasContinuousActor = true;
             }
             @SuppressWarnings("unchecked")
             java.util.List<Port> ports = entity.portList();
@@ -127,12 +142,30 @@ public class ValidateTool implements AgentTool {
                 links += io.numLinks();
                 String ref = entity.getName() + "." + io.getName();
                 if (io.isInput() && !io.isMultiport() && io.numLinks() == 0) {
-                    issues.put("input port is unconnected: " + ref);
+                    _issue(issues, diagnostics, "ERROR",
+                            "UNCONNECTED_INPUT", ref,
+                            "input port is unconnected: " + ref);
                 }
                 if (io.isOutput() && io.numLinks() == 0) {
-                    issues.put("output port is unconnected: " + ref);
+                    _issue(issues, diagnostics, "WARN",
+                            "UNCONNECTED_OUTPUT", ref,
+                            "output port is unconnected: " + ref);
                 }
             }
+        }
+        if (!hasRecorder && entities > 0) {
+            _issue(issues, diagnostics, "WARN", "NO_RECORDER", "Recorder",
+                    "no top-level Recorder found; frontend Signals panel may"
+                            + " have no data");
+        }
+        if (hasContinuousActor && directorClass.indexOf(
+                "ContinuousDirector") < 0) {
+            _issue(issues, diagnostics, "ERROR",
+                    "CONTINUOUS_ACTOR_WITHOUT_CONTINUOUS_DIRECTOR",
+                    "director",
+                    "continuous-time actor present but top-level director is "
+                            + (directorClass.length() == 0 ? "missing"
+                                    : directorClass));
         }
 
         for (Relation relation : relationList) {
@@ -153,8 +186,10 @@ public class ValidateTool implements AgentTool {
                 }
             }
             if (sources == 0 || destinations == 0) {
-                issues.put("relation does not connect output to input: "
-                        + relation.getName());
+                _issue(issues, diagnostics, "ERROR", "INVALID_RELATION",
+                        relation.getName(),
+                        "relation does not connect output to input: "
+                                + relation.getName());
             }
         }
 
@@ -164,6 +199,7 @@ public class ValidateTool implements AgentTool {
         data.put("links", links);
         data.put("directors", directors);
         data.put("issues", issues);
+        data.put("diagnostics", diagnostics);
         data.put("healthy", issues.length() == 0);
 
         boolean ok = issues.length() == 0;
@@ -175,5 +211,23 @@ public class ValidateTool implements AgentTool {
 
     private static boolean _isHidden(String name) {
         return name != null && name.startsWith("__recorder__");
+    }
+
+    private static boolean _requiresContinuousDirector(String className) {
+        if (className == null) {
+            return false;
+        }
+        String c = className.toLowerCase();
+        return c.endsWith(".integrator") || c.endsWith(".derivative");
+    }
+
+    private static void _issue(JSONArray legacy, JSONArray diagnostics,
+            String severity, String code, String subject, String message) {
+        legacy.put(message);
+        diagnostics.put(new JSONObject()
+                .put("severity", severity)
+                .put("code", code)
+                .put("subject", subject)
+                .put("message", message));
     }
 }

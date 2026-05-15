@@ -81,6 +81,7 @@ public class AgentTrace {
     }
 
     private final List<Step> _steps = new ArrayList<>();
+    private final JSONObject _diagnostics = new JSONObject();
     private boolean _completed = false;
     private boolean _success = false;
     private String _finalReply = "";
@@ -113,6 +114,17 @@ public class AgentTrace {
 
     public synchronized void addError(String message) {
         _append(new Step(_steps.size(), "error", "", null, message));
+    }
+
+    /** Attach diagnostic metadata to the trace. This is additive and
+     *  does not affect the stable step list consumed by existing
+     *  clients.
+     *  @param key Diagnostic key.
+     *  @param value JSON-compatible value. */
+    public synchronized void putDiagnostic(String key, Object value) {
+        if (key != null && key.length() > 0) {
+            _diagnostics.put(key, value == null ? JSONObject.NULL : value);
+        }
     }
 
     public synchronized void finish(boolean success, String finalReply) {
@@ -149,6 +161,7 @@ public class AgentTrace {
         root.put("completed", _completed);
         root.put("success", _success);
         root.put("finalReply", _finalReply);
+        root.put("diagnostics", _diagnostics);
         JSONArray steps = new JSONArray();
         for (Step s : _steps) {
             steps.put(s.toJson());

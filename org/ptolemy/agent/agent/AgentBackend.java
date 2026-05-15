@@ -122,6 +122,9 @@ public final class AgentBackend {
             String message, AgentTraceListener listener) {
         AgentTrace trace = new AgentTrace();
         trace.setListener(listener);
+        trace.putDiagnostic("driver", "chat");
+        trace.putDiagnostic("modelContext",
+                org.ptolemy.agent.session.ModelContext.forSession(session));
         if (!_llm.isAvailable()) {
             try {
                 org.json.JSONArray empty = new org.json.JSONArray();
@@ -151,7 +154,10 @@ public final class AgentBackend {
                     .put("role", "user")
                     .put("content",
                             org.ptolemy.agent.llm.PromptTemplates
-                                    .modelStateNote(session.exportMoml())));
+                                    .modelContextNote(
+                                            org.ptolemy.agent.session
+                                                    .ModelContext
+                                                    .forSession(session))));
             org.ptolemy.agent.llm.LLMResponse reply = _llm.chat(messages,
                     new org.json.JSONArray());
             String content = reply == null ? "" : reply.content();

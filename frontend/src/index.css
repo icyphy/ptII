@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #fafaf9;
+  color: #292524;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar — minimal, unobtrusive */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d6d3d1;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* Reusable design-system classes */
+@layer components {
+  .surface {
+    @apply bg-ink-850 border border-ink-700 rounded-lg shadow-panel;
+  }
+  .pill {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-ink-700 bg-ink-800 text-ink-300;
+  }
+  .pill-accent {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-accent/30 bg-accent/10 text-accent-text;
+  }
+  .pill-ok {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-ok/30 bg-ok/10 text-ok;
+  }
+  .pill-warn {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-warn/30 bg-warn/10 text-warn;
+  }
+  .pill-bad {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-bad/30 bg-bad/10 text-bad;
+  }
+  .pill-muted {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[11px]
+           font-medium border border-ink-700 bg-ink-800 text-ink-400;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md
+           text-sm font-medium border border-ink-700 bg-ink-800 text-ink-200
+           hover:bg-ink-700 hover:text-ink-100
+           active:translate-y-px disabled:opacity-40 disabled:cursor-not-allowed
+           transition-colors;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-md
+           text-sm font-semibold border border-accent/60 bg-accent text-white
+           hover:bg-accent-dark active:translate-y-px
+           disabled:opacity-40 disabled:cursor-not-allowed transition-colors;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-1.5 px-2 py-1 rounded-md
+           text-xs text-ink-400 hover:text-ink-100 hover:bg-ink-800
+           disabled:opacity-40 disabled:cursor-not-allowed transition-colors;
+  }
+  .input {
+    @apply w-full bg-ink-950 border border-ink-700 rounded-md px-2.5 py-1.5
+           text-sm text-ink-100 placeholder:text-ink-500
+           focus:outline-none focus:border-accent/60 focus:ring-1 focus:ring-accent/20
+           transition-colors;
+  }
+  .input-mono {
+    @apply input font-mono text-xs;
+  }
+  .section-title {
+    @apply text-[11px] uppercase tracking-[0.14em] text-ink-400 font-semibold;
+  }
+  .tab {
+    @apply inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium
+           text-ink-400 hover:text-ink-200 border-b-2 border-transparent
+           transition-colors;
+  }
+  .tab-active {
+    @apply text-ink-100 border-accent;
+  }
+  .kbd {
+    @apply inline-block px-1.5 py-0.5 text-[10px] font-mono leading-none
+           border border-ink-700 rounded bg-ink-800 text-ink-400;
+  }
+}
+
+/* ── React Flow overrides ── */
+.react-flow {
+  background: #fafaf9;
+}
+.react-flow__minimap {
+  background: rgba(249,248,247,0.95) !important;
+  border: 1px solid #e7e5e4 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+}
+.react-flow__controls {
+  background: rgba(255,255,255,0.95) !important;
+  border: 1px solid #e7e5e4 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08) !important;
+  overflow: hidden;
+}
+.react-flow__controls-button {
+  background: transparent !important;
+  border-bottom: 1px solid #f5f5f4 !important;
+  fill: #78716c !important;
+}
+.react-flow__controls-button:hover {
+  background: #eff6ff !important;
+  fill: #2563eb !important;
+}
+.react-flow__attribution {
+  display: none !important;
+}
+.react-flow__edge-path {
+  stroke-width: 1.5;
+  stroke: #a8a29e;
+}
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #2563eb !important;
+  stroke-width: 2 !important;
+}
+.react-flow__handle {
+  width: 9px !important;
+  height: 9px !important;
+  border-radius: 9999px !important;
+  border: 1.5px solid #ffffff !important;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.12);
+}
+.react-flow__handle:hover {
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.2);
+}
+.react-flow__node.selected .ptolemy-node {
+  outline: 2px solid #2563eb;
+  outline-offset: 1px;
+}
+.react-flow__background {
+  background: #fafaf9;
+}

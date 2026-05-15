@@ -32,6 +32,7 @@ import org.json.JSONObject;
 import org.ptolemy.agent.llm.LLMClient;
 import org.ptolemy.agent.llm.LLMResponse;
 import org.ptolemy.agent.llm.PromptTemplates;
+import org.ptolemy.agent.session.ModelContext;
 import org.ptolemy.agent.session.PtolemySession;
 import org.ptolemy.agent.tools.ToolRegistry;
 import org.ptolemy.agent.util.AgentResult;
@@ -136,6 +137,8 @@ public class AgentLoop {
             AgentTraceListener listener) {
         AgentTrace trace = new AgentTrace();
         trace.setListener(listener);
+        trace.putDiagnostic("driver", "agent-loop");
+        trace.putDiagnostic("modelContext", ModelContext.forSession(session));
 
         try {
             if (!_llm.isAvailable()) {
@@ -154,7 +157,8 @@ public class AgentLoop {
             messages.put(message("system", _systemPrompt));
             messages.put(message("user", userGoal));
             messages.put(message("user",
-                    PromptTemplates.modelStateNote(session.exportMoml())));
+                    PromptTemplates.modelContextNote(
+                            ModelContext.forSession(session))));
 
             JSONArray tools = _tools.toolsForOpenAI();
 

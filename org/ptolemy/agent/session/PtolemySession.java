@@ -34,7 +34,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.json.JSONObject;
@@ -42,8 +44,12 @@ import org.ptolemy.agent.util.AgentResult;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
+import ptolemy.actor.IOPort;
 import ptolemy.actor.Manager;
 import ptolemy.actor.injection.ActorModuleInitializer;
+import ptolemy.kernel.ComponentEntity;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -224,13 +230,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         // into the model. They are auto-reattached at the next run() and
         // would otherwise create stray relations on actor output ports
         // that confuse structural rewrites such as group_into_composite.
-        if (_collector != null) {
-            try {
-                _collector.detach();
-            } catch (Throwable ignored) {
-                // Best-effort: probes are diagnostic, not critical.
-            }
-        }
+        _detachProbesQuietly();
         // Use a latch so we can detect both sync (Manager idle, executes in the
         // same thread before requestChange returns) and async (Manager running)
         // completion, and surface any error back to the caller.
@@ -346,17 +346,76 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
     }
 
     /** @return The MoML serialization of the currently loaded model, or
-     *      an explanatory placeholder if no model is loaded. */
+     *      an explanatory placeholder if no model is loaded.
+     *
+     *  <p>Auto-injected probe Recorders from {@link SignalCollector} are
+     *  detached before serialization so they never leak into the
+     *  on-disk MoML.  They will be re-attached on the next call to
+     *  {@link #run()}. */
     public synchronized String exportMoml() {
         if (_toplevel == null) {
             return "<!-- no model loaded -->";
         }
+        _detachProbesQuietly();
         return _toplevel.exportMoML();
+    }
+
+    /** Execute a tool call against a temporary copy of this session.
+     *  The real model is not mutated. This is the backend primitive for
+     *  dry-run / transaction workflows: callers can inspect the tool
+     *  result and post-change validation before deciding whether to run
+     *  the same tool on the real session.
+     *  @param tools Registry used to dispatch the tool.
+     *  @param name Tool name.
+     *  @param args Tool arguments, without the {@code _dryRun} flag.
+     *  @return A structured result containing the dry-run outcome. */
+    public synchronized AgentResult dryRunTool(
+            org.ptolemy.agent.tools.ToolRegistry tools, String name,
+            JSONObject args) {
+        if (_toplevel == null) {
+            return AgentResult.fail("no model loaded");
+        }
+        PtolemySession copy = null;
+        try {
+            copy = new PtolemySession(_id + "-dryrun-"
+                    + Long.toHexString(System.nanoTime()));
+            AgentResult load = copy.loadMoml(exportMoml());
+            if (!load.ok()) {
+                return AgentResult.fail("dry-run setup failed: "
+                        + load.message());
+            }
+            AgentResult toolResult = tools.dispatch(name, copy,
+                    args == null ? new JSONObject() : args);
+            AgentResult validation = tools.dispatch("validate", copy,
+                    new JSONObject());
+            JSONObject data = new JSONObject();
+            data.put("dryRun", true);
+            data.put("committed", false);
+            data.put("tool", name);
+            data.put("toolResult", toolResult.toJson());
+            data.put("validation", validation.toJson());
+            data.put("modelContext", ModelContext.forSession(copy));
+            return toolResult.ok()
+                    ? AgentResult.ok("dry-run succeeded for " + name, data)
+                    : AgentResult.fail("dry-run failed for " + name + ": "
+                            + toolResult.message(), data);
+        } catch (Throwable t) {
+            return AgentResult.fail("dry-run failed: " + t.getMessage());
+        } finally {
+            if (copy != null) {
+                copy.disposeModel();
+            }
+        }
     }
 
     /** Save the current model to the given file path as MoML XML.
      *  @param path Absolute or relative path for the output file.
-     *  @return AgentResult indicating success and the resolved path. */
+     *  @return AgentResult indicating success and the resolved path.
+     *
+     *  <p>Auto-injected probe Recorders from {@link SignalCollector} are
+     *  detached before serialization so the saved file matches what the
+     *  user sees on the canvas; they will be re-attached on the next
+     *  call to {@link #run()}. */
     public synchronized AgentResult saveToFile(String path) {
         if (_toplevel == null) {
             return AgentResult.fail("no model loaded");
@@ -367,6 +426,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             if (parent != null && !parent.exists()) {
                 parent.mkdirs();
             }
+            _detachProbesQuietly();
             try (Writer w = new OutputStreamWriter(
                     new FileOutputStream(f), StandardCharsets.UTF_8)) {
                 w.write(_toplevel.exportMoML());
@@ -403,6 +463,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             }
             _manager = null;
         }
+        _detachProbesQuietly();
         _toplevel = null;
         _collector = null;
         _state = "IDLE";
@@ -477,6 +538,74 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             ActorModuleInitializer.initializeInjector();
             _injectorInitialized = true;
         }
+    }
+
+    /** Best-effort removal of auto-injected probe Recorders.  Called
+     *  before any path that exposes MoML to the outside world (file
+     *  save, exportMoml, dryRun clone source) so that probes never
+     *  leak into a {@code .xml} document opened in Vergil.
+     *
+     *  <p>The collector knows about probes it attached during the
+     *  current run, but a session can also load an already-polluted
+     *  MoML file.  After asking the collector to detach its tracked
+     *  probes, scan the model tree for leftover hidden probe actors and
+     *  remove them too.  Probes are re-attached on the next
+     *  {@link #run()}. */
+    private void _detachProbesQuietly() {
+        try {
+            if (_collector != null) {
+                _collector.detach();
+            }
+        } catch (Throwable ignored) {
+            // Probes are diagnostic; never fail a save because of them.
+        }
+        try {
+            if (_toplevel != null) {
+                _purgeHiddenProbes(_toplevel);
+            }
+        } catch (Throwable ignored) {
+            // Best-effort cleanup for legacy polluted models.
+        }
+    }
+
+    /** Recursively remove hidden recorder actors and their relations. */
+    private static void _purgeHiddenProbes(CompositeEntity container)
+            throws Exception {
+        @SuppressWarnings("unchecked")
+        List<ComponentEntity> entities = new ArrayList<ComponentEntity>(
+                container.entityList());
+        for (ComponentEntity entity : entities) {
+            String name = entity.getName();
+            if (name != null && name.startsWith("__recorder__")) {
+                _removeEntityAndLinkedRelations(entity);
+                continue;
+            }
+            if (entity instanceof CompositeEntity) {
+                _purgeHiddenProbes((CompositeEntity) entity);
+            }
+        }
+    }
+
+    /** Remove an entity plus relations linked to any of its ports. */
+    private static void _removeEntityAndLinkedRelations(ComponentEntity entity)
+            throws Exception {
+        @SuppressWarnings("unchecked")
+        List<Object> ports = new ArrayList<Object>(entity.portList());
+        for (Object portObj : ports) {
+            if (!(portObj instanceof IOPort)) {
+                continue;
+            }
+            IOPort port = (IOPort) portObj;
+            @SuppressWarnings("unchecked")
+            List<Object> relations = new ArrayList<Object>(
+                    port.linkedRelationList());
+            for (Object relObj : relations) {
+                if (relObj instanceof ComponentRelation) {
+                    ((ComponentRelation) relObj).setContainer(null);
+                }
+            }
+        }
+        entity.setContainer(null);
     }
 
     /** Minimal XML escaping for entity names used in wrapped MoML. */

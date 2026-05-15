@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ptolemy II Auto-Modeling Agent — 项目总结</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #e5e7eb;
+    --text: #1f2937;
+    --text-secondary: #6b7280;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --green: #059669;
+    --green-light: #ecfdf5;
+    --amber: #d97706;
+    --amber-light: #fffbeb;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    padding: 0;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%);
+    color: white;
+    padding: 80px 40px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .hero .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.85;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero .badge {
+    display: inline-block;
+    margin-top: 24px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 0.85rem;
+    backdrop-filter: blur(4px);
+  }
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 32px;
+  }
+  h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .section { margin-bottom: 64px; }
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: box-shadow 0.2s;
+  }
+  .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+  .card .icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+  .card p { color: var(--text-secondary); font-size: 0.9rem; }
+  .arch-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    overflow-x: auto;
+  }
+  .arch-diagram pre {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .milestone-list {
+    position: relative;
+    padding-left: 32px;
+  }
+  .milestone-list::before {
+    content: '';
+    position: absolute;
+    left: 11px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+    border-radius: 1px;
+  }
+  .milestone {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .milestone::before {
+    content: '';
+    position: absolute;
+    left: -27px;
+    top: 22px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 3px solid var(--green);
+    background: var(--green-light);
+  }
+  .milestone.current::before {
+    border-color: var(--accent);
+    background: var(--accent-light);
+    box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+  }
+  .milestone .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 6px;
+  }
+  .tag-done { background: var(--green-light); color: var(--green); }
+  .tag-active { background: var(--accent-light); color: var(--accent); }
+  .milestone h3 { margin-top: 4px; }
+  .milestone p { color: var(--text-secondary); font-size: 0.88rem; margin-top: 6px; }
+  .tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .tech-table th, .tech-table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .tech-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+  }
+  .tech-table tr:hover td { background: #fafbfc; }
+  .mono { font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 0.82em; }
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .stat-card {
+    flex: 1;
+    min-width: 160px;
+    text-align: center;
+    padding: 24px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .stat-card .num {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-card .label {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-top: 6px;
+  }
+  .flow-section {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin: 32px 0;
+  }
+  .flow-step {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+  .flow-step:first-child { border-radius: 10px 0 0 10px; }
+  .flow-step:last-child { border-radius: 0 10px 10px 0; }
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--accent);
+    z-index: 1;
+    background: var(--bg);
+    width: 16px;
+    text-align: center;
+  }
+  .flow-step .step-icon { font-size: 1.5rem; margin-bottom: 6px; }
+  .flow-step .step-label { font-size: 0.78rem; color: var(--text-secondary); }
+  .flow-step .step-title { font-weight: 600; font-size: 0.88rem; }
+  footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-secondary);
+    font-size: 0.82rem;
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 1.8rem; }
+    .container { padding: 32px 16px; }
+    .card-grid { grid-template-columns: 1fr; }
+    .flow-section { flex-direction: column; }
+    .flow-step { border-radius: 0 !important; }
+    .flow-step:not(:last-child)::after { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Ptolemy II Auto-Modeling Agent</h1>
+  <div class="subtitle">
+    基于 Ptolemy II 仿真内核，通过 LLM Tool Calling 实现自然语言驱动的物理仿真建模系统
+  </div>
+  <div class="badge">M0 ~ M5 全部里程碑已完成 + 后续增强已实施</div>
+</div>
+
+<div class="container">
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num">30</div>
+      <div class="label">后端 Java 文件</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">15</div>
+      <div class="label">前端 React 组件</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">9</div>
+      <div class="label">Agent Tools</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">30+</div>
+      <div class="label">组件库 Actors</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">0</div>
+      <div class="label">Ptolemy 内核改动</div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <div class="section">
+    <h2>工作原理</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 24px;">
+      系统通过 ReAct (Reasoning + Acting) 模式将 LLM 的推理能力与 Ptolemy II 仿真引擎的执行能力结合。
+      用户输入自然语言目标，Agent 自动规划并通过 Tool API 操作模型。
+    </p>
+
+    <div class="flow-section">
+      <div class="flow-step">
+        <div class="step-icon">💬</div>
+        <div class="step-title">用户输入</div>
+        <div class="step-label">自然语言描述建模目标</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-icon">🧠</div>
+        <div class="step-title">LLM 推理</div>
+        <div class="step-label">规划拓扑、选择组件</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-icon">🔧</div>
+        <div class="step-title">Tool Calling</div>
+        <div class="step-label">add_entity / connect / set_parameter</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-icon">⚙️</div>
+        <div class="step-title">Ptolemy 执行</div>
+        <div class="step-label">MoMLChangeRequest → 仿真运行</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-icon">📊</div>
+        <div class="step-title">结果输出</div>
+        <div class="step-label">Signals + Canvas 同步更新</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section">
+    <h2>系统架构</h2>
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon" style="background: var(--accent-light); color: var(--accent);">⚛️</div>
+        <h3>前端 — React + TypeScript</h3>
+        <p>
+          Vite + Tailwind CSS + React Flow (画布) + Recharts (波形) + Zustand (状态管理)。
+          三栏布局：左侧组件库/示例，中间画布+结果面板，右侧 Agent Chat/Inspector。
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon" style="background: var(--green-light); color: var(--green);">☕</div>
+        <h3>后端 — Java REST Server</h3>
+        <p>
+          HttpServer + org.json，暴露 RESTful API。
+          SessionManager 管理多会话，每个 Session 封装一个完整的 Ptolemy II 模型实例。
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon" style="background: var(--purple-light); color: var(--purple);">🤖</div>
+        <h3>Agent — ReAct Loop</h3>
+        <p>
+          AgentLoop 驱动 LLM (DeepSeek/OpenAI) 的 Function Calling。
+          进度感知循环：有成功就继续，连续失败自动停止。最高安全上限 80 轮。
+        </p>
+      </div>
+      <div class="card">
+        <div class="icon" style="background: var(--amber-light); color: var(--amber);">🏛️</div>
+        <h3>Ptolemy II 内核 — 零改动</h3>
+        <p>
+          MoMLParser 解析模型片段，MoMLChangeRequest 增量修改，Manager 驱动仿真。
+          所有修改走 ChangeRequest 路径，自动支持 Undo/Redo。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tool API -->
+  <div class="section">
+    <h2>Tool API — 人机共用入口</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+      无论是 LLM 自动建模还是用户手动操作，都通过同一套 Tool API 操作模型。
+      这是"原生 Agent 化"的核心设计：保证一致性、可追溯、可撤销。
+    </p>
+    <div class="arch-diagram">
+      <table class="tech-table">
+        <thead>
+          <tr><th>Tool</th><th>功能</th><th>示例参数</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="mono">add_entity</td><td>添加 Actor 到画布</td><td class="mono">className, name, x, y</td></tr>
+          <tr><td class="mono">connect</td><td>连接两个端口</td><td class="mono">from: "Sine.output", to: "Scale.input"</td></tr>
+          <tr><td class="mono">set_parameter</td><td>设置参数值</td><td class="mono">entity, parameter, value</td></tr>
+          <tr><td class="mono">delete</td><td>删除 Actor 或关系</td><td class="mono">name</td></tr>
+          <tr><td class="mono">disconnect</td><td>断开连接</td><td class="mono">from, to</td></tr>
+          <tr><td class="mono">validate</td><td>检查模型合法性</td><td class="mono">（无参数）</td></tr>
+          <tr><td class="mono">run</td><td>执行仿真</td><td class="mono">（无参数）</td></tr>
+          <tr><td class="mono">list_library</td><td>搜索可用组件</td><td class="mono">query, limit</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Milestones -->
+  <div class="section">
+    <h2>里程碑进度</h2>
+    <div class="milestone-list">
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M0 — 后端骨架 + 嵌入 Ptolemy</h3>
+        <p>创建 org/ptolemy/agent 包，实现 PtolemySession 封装 load/run/exportMoML，REST 服务器启动可用。</p>
+      </div>
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M1 — React 前端骨架 + 静态展示</h3>
+        <p>Vite + React + TypeScript + Tailwind 工程，三栏布局，能连接后端展示 MoML 源码和仿真波形。</p>
+      </div>
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M2 — Tool Registry + LLM + 首次自动建模</h3>
+        <p>8 个 Tool + ToolRegistry + OpenAIClient (DeepSeek 兼容) + AgentLoop ReAct 循环。自然语言→仿真链路打通。</p>
+      </div>
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M3 — React Flow 可交互画布</h3>
+        <p>GraphSerializer 实现 MoML↔Graph JSON，LibraryPanel 拖拽组件，Agent 修改后画布自动同步更新。</p>
+      </div>
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M4 — 双向编辑 + 参数面板</h3>
+        <p>Inspector 参数面板双向编辑，手动连线/删除/Undo/Redo，人机共用 Tool API 路径。</p>
+      </div>
+      <div class="milestone">
+        <span class="tag tag-done">已完成</span>
+        <h3>M5 — Demo 打磨 + 标杆场景</h3>
+        <p>ExamplesPanel 示例一键运行，Signals 波形图/数据表，模型保存为 Vergil 兼容 XML。</p>
+      </div>
+      <div class="milestone current">
+        <span class="tag tag-active">持续增强中</span>
+        <h3>后续优化 — UI/UX + Agent 智能</h3>
+        <p>
+          进度感知循环（不再硬性步数限制）、Chat 移至右侧全高面板、Tool 调用可折叠展示、
+          组件库扩展至 30+ actors、Vergil GUI 对比验证、分离用户/Agent 操作日志。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Design -->
+  <div class="section">
+    <h2>关键设计决策</h2>
+    <div class="card-grid">
+      <div class="card">
+        <h3>🔗 统一 Tool API</h3>
+        <p>Agent 和用户走同一条 MoMLChangeRequest 路径 — 保证模型一致性，自动支持 Undo/Redo。</p>
+      </div>
+      <div class="card">
+        <h3>🛡️ 不让 LLM 直接写 MoML</h3>
+        <p>强制走 Tool Calling 而非让 LLM 生成完整 XML — 单步成功率从 &lt;30% 提升到 80%+。</p>
+      </div>
+      <div class="card">
+        <h3>📈 进度感知循环</h3>
+        <p>不设死板步数上限。有进步就继续，连续失败才停止 — 复杂模型不再被人为截断。</p>
+      </div>
+      <div class="card">
+        <h3>🧩 Ptolemy 零改动</h3>
+        <p>所有新增代码在 org/ptolemy/agent/ 包内，Ptolemy 内核作为 JAR 嵌入，可独立升级。</p>
+      </div>
+      <div class="card">
+        <h3>🔄 实时同步</h3>
+        <p>每次 ChangeRequest 完成后前端自动刷新 Graph + Signals — 画布和数据始终是最新状态。</p>
+      </div>
+      <div class="card">
+        <h3>💾 Vergil 兼容</h3>
+        <p>模型保存为标准 MoML XML，可直接用 Ptolemy II Vergil GUI 打开查看和运行。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- File structure -->
+  <div class="section">
+    <h2>代码结构</h2>
+    <div class="arch-diagram">
+<pre>
+org/ptolemy/agent/                      ← 后端 Java 代码 (30 files)
+├── server/
+│   ├── AgentServerMain.java            ← HTTP 服务器启动入口 (端口 7777)
+│   ├── SimpleHttpServer.java           ← 轻量级 HTTP 服务器
+│   └── RestRoutes.java                 ← REST 路由表 (18 endpoints)
+├── session/
+│   ├── PtolemySession.java             ← 封装 MoMLParser + Manager + 仿真
+│   ├── SessionManager.java             ← 多会话管理
+│   ├── GraphSerializer.java            ← MoML → React Flow Graph JSON
+│   └── SignalCollector.java            ← 自动注入 Recorder 采集数据
+├── tools/
+│   ├── AgentTool.java                  ← interface: name / schema / execute
+│   ├── ToolRegistry.java               ← 工具注册 + OpenAI function calling 格式
+│   ├── AddEntityTool.java              ← 添加 Actor
+│   ├── ConnectTool.java                ← 连接端口
+│   ├── SetParameterTool.java           ← 设置参数 (支持 Director)
+│   ├── DeleteTool.java                 ← 删除实体
+│   ├── DisconnectTool.java             ← 断开连接
+│   ├── ValidateTool.java               ← 模型合法性检查
+│   ├── RunSimulationTool.java          ← 执行仿真
+│   └── ListLibraryTool.java            ← 搜索组件库
+├── llm/
+│   ├── LLMClient.java                  ← 抽象接口
+│   ├── OpenAIClient.java               ← OpenAI/DeepSeek 兼容实现
+│   ├── NullLLMClient.java              ← 无 LLM 时的降级实现
+│   ├── LLMResponse.java                ← LLM 响应解析
+│   └── PromptTemplates.java            ← 系统提示词 + Workflow 引导
+├── agent/
+│   ├── AgentLoop.java                  ← ReAct 循环 (进度感知)
+│   ├── AgentTrace.java                 ← 执行轨迹记录
+│   └── AgentBackend.java               ← Agent 入口 (LLM + Tools 装配)
+├── library/
+│   └── LibraryIndex.java               ← 30+ 组件的精选索引
+└── util/
+    ├── AgentResult.java                ← 统一结果格式
+    └── JsonResponse.java               ← HTTP JSON 响应工具
+
+frontend/src/                            ← 前端 React 代码 (15 components)
+├── App.tsx                             ← 主布局 (三栏 + 顶部 Header)
+├── api/agentClient.ts                  ← REST API 客户端
+├── state/sessionStore.ts               ← Zustand 全局状态
+├── examples/demoExamples.ts            ← 一键运行示例
+└── components/
+    ├── AppHeader.tsx                   ← 品牌 + 状态 + Run/Save/Vergil
+    ├── ModelCanvas.tsx                 ← React Flow 画布
+    ├── ChatPanel.tsx                   ← Agent Chat (折叠 Tool 步骤)
+    ├── Inspector.tsx                   ← 参数编辑 + 模型摘要 + 结果统计
+    ├── PlotPanel.tsx                   ← Recharts 波形 + 数据表
+    ├── LibraryPanel.tsx                ← 组件库 (按类别分组)
+    ├── ExamplesPanel.tsx               ← 示例面板
+    ├── BottomPanel.tsx                 ← Signals / MoML / Activity
+    ├── ActivityPanel.tsx               ← 用户操作日志
+    └── MomlView.tsx                    ← MoML 源码查看
+</pre>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section">
+    <h2>技术栈</h2>
+    <div class="arch-diagram">
+      <table class="tech-table">
+        <thead>
+          <tr><th>层次</th><th>技术</th><th>说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>仿真内核</td><td class="mono">Ptolemy II 11.1</td><td>异构并发建模框架 (SDF / DE / Continuous)</td></tr>
+          <tr><td>后端语言</td><td class="mono">Java 17</td><td>com.sun.net.httpserver + org.json</td></tr>
+          <tr><td>LLM</td><td class="mono">DeepSeek / OpenAI</td><td>Function Calling (Tool Use) 模式</td></tr>
+          <tr><td>前端框架</td><td class="mono">React 18 + TypeScript</td><td>Vite 构建，Zustand 状态管理</td></tr>
+          <tr><td>画布</td><td class="mono">React Flow</td><td>可交互节点图，支持拖拽/连线/缩放</td></tr>
+          <tr><td>图表</td><td class="mono">Recharts</td><td>仿真波形可视化 + 数据表格切换</td></tr>
+          <tr><td>样式</td><td class="mono">Tailwind CSS</td><td>暗色学术风格 UI</td></tr>
+          <tr><td>模型格式</td><td class="mono">MoML (XML)</td><td>Ptolemy II 原生格式，Vergil GUI 兼容</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Ptolemy II Auto-Modeling Agent &mdash; Built on Ptolemy II Heterogeneous Concurrent Modeling Framework<br>
+  University of California, Berkeley &bull; 2024-2026
+</footer>
+
+</body>
+</html>

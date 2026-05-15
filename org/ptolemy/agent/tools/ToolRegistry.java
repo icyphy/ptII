@@ -96,8 +96,21 @@ public class ToolRegistry {
             return AgentResult.fail("unknown tool: " + name);
         }
         try {
-            return tool.execute(session, args == null ? new JSONObject()
-                    : args);
+            JSONObject safeArgs = args == null ? new JSONObject() : args;
+            if (!"validate".equals(name)
+                    && (safeArgs.optBoolean("_dryRun", false)
+                            || safeArgs.optBoolean("dryRun", false))) {
+                JSONObject dryArgs = new JSONObject(safeArgs.toString());
+                dryArgs.remove("_dryRun");
+                dryArgs.remove("dryRun");
+                return session.dryRunTool(this, name, dryArgs);
+            }
+            AgentResult preflight = ToolCallValidator.validate(name, session,
+                    safeArgs);
+            if (preflight != null) {
+                return preflight;
+            }
+            return tool.execute(session, safeArgs);
         } catch (Throwable t) {
             return AgentResult.fail(name + " crashed: " + t.getMessage());
         }
