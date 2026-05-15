@@ -218,9 +218,14 @@ public class AddEntityTool implements AgentTool {
         StringBuilder out = new StringBuilder(name.length());
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
-            if (Character.isLetterOrDigit(c) || c == '_') {
+            // MoML names may contain spaces (e.g. "SDF Director") and
+            // are XML-escaped on emit, so we preserve them.  Dashes
+            // are still converted to underscores because Ptolemy
+            // expression parsers treat '-' as a subtraction operator
+            // when actor names appear in formulas.
+            if (Character.isLetterOrDigit(c) || c == '_' || c == ' ') {
                 out.append(c);
-            } else if (c == ' ' || c == '-') {
+            } else if (c == '-') {
                 out.append('_');
             }
         }

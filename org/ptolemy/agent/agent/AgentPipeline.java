@@ -81,14 +81,17 @@ public class AgentPipeline {
     private static final int _REFACTOR_THRESHOLD = 3;
 
     private final LLMClient _llm;
+    private final ToolRegistry _tools;
+    private final ToolRegistry _buildTools;
     private final AgentLoop _builder;
     private final AgentLoop _refactorer;
 
     public AgentPipeline(LLMClient llm, ToolRegistry tools, int maxSteps) {
         _llm = llm;
+        _tools = tools;
         // Builder agent: full atomic toolset MINUS the composite-creation
         // tools, so the LLM cannot mix in hierarchy work during build.
-        ToolRegistry buildTools = tools.except(
+        _buildTools = tools.except(
                 "add_composite", "group_into_composite");
         // Refactor agent: only the tools needed to wrap, verify and
         // observe. No add_entity / delete / set_parameter / connect.
@@ -96,7 +99,7 @@ public class AgentPipeline {
                 "group_into_composite", "add_composite",
                 "validate", "run", "list_library", "describe_actor");
 
-        _builder = new AgentLoop(llm, buildTools)
+        _builder = new AgentLoop(llm, _buildTools)
                 .setSystemPrompt(PromptTemplates.BUILDER_PROMPT)
                 .setMaxSteps(maxSteps);
         _refactorer = new AgentLoop(llm, refactorTools)
@@ -172,17 +175,76 @@ public class AgentPipeline {
             }
         }
 
-        // Build phase receives the plan as additional context.
-        String builderInput = (plan == null || plan.isEmpty())
-                ? userGoal
-                : "User goal:\n" + userGoal + "\n\n"
-                        + AgentPlan.builderInstruction(parsedPlan, plan);
+        // -------- Phase 0.5: VALIDATE + EXECUTE (deterministic) ----
+        JSONArray semanticIssues = PlanValidator.validate(parsedPlan);
+        combined.putDiagnostic("planSemanticIssues", semanticIssues);
+        if (semanticIssues.length() > 0) {
+            _emitMarker(fanOut, combined,
+                    "[Phase 0.5/3: plan semantic validation — "
+                            + semanticIssues.length() + " issue(s)"
+                            + (PlanValidator.hasErrors(semanticIssues)
+                                    ? ", will not execute"
+                                    : ", advisory only")
+                            + "]");
+        }
 
-        _emitMarker(fanOut, combined,
-                "[Phase 1/3: build flat model — no composites yet]");
+        PlanExecutor.Outcome executor = null;
+        boolean executorAttempted = parsedPlan != null
+                && !PlanValidator.hasErrors(semanticIssues);
+        if (executorAttempted) {
+            _emitMarker(fanOut, combined,
+                    "[Phase 0.5/3: executing plan deterministically …]");
+            executor = PlanExecutor.execute(parsedPlan, session,
+                    _buildTools, fanOut);
+            combined.putDiagnostic("executor", executor.toReport());
+            _emitMarker(fanOut, combined,
+                    "[Phase 0.5/3: " + executor.summary() + "]");
+        }
 
-        // -------- Phase 1: BUILD --------
-        AgentTrace build = _builder.run(session, builderInput, fanOut);
+        // -------- Phase 1: BUILD (conditional) --------
+        // If the executor built and ran the model end-to-end, skip the
+        // LLM build phase entirely.  This is the industrial-grade
+        // happy path: zero builder tokens spent.  Otherwise pass the
+        // executor's structured report to the LLM so it repairs only
+        // the failed steps.
+        AgentTrace build;
+        if (executor != null && executor.fullyAutonomous()) {
+            _emitMarker(fanOut, combined,
+                    "[Phase 1/3: skipped — executor produced a passing"
+                            + " model autonomously]");
+            build = new AgentTrace();
+            build.finish(true, "Plan executed and simulated by the"
+                    + " deterministic executor (no LLM build calls"
+                    + " required).");
+        } else {
+            String executorContext;
+            if (executor != null) {
+                executorContext = "\n\nDeterministic executor report"
+                        + " (the server already issued these tool"
+                        + " calls; you do NOT need to re-add successful"
+                        + " entities or re-wire successful edges — your"
+                        + " job is ONLY to repair the failures listed"
+                        + " below):\n```json\n"
+                        + executor.toReport().toString(2) + "\n```";
+            } else if (parsedPlan == null) {
+                executorContext = "\n\n(No machine-checkable plan was"
+                        + " produced; proceed from the user goal.)";
+            } else {
+                executorContext = "\n\n(Plan had semantic errors before"
+                        + " execution — see planSemanticIssues;"
+                        + " resolve them as you build.)";
+            }
+            String builderInput = (plan == null || plan.isEmpty())
+                    ? userGoal + executorContext
+                    : "User goal:\n" + userGoal + "\n\n"
+                            + AgentPlan.builderInstruction(parsedPlan,
+                                    plan)
+                            + executorContext;
+            _emitMarker(fanOut, combined,
+                    "[Phase 1/3: build / repair flat model — no"
+                            + " composites yet]");
+            build = _builder.run(session, builderInput, fanOut);
+        }
 
         if (!build.isSuccess()) {
             String reply = "Build phase failed: " + build.finalReply();

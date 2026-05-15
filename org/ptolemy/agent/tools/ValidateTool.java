@@ -141,7 +141,9 @@ public class ValidateTool implements AgentTool {
                 IOPort io = (IOPort) port;
                 links += io.numLinks();
                 String ref = entity.getName() + "." + io.getName();
-                if (io.isInput() && !io.isMultiport() && io.numLinks() == 0) {
+                if (io.isInput() && !io.isMultiport()
+                        && io.numLinks() == 0
+                        && !_isOptionalInput(io)) {
                     _issue(issues, diagnostics, "ERROR",
                             "UNCONNECTED_INPUT", ref,
                             "input port is unconnected: " + ref);
@@ -211,6 +213,37 @@ public class ValidateTool implements AgentTool {
 
     private static boolean _isHidden(String name) {
         return name != null && name.startsWith("__recorder__");
+    }
+
+    /** PortParameter-backed input ports (Ramp.init / Ramp.step /
+     *  Pulse.trigger etc.) are optional: when no upstream is
+     *  connected they fall back to the colocated parameter value.
+     *  Flagging them as unconnected is noise.  Detect via the
+     *  ParameterPort class on the classpath; tolerate the class
+     *  being absent in non-actor-parameters builds. */
+    private static boolean _isOptionalInput(IOPort port) {
+        if (port == null) {
+            return false;
+        }
+        try {
+            Class<?> paramPortClass = Class.forName(
+                    "ptolemy.actor.parameters.ParameterPort");
+            if (paramPortClass.isInstance(port)) {
+                return true;
+            }
+        } catch (Throwable ignored) {
+            // ParameterPort not on classpath in this Ptolemy build.
+        }
+        // Fallback: a sibling Parameter with the same name as the
+        // port is the historical hallmark of a PortParameter setup.
+        if (port.getContainer() != null) {
+            Attribute sibling = port.getContainer()
+                    .getAttribute(port.getName());
+            if (sibling instanceof ptolemy.data.expr.Parameter) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean _requiresContinuousDirector(String className) {
