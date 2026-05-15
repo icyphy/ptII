@@ -45,6 +45,25 @@ import ptolemy.kernel.util.NamedObj;
  These checks produce clear, structured failures for common LLM errors
  (missing parent, wrong port, nonexistent entity) while leaving Ptolemy
  as the final authority for type and MoML semantics.
+
+ <p>Every failure carries a structured payload with these keys when
+ applicable, so the LLM can correct itself without another tool round:
+ <ul>
+ <li>{@code availablePorts} — actual {@code {inputs, outputs}} of the
+     entity referenced by the bad argument.</li>
+ <li>{@code availableEntities} — sibling entity names in the same
+     scope.</li>
+ <li>{@code availableComposites} — composite children of the top level
+     (used when {@code parent} is wrong).</li>
+ <li>{@code didYouMean} — up to three closest candidates ranked by a
+     bucketed Levenshtein metric.</li>
+ <li>{@code actualDirection} — for direction errors, the port's real
+     direction.</li>
+ </ul>
+
+ <p>The same hints are mirrored as a short inline phrase in the
+ top-level error message so LLMs that only read {@code message} still
+ see the correction.
  */
 final class ToolCallValidator {
 
@@ -75,8 +94,16 @@ final class ToolCallValidator {
         data.put("validator", "tool-call-preflight-v1");
         data.put("tool", name);
         data.put("issues", issues);
-        return AgentResult.fail("tool preflight failed: "
-                + issues.optJSONObject(0).optString("message"), data);
+        JSONObject first = issues.optJSONObject(0);
+        String headline = first == null ? "preflight failed"
+                : first.optString("message", "preflight failed");
+        JSONArray dym = first == null ? null
+                : first.optJSONArray("didYouMean");
+        if (dym != null && dym.length() > 0) {
+            headline = headline + " — did you mean "
+                    + _joinFirstTwo(dym) + "?";
+        }
+        return AgentResult.fail("tool preflight failed: " + headline, data);
     }
 
     private static void _validateAddEntity(PtolemySession session,
@@ -109,21 +136,35 @@ final class ToolCallValidator {
         String to = args.optString("to", "").trim();
         IOPort source = ConnectTool.resolvePort(scope, from);
         if (source == null) {
-            _issue(issues, "SOURCE_PORT_NOT_FOUND", "from",
-                    "source port not found in scope: " + from);
+            _portIssue(issues, "from", from, scope, "output",
+                    "source port not found in scope");
         } else if (!(source.isOutput()
                 || (source.getContainer() == scope && source.isInput()))) {
-            _issue(issues, "SOURCE_NOT_OUTPUT", "from",
-                    "source is not an output/boundary input: " + from);
+            _directionIssue(issues, "from", from, source, scope, "output",
+                    "source is not an output/boundary input");
         }
         IOPort dest = ConnectTool.resolvePort(scope, to);
         if (dest == null) {
-            _issue(issues, "DEST_PORT_NOT_FOUND", "to",
-                    "destination port not found in scope: " + to);
+            _portIssue(issues, "to", to, scope, "input",
+                    "destination port not found in scope");
         } else if (!(dest.isInput()
                 || (dest.getContainer() == scope && dest.isOutput()))) {
-            _issue(issues, "DEST_NOT_INPUT", "to",
-                    "destination is not an input/boundary output: " + to);
+            _directionIssue(issues, "to", to, dest, scope, "input",
+                    "destination is not an input/boundary output");
+        }
+        // Cross-check: if both ports resolved but the directions are
+        // exactly reversed, surface a single "swap from/to" hint that
+        // is faster for the LLM to act on than two separate errors.
+        if (source != null && dest != null
+                && issues.length() == 0
+                && (dest.isOutput() && source.isInput())) {
+            JSONObject row = _issue(issues, "REVERSED_DIRECTION", "from",
+                    "from/to look reversed: '" + from + "' is an input and"
+                            + " '" + to + "' is an output");
+            row.put("didYouMean", new JSONArray()
+                    .put("connect(from=\"" + to + "\", to=\"" + from
+                            + "\")"));
+            row.put("suggestion", "swap from and to");
         }
     }
 
@@ -141,11 +182,16 @@ final class ToolCallValidator {
         String param = args.optString("parameter", "").trim();
         NamedObj target = _target(scope, entity);
         if (target == null) {
-            _issue(issues, "ENTITY_NOT_FOUND", "entity",
+            JSONObject row = _issue(issues, "ENTITY_NOT_FOUND", "entity",
                     "entity/property not found in scope: " + entity);
+            row.put("availableEntities", PortHints.entityNames(scope));
+            row.put("didYouMean", PortHints.suggestEntities(scope, entity));
         } else if (param.length() > 0 && target.getAttribute(param) == null) {
-            _issue(issues, "PARAMETER_NOT_FOUND", "parameter",
+            JSONObject row = _issue(issues, "PARAMETER_NOT_FOUND",
+                    "parameter",
                     "parameter not found on " + entity + ": " + param);
+            row.put("didYouMean",
+                    PortHints.suggestAttributes(target, param));
         }
     }
 
@@ -159,8 +205,10 @@ final class ToolCallValidator {
         }
         String name = args.optString("name", "").trim();
         if (name.length() > 0 && scope.getEntity(name) == null) {
-            _issue(issues, "ENTITY_NOT_FOUND", "name",
+            JSONObject row = _issue(issues, "ENTITY_NOT_FOUND", "name",
                     "entity not found in scope: " + name);
+            row.put("availableEntities", PortHints.entityNames(scope));
+            row.put("didYouMean", PortHints.suggestEntities(scope, name));
         }
     }
 
@@ -184,11 +232,16 @@ final class ToolCallValidator {
                     "members must contain at least one entity");
             return;
         }
+        JSONArray available = PortHints.entityNames(scope);
         for (int i = 0; i < members.length(); i++) {
             String member = members.optString(i, "").trim();
             if (member.length() == 0 || scope.getEntity(member) == null) {
-                _issue(issues, "MEMBER_NOT_FOUND", "members[" + i + "]",
+                JSONObject row = _issue(issues, "MEMBER_NOT_FOUND",
+                        "members[" + i + "]",
                         "member not found in scope: " + member);
+                row.put("availableEntities", available);
+                row.put("didYouMean",
+                        PortHints.suggestEntities(scope, member));
             }
         }
     }
@@ -206,8 +259,11 @@ final class ToolCallValidator {
         }
         ComponentEntity child = scope.getEntity(p);
         if (!(child instanceof CompositeEntity)) {
-            _issue(issues, "PARENT_NOT_FOUND", "parent",
+            JSONObject row = _issue(issues, "PARENT_NOT_FOUND", "parent",
                     "no composite named '" + p + "' at top level");
+            row.put("availableComposites",
+                    PortHints.compositeNames(scope));
+            row.put("didYouMean", PortHints.suggestComposites(scope, p));
             return null;
         }
         return (CompositeEntity) child;
@@ -224,6 +280,76 @@ final class ToolCallValidator {
         return scope.getAttribute(name);
     }
 
+    /** Emit a {@code XXX_PORT_NOT_FOUND} issue with full
+     *  available-ports / did-you-mean context.  Distinguishes between
+     *  "entity prefix unknown" and "entity known but port name wrong"
+     *  because the right hint differs. */
+    private static void _portIssue(JSONArray issues, String field,
+            String reference, CompositeEntity scope, String wantDirection,
+            String headline) {
+        String code = "from".equals(field) ? "SOURCE_PORT_NOT_FOUND"
+                : "DEST_PORT_NOT_FOUND";
+        String[] parts = PortHints.splitRef(reference);
+        String entityPrefix = parts[0];
+        ComponentEntity entity = entityPrefix.length() > 0
+                ? scope.getEntity(entityPrefix) : null;
+
+        JSONObject row;
+        if (entityPrefix.length() > 0 && entity == null) {
+            // Entity prefix itself is wrong.  Demote the message and
+            // surface entity-level suggestions, which is what the LLM
+            // actually needs.
+            String entCode = "from".equals(field) ? "SOURCE_ENTITY_NOT_FOUND"
+                    : "DEST_ENTITY_NOT_FOUND";
+            row = _issue(issues, entCode, field,
+                    "entity '" + entityPrefix + "' from "
+                            + reference + " does not exist in scope");
+            row.put("availableEntities", PortHints.entityNames(scope));
+            row.put("didYouMean",
+                    PortHints.suggestEntities(scope, entityPrefix));
+        } else {
+            row = _issue(issues, code, field,
+                    headline + ": " + reference);
+            JSONObject portsDescription = PortHints.describePorts(scope,
+                    entityPrefix);
+            if (portsDescription.length() > 0) {
+                row.put("availablePorts", portsDescription);
+            }
+            row.put("didYouMean", PortHints.suggestPorts(scope, reference,
+                    wantDirection));
+        }
+    }
+
+    /** Emit a direction issue.  Includes the port's actual direction
+     *  and, when possible, the closest legal port reference matching
+     *  the desired direction. */
+    private static void _directionIssue(JSONArray issues, String field,
+            String reference, IOPort port, CompositeEntity scope,
+            String wantDirection, String headline) {
+        String code = "from".equals(field) ? "SOURCE_NOT_OUTPUT"
+                : "DEST_NOT_INPUT";
+        JSONObject row = _issue(issues, code, field,
+                headline + ": " + reference);
+        String actual;
+        if (port.isInput() && port.isOutput()) {
+            actual = "both";
+        } else if (port.isInput()) {
+            actual = "input";
+        } else if (port.isOutput()) {
+            actual = "output";
+        } else {
+            actual = "neither";
+        }
+        row.put("actualDirection", actual);
+        JSONObject portsDescription = PortHints.describePorts(scope,
+                PortHints.splitRef(reference)[0]);
+        if (portsDescription.length() > 0) {
+            row.put("availablePorts", portsDescription);
+        }
+        row.put("didYouMean", PortHints.suggestPorts(scope, reference,
+                wantDirection));
+    }
+
     private static void _require(JSONObject args, String key,
             JSONArray issues) {
         if (!args.has(key) || args.optString(key, "").trim().length() == 0) {
@@ -232,9 +358,29 @@ final class ToolCallValidator {
         }
     }
 
-    private static void _issue(JSONArray issues, String code, String field,
-            String message) {
-        issues.put(new JSONObject().put("code", code)
-                .put("field", field).put("message", message));
+    private static JSONObject _issue(JSONArray issues, String code,
+            String field, String message) {
+        JSONObject row = new JSONObject().put("code", code)
+                .put("field", field).put("message", message);
+        issues.put(row);
+        return row;
+    }
+
+    /** Format the first one or two suggestion entries from a JSONArray
+     *  as a short human-readable phrase: {@code "'plus'"}, or
+     *  {@code "'plus' or 'minus'"}.  Empty input returns the empty
+     *  string and the caller is expected to skip the "did you mean"
+     *  suffix. */
+    private static String _joinFirstTwo(JSONArray suggestions) {
+        if (suggestions == null || suggestions.length() == 0) {
+            return "";
+        }
+        String first = suggestions.optString(0, "");
+        if (suggestions.length() == 1 || suggestions.optString(1, "")
+                .length() == 0) {
+            return "'" + first + "'";
+        }
+        return "'" + first + "' or '"
+                + suggestions.optString(1, "") + "'";
     }
 }
