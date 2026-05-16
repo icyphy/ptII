@@ -29,6 +29,7 @@ package org.ptolemy.agent.tools;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.ptolemy.agent.agent.RefactorAdvisor;
 import org.ptolemy.agent.session.PtolemySession;
 import org.ptolemy.agent.util.AgentResult;
 
@@ -59,6 +60,7 @@ import ptolemy.kernel.util.Attribute;
  @since Ptolemy II 11.1
  */
 public class ValidateTool implements AgentTool {
+    private static final int MAX_ATOMS_PER_SCOPE = 12;
 
     @Override
     public String name() {
@@ -87,14 +89,8 @@ public class ValidateTool implements AgentTool {
             return AgentResult.fail("no model loaded");
         }
         CompositeEntity top = (CompositeEntity) session.toplevel();
-        @SuppressWarnings("unchecked")
-        java.util.List<ComponentEntity> entityList = top.entityList();
-        @SuppressWarnings("unchecked")
-        java.util.List<Relation> relationList = top.relationList();
-        @SuppressWarnings("unchecked")
-        java.util.List<Attribute> attributeList = top.attributeList();
-        int entities = entityList.size();
-        int relations = relationList.size();
+        int entities = 0;
+        int relations = 0;
         int links = 0;
         int directors = 0;
         boolean hasRecorder = false;
@@ -103,6 +99,15 @@ public class ValidateTool implements AgentTool {
 
         JSONArray issues = new JSONArray();
         JSONArray diagnostics = new JSONArray();
+        JSONArray scopes = new JSONArray();
+        JSONArray disconnectedEntities = new JSONArray();
+        JSONArray groupingSuggestions = RefactorAdvisor.suggestionsRecursive(
+                session, MAX_ATOMS_PER_SCOPE);
+        @SuppressWarnings("unchecked")
+        java.util.List<ComponentEntity> topEntities = top.entityList();
+        @SuppressWarnings("unchecked")
+        java.util.List<Attribute> attributeList = top.attributeList();
+
         for (Attribute attr : attributeList) {
             String klass = attr.getClassName();
             if (attr instanceof Director || (klass != null
@@ -113,7 +118,7 @@ public class ValidateTool implements AgentTool {
                 }
             }
         }
-        if (entities == 0) {
+        if (_visibleEntityCount(topEntities) == 0) {
             _issue(issues, diagnostics, "ERROR", "EMPTY_MODEL", "model",
                     "model is empty: no entities found");
         }
@@ -121,40 +126,18 @@ public class ValidateTool implements AgentTool {
             _issue(issues, diagnostics, "ERROR", "NO_DIRECTOR", "director",
                     "no director declared at top level: simulation will fail");
         }
-        for (ComponentEntity entity : entityList) {
-            if (_isHidden(entity.getName())) {
-                continue;
-            }
-            String entityClass = entity.getClassName();
-            if (entityClass != null && entityClass.endsWith(".Recorder")) {
-                hasRecorder = true;
-            }
-            if (_requiresContinuousDirector(entityClass)) {
-                hasContinuousActor = true;
-            }
-            @SuppressWarnings("unchecked")
-            java.util.List<Port> ports = entity.portList();
-            for (Port port : ports) {
-                if (!(port instanceof IOPort)) {
-                    continue;
-                }
-                IOPort io = (IOPort) port;
-                links += io.numLinks();
-                String ref = entity.getName() + "." + io.getName();
-                if (io.isInput() && !io.isMultiport()
-                        && io.numLinks() == 0
-                        && !_isOptionalInput(io)) {
-                    _issue(issues, diagnostics, "ERROR",
-                            "UNCONNECTED_INPUT", ref,
-                            "input port is unconnected: " + ref);
-                }
-                if (io.isOutput() && io.numLinks() == 0) {
-                    _issue(issues, diagnostics, "WARN",
-                            "UNCONNECTED_OUTPUT", ref,
-                            "output port is unconnected: " + ref);
-                }
-            }
+        for (ComponentEntity entity : topEntities) {
+            if (_isHidden(entity.getName())) continue;
+            String cls = entity.getClassName();
+            if (cls != null && cls.endsWith(".Recorder")) hasRecorder = true;
+            if (_requiresContinuousDirector(cls)) hasContinuousActor = true;
         }
+        int[] counts = _scanScope(top, "", issues, diagnostics,
+                disconnectedEntities, scopes);
+        entities = counts[0];
+        relations = counts[1];
+        links = counts[2];
+
         if (!hasRecorder && entities > 0) {
             _issue(issues, diagnostics, "WARN", "NO_RECORDER", "Recorder",
                     "no top-level Recorder found; frontend Signals panel may"
@@ -170,6 +153,113 @@ public class ValidateTool implements AgentTool {
                                     : directorClass));
         }
 
+        JSONObject data = new JSONObject();
+        data.put("entities", entities);
+        data.put("relations", relations);
+        data.put("links", links);
+        data.put("directors", directors);
+        data.put("issues", issues);
+        data.put("diagnostics", diagnostics);
+        data.put("scopes", scopes);
+        data.put("disconnectedEntities", disconnectedEntities);
+        data.put("groupingSuggestions", groupingSuggestions);
+        data.put("healthy", issues.length() == 0);
+
+        boolean ok = issues.length() == 0;
+        return ok
+                ? AgentResult.ok("model looks healthy", data)
+                : AgentResult.ok(
+                        "model has " + issues.length() + " issue(s)", data);
+    }
+
+    /** Recursively scan one scope and return [entities, relations, links]. */
+    private static int[] _scanScope(CompositeEntity scope, String scopePath,
+            JSONArray legacy, JSONArray diagnostics,
+            JSONArray disconnectedEntities, JSONArray scopes) {
+        int entities = 0;
+        int relations = 0;
+        int links = 0;
+        int atomics = 0;
+        int composites = 0;
+
+        @SuppressWarnings("unchecked")
+        java.util.List<ComponentEntity> entityList = scope.entityList();
+        for (ComponentEntity entity : entityList) {
+            if (_isHidden(entity.getName())) {
+                continue;
+            }
+            entities++;
+            if (entity instanceof CompositeEntity) {
+                composites++;
+            } else {
+                atomics++;
+            }
+            int totalEntityLinks = 0;
+            int inputs = 0;
+            int outputs = 0;
+            @SuppressWarnings("unchecked")
+            java.util.List<Port> ports = entity.portList();
+            for (Port port : ports) {
+                if (!(port instanceof IOPort)) {
+                    continue;
+                }
+                IOPort io = (IOPort) port;
+                int n = io.numLinks();
+                links += n;
+                totalEntityLinks += n;
+                if (io.isInput()) {
+                    inputs++;
+                }
+                if (io.isOutput()) {
+                    outputs++;
+                }
+                String ref = _entityPath(scopePath, entity.getName())
+                        + "." + io.getName();
+                if (io.isInput() && !io.isMultiport()
+                        && io.numLinks() == 0
+                        && !_isOptionalInput(io)) {
+                    _issue(legacy, diagnostics, "ERROR",
+                            "UNCONNECTED_INPUT", ref,
+                            "input port is unconnected: " + ref);
+                }
+                if (io.isOutput() && io.numLinks() == 0) {
+                    _issue(legacy, diagnostics, "WARN",
+                            "UNCONNECTED_OUTPUT", ref,
+                            "output port is unconnected: " + ref);
+                }
+            }
+
+            if ((inputs + outputs) == 0 || totalEntityLinks == 0) {
+                JSONObject rec = _recommendDisconnectedAction(scope, scopePath,
+                        entity, inputs, outputs);
+                disconnectedEntities.put(rec);
+                diagnostics.put(new JSONObject()
+                        .put("severity", "WARN")
+                        .put("code", "DISCONNECTED_ENTITY")
+                        .put("subject", rec.optString("subject"))
+                        .put("message", rec.optString("message"))
+                        .put("recommendedAction",
+                                rec.optString("recommendedAction"))
+                        .put("recommendedTool",
+                                rec.optString("recommendedTool"))
+                        .put("recommendedArgs", rec.optJSONObject(
+                                "recommendedArgs")));
+                legacy.put(rec.optString("message"));
+            }
+
+            if (entity instanceof CompositeEntity) {
+                String childScope = _entityPath(scopePath, entity.getName());
+                int[] child = _scanScope((CompositeEntity) entity, childScope,
+                        legacy, diagnostics, disconnectedEntities, scopes);
+                entities += child[0];
+                relations += child[1];
+                links += child[2];
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        java.util.List<Relation> relationList = scope.relationList();
+        relations += relationList.size();
         for (Relation relation : relationList) {
             @SuppressWarnings("unchecked")
             java.util.List<Port> linkedPorts = relation.linkedPortList();
@@ -188,31 +278,50 @@ public class ValidateTool implements AgentTool {
                 }
             }
             if (sources == 0 || destinations == 0) {
-                _issue(issues, diagnostics, "ERROR", "INVALID_RELATION",
-                        relation.getName(),
+                String relSubject = _scopePath(scopePath)
+                        + ".relation:" + relation.getName();
+                _issue(legacy, diagnostics, "ERROR", "INVALID_RELATION",
+                        relSubject,
                         "relation does not connect output to input: "
-                                + relation.getName());
+                                + relSubject);
             }
         }
 
-        JSONObject data = new JSONObject();
-        data.put("entities", entities);
-        data.put("relations", relations);
-        data.put("links", links);
-        data.put("directors", directors);
-        data.put("issues", issues);
-        data.put("diagnostics", diagnostics);
-        data.put("healthy", issues.length() == 0);
-
-        boolean ok = issues.length() == 0;
-        return ok
-                ? AgentResult.ok("model looks healthy", data)
-                : AgentResult.ok(
-                        "model has " + issues.length() + " issue(s)", data);
+        scopes.put(new JSONObject()
+                .put("scope", _scopePath(scopePath))
+                .put("atomicEntities", atomics)
+                .put("compositeEntities", composites)
+                .put("relations", relationList.size())
+                .put("overcrowded", atomics > MAX_ATOMS_PER_SCOPE)
+                .put("maxRecommendedAtoms", MAX_ATOMS_PER_SCOPE));
+        if (atomics > MAX_ATOMS_PER_SCOPE) {
+            String scopeName = _scopePath(scopePath);
+            diagnostics.put(new JSONObject()
+                    .put("severity", "WARN")
+                    .put("code", "OVERCROWDED_SCOPE")
+                    .put("subject", scopeName)
+                    .put("message",
+                            "scope has too many atomic entities (" + atomics
+                                    + "): consider grouping recursively"));
+            legacy.put("scope has too many atomic entities: " + scopeName
+                    + " (" + atomics + ")");
+        }
+        return new int[] { entities, relations, links };
     }
 
     private static boolean _isHidden(String name) {
         return name != null && name.startsWith("__recorder__");
+    }
+
+    private static int _visibleEntityCount(
+            java.util.List<ComponentEntity> entities) {
+        int count = 0;
+        for (ComponentEntity entity : entities) {
+            if (!_isHidden(entity.getName())) {
+                count++;
+            }
+        }
+        return count;
     }
 
     /** PortParameter-backed input ports (Ramp.init / Ramp.step /
@@ -252,6 +361,147 @@ public class ValidateTool implements AgentTool {
         }
         String c = className.toLowerCase();
         return c.endsWith(".integrator") || c.endsWith(".derivative");
+    }
+
+    private static JSONObject _recommendDisconnectedAction(
+            CompositeEntity scope, String scopePath, ComponentEntity entity,
+            int inputs, int outputs) {
+        String subject = _entityPath(scopePath, entity.getName());
+        JSONObject out = new JSONObject();
+        out.put("subject", subject);
+        out.put("scope", _scopePath(scopePath));
+        out.put("entity", entity.getName());
+        out.put("className", entity.getClassName());
+
+        String parentArg = scopePath == null ? "" : scopePath;
+        String firstInput = _firstConnectableInput(entity);
+        String firstOutput = _firstOutput(entity);
+        String candidateIn = _findUnconnectedInput(scope, entity);
+        String candidateOut = _findAnyOutput(scope, entity);
+
+        if (outputs > 0 && inputs == 0 && firstOutput.length() > 0
+                && candidateIn.length() > 0) {
+            JSONObject args = new JSONObject()
+                    .put("from", entity.getName() + "." + firstOutput)
+                    .put("to", candidateIn);
+            if (!parentArg.isEmpty()) {
+                args.put("parent", parentArg);
+            }
+            out.put("recommendedAction", "CONNECT_TO_DOWNSTREAM");
+            out.put("recommendedTool", "connect");
+            out.put("recommendedArgs", args);
+            out.put("message",
+                    "disconnected source-like entity: suggest connecting "
+                            + subject + " to downstream input");
+            return out;
+        }
+        if (inputs > 0 && outputs == 0 && firstInput.length() > 0
+                && candidateOut.length() > 0) {
+            JSONObject args = new JSONObject()
+                    .put("from", candidateOut)
+                    .put("to", entity.getName() + "." + firstInput);
+            if (!parentArg.isEmpty()) {
+                args.put("parent", parentArg);
+            }
+            out.put("recommendedAction", "CONNECT_FROM_UPSTREAM");
+            out.put("recommendedTool", "connect");
+            out.put("recommendedArgs", args);
+            out.put("message",
+                    "disconnected sink-like entity: suggest connecting "
+                            + subject + " from upstream output");
+            return out;
+        }
+        JSONObject args = new JSONObject().put("name", entity.getName());
+        if (!parentArg.isEmpty()) {
+            args.put("parent", parentArg);
+        }
+        out.put("recommendedAction", "DELETE_ORPHAN");
+        out.put("recommendedTool", "delete");
+        out.put("recommendedArgs", args);
+        out.put("message",
+                "isolated entity with no clear functional integration: "
+                        + "suggest delete " + subject);
+        return out;
+    }
+
+    private static String _firstOutput(ComponentEntity entity) {
+        @SuppressWarnings("unchecked")
+        java.util.List<Port> ports = entity.portList();
+        for (Port port : ports) {
+            if (port instanceof IOPort && ((IOPort) port).isOutput()) {
+                return ((IOPort) port).getName();
+            }
+        }
+        return "";
+    }
+
+    private static String _firstConnectableInput(ComponentEntity entity) {
+        @SuppressWarnings("unchecked")
+        java.util.List<Port> ports = entity.portList();
+        for (Port port : ports) {
+            if (!(port instanceof IOPort)) {
+                continue;
+            }
+            IOPort io = (IOPort) port;
+            if (io.isInput() && !_isOptionalInput(io)) {
+                return io.getName();
+            }
+        }
+        return "";
+    }
+
+    private static String _findUnconnectedInput(CompositeEntity scope,
+            ComponentEntity exclude) {
+        @SuppressWarnings("unchecked")
+        java.util.List<ComponentEntity> entities = scope.entityList();
+        for (ComponentEntity entity : entities) {
+            if (entity == exclude || _isHidden(entity.getName())) {
+                continue;
+            }
+            @SuppressWarnings("unchecked")
+            java.util.List<Port> ports = entity.portList();
+            for (Port port : ports) {
+                if (!(port instanceof IOPort)) {
+                    continue;
+                }
+                IOPort io = (IOPort) port;
+                if (io.isInput() && io.numLinks() == 0
+                        && !_isOptionalInput(io)) {
+                    return entity.getName() + "." + io.getName();
+                }
+            }
+        }
+        return "";
+    }
+
+    private static String _findAnyOutput(CompositeEntity scope,
+            ComponentEntity exclude) {
+        @SuppressWarnings("unchecked")
+        java.util.List<ComponentEntity> entities = scope.entityList();
+        for (ComponentEntity entity : entities) {
+            if (entity == exclude || _isHidden(entity.getName())) {
+                continue;
+            }
+            @SuppressWarnings("unchecked")
+            java.util.List<Port> ports = entity.portList();
+            for (Port port : ports) {
+                if (port instanceof IOPort && ((IOPort) port).isOutput()) {
+                    return entity.getName() + "." + ((IOPort) port).getName();
+                }
+            }
+        }
+        return "";
+    }
+
+    private static String _scopePath(String path) {
+        return (path == null || path.isEmpty()) ? "<top>" : path;
+    }
+
+    private static String _entityPath(String scopePath, String entityName) {
+        if (scopePath == null || scopePath.isEmpty()) {
+            return entityName;
+        }
+        return scopePath + "/" + entityName;
     }
 
     private static void _issue(JSONArray legacy, JSONArray diagnostics,

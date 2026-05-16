@@ -27,15 +27,18 @@
  */
 package org.ptolemy.agent.llm;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -74,6 +77,18 @@ public class OpenAIClient implements LLMClient {
     private final String _baseUrl;
     private final String _model;
     private final String _providerName;
+    private final int _connectTimeoutMs;
+    private final int _readTimeoutMs;
+
+    /** Cached result of the one-shot smoke probe.  Tri-state:
+     *  null = not yet probed, TRUE = probe succeeded (model exists +
+     *  API key valid), FALSE = probe failed (model not found, auth
+     *  rejected, network down).  We treat FALSE as a hard "not
+     *  available" so callers can fall back to a working sibling
+     *  client without burning every per-request 120-second read
+     *  timeout. */
+    private volatile Boolean _reachable;
+    private volatile String _reachableError = "";
 
     /** Build a client by reading configuration from the environment. */
     public OpenAIClient() {
@@ -95,6 +110,8 @@ public class OpenAIClient implements LLMClient {
                         : baseUrl);
         _model = model == null || model.isEmpty() ? DEFAULT_MODEL : model;
         _providerName = detectProviderName(_baseUrl, _model);
+        _connectTimeoutMs = _resolveConnectTimeoutMs(_providerName);
+        _readTimeoutMs = _resolveReadTimeoutMs(_providerName, _model);
     }
 
     @Override
@@ -104,7 +121,79 @@ public class OpenAIClient implements LLMClient {
 
     @Override
     public boolean isAvailable() {
-        return !_apiKey.isEmpty();
+        if (_apiKey.isEmpty()) {
+            return false;
+        }
+        Boolean cached = _reachable;
+        // Unprobed clients are optimistically considered available so
+        // legacy single-model callers behave exactly as before.  Call
+        // verifyReachable() explicitly to harden the check.
+        if (cached == null) {
+            return true;
+        }
+        return cached.booleanValue();
+    }
+
+    /** One-shot lightweight chat probe used to verify that the
+     *  configured base URL + API key + model triple actually answers
+     *  HTTP 2xx.  Cached forever: success means later
+     *  {@link #isAvailable()} stays true; failure means it returns
+     *  false so the caller can fall back to a sibling client without
+     *  paying repeated 120-second read timeouts.
+     *
+     *  <p>Skipped when {@link #_apiKey} is empty (still returns
+     *  false).  Skipped via {@code AGENT_SKIP_SMOKE_PROBE=true} for
+     *  CI runs that don't want any outbound calls.  The probe is
+     *  synchronized so concurrent callers share a single network
+     *  request.
+     *  @return True iff the model is reachable. */
+    public synchronized boolean verifyReachable() {
+        if (_reachable != null) {
+            return _reachable.booleanValue();
+        }
+        if (_apiKey.isEmpty()) {
+            _reachable = Boolean.FALSE;
+            _reachableError = "no API key configured";
+            return false;
+        }
+        if (_envFlag("AGENT_SKIP_SMOKE_PROBE",
+                "agent.skipSmokeProbe", false)) {
+            _reachable = Boolean.TRUE;
+            return true;
+        }
+        try {
+            JSONObject body = new JSONObject();
+            body.put("model", _model);
+            JSONArray messages = new JSONArray();
+            messages.put(new JSONObject().put("role", "system")
+                    .put("content", "ping"));
+            messages.put(new JSONObject().put("role", "user")
+                    .put("content", "ok"));
+            body.put("messages", messages);
+            body.put("max_tokens", 1);
+            body.put("temperature", 0.0);
+            String endpoint = _chatCompletionsEndpoint(_baseUrl);
+            // Use a short probe-only timeout: a real model usually
+            // returns a 1-token reply in well under 10 seconds; we'd
+            // rather declare it unreachable and fall back than pay
+            // the standard 60-120 s read timeout.
+            postJsonWithTimeout(endpoint, body,
+                    Math.min(_connectTimeoutMs, 10_000),
+                    Math.min(_readTimeoutMs, 15_000));
+            _reachable = Boolean.TRUE;
+            return true;
+        } catch (Throwable t) {
+            _reachable = Boolean.FALSE;
+            _reachableError = t.getMessage() == null
+                    ? t.toString() : t.getMessage();
+            return false;
+        }
+    }
+
+    /** @return Last error from {@link #verifyReachable()}; empty when
+     *  the probe succeeded or has not run yet. */
+    public String reachableError() {
+        return _reachableError;
     }
 
     @Override
@@ -114,6 +203,17 @@ public class OpenAIClient implements LLMClient {
         json.put("available", isAvailable());
         json.put("baseUrl", _baseUrl);
         json.put("model", _model);
+        json.put("connectTimeoutMs", _connectTimeoutMs);
+        json.put("readTimeoutMs", _readTimeoutMs);
+        if (_reachable != null) {
+            json.put("smokeProbe", _reachable.booleanValue()
+                    ? "ok" : "fail");
+            if (!_reachable.booleanValue() && !_reachableError.isEmpty()) {
+                json.put("smokeError", _reachableError);
+            }
+        } else {
+            json.put("smokeProbe", "unprobed");
+        }
         return json;
     }
 
@@ -139,6 +239,132 @@ public class OpenAIClient implements LLMClient {
         return parseResponse(response);
     }
 
+    /** Streaming chat using OpenAI-compatible {@code stream: true}
+     *  Server-Sent Events.  Sends one HTTP POST and parses
+     *  {@code data: {...}} lines off the wire, accumulating
+     *  {@code content} and {@code reasoning_content} deltas.  Calls
+     *  {@code onDelta} at most once per {@code STREAM_THROTTLE_MS}
+     *  with cumulative snapshots, so UI consumers can render
+     *  progressively without bouncing on every token.
+     *
+     *  <p>When the request includes tools we transparently fall back
+     *  to non-streaming because tool-call deltas across providers
+     *  are not robustly compatible and the planner / reviewer paths
+     *  that benefit from streaming all use the empty-tools shape. */
+    @Override
+    public LLMResponse chatStreaming(JSONArray messages, JSONArray tools,
+            BiConsumer<String, String> onDelta) throws Exception {
+        if (!isAvailable()) {
+            throw new IllegalStateException(
+                    "OpenAI client is not configured: OPENAI_API_KEY is unset");
+        }
+        if (tools != null && tools.length() > 0) {
+            return chat(messages, tools);
+        }
+
+        JSONObject body = new JSONObject();
+        body.put("model", _model);
+        body.put("messages", messages);
+        body.put("temperature", 0.2);
+        body.put("stream", true);
+
+        String endpoint = _chatCompletionsEndpoint(_baseUrl);
+        URL url = new URL(endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        StringBuilder content = new StringBuilder();
+        StringBuilder reasoning = new StringBuilder();
+        List<JSONObject> rawToolCalls = new ArrayList<>();
+        long lastEmit = 0L;
+        try {
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "text/event-stream");
+            conn.setRequestProperty("Authorization", "Bearer " + _apiKey);
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(_connectTimeoutMs);
+            conn.setReadTimeout(_readTimeoutMs);
+            byte[] payload = body.toString().getBytes(StandardCharsets.UTF_8);
+            try (OutputStream out = conn.getOutputStream()) {
+                out.write(payload);
+            }
+            int status = conn.getResponseCode();
+            if (status < 200 || status >= 300) {
+                String err = readAll(conn.getErrorStream());
+                throw new IOException("OpenAI HTTP " + status + ": " + err);
+            }
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(conn.getInputStream(),
+                            StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.isEmpty()) {
+                        continue;
+                    }
+                    if (!line.startsWith("data:")) {
+                        continue;
+                    }
+                    String data = line.substring(5).trim();
+                    if (data.isEmpty() || "[DONE]".equals(data)) {
+                        continue;
+                    }
+                    JSONObject evt;
+                    try {
+                        evt = new JSONObject(data);
+                    } catch (Exception parseError) {
+                        continue;
+                    }
+                    JSONArray choices = evt.optJSONArray("choices");
+                    if (choices == null || choices.length() == 0) {
+                        continue;
+                    }
+                    JSONObject delta = choices.getJSONObject(0)
+                            .optJSONObject("delta");
+                    if (delta == null) {
+                        continue;
+                    }
+                    if (!delta.isNull("content")) {
+                        String c = delta.optString("content", "");
+                        if (c != null && !c.isEmpty()) {
+                            content.append(c);
+                        }
+                    }
+                    if (!delta.isNull("reasoning_content")) {
+                        String r = delta.optString(
+                                "reasoning_content", "");
+                        if (r != null && !r.isEmpty()) {
+                            reasoning.append(r);
+                        }
+                    }
+                    JSONArray tc = delta.optJSONArray("tool_calls");
+                    if (tc != null) {
+                        for (int i = 0; i < tc.length(); i++) {
+                            rawToolCalls.add(tc.getJSONObject(i));
+                        }
+                    }
+                    long now = System.currentTimeMillis();
+                    if (onDelta != null
+                            && now - lastEmit >= STREAM_THROTTLE_MS) {
+                        lastEmit = now;
+                        onDelta.accept(content.toString(),
+                                reasoning.toString());
+                    }
+                }
+            }
+        } finally {
+            conn.disconnect();
+        }
+        if (onDelta != null) {
+            onDelta.accept(content.toString(), reasoning.toString());
+        }
+        return new LLMResponse(content.toString(),
+                reasoning.length() == 0 ? null : reasoning.toString(),
+                new ArrayList<LLMResponse.ToolCall>(), null);
+    }
+
+    /** Throttle for streaming delta emissions; ~6 updates per second
+     *  is plenty for human UI without flooding the listener. */
+    private static final long STREAM_THROTTLE_MS = 150L;
+
     /** Parse an OpenAI Chat Completions response into an LLMResponse. */
     static LLMResponse parseResponse(JSONObject response) {
         JSONArray choices = response.optJSONArray("choices");
@@ -153,6 +379,7 @@ public class OpenAIClient implements LLMClient {
                     response);
         }
         String content = message.optString("content", "");
+        String reasoningContent = message.optString("reasoning_content", "");
         List<LLMResponse.ToolCall> calls = new ArrayList<>();
         JSONArray toolCalls = message.optJSONArray("tool_calls");
         if (toolCalls != null) {
@@ -175,10 +402,17 @@ public class OpenAIClient implements LLMClient {
                         call.optString("id", "tc-" + i), name, parsed));
             }
         }
-        return new LLMResponse(content, calls, response);
+        return new LLMResponse(content, reasoningContent, calls, response);
     }
 
     private JSONObject postJson(String endpoint, JSONObject body)
+            throws IOException {
+        return postJsonWithTimeout(endpoint, body, _connectTimeoutMs,
+                _readTimeoutMs);
+    }
+
+    private JSONObject postJsonWithTimeout(String endpoint,
+            JSONObject body, int connectTimeoutMs, int readTimeoutMs)
             throws IOException {
         URL url = new URL(endpoint);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -187,8 +421,8 @@ public class OpenAIClient implements LLMClient {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Authorization", "Bearer " + _apiKey);
             conn.setDoOutput(true);
-            conn.setConnectTimeout(15_000);
-            conn.setReadTimeout(120_000);
+            conn.setConnectTimeout(connectTimeoutMs);
+            conn.setReadTimeout(readTimeoutMs);
 
             byte[] payload = body.toString()
                     .getBytes(StandardCharsets.UTF_8);
@@ -207,6 +441,17 @@ public class OpenAIClient implements LLMClient {
         } finally {
             conn.disconnect();
         }
+    }
+
+    private static boolean _envFlag(String envName, String sysProp,
+            boolean fallback) {
+        String raw = env(envName, sysProp, fallback ? "true" : "false");
+        if (raw == null) {
+            return fallback;
+        }
+        String v = raw.trim().toLowerCase();
+        return "1".equals(v) || "true".equals(v) || "yes".equals(v)
+                || "on".equals(v);
     }
 
     private static String readAll(InputStream in) throws IOException {
@@ -250,6 +495,53 @@ public class OpenAIClient implements LLMClient {
             return "deepseek";
         }
         return "openai";
+    }
+
+    private static int _resolveConnectTimeoutMs(String providerName) {
+        String fallback = "15000";
+        if ("deepseek".equals(providerName)) {
+            fallback = env("DEEPSEEK_CONNECT_TIMEOUT_MS",
+                    "agent.deepseek.connectTimeoutMs",
+                    env("LLM_CONNECT_TIMEOUT_MS",
+                            "agent.llm.connectTimeoutMs", fallback));
+        } else {
+            fallback = env("OPENAI_CONNECT_TIMEOUT_MS",
+                    "agent.openai.connectTimeoutMs",
+                    env("LLM_CONNECT_TIMEOUT_MS",
+                            "agent.llm.connectTimeoutMs", fallback));
+        }
+        return _parsePositiveInt(fallback, 15_000);
+    }
+
+    private static int _resolveReadTimeoutMs(String providerName, String model) {
+        String modelLower = model == null ? "" : model.toLowerCase();
+        String fallback = "120000";
+        if ("deepseek".equals(providerName)) {
+            if (modelLower.contains("v4-pro")) {
+                fallback = "120000";
+            } else if (modelLower.contains("v4-flash")) {
+                fallback = "60000";
+            }
+            fallback = env("DEEPSEEK_READ_TIMEOUT_MS",
+                    "agent.deepseek.readTimeoutMs",
+                    env("LLM_READ_TIMEOUT_MS",
+                            "agent.llm.readTimeoutMs", fallback));
+        } else {
+            fallback = env("OPENAI_READ_TIMEOUT_MS",
+                    "agent.openai.readTimeoutMs",
+                    env("LLM_READ_TIMEOUT_MS",
+                            "agent.llm.readTimeoutMs", fallback));
+        }
+        return _parsePositiveInt(fallback, 120_000);
+    }
+
+    private static int _parsePositiveInt(String raw, int defaultValue) {
+        try {
+            int n = Integer.parseInt(raw.trim());
+            return n > 0 ? n : defaultValue;
+        } catch (Exception e) {
+            return defaultValue;
+        }
     }
 
     private static String env(String envName, String sysProp,

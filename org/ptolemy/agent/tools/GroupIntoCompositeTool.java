@@ -169,13 +169,11 @@ public class GroupIntoCompositeTool implements AgentTool {
 
         CompositeEntity scope = top;
         if (parentName.length() > 0) {
-            ComponentEntity child = top.getEntity(parentName);
-            if (!(child instanceof CompositeEntity)) {
-                return AgentResult.fail(
-                        "no composite named '" + parentName
-                                + "' at top level");
+            try {
+                scope = ToolScopeResolver.resolve(top, parentName);
+            } catch (IllegalArgumentException ex) {
+                return AgentResult.fail(ex.getMessage());
             }
-            scope = (CompositeEntity) child;
         }
         if (scope.getEntity(compositeName) != null
                 || scope.getRelation(compositeName) != null) {
@@ -477,10 +475,8 @@ public class GroupIntoCompositeTool implements AgentTool {
 
         body.append("</group>");
 
-        String moml = parentName.length() == 0
-                ? body.toString()
-                : "<entity name=\"" + AddEntityTool.escape(parentName) + "\">"
-                        + body.toString() + "</entity>";
+        String moml = ToolScopeResolver.wrapInParent(parentName,
+                body.toString());
 
         AgentResult res = session.applyChange(moml);
         if (!res.ok()) {
@@ -496,23 +492,14 @@ public class GroupIntoCompositeTool implements AgentTool {
                 CompositeEntity scopeNow = (CompositeEntity)
                         session.toplevel();
                 if (parentName.length() > 0) {
-                    ComponentEntity parentEnt = scopeNow.getEntity(
-                            parentName);
-                    if (parentEnt instanceof CompositeEntity) {
-                        scopeNow = (CompositeEntity) parentEnt;
-                    }
+                    scopeNow = ToolScopeResolver.resolve(scopeNow, parentName);
                 }
                 if (scopeNow != null
                         && scopeNow.getEntity(compositeName) != null) {
-                    String cleanup = parentName.length() == 0
-                            ? "<deleteEntity name=\""
+                    String cleanup = ToolScopeResolver.wrapInParent(parentName,
+                            "<deleteEntity name=\""
                                     + AddEntityTool.escape(compositeName)
-                                    + "\"/>"
-                            : "<entity name=\""
-                                    + AddEntityTool.escape(parentName)
-                                    + "\"><deleteEntity name=\""
-                                    + AddEntityTool.escape(compositeName)
-                                    + "\"/></entity>";
+                                    + "\"/>");
                     session.applyChange(cleanup);
                 }
             } catch (Throwable ignored) {

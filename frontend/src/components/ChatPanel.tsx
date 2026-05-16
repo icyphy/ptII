@@ -2,15 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { ChatEntry, useSessionStore } from "../state/sessionStore";
 
 export function ChatPanel() {
-  const chat          = useSessionStore((s) => s.chat.filter((c) => c.source === "agent"));
-  const isAgentBusy   = useSessionStore((s) => s.isAgentBusy);
-  const agentProgress = useSessionStore((s) => s.agentProgress);
-  const agentStatus   = useSessionStore((s) => s.agentStatus);
+  const chat             = useSessionStore((s) => s.chat.filter((c) => c.source === "agent"));
+  const isAgentBusy      = useSessionStore((s) => s.isAgentBusy);
+  const agentProgress    = useSessionStore((s) => s.agentProgress);
+  const agentLiveThought = useSessionStore((s) => s.agentLiveThought);
+  const agentStatus      = useSessionStore((s) => s.agentStatus);
   const sendToAgent   = useSessionStore((s) => s.sendToAgent);
   const stopAgent     = useSessionStore((s) => s.stopAgent);
   const clearChat     = useSessionStore((s) => s.clearChat);
   const [draft, setDraft] = useState("");
   const [elapsedSec, setElapsedSec] = useState(0);
+  const [showReasoning, setShowReasoning] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,6 +22,7 @@ export function ChatPanel() {
   useEffect(() => {
     if (!isAgentBusy || !agentProgress) {
       setElapsedSec(0);
+      setShowReasoning(false);
       return;
     }
     const tick = () => {
@@ -40,6 +43,42 @@ export function ChatPanel() {
   };
 
   const llmAvailable = agentStatus?.llm?.available ?? false;
+  const finishedThoughts = agentProgress
+    ? chat
+        .filter((entry) => {
+          if (entry.kind !== "agent") return false;
+          if (entry.timestamp < agentProgress.startedAt) return false;
+          if (entry.meta?.stepKind !== "thought") return false;
+          const text = entry.text.trim();
+          if (!text) return false;
+          // Phase markers are status breadcrumbs, not useful reasoning details.
+          return !text.startsWith("[Phase ");
+        })
+        .map((entry) => entry.text)
+    : [];
+  // Live reasoning preview: while the LLM is streaming tokens we
+  // show its partial output in a single, in-place updating slot.
+  // This is what the user reads during the 30-60 s planning wait
+  // instead of a blank "still generating" placeholder.
+  const liveThought = agentLiveThought && agentLiveThought.trim();
+  const reasoningDetails = liveThought
+    ? [...finishedThoughts, liveThought]
+    : finishedThoughts;
+  const hasReasoningDetails = reasoningDetails.length > 0;
+  const isReasoningState = !!liveThought
+    || (agentProgress?.label ?? "").toLowerCase().includes("reasoning");
+  const lastIsLive = !!liveThought;
+
+  // First time the live thought appears in a turn, auto-expand the
+  // reasoning panel so the user sees the partial output without
+  // having to click. Subsequent renders preserve whatever toggle
+  // state the user chose.
+  useEffect(() => {
+    if (liveThought && !showReasoning) {
+      setShowReasoning(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [liveThought ? "live" : "idle"]);
 
   // Group consecutive tool_call + tool_result pairs into collapsible blocks.
   const grouped = groupEntries(chat);
@@ -85,16 +124,61 @@ export function ChatPanel() {
           })
         )}
         {isAgentBusy && (
-          <div className="flex items-center gap-1.5 px-1 text-[11px] text-ink-400">
-            <span className="inline-flex gap-1">
-              {[0, 0.15, 0.3].map((delay, i) => (
-                <span key={i} className="w-1 h-1 rounded-full bg-blue-400 animate-pulseDot"
-                      style={{ animationDelay: `${delay}s` }} />
-              ))}
-            </span>
-            <span>{agentProgress?.label ?? "Agent thinking…"}</span>
-            <span className="font-mono text-ink-500">· {elapsedSec}s</span>
-          </div>
+          <>
+            <div className="flex items-center gap-1.5 px-1 text-[11px] text-ink-400">
+              <span className="inline-flex gap-1">
+                {[0, 0.15, 0.3].map((delay, i) => (
+                  <span key={i} className="w-1 h-1 rounded-full bg-blue-400 animate-pulseDot"
+                        style={{ animationDelay: `${delay}s` }} />
+                ))}
+              </span>
+              {isReasoningState ? (
+                <button
+                  className="inline-flex items-center gap-1 text-blue-300 hover:text-blue-200"
+                  onClick={() => setShowReasoning((v) => !v)}
+                  title="Click to show reasoning details"
+                >
+                  <ChevronIcon expanded={showReasoning} />
+                  <span>{agentProgress?.label ?? "Agent thinking…"}</span>
+                </button>
+              ) : (
+                <span>{agentProgress?.label ?? "Agent thinking…"}</span>
+              )}
+              <span className="font-mono text-ink-500">· {elapsedSec}s</span>
+            </div>
+            {showReasoning && isReasoningState && (
+              <div className="ml-5 mt-1 rounded border border-ink-700 bg-ink-900/60 px-2 py-1.5
+                              text-[11px] text-ink-300 space-y-1 max-h-72 overflow-y-auto">
+                {hasReasoningDetails ? (
+                  reasoningDetails.map((text, idx) => {
+                    const isLive = lastIsLive && idx === reasoningDetails.length - 1;
+                    return (
+                      <div
+                        key={idx}
+                        className={
+                          "whitespace-pre-wrap break-words "
+                          + (isLive ? "text-blue-200" : "")
+                        }
+                      >
+                        {text}
+                        {isLive && (
+                          <span
+                            className="inline-block w-1.5 h-3 align-middle ml-0.5
+                                       bg-blue-300 animate-pulseDot"
+                            aria-hidden
+                          />
+                        )}
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="text-ink-400">
+                    Waiting for the model to start reasoning…
+                  </div>
+                )}
+              </div>
+            )}
+          </>
         )}
       </div>
 

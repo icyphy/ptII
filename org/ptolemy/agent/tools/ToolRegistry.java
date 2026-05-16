@@ -104,7 +104,9 @@ public class ToolRegistry {
                 JSONObject dryArgs = new JSONObject(safeArgs.toString());
                 dryArgs.remove("_dryRun");
                 dryArgs.remove("dryRun");
-                return session.dryRunTool(this, name, dryArgs);
+                boolean lightweightAutoLayout = "auto_layout".equals(name);
+                return session.dryRunTool(this, name, dryArgs,
+                        lightweightAutoLayout);
             }
             AgentResult preflight = ToolCallValidator.validate(name, session,
                     safeArgs);
@@ -237,11 +239,20 @@ public class ToolRegistry {
         if (parent.isEmpty()) {
             return top;
         }
-        ptolemy.kernel.ComponentEntity child = top.getEntity(parent);
-        if (child instanceof ptolemy.kernel.CompositeEntity) {
-            return (ptolemy.kernel.CompositeEntity) child;
+        ptolemy.kernel.CompositeEntity current = top;
+        String[] segments = parent.split("/");
+        for (String segment : segments) {
+            String name = segment == null ? "" : segment.trim();
+            if (name.isEmpty()) {
+                continue;
+            }
+            ptolemy.kernel.ComponentEntity child = current.getEntity(name);
+            if (!(child instanceof ptolemy.kernel.CompositeEntity)) {
+                return top;
+            }
+            current = (ptolemy.kernel.CompositeEntity) child;
         }
-        return top;
+        return current;
     }
 
     private static void _recordEntityClassFromRef(
@@ -395,6 +406,7 @@ public class ToolRegistry {
         r.register(new AddEntityTool())
                 .register(new AddCompositeTool())
                 .register(new GroupIntoCompositeTool())
+                .register(new AutoLayoutTool())
                 .register(new ConnectTool())
                 .register(new ConnectManyTool())
                 .register(new DisconnectTool())

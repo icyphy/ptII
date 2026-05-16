@@ -65,6 +65,36 @@ public interface LLMClient {
      */
     LLMResponse chat(JSONArray messages, JSONArray tools) throws Exception;
 
+    /** Streaming variant of {@link #chat}.  Subclasses that support
+     *  server-sent events override this to call {@code onDelta} as
+     *  partial content arrives; the default implementation delegates
+     *  to the blocking {@link #chat} and fires {@code onDelta} once
+     *  at the end, so callers can use the same code path regardless
+     *  of provider streaming support.
+     *
+     *  @param messages Chat history (OpenAI shape).
+     *  @param tools Tools array (may be empty).
+     *  @param onDelta Receives {@code (accumulatedContent,
+     *      accumulatedReasoning)} as the response grows.  May be
+     *      called many times; the strings are cumulative snapshots,
+     *      not incremental diffs.  Implementations should throttle
+     *      their own calls to a sane rate (≈10/s) so the listener
+     *      does not have to.
+     *  @return The same final {@link LLMResponse} the blocking
+     *      {@link #chat} call would have produced.
+     *  @throws Exception On network / parse errors. */
+    default LLMResponse chatStreaming(JSONArray messages, JSONArray tools,
+            java.util.function.BiConsumer<String, String> onDelta)
+            throws Exception {
+        LLMResponse reply = chat(messages, tools);
+        if (onDelta != null) {
+            String c = reply == null ? "" : reply.content();
+            String r = reply == null ? "" : reply.reasoningContent();
+            onDelta.accept(c == null ? "" : c, r == null ? "" : r);
+        }
+        return reply;
+    }
+
     /** @return True iff this client can actually contact a model
      *      (e.g. {@link OpenAIClient} returns true once the API key
      *      is configured). The {@link NullLLMClient} returns false. */

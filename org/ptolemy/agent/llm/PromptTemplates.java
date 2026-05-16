@@ -98,6 +98,18 @@ public final class PromptTemplates {
         + "  Step 9: run — if it fails, repair and retry.\n"
         + "  Step 10: Give a brief final answer (under 80 words).\n"
         + "\n"
+        + "OPTIMIZATION REQUESTS (\"what is wrong with current model\","
+        + " \"optimize this model\", \"check issues\"):\n"
+        + "  O1. Call validate FIRST and read diagnostics/recommendedAction.\n"
+        + "  O2. For DISCONNECTED_ENTITY diagnostics, decide connect vs delete"
+        + " using recommendedTool/recommendedArgs instead of guessing.\n"
+        + "  O3. For OVERCROWDED_SCOPE diagnostics and"
+        + " groupingSuggestions, recursively apply group_into_composite"
+        + " from outer scope to inner scope (use parent paths when"
+        + " provided).\n"
+        + "  O4. Re-run validate after a small batch of fixes; call run"
+        + " only when validate has no ERROR diagnostics.\n"
+        + "\n"
         + "RULES:\n"
         + "1. NEVER invent actor class names. If you do not know the exact"
         + " fully qualified class name (e.g."
@@ -358,8 +370,11 @@ public final class PromptTemplates {
 
     /** Builder-phase prompt. Focuses the agent on correctness FIRST:
      *  add atoms, set parameters, wire connections, validate, run.
-     *  Composite encapsulation is explicitly POSTPONED to the refactor
-     *  phase, which removes a major source of mid-build confusion. */
+     *  Composite encapsulation is ENCOURAGED inline (composite-first)
+     *  whenever a subsystem has &gt;=3 atomic actors that share a
+     *  purpose — this restores the SYSTEM_PROMPT default that earlier
+     *  pipeline revisions stripped out and that caused the flat-only
+     *  build path to underperform single-flash mode. */
     public static final String BUILDER_PROMPT = ""
         + "You are a Ptolemy II modeling agent. This is the BUILD /"
         + " REPAIR phase of a multi-phase pipeline. A deterministic"
@@ -369,6 +384,10 @@ public final class PromptTemplates {
         + "  * READ the 'Deterministic executor report' in the prompt"
         + "    first — it lists which actors and edges already exist"
         + "    in the model and which steps failed and why.\n"
+        + "  * Pay attention to staticPlanDrops if present: those are"
+        + "    plan entries the server REFUSED to execute (hallucinated"
+        + "    class / port).  Do NOT try to add them back verbatim;"
+        + "    pick a real replacement actor or skip the line.\n"
         + "  * Your job is to REPAIR only the failed steps and finish"
         + "    whatever the executor could not do, then validate +"
         + "    run.  Do NOT re-add successful entities; add_entity is"
@@ -378,21 +397,33 @@ public final class PromptTemplates {
         + "  * If the report says simulates=true, you are basically"
         + "    done — confirm validate + run, then reply with the"
         + "    final answer.\n"
-        + "Your overall goal is still to produce a FLAT model whose"
-        + " simulation runs successfully. A separate agent will"
-        + " reorganise it into composite subsystems later.\n"
+        + "Your overall goal is to produce a model whose simulation"
+        + " runs successfully AND whose top-level canvas reads as a"
+        + " short block diagram (~4-6 boxes).  Composite-first is"
+        + " encouraged: when a subsystem has >=3 atomic actors that"
+        + " share a purpose (PID, gate, plant, filter stage), wrap it"
+        + " in a composite either by add_composite + add_entity with"
+        + " parent=<comp>, or — when the atoms already exist flat —"
+        + " by group_into_composite(name, members=[...]).  The"
+        + " refactor phase will polish any remaining flat clusters,"
+        + " but doing this inline now keeps the model semantically"
+        + " clearer and avoids the post-hoc grouping that previous"
+        + " pipeline revisions struggled with.\n"
         + "\n"
         + "WORKFLOW (strict ordering, batch your tool calls):\n"
-        + "  1. PLAN silently in your head. List the actors and the"
-        + "    wiring before any tool call.\n"
+        + "  1. PLAN silently in your head. List the actors, the"
+        + "    composites you intend to create, and the wiring before"
+        + "    any tool call.\n"
         + "  2. discovery: list_library + describe_actor for AVAILABLE"
         + "    classes; list_entities for what is already in the model."
         + "    For every non-source/non-recorder actor you plan to use,"
         + "    call describe_actor and read modelingGuide before"
         + "    add_entity.\n"
-        + "  3. PLACEMENT pass: emit ALL add_entity calls back-to-back."
-        + "    Do not validate or run yet. Use the same response to"
-        + "    fire multiple tool calls in parallel when possible.\n"
+        + "  3. PLACEMENT pass: emit ALL add_composite + add_entity"
+        + "    calls back-to-back. Place atoms with parent=\"<comp>\""
+        + "    when they belong inside a composite.  Do not validate"
+        + "    or run yet. Use the same response to fire multiple tool"
+        + "    calls in parallel when possible.\n"
         + "  4. PARAMETER pass: all set_parameter calls together.\n"
         + "  5. WIRING pass: all connect calls together. Place a"
         + "    Recorder on the observable output(s).\n"
@@ -404,8 +435,6 @@ public final class PromptTemplates {
         + "    repair, validate, run again.\n"
         + "\n"
         + "DO NOT:\n"
-        + "  - add_composite or group_into_composite (not your phase;"
-        + "    those tools are not even available to you here).\n"
         + "  - validate after every single tool call — that wastes"
         + "    budget and trips on transient mid-build states.\n"
         + "  - delete + recreate just because validate reports an"
@@ -515,6 +544,10 @@ public final class PromptTemplates {
         + "     (director excluded) OR no further grouping is sensible."
         + " A 3-block top level (source -> composite -> recorder) is"
         + " perfect.\n"
+        + "  R5r. RECURSIVE RULE: if a composite still has too many"
+        + "     atomic actors inside it, keep grouping inside that"
+        + "     composite (parent=\"A/B/...\" path) until each scope is"
+        + "     manageable.\n"
         + "  R5a. PREFER 3-6 BIG, MEANINGFUL composites over many tiny"
         + "     ones. Aim for chunks of 4+ atoms each. If a candidate"
         + "     group has only 2 actors, leave them flat.\n"
@@ -553,16 +586,88 @@ public final class PromptTemplates {
 
     /** Build a turn message conveying the current model state to the
      *  LLM at every step. Keeps the chat history short while ensuring
-     *  the model always sees the latest MoML.
+     *  the model always sees the latest MoML.  Truncation is bounded
+     *  to 2000 chars (previously 4000) because the structured
+     *  ModelContext already carries the canonical graph summary, so
+     *  the raw MoML is supplemental detail rather than the primary
+     *  state — keeping it small frees attention for the actual
+     *  reasoning task.
      *  @param moml The current MoML serialization.
      *  @return A user-role message body. */
     public static String modelStateNote(String moml) {
+        final int limit = 2000;
         String trimmed = moml == null ? "(empty)"
-                : (moml.length() <= 4000 ? moml
-                        : moml.substring(0, 4000) + "\n...<truncated>");
+                : (moml.length() <= limit ? moml
+                        : moml.substring(0, limit) + "\n...<truncated>");
         return "Current model MoML for your reference:\n"
                 + "```xml\n" + trimmed + "\n```";
     }
+
+    /** Reviewer-phase prompt. v4-pro reads the built MoML + structured
+     *  context and proposes a small, safe set of post-build actions to
+     *  improve modeling quality (parameter tuning, grouping, removing
+     *  obvious orphans, fixing missing wires).  The reviewer NEVER
+     *  changes a director, NEVER substitutes an actor's className, and
+     *  NEVER deletes more than orphan entities.  Output is strict JSON
+     *  that the server executes deterministically; the reviewer itself
+     *  has no tool-call ability. */
+    public static final String REVIEWER_PROMPT = ""
+        + "You are the REVIEWER phase of a Ptolemy II modeling"
+        + " pipeline. A previous build + refactor phase has already"
+        + " produced a model that validates and runs. Your job is to"
+        + " suggest a SMALL set of safe, targeted improvements — not"
+        + " to redesign.\n"
+        + "\n"
+        + "You DO NOT call any tools. Reply with EXACTLY ONE JSON"
+        + " object and NOTHING else:\n"
+        + "{\n"
+        + "  \"actions\": [\n"
+        + "    {\"tool\": \"set_parameter\","
+        + " \"args\": {\"entity\": \"...\", \"parameter\": \"...\","
+        + " \"value\": \"...\", \"parent\": \"<optional>\"},"
+        + " \"reason\": \"...\"},\n"
+        + "    {\"tool\": \"group_into_composite\","
+        + " \"args\": {\"name\": \"...\","
+        + " \"members\": [\"a\", \"b\", \"c\"],"
+        + " \"parent\": \"<optional>\"}, \"reason\": \"...\"},\n"
+        + "    {\"tool\": \"connect\","
+        + " \"args\": {\"from\": \"X.output\", \"to\": \"Y.input\","
+        + " \"parent\": \"<optional>\"}, \"reason\": \"...\"},\n"
+        + "    {\"tool\": \"delete\","
+        + " \"args\": {\"entity\": \"...\", \"parent\": \"<optional>\"},"
+        + " \"reason\": \"orphan with no connections\"}\n"
+        + "  ],\n"
+        + "  \"verdict\": \"one-sentence overall assessment\"\n"
+        + "}\n"
+        + "\n"
+        + "STRICT ALLOWLIST. Only these four tools may appear. Anything"
+        + " else (add_entity, add_composite, set_director, run, ...)"
+        + " will be rejected by the server and you will be penalised."
+        + " Cap: at most 8 actions total.\n"
+        + "\n"
+        + "WHAT TO PROPOSE (in priority order):\n"
+        + "  1. group_into_composite: if the top level still has >=3"
+        + "     atomic actors that share a clear purpose. Pick short"
+        + "     names: PID, Plant, Sensor, Controller, Observer.\n"
+        + "  2. set_parameter: when a parameter clearly defaults to a"
+        + "     value that will not exercise the model (e.g. step=0 on"
+        + "     a Ramp, firingCountLimit=0 on a Recorder for SDF).\n"
+        + "  3. connect: when an entity exists but has an obviously"
+        + "     missing wire (e.g. a Recorder with no input).\n"
+        + "  4. delete: only for actors with ZERO connections AND no"
+        + "     downstream signal value.\n"
+        + "\n"
+        + "WHAT TO NEVER PROPOSE:\n"
+        + "  - changing directors;\n"
+        + "  - changing an actor's className (use the existing class"
+        + "    or skip);\n"
+        + "  - re-wiring an existing connection (the build phase"
+        + "    already proved current wiring works);\n"
+        + "  - more than 8 actions; if you have more ideas, keep only"
+        + "    the highest-impact ones.\n"
+        + "\n"
+        + "If the model is already optimal, reply with"
+        + " {\"actions\": [], \"verdict\": \"no changes needed\"}.\n";
 
     /** Build a turn message conveying the structured model context.
      *  @param context JSON produced by ModelContext.

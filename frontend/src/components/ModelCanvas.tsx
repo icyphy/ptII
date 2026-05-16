@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ReactFlow, {
   Background,
   BackgroundVariant,
@@ -19,7 +19,11 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import { NodeDescriptor } from "../api/agentClient";
 import { useSessionStore } from "../state/sessionStore";
-import { layoutNodes, isLayoutCluttered } from "../utils/autoLayout";
+import { LayoutOpts, layoutNodes, isLayoutCluttered } from "../utils/autoLayout";
+import {
+  buildGroupedGraph,
+  visibleSelectionId,
+} from "../utils/compositeGrouping";
 
 // ── Actor node ────────────────────────────────────────────────────────────────
 //
@@ -54,6 +58,9 @@ interface ActorNodeData {
   isComposite?: boolean;
   isBoundary?: boolean;
   boundaryRole?: "input" | "output" | "io";
+  isGroup?: boolean;
+  groupMembers?: string[];
+  memberCount?: number;
 }
 
 // ─── Category palette ────────────────────────────────────────────────────────
@@ -163,10 +170,12 @@ function ActorNode({ data }: NodeProps<ActorNodeData>) {
   if (data.isBoundary) return <BoundaryNode data={data} />;
 
   const accent    = classifyAccent(data.className);
-  const composite = data.isComposite ?? isCompositeClass(data.className);
+  const grouped = data.isGroup === true;
+  const composite = !grouped
+    && (data.isComposite ?? isCompositeClass(data.className));
   const numRows   = Math.max(data.inputs.length, data.outputs.length, 1);
   const nodeH     = HEADER_H + PORT_AREA_PAD_TOP + numRows * PORT_ROW_H + PORT_AREA_PAD_BOT;
-  const nodeW     = composite ? COMPOSITE_WIDTH : NODE_WIDTH;
+  const nodeW     = grouped ? COMPOSITE_WIDTH + 12 : (composite ? COMPOSITE_WIDTH : NODE_WIDTH);
 
   // KEY INSIGHT: the outer root div must NOT have overflow:hidden because
   // handles must visually protrude outside the node boundary. Instead we
@@ -207,9 +216,13 @@ function ActorNode({ data }: NodeProps<ActorNodeData>) {
         position: "relative",
         overflow: "visible",    // ← must NOT be hidden
         fontFamily: "system-ui, -apple-system, sans-serif",
-        cursor: composite ? "pointer" : "default",
+        cursor: composite || grouped ? "pointer" : "default",
       }}
-      title={composite ? "Double-click to enter subsystem" : undefined}
+      title={
+        grouped
+          ? "Double-click to expand this grouped cluster"
+          : (composite ? "Double-click to enter subsystem" : undefined)
+      }
     >
       {/* ── Visual card (carries border/shadow/radius/overflow-clipping) ── */}
       <div style={{
@@ -246,6 +259,11 @@ function ActorNode({ data }: NodeProps<ActorNodeData>) {
             }}>
               {accent.label}
             </span>
+            {grouped && (
+              <span style={{ fontSize: 9, color: "#6366f1", marginLeft: "auto" }}>
+                grouped
+              </span>
+            )}
             {composite && (
               <span style={{ fontSize: 9, color: "#818cf8", marginLeft: "auto" }}>
                 ⤵ open
@@ -266,7 +284,9 @@ function ActorNode({ data }: NodeProps<ActorNodeData>) {
             fontFamily: "ui-monospace, monospace",
             overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
           }} title={data.className}>
-            {composite ? "TypedCompositeActor" : shortClass(data.className)}
+            {grouped
+              ? `${data.memberCount ?? data.groupMembers?.length ?? 0} actors`
+              : (composite ? "TypedCompositeActor" : shortClass(data.className))}
           </div>
         </div>
 
@@ -368,6 +388,13 @@ const NODE_TYPES = { actor: ActorNode };
 interface DescriptorWithExtras extends NodeDescriptor {
   boundary?: boolean;
   boundaryRole?: "input" | "output" | "io";
+  syntheticGroup?: true;
+  groupMembers?: string[];
+  groupSize?: number;
+}
+
+function finiteCanvasCoord(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
 }
 
 function toReactFlow(graph: ReturnType<typeof useSessionStore.getState>["graph"]): {
@@ -382,8 +409,8 @@ function toReactFlow(graph: ReturnType<typeof useSessionStore.getState>["graph"]
         id:   n.id,
         type: "actor",
         position: {
-          x: typeof n.position?.x === "number" ? n.position.x : 100,
-          y: typeof n.position?.y === "number" ? n.position.y : 100,
+          x: finiteCanvasCoord(n.position?.x, 100),
+          y: finiteCanvasCoord(n.position?.y, 100),
         },
         data: {
           label:   n.displayName ?? n.id,
@@ -393,6 +420,9 @@ function toReactFlow(graph: ReturnType<typeof useSessionStore.getState>["graph"]
           isComposite: isCompositeClass(n.className),
           isBoundary: n.boundary === true,
           boundaryRole: n.boundaryRole,
+          isGroup: n.syntheticGroup === true,
+          groupMembers: n.groupMembers,
+          memberCount: n.groupSize,
         },
       };
     }
@@ -400,9 +430,9 @@ function toReactFlow(graph: ReturnType<typeof useSessionStore.getState>["graph"]
   const edges: Edge[] = (graph.edges ?? []).map((e) => ({
     id:           e.id,
     source:       e.source,
-    sourceHandle: e.sourceHandle,
+    sourceHandle: e.sourceHandle || undefined,
     target:       e.target,
-    targetHandle: e.targetHandle,
+    targetHandle: e.targetHandle || undefined,
     type:         "smoothstep",
     animated:     false,
     style:        {
@@ -433,83 +463,272 @@ function handleToConnectRef(handle: string): string {
   return handle;
 }
 
+const LARGE_GRAPH_NODE_THRESHOLD = 220;
+const MINIMAP_NODE_THRESHOLD = 180;
+const AUTO_FIT_NODE_LIMIT = 160;
+
+function samePorts(
+  a: { id: string; name: string }[],
+  b: { id: string; name: string }[],
+): boolean {
+  if (a.length !== b.length) return false;
+  for (let i = 0; i < a.length; i++) {
+    if (a[i].id !== b[i].id || a[i].name !== b[i].name) return false;
+  }
+  return true;
+}
+
+function sameNodeData(a: ActorNodeData, b: ActorNodeData): boolean {
+  return a.label === b.label
+    && a.className === b.className
+    && a.isComposite === b.isComposite
+    && a.isBoundary === b.isBoundary
+    && a.boundaryRole === b.boundaryRole
+    && a.isGroup === b.isGroup
+    && a.memberCount === b.memberCount
+    && samePorts(a.inputs, b.inputs)
+    && samePorts(a.outputs, b.outputs);
+}
+
+function mergeNodePatch(
+  prev: Node<ActorNodeData>[],
+  next: Node<ActorNodeData>[],
+): Node<ActorNodeData>[] {
+  const prevById = new Map<string, Node<ActorNodeData>>();
+  prev.forEach((node) => prevById.set(node.id, node));
+  return next.map((node) => {
+    const existing = prevById.get(node.id);
+    if (!existing) return node;
+    const samePosition = existing.position.x === node.position.x
+      && existing.position.y === node.position.y;
+    if (
+      samePosition
+      && existing.type === node.type
+      && existing.selected === node.selected
+      && sameNodeData(existing.data, node.data)
+    ) {
+      return existing;
+    }
+    return node;
+  });
+}
+
+function mergeEdgePatch(prev: Edge[], next: Edge[]): Edge[] {
+  const prevById = new Map<string, Edge>();
+  prev.forEach((edge) => prevById.set(edge.id, edge));
+  return next.map((edge) => {
+    const existing = prevById.get(edge.id);
+    if (!existing) return edge;
+    const same = existing.source === edge.source
+      && existing.target === edge.target
+      && existing.sourceHandle === edge.sourceHandle
+      && existing.targetHandle === edge.targetHandle;
+    return same ? existing : edge;
+  });
+}
+
 export function ModelCanvas() {
   const graph         = useSessionStore((s) => s.graph);
   const callTool      = useSessionStore((s) => s.callTool);
+  const appendChat    = useSessionStore((s) => s.appendChat);
   const selectNode    = useSessionStore((s) => s.selectNode);
   const selectedNodeId = useSessionStore((s) => s.selectedNodeId);
   const canvasPath    = useSessionStore((s) => s.canvasPath);
   const enterComposite = useSessionStore((s) => s.enterComposite);
   const exitComposite  = useSessionStore((s) => s.exitComposite);
   const setCanvasPath  = useSessionStore((s) => s.setCanvasPath);
+  const [expandedGroups, setExpandedGroups] = useState<Set<string>>(
+    () => new Set(),
+  );
+
+  const grouped = useMemo(
+    () => buildGroupedGraph(graph, expandedGroups),
+    [graph, expandedGroups],
+  );
+  const groupedGraph = grouped.graph;
+  const selectedVisibleId = useMemo(
+    () => visibleSelectionId(selectedNodeId, grouped.memberToGroup),
+    [selectedNodeId, grouped.memberToGroup],
+  );
 
   // When inside a composite, mutating tool calls need parent set so
   // they target the correct level. The parent is the deepest segment.
   const currentParent = canvasPath[canvasPath.length - 1] ?? "";
 
-  const initial = useMemo(() => toReactFlow(graph), [graph]);
+  const initial = useMemo(() => toReactFlow(groupedGraph), [groupedGraph]);
   const [nodes, setNodes, onNodesChange] = useNodesState<ActorNodeData>(initial.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initial.edges);
   const flowRef = useRef<ReactFlowInstance<ActorNodeData, Edge> | null>(null);
+  const workerRef = useRef<Worker | null>(null);
+  const layoutReqId = useRef<number>(0);
+  const graphSyncReqId = useRef<number>(0);
+  const pendingLayouts = useRef(new Map<number, {
+    resolve: (laidOut: Node<ActorNodeData>[]) => void;
+    nodes: Node<ActorNodeData>[];
+    edges: Edge[];
+    options: LayoutOpts;
+  }>());
 
   // Track the last graph signature we've auto-laid-out so we don't
   // keep snapping back if the user manually drags a node afterwards.
   const lastAutoSig = useRef<string>("");
+  const lastFitSig = useRef<string>("");
 
   useEffect(() => {
-    const { nodes: n, edges: e } = toReactFlow(graph);
-    // Auto-apply layout when the freshly-loaded graph looks cluttered
-    // (default positions, heavy collisions, etc.). For non-cluttered
-    // graphs we keep the agent's / MoML's coordinates.
-    // Signature includes node + edge counts so the layout re-runs
-    // whenever the topology changes (e.g. the agent adds an actor at
-    // the default (100,100) spawn point) — but NOT when the user just
-    // drags a node, since that keeps node count fixed.
-    const sig = `${graph?.topName ?? ""}#${canvasPath.join("/")}#${n.length}#${e.length}`;
-    let nextNodes = n;
-    if (sig !== lastAutoSig.current && isLayoutCluttered(n)) {
-      nextNodes = layoutNodes(n, e);
-      lastAutoSig.current = sig;
-      window.requestAnimationFrame(() => {
-        flowRef.current?.fitView({ padding: 0.22, duration: 350 });
+    setExpandedGroups(new Set());
+  }, [canvasPath]);
+
+  useEffect(() => {
+    if (typeof Worker === "undefined") return;
+    const worker = new Worker(
+      new URL("../workers/layoutWorker.ts", import.meta.url),
+      { type: "module" },
+    );
+    worker.onmessage = (event: MessageEvent<{
+      id: number;
+      ok: boolean;
+      nodes?: Node<ActorNodeData>[];
+    }>) => {
+      const payload = event.data;
+      const pending = pendingLayouts.current.get(payload.id);
+      if (!pending) return;
+      pendingLayouts.current.delete(payload.id);
+      if (payload.ok && Array.isArray(payload.nodes)) {
+        pending.resolve(payload.nodes);
+        return;
+      }
+      pending.resolve(layoutNodes(pending.nodes, pending.edges, pending.options));
+    };
+    workerRef.current = worker;
+    return () => {
+      pendingLayouts.current.forEach((pending) => {
+        pending.resolve(layoutNodes(pending.nodes, pending.edges, pending.options));
       });
+      pendingLayouts.current.clear();
+      worker.terminate();
+      workerRef.current = null;
+    };
+  }, []);
+
+  const runLayout = useCallback((
+    layoutInputNodes: Node<ActorNodeData>[],
+    layoutInputEdges: Edge[],
+    options: LayoutOpts,
+  ) => {
+    const worker = workerRef.current;
+    if (!worker) {
+      return Promise.resolve(layoutNodes(layoutInputNodes, layoutInputEdges, options));
     }
-    setNodes(nextNodes);
-    setEdges(e);
-  }, [graph, canvasPath, setNodes, setEdges]);
+    return new Promise<Node<ActorNodeData>[]>((resolve) => {
+      const id = ++layoutReqId.current;
+      pendingLayouts.current.set(id, {
+        resolve,
+        nodes: layoutInputNodes,
+        edges: layoutInputEdges,
+        options,
+      });
+      worker.postMessage({
+        id,
+        nodes: layoutInputNodes,
+        edges: layoutInputEdges,
+        options,
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    const { nodes: n, edges: e } = toReactFlow(groupedGraph);
+    const sig = `${groupedGraph?.topName ?? ""}#${canvasPath.join("/")}#${n.length}#${e.length}`;
+    const reqId = ++graphSyncReqId.current;
+    const layoutOpts: LayoutOpts = n.length >= LARGE_GRAPH_NODE_THRESHOLD
+      ? { lightweight: true }
+      : {};
+    const sync = async () => {
+      let nextNodes = n;
+      if (
+        sig !== lastAutoSig.current
+        && isLayoutCluttered(n, {
+          skipOverlapWhenLarge: true,
+          largeNodeThreshold: LARGE_GRAPH_NODE_THRESHOLD,
+          maxPairChecks: 5000,
+        })
+      ) {
+        nextNodes = await runLayout(n, e, layoutOpts);
+        if (graphSyncReqId.current !== reqId) return;
+        lastAutoSig.current = sig;
+        if (nextNodes.length <= AUTO_FIT_NODE_LIMIT) {
+          window.requestAnimationFrame(() => {
+            flowRef.current?.fitView({ padding: 0.22, duration: 260 });
+          });
+          lastFitSig.current = sig;
+        }
+      } else if (lastFitSig.current !== sig && n.length <= AUTO_FIT_NODE_LIMIT) {
+        window.requestAnimationFrame(() => {
+          flowRef.current?.fitView({ padding: 0.18, duration: 200 });
+        });
+        lastFitSig.current = sig;
+      }
+      setNodes((prev) => mergeNodePatch(prev, nextNodes));
+      setEdges((prev) => mergeEdgePatch(prev, e));
+    };
+    void sync();
+  }, [groupedGraph, canvasPath, runLayout, setNodes, setEdges]);
+
+  useEffect(() => {
+    setNodes((prev) =>
+      prev.map((node) => {
+        const selected = node.id === selectedVisibleId;
+        return node.selected === selected ? node : { ...node, selected };
+      }),
+    );
+  }, [selectedVisibleId, setNodes]);
 
   const applyAutoLayout = useCallback(() => {
-    const laid = layoutNodes(nodes, edges);
-    setNodes(laid);
-    window.requestAnimationFrame(() => {
-      flowRef.current?.fitView({ padding: 0.22, duration: 450 });
+    const opts: LayoutOpts = nodes.length >= LARGE_GRAPH_NODE_THRESHOLD
+      ? { lightweight: true }
+      : {};
+    void runLayout(nodes, edges, opts).then((laid) => {
+      setNodes((prev) => mergeNodePatch(prev, laid));
+      window.requestAnimationFrame(() => {
+        flowRef.current?.fitView({ padding: 0.22, duration: 320 });
+      });
+      lastAutoSig.current =
+        `${groupedGraph?.topName ?? ""}#${canvasPath.join("/")}#${nodes.length}#manual`;
+      lastFitSig.current = lastAutoSig.current;
     });
-    // Persist new (x,y) back to the MoML so a save/reload survives.
-    laid.forEach((n) => {
-      if (n.id.startsWith("__boundary__")) return;
-      const x = Math.round(n.position.x);
-      const y = Math.round(n.position.y);
-      const args: Record<string, unknown> = {
-        entity:    n.id,
-        parameter: "_location",
-        value:     `[${x}.0, ${y}.0]`,
-      };
-      if (currentParent) args.parent = currentParent;
-      void callTool("set_parameter", args);
-    });
-    lastAutoSig.current = `${graph?.topName ?? ""}#${canvasPath.join("/")}#${nodes.length}#manual`;
-  }, [nodes, edges, callTool, currentParent, graph, canvasPath, setNodes]);
+  }, [nodes, edges, groupedGraph, canvasPath, runLayout, setNodes]);
 
   const onSelectionChange = useCallback(
-    (p: OnSelectionChangeParams) => { selectNode(p.nodes[0]?.id ?? null); },
-    [selectNode]
+    (p: OnSelectionChangeParams) => {
+      const visible = p.nodes[0]?.id ?? null;
+      const mapped = visible && grouped.groups[visible]
+        ? (grouped.groups[visible].members[0] ?? null)
+        : visible;
+      selectNode(mapped);
+    },
+    [selectNode, grouped.groups]
   );
   const onNodeClick = useCallback(
-    (_: React.MouseEvent, node: Node) => { selectNode(node.id); },
-    [selectNode]
+    (_: React.MouseEvent, node: Node) => {
+      const mapped = grouped.groups[node.id]?.members[0] ?? node.id;
+      selectNode(mapped);
+    },
+    [selectNode, grouped.groups]
   );
   const onNodeDoubleClick = useCallback(
     (_: React.MouseEvent, node: Node<ActorNodeData>) => {
+      if (node.data?.isGroup) {
+        setExpandedGroups((prev) => {
+          const next = new Set(prev);
+          if (next.has(node.id)) {
+            next.delete(node.id);
+          } else {
+            next.add(node.id);
+          }
+          return next;
+        });
+        return;
+      }
       if (node.data?.isComposite && !node.data?.isBoundary) {
         void enterComposite(node.id);
       }
@@ -520,6 +739,17 @@ export function ModelCanvas() {
 
   const onConnect = useCallback(
     (c: Connection) => {
+      if (
+        (c.source && grouped.groups[c.source])
+        || (c.target && grouped.groups[c.target])
+      ) {
+        appendChat({
+          kind: "system",
+          text: "Expand grouped nodes before connecting ports.",
+          source: "user",
+        });
+        return;
+      }
       const from = handleToConnectRef(c.sourceHandle ?? c.source ?? "");
       const to   = handleToConnectRef(c.targetHandle ?? c.target ?? "");
       if (!from || !to) return;
@@ -527,29 +757,36 @@ export function ModelCanvas() {
       if (currentParent) args.parent = currentParent;
       void callTool("connect", args);
     },
-    [callTool, currentParent]
+    [appendChat, callTool, currentParent, grouped.groups]
   );
   const onNodesDelete = useCallback(
     (deleted: Node[]) => {
       deleted.forEach((n) => {
         if (n.id.startsWith("__boundary__")) return; // can't delete ports here
-        const args: Record<string, unknown> = { name: n.id };
-        if (currentParent) args.parent = currentParent;
-        void callTool("delete", args);
+        const group = grouped.groups[n.id];
+        const targets = group ? group.members : [n.id];
+        targets.forEach((targetName) => {
+          const args: Record<string, unknown> = { name: targetName };
+          if (currentParent) args.parent = currentParent;
+          void callTool("delete", args);
+        });
       });
       selectNode(null);
     },
-    [callTool, currentParent, selectNode]
+    [callTool, currentParent, grouped.groups, selectNode]
   );
   const onEdgesDelete = useCallback(
     (deleted: Edge[]) => {
       deleted.forEach((e) => {
-        const args: Record<string, unknown> = { relation: e.id };
-        if (currentParent) args.parent = currentParent;
-        void callTool("disconnect", args);
+        const relations = grouped.edgeToRelations[e.id] ?? [e.id];
+        relations.forEach((relation) => {
+          const args: Record<string, unknown> = { relation };
+          if (currentParent) args.parent = currentParent;
+          void callTool("disconnect", args);
+        });
       });
     },
-    [callTool, currentParent]
+    [callTool, currentParent, grouped.edgeToRelations]
   );
 
   const onDragOver = (ev: React.DragEvent) => {
@@ -566,7 +803,7 @@ export function ModelCanvas() {
     const y = Math.max(20, Math.round(ev.clientY - rect.top));
     const base = (displayName || shortClass(className) || "actor")
       .toLowerCase().replace(/[^a-z0-9_]/g, "_");
-    const taken = new Set(nodes.map((n) => n.id));
+    const taken = new Set((graph?.nodes ?? []).map((n) => n.id));
     let name = base;
     for (let i = 2; taken.has(name); i++) name = `${base}${i}`;
     const args: Record<string, unknown> = { name, className, x, y };
@@ -574,12 +811,13 @@ export function ModelCanvas() {
     void callTool("add_entity", args);
   };
 
-  const empty = !graph || (graph.nodes?.length ?? 0) === 0;
+  const empty = !groupedGraph || (groupedGraph.nodes?.length ?? 0) === 0;
+  const showMiniMap = nodes.length <= MINIMAP_NODE_THRESHOLD;
 
   return (
     <div className="relative h-full w-full" onDragOver={onDragOver} onDrop={onDrop}>
       <CanvasOverlay
-        graph={graph}
+        graph={groupedGraph ?? graph}
         canvasPath={canvasPath}
         onJump={(depth) =>
           depth === 0 ? void setCanvasPath([]) :
@@ -595,7 +833,7 @@ export function ModelCanvas() {
         <EmptyCanvas />
       ) : (
         <ReactFlow
-          nodes={nodes.map((n) => ({ ...n, selected: n.id === selectedNodeId }))}
+          nodes={nodes}
           edges={edges}
           nodeTypes={NODE_TYPES}
           onNodesChange={onNodesChange}
@@ -609,11 +847,10 @@ export function ModelCanvas() {
           onEdgesDelete={onEdgesDelete}
           onInit={(instance) => { flowRef.current = instance; }}
           deleteKeyCode={["Delete", "Backspace"]}
-          fitView
-          fitViewOptions={{ padding: 0.2 }}
           proOptions={{ hideAttribution: true }}
           minZoom={0.25}
           maxZoom={2.5}
+          onlyRenderVisibleElements
         >
           <Background
             gap={24}
@@ -622,18 +859,20 @@ export function ModelCanvas() {
             variant={BackgroundVariant.Dots}
           />
           <Controls position="bottom-right" />
-          <MiniMap
-            position="bottom-left"
-            pannable
-            zoomable
-            nodeColor={(n) => {
-              const cls = (n.data as ActorNodeData)?.className ?? "";
-              return classifyAccent(cls).stripe;
-            }}
-            nodeStrokeColor="transparent"
-            maskColor="rgba(248,250,252,0.75)"
-            style={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
-          />
+          {showMiniMap && (
+            <MiniMap
+              position="bottom-left"
+              pannable
+              zoomable
+              nodeColor={(n) => {
+                const cls = (n.data as ActorNodeData)?.className ?? "";
+                return classifyAccent(cls).stripe;
+              }}
+              nodeStrokeColor="transparent"
+              maskColor="rgba(248,250,252,0.75)"
+              style={{ borderRadius: 8, border: "1px solid #e5e7eb" }}
+            />
+          )}
         </ReactFlow>
       )}
     </div>
@@ -732,7 +971,7 @@ function CanvasOverlay({
               className="rounded-md border border-stone-200 bg-white/90
                          hover:bg-stone-50 shadow-card px-1.5 py-0.5
                          flex items-center gap-1 text-[11px] text-stone-700"
-              title="Re-arrange nodes left-to-right"
+              title="Re-arrange nodes by data flow"
             >
               <svg viewBox="0 0 24 24" width="12" height="12" fill="none"
                    stroke="currentColor" strokeWidth="2.2"

@@ -34,6 +34,7 @@ import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.ptolemy.agent.library.LibraryIndex;
 import org.ptolemy.agent.session.PtolemySession;
 import org.ptolemy.agent.tools.ToolRegistry;
 import org.ptolemy.agent.util.AgentResult;
@@ -116,6 +117,12 @@ public final class PlanExecutor {
     public static final class Outcome {
         public final List<StepResult> steps = new ArrayList<>();
         public final List<StepResult> failedSteps = new ArrayList<>();
+        /** Drops applied by static plan cleaning (hallucinated classes
+         *  or ports the LLM invented).  Carried in the report so the
+         *  phase-1 LLM can see what was removed and avoid the same
+         *  mistake when repairing.  Each entry has the same shape as
+         *  StepResult.toJson() so the LLM treats it uniformly. */
+        public final JSONArray staticPlanDrops = new JSONArray();
         public boolean directorReady = false;
         public boolean actorsAllAdded = false;
         public boolean wireOk = false;
@@ -141,6 +148,9 @@ public final class PlanExecutor {
                 failures.put(step.toJson());
             }
             report.put("failures", failures);
+            if (staticPlanDrops.length() > 0) {
+                report.put("staticPlanDrops", staticPlanDrops);
+            }
             return report;
         }
 
@@ -179,6 +189,13 @@ public final class PlanExecutor {
             return outcome;
         }
         _ensureToplevel(session);
+
+        // ---- Static cleaning: drop hallucinated classes / ports
+        // BEFORE we attempt any tool call.  The cleaned copy keeps
+        // good actors and good connections; dropped entries land in
+        // outcome.staticPlanDrops so the phase-1 LLM can see them
+        // without ever having had bad MoML attached to the model.
+        plan = _cleanPlan(plan, outcome, listener);
 
         // ---- Director ----
         JSONObject director = plan.optJSONObject("director");
@@ -280,6 +297,240 @@ public final class PlanExecutor {
         }
         outcome.simulates = outcome.validateOk && outcome.runOk;
         return outcome;
+    }
+
+    /** Return a sanitized copy of {@code plan} with hallucinated
+     *  entries removed:
+     *  <ul>
+     *  <li>Actors whose {@code className} does not resolve in the
+     *      shared {@link LibraryIndex}.</li>
+     *  <li>Connections whose endpoint references a dropped actor or
+     *      names a port that does not appear in the resolved actor's
+     *      input/output list (port half of "actor.port").</li>
+     *  </ul>
+     *  Drops are recorded into {@code outcome.staticPlanDrops} so the
+     *  phase-1 LLM (and the user-facing trace) sees exactly what the
+     *  planner got wrong, and a deterministic listener event is
+     *  emitted per drop so the chat panel can render the cleaning
+     *  step.  Director entries are NOT subject to library lookup
+     *  because Ptolemy directors live outside the actor index;
+     *  {@link PlanValidator} already vetted them upstream.
+     *
+     *  <p>A null plan or a plan without an {@code actors} array is
+     *  returned unchanged. */
+    private static JSONObject _cleanPlan(JSONObject plan,
+            Outcome outcome, AgentTraceListener listener) {
+        if (plan == null) {
+            return plan;
+        }
+        JSONArray actors = plan.optJSONArray("actors");
+        JSONArray connections = plan.optJSONArray("connections");
+        if (actors == null) {
+            return plan;
+        }
+        LibraryIndex index = LibraryIndex.shared();
+        JSONArray cleanedActors = new JSONArray();
+        Set<String> goodNames = new LinkedHashSet<>();
+        java.util.Map<String, LibraryIndex.Entry> entryByName
+                = new java.util.LinkedHashMap<>();
+        for (int i = 0; i < actors.length(); i++) {
+            JSONObject a = actors.optJSONObject(i);
+            if (a == null) {
+                _recordDrop(outcome, listener, "actor",
+                        "MALFORMED_ACTOR",
+                        "actor entry is not an object",
+                        new JSONObject().put("index", i));
+                continue;
+            }
+            String name = a.optString("name", "").trim();
+            String cls = a.optString("className", "").trim();
+            if (name.isEmpty() || cls.isEmpty()) {
+                cleanedActors.put(a);
+                continue;
+            }
+            LibraryIndex.Entry entry = index.find(cls);
+            if (entry == null) {
+                // The class isn't in the actor catalog.  It might
+                // still be a Director (those live outside the index
+                // entirely); only drop pure non-director classes
+                // here.  Director resolution is handled separately
+                // and PlanValidator already flagged truly invalid
+                // ones.
+                if (cls.endsWith("Director") || cls.contains(".kernel.")) {
+                    cleanedActors.put(a);
+                    continue;
+                }
+                JSONObject ctx = new JSONObject();
+                ctx.put("name", name);
+                ctx.put("className", cls);
+                _recordDrop(outcome, listener, "actor",
+                        "ACTOR_CLASS_NOT_IN_LIBRARY",
+                        "className not in library index: " + cls
+                                + " (actor " + name + " dropped before"
+                                + " executor would have crashed)", ctx);
+                continue;
+            }
+            cleanedActors.put(a);
+            goodNames.add(name);
+            entryByName.put(name, entry);
+        }
+
+        JSONArray cleanedConnections = new JSONArray();
+        if (connections != null) {
+            for (int i = 0; i < connections.length(); i++) {
+                JSONObject c = connections.optJSONObject(i);
+                if (c == null) {
+                    _recordDrop(outcome, listener, "wire",
+                            "MALFORMED_CONNECTION",
+                            "connection entry is not an object",
+                            new JSONObject().put("index", i));
+                    continue;
+                }
+                String from = c.optString("from", "").trim();
+                String to = c.optString("to", "").trim();
+                if (from.isEmpty() || to.isEmpty()) {
+                    _recordDrop(outcome, listener, "wire",
+                            "MALFORMED_CONNECTION",
+                            "connection missing from/to", c);
+                    continue;
+                }
+                String dropReason = _connectionDropReason(from, to,
+                        goodNames, entryByName);
+                if (dropReason != null) {
+                    JSONObject ctx = new JSONObject();
+                    ctx.put("from", from);
+                    ctx.put("to", to);
+                    _recordDrop(outcome, listener, "wire", dropReason
+                                    .startsWith("port=") ? "PORT_NOT_ON_CLASS"
+                                    : "CONNECTION_REFERENCES_DROPPED_ACTOR",
+                            "connection dropped (" + dropReason + ")", ctx);
+                    continue;
+                }
+                cleanedConnections.put(c);
+            }
+        }
+
+        // Build a shallow copy of the plan with the cleaned arrays.
+        // We don't want to mutate the caller's JSONObject because
+        // AgentPipeline keeps it as a diagnostic.
+        JSONObject cleaned = new JSONObject(plan.toString());
+        cleaned.put("actors", cleanedActors);
+        cleaned.put("connections", cleanedConnections);
+        return cleaned;
+    }
+
+    /** Decide whether an actor.port connection should be dropped.
+     *  Returns null when the connection passes; a short reason string
+     *  otherwise. */
+    private static String _connectionDropReason(String from, String to,
+            Set<String> goodNames,
+            java.util.Map<String, LibraryIndex.Entry> entryByName) {
+        String fromActor = _actorPart(from);
+        String toActor = _actorPart(to);
+        if (!fromActor.isEmpty() && !goodNames.contains(fromActor)) {
+            return "from actor missing or dropped: " + fromActor;
+        }
+        if (!toActor.isEmpty() && !goodNames.contains(toActor)) {
+            return "to actor missing or dropped: " + toActor;
+        }
+        String fromPort = _portPart(from);
+        String toPort = _portPart(to);
+        LibraryIndex.Entry fromEntry = entryByName.get(fromActor);
+        LibraryIndex.Entry toEntry = entryByName.get(toActor);
+        if (fromEntry != null && !fromPort.isEmpty()
+                && !_isOutputPort(fromEntry, fromPort)
+                && !_isAnyKnownPort(fromEntry, fromPort)) {
+            return "port=" + fromPort + " not on " + fromEntry.className;
+        }
+        if (toEntry != null && !toPort.isEmpty()
+                && !_isInputPort(toEntry, toPort)
+                && !_isAnyKnownPort(toEntry, toPort)) {
+            return "port=" + toPort + " not on " + toEntry.className;
+        }
+        return null;
+    }
+
+    private static boolean _isInputPort(LibraryIndex.Entry e, String port) {
+        for (String p : e.inputs) {
+            if (port.equals(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean _isOutputPort(LibraryIndex.Entry e, String port) {
+        for (String p : e.outputs) {
+            if (port.equals(p)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Some actors (multiports, dynamically-added ports) expose ports
+     *  that the static library entry doesn't enumerate.  When the
+     *  catalog has at least one input AND one output, treat unknown
+     *  port names as "probably ok" rather than dropping aggressively.
+     *  When the catalog has zero ports we let it through too (rare,
+     *  but happens for Recorder-like sinks with implicit ports). */
+    private static boolean _isAnyKnownPort(LibraryIndex.Entry e,
+            String port) {
+        if (e == null) {
+            return true;
+        }
+        // Heuristic: known multiports / dynamic-port classes that the
+        // basic library scan does not always enumerate exhaustively.
+        // We don't want to drop legitimate "PortParameter"-style
+        // ports here.
+        String cls = e.className == null ? "" : e.className;
+        if (cls.endsWith(".AddSubtract")
+                || cls.endsWith(".MultiplyDivide")
+                || cls.endsWith(".Expression")
+                || cls.endsWith(".PortParameter")) {
+            return true;
+        }
+        return false;
+    }
+
+    private static String _actorPart(String reference) {
+        if (reference == null) {
+            return "";
+        }
+        int dot = reference.lastIndexOf('.');
+        return dot < 0 ? reference : reference.substring(0, dot);
+    }
+
+    private static String _portPart(String reference) {
+        if (reference == null) {
+            return "";
+        }
+        int dot = reference.lastIndexOf('.');
+        return dot < 0 ? "" : reference.substring(dot + 1);
+    }
+
+    /** Record a static-plan drop into outcome and emit a listener
+     *  event styled like a tool_call/tool_result pair so the frontend
+     *  trace shows the cleaning steps. */
+    private static void _recordDrop(Outcome outcome,
+            AgentTraceListener listener, String stage, String code,
+            String message, JSONObject context) {
+        JSONObject row = new JSONObject();
+        row.put("index", outcome.staticPlanDrops.length());
+        row.put("stage", "static-clean");
+        row.put("tool", "plan_clean");
+        row.put("ok", false);
+        row.put("code", code);
+        row.put("message", message);
+        row.put("subject", stage);
+        if (context != null) {
+            row.put("context", context);
+        }
+        outcome.staticPlanDrops.put(row);
+        if (listener != null) {
+            listener.onStep(new AgentTrace.Step(0, "thought", "",
+                    null, "[plan-clean] " + code + ": " + message));
+        }
     }
 
     /** Ensure the session has a top-level composite to host actors. */

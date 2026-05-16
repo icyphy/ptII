@@ -129,10 +129,10 @@ public class AddEntityTool implements AgentTool {
             ptolemy.kernel.CompositeEntity scope =
                     (ptolemy.kernel.CompositeEntity) session.toplevel();
             if (parent.length() > 0) {
-                ptolemy.kernel.ComponentEntity p =
-                        scope.getEntity(parent);
-                if (p instanceof ptolemy.kernel.CompositeEntity) {
-                    scope = (ptolemy.kernel.CompositeEntity) p;
+                try {
+                    scope = ToolScopeResolver.resolve(scope, parent);
+                } catch (IllegalArgumentException ex) {
+                    return AgentResult.fail(ex.getMessage());
                 }
             }
             if (isDirector) {
@@ -193,10 +193,7 @@ public class AddEntityTool implements AgentTool {
                 + " value=\"[" + x + ".0, " + y + ".0]\"/>"
                 + "</" + tag + ">";
 
-        String moml = parent.length() == 0
-                ? inner
-                : "<entity name=\"" + escape(parent) + "\">" + inner
-                        + "</entity>";
+        String moml = ToolScopeResolver.wrapInParent(parent, inner);
 
         AgentResult res = session.applyChange(moml);
         if (!res.ok()) {

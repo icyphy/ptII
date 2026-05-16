@@ -322,7 +322,12 @@ public class SignalCollector {
         while (it.hasNext()) {
             Object v = it.next();
             if (v instanceof Number) {
-                out.put(((Number) v).doubleValue());
+                double d = ((Number) v).doubleValue();
+                if (Double.isFinite(d)) {
+                    out.put(d);
+                } else {
+                    out.put(JSONObject.NULL);
+                }
             } else {
                 out.put(JSONObject.NULL);
             }
@@ -337,7 +342,12 @@ public class SignalCollector {
         }
         for (Object t : tokens) {
             if (t instanceof DoubleToken) {
-                out.put(((DoubleToken) t).doubleValue());
+                double d = ((DoubleToken) t).doubleValue();
+                if (Double.isFinite(d)) {
+                    out.put(d);
+                } else {
+                    out.put(JSONObject.NULL);
+                }
             } else if (t instanceof Token) {
                 out.put(((Token) t).toString());
             } else if (t == null) {

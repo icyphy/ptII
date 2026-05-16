@@ -25,14 +25,16 @@
 // Inputs are React-Flow nodes/edges. Output: a new node array with
 // fresh `position` values; edges are unchanged.
 
-import { Edge, Node } from "reactflow";
+import type { Edge, Node } from "reactflow";
 
-interface LayoutOpts {
+export interface LayoutOpts {
   colGap?:    number;  // horizontal gap between columns
   rowGap?:    number;  // vertical gap between stacked nodes in a column
   leftPad?:   number;
   topPad?:    number;
   iterations?: number; // barycenter sweep iterations
+  /** Fast mode for very large graphs: fewer iterations, less crossing work. */
+  lightweight?: boolean;
 }
 
 interface PortAware {
@@ -52,6 +54,9 @@ const ATOM_WIDTH      = 176;
 const COMPOSITE_WIDTH = 196;
 const BOUNDARY_WIDTH  = 110;
 const BOUNDARY_HEIGHT = 60;
+const LARGE_GRAPH_THRESHOLD = 220;
+const LIGHTWEIGHT_ITERATIONS = 3;
+const MAX_DUMMY_SPAN_LIGHTWEIGHT = 4;
 
 function nodeHeight<D extends PortAware>(n: Node<D>): number {
   if (n.data?.isBoundary) return BOUNDARY_HEIGHT;
@@ -79,7 +84,10 @@ export function layoutNodes<D extends PortAware>(
   const ROW_GAP    = opts.rowGap     ?? 28;
   const LEFT       = opts.leftPad    ?? 40;
   const TOP        = opts.topPad     ?? 40;
-  const ITERATIONS = opts.iterations ?? 8;
+  const lightweight = opts.lightweight === true
+    || nodes.length >= LARGE_GRAPH_THRESHOLD;
+  const ITERATIONS = opts.iterations
+    ?? (lightweight ? LIGHTWEIGHT_ITERATIONS : 8);
 
   const idToNode = new Map<string, Node<D>>();
   nodes.forEach((n) => idToNode.set(n.id, n));
@@ -99,6 +107,12 @@ export function layoutNodes<D extends PortAware>(
     n.data?.isBoundary === true && n.data?.boundaryRole === "input";
   const isOutputBoundary = (n: Node<D>) =>
     n.data?.isBoundary === true && n.data?.boundaryRole === "output";
+  const inputBoundaryIds = nodes.filter(isInputBoundary).map((n) => n.id);
+  const outputBoundaryIds = nodes.filter(isOutputBoundary).map((n) => n.id);
+  const inputBoundarySet = new Set(inputBoundaryIds);
+  const outputBoundarySet = new Set(outputBoundaryIds);
+  const isBoundaryId = (id: string) =>
+    inputBoundarySet.has(id) || outputBoundarySet.has(id);
 
   // ── 2) Rank by longest forward path ─────────────────────────────
   //
@@ -129,16 +143,30 @@ export function layoutNodes<D extends PortAware>(
   }
   nodes.forEach((n) => rankOf(n.id));
 
-  // Pin boundaries.
+  // Pin boundaries to dedicated leading/trailing columns:
+  //  - all input boundary ports in the first column
+  //  - all output boundary ports in the last column
+  // This guarantees "input rail → graph body → output rail".
   let maxRank = 0;
   Object.values(rank).forEach((r) => { if (r > maxRank) maxRank = r; });
-  const hasOutputBoundary = nodes.some(isOutputBoundary);
-  const rightCol = hasOutputBoundary ? maxRank + 1 : maxRank;
-  nodes.forEach((n) => {
-    if (isInputBoundary(n))  rank[n.id] = 0;
-    if (isOutputBoundary(n)) rank[n.id] = rightCol;
-  });
-  if (hasOutputBoundary) maxRank = rightCol;
+  const hasInputBoundary = inputBoundaryIds.length > 0;
+  const hasOutputBoundary = outputBoundaryIds.length > 0;
+  if (hasInputBoundary) {
+    nodes.forEach((n) => {
+      if (!isBoundaryId(n.id)) rank[n.id] += 1;
+    });
+    maxRank += 1;
+    inputBoundaryIds.forEach((id) => { rank[id] = 0; });
+  }
+  if (hasOutputBoundary) {
+    const outRank = maxRank + 1;
+    outputBoundaryIds.forEach((id) => { rank[id] = outRank; });
+    maxRank = outRank;
+  }
+  const inputBoundaryRank = hasInputBoundary ? 0 : -1;
+  const outputBoundaryRank = hasOutputBoundary ? maxRank : -1;
+  const isFrozenRank = (r: number) =>
+    r === inputBoundaryRank || r === outputBoundaryRank;
 
   // ── 3) Insert dummy nodes on long edges ────────────────────────
   //  Augmented graph:
@@ -169,6 +197,11 @@ export function layoutNodes<D extends PortAware>(
     const rv = rank[e.target];
     if (rv > ru + 1) {
       // forward long edge — chain dummies through ranks
+      const span = rv - ru - 1;
+      if (lightweight && span > MAX_DUMMY_SPAN_LIGHTWEIGHT) {
+        aLink(e.source, e.target);
+        return;
+      }
       let prev = e.source;
       for (let r = ru + 1; r < rv; r++) {
         const did = `__dummy__${dummyCount++}`;
@@ -197,7 +230,7 @@ export function layoutNodes<D extends PortAware>(
   const ranks = Object.keys(byRank).map(Number).sort((a, b) => a - b);
 
   // Initial in-rank order: alphabetical (stable starting point).
-  ranks.forEach((r) => { byRank[r].sort(); });
+  ranks.forEach((r) => { byRank[r].sort((a, b) => a.localeCompare(b)); });
 
   // ── 4) Barycenter sweeps over the AUGMENTED graph ──────────────
   const slot: Record<string, number> = {};
@@ -215,9 +248,75 @@ export function layoutNodes<D extends PortAware>(
     }
     return c === 0 ? null : s / c;
   }
+
+  // Count crossings only on forward adjacent edges (r -> r+1),
+  // which is what dummy-expanded layered layout optimizes.
+  function crossingsBetween(upperRank: number, lowerRank: number): number {
+    if (lowerRank !== upperRank + 1) return 0;
+    const upper = byRank[upperRank] ?? [];
+    const lower = byRank[lowerRank] ?? [];
+    if (upper.length === 0 || lower.length === 0) return 0;
+    const upPos: Record<string, number> = {};
+    const loPos: Record<string, number> = {};
+    upper.forEach((id, i) => { upPos[id] = i; });
+    lower.forEach((id, i) => { loPos[id] = i; });
+    const pairs: Array<{ u: number; v: number }> = [];
+    for (const uId of upper) {
+      const succ = aSucc[uId] ?? new Set<string>();
+      for (const vId of succ) {
+        const v = vmap.get(vId);
+        if (!v || v.rank !== lowerRank) continue;
+        const u = upPos[uId];
+        const w = loPos[vId];
+        if (typeof u === "number" && typeof w === "number") {
+          pairs.push({ u, v: w });
+        }
+      }
+    }
+    let c = 0;
+    for (let i = 0; i < pairs.length; i++) {
+      for (let j = i + 1; j < pairs.length; j++) {
+        const a = pairs[i], b = pairs[j];
+        if ((a.u - b.u) * (a.v - b.v) < 0) c++;
+      }
+    }
+    return c;
+  }
+  function crossingCostAtRank(r: number): number {
+    let c = 0;
+    if (r > 0) c += crossingsBetween(r - 1, r);
+    if (r < maxRank) c += crossingsBetween(r, r + 1);
+    return c;
+  }
+  function transposeRank(r: number) {
+    if (isFrozenRank(r)) return;
+    const ids = byRank[r] ?? [];
+    if (ids.length < 2) return;
+    let improved = true;
+    while (improved) {
+      improved = false;
+      for (let i = 0; i < ids.length - 1; i++) {
+        const a = ids[i], b = ids[i + 1];
+        const before = crossingCostAtRank(r);
+        ids[i] = b;
+        ids[i + 1] = a;
+        reslot();
+        const after = crossingCostAtRank(r);
+        if (after < before) {
+          improved = true;
+        } else {
+          ids[i] = a;
+          ids[i + 1] = b;
+          reslot();
+        }
+      }
+    }
+  }
+
   for (let pass = 0; pass < ITERATIONS; pass++) {
     for (let i = 1; i < ranks.length; i++) {
       const r = ranks[i];
+      if (isFrozenRank(r)) continue;
       byRank[r].sort((a, b) => {
         const ma = meanSlot(aPred[a] ?? []);
         const mb = meanSlot(aPred[b] ?? []);
@@ -227,10 +326,15 @@ export function layoutNodes<D extends PortAware>(
         if (ma !== mb)  return ma - mb;
         return a < b ? -1 : a > b ? 1 : 0;
       });
+      reslot();
+      if (!lightweight) {
+        transposeRank(r);
+      }
     }
     reslot();
     for (let i = ranks.length - 2; i >= 0; i--) {
       const r = ranks[i];
+      if (isFrozenRank(r)) continue;
       byRank[r].sort((a, b) => {
         const ma = meanSlot(aSucc[a] ?? []);
         const mb = meanSlot(aSucc[b] ?? []);
@@ -240,6 +344,10 @@ export function layoutNodes<D extends PortAware>(
         if (ma !== mb)  return ma - mb;
         return a < b ? -1 : a > b ? 1 : 0;
       });
+      reslot();
+      if (!lightweight) {
+        transposeRank(r);
+      }
     }
     reslot();
   }
@@ -283,9 +391,9 @@ export function layoutNodes<D extends PortAware>(
     return s.length % 2 === 0 ? (s[m - 1] + s[m]) / 2 : s[Math.floor(m)];
   }
 
-  // First pass: for rank 0, just stack top-down. For r > 0, target Y
-  // = median of predecessors' top-Y (real or dummy).
+  // First pass for non-boundary ranks.
   for (let r = 0; r <= maxRank; r++) {
+    if (isFrozenRank(r)) continue;
     const ids = byRank[r];
     if (ids.length === 0) continue;
     const target: Record<string, number> = {};
@@ -315,6 +423,57 @@ export function layoutNodes<D extends PortAware>(
       cursor = ny + h;
     }
   }
+
+  // Any not-yet-placed vertices (mostly dummies tied to frozen columns).
+  for (let r = 0; r <= maxRank; r++) {
+    const ids = byRank[r];
+    let cursor = -Infinity;
+    for (const id of ids) {
+      if (typeof y[id] === "number") {
+        cursor = y[id] + vheight(id);
+        continue;
+      }
+      const preds = aPred[id] ?? new Set<string>();
+      const ys: number[] = [];
+      for (const p of preds) {
+        if (typeof y[p] === "number") ys.push(y[p]);
+      }
+      const tg = ys.length > 0 ? median(ys) : 0;
+      const ny = cursor === -Infinity ? tg : Math.max(tg, cursor + ROW_GAP);
+      y[id] = ny;
+      cursor = ny + vheight(id);
+    }
+  }
+
+  // Reorder and stack boundary rails by neighboring actor Y:
+  // inputs by successor median, outputs by predecessor median.
+  function placeBoundaryRail(ids: string[], useSuccessors: boolean) {
+    if (ids.length === 0) return;
+    const scored = ids.map((id) => {
+      const neigh = useSuccessors ? rSucc[id] : rPred[id];
+      const ys: number[] = [];
+      for (const nb of neigh ?? []) {
+        if (typeof y[nb] === "number") ys.push(y[nb]);
+      }
+      const score = ys.length > 0 ? median(ys) : 0;
+      return { id, score };
+    });
+    scored.sort((a, b) => {
+      if (a.score !== b.score) return a.score - b.score;
+      return a.id.localeCompare(b.id);
+    });
+    let cursor = -Infinity;
+    for (const row of scored) {
+      const h = vheight(row.id);
+      const ny = cursor === -Infinity
+        ? row.score
+        : Math.max(row.score, cursor + ROW_GAP);
+      y[row.id] = ny;
+      cursor = ny + h;
+    }
+  }
+  placeBoundaryRail(inputBoundaryIds, true);
+  placeBoundaryRail(outputBoundaryIds, false);
 
   // Normalize so the highest real node sits at TOP.
   let minY = Infinity;
@@ -350,6 +509,11 @@ export function layoutNodes<D extends PortAware>(
  *  spawn point, or (b) any two nodes' axis-aligned rectangles overlap. */
 export function isLayoutCluttered<D extends PortAware>(
   nodes: Node<D>[],
+  opts: {
+    skipOverlapWhenLarge?: boolean;
+    largeNodeThreshold?: number;
+    maxPairChecks?: number;
+  } = {},
 ): boolean {
   if (nodes.length < 3) return false;
 
@@ -361,6 +525,12 @@ export function isLayoutCluttered<D extends PortAware>(
   }
   if (defaultLike >= 3) return true;
 
+  const skipOverlapWhenLarge = opts.skipOverlapWhenLarge ?? false;
+  const largeNodeThreshold = opts.largeNodeThreshold ?? LARGE_GRAPH_THRESHOLD;
+  if (skipOverlapWhenLarge && nodes.length >= largeNodeThreshold) {
+    return false;
+  }
+
   type Rect = { x: number; y: number; w: number; h: number };
   const rects: Rect[] = nodes.map((n) => ({
     x: n.position?.x ?? 0,
@@ -368,8 +538,14 @@ export function isLayoutCluttered<D extends PortAware>(
     w: nodeWidth(n),
     h: nodeHeight(n),
   }));
+  const maxPairChecks = opts.maxPairChecks ?? Number.POSITIVE_INFINITY;
+  let pairChecks = 0;
   for (let i = 0; i < rects.length; i++) {
     for (let j = i + 1; j < rects.length; j++) {
+      pairChecks += 1;
+      if (pairChecks > maxPairChecks) {
+        return false;
+      }
       const a = rects[i], b = rects[j];
       if (a.x < b.x + b.w && a.x + a.w > b.x &&
           a.y < b.y + b.h && a.y + a.h > b.y) {

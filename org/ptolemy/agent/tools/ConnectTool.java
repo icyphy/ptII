@@ -124,12 +124,11 @@ public class ConnectTool implements AgentTool {
         // composite if `parent` was supplied.
         CompositeEntity scope = top;
         if (parent.length() > 0) {
-            ptolemy.kernel.ComponentEntity child = top.getEntity(parent);
-            if (!(child instanceof CompositeEntity)) {
-                return AgentResult.fail(
-                        "no composite named '" + parent + "' at top level");
+            try {
+                scope = ToolScopeResolver.resolve(top, parent);
+            } catch (IllegalArgumentException ex) {
+                return AgentResult.fail(ex.getMessage());
             }
-            scope = (CompositeEntity) child;
         }
 
         IOPort source = resolvePort(scope, from);
@@ -185,11 +184,7 @@ public class ConnectTool implements AgentTool {
                     + "\" relation=\""
                     + AddEntityTool.escape(relName) + "\"/>"
                     + "</group>";
-            moml = parent.length() == 0
-                    ? inner
-                    : "<entity name=\""
-                            + AddEntityTool.escape(parent) + "\">"
-                            + inner + "</entity>";
+            moml = ToolScopeResolver.wrapInParent(parent, inner);
             fannedOut = true;
         } else {
             if (relName.isEmpty()) {
@@ -209,11 +204,7 @@ public class ConnectTool implements AgentTool {
                     + "\" relation=\""
                     + AddEntityTool.escape(relName) + "\"/>"
                     + "</group>";
-            moml = parent.length() == 0
-                    ? inner
-                    : "<entity name=\""
-                            + AddEntityTool.escape(parent) + "\">"
-                            + inner + "</entity>";
+            moml = ToolScopeResolver.wrapInParent(parent, inner);
         }
 
         AgentResult res = session.applyChange(moml);

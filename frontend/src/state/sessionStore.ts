@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import {
   agentApi,
+  AgentResultJson,
   AgentStatus,
   AgentTraceStep,
   GraphPayload,
@@ -39,6 +40,11 @@ interface SessionState {
   isLoading: boolean;
   isAgentBusy: boolean;
   agentProgress: AgentProgress | null;
+  /** Live partial reasoning from the currently-streaming LLM call.
+   *  Updated in place (not appended to chat) so 30-60 s planning
+   *  rounds show progress without flooding the chat list. Reset to
+   *  null when no LLM stream is active. */
+  agentLiveThought: string | null;
   isRunningDemo: boolean;
   activeDemoId: string | null;
   lastError: string | null;
@@ -56,7 +62,10 @@ interface SessionState {
   sendToAgent: (message: string) => Promise<void>;
   stopAgent: () => void;
   refreshAgentStatus: () => Promise<void>;
-  callTool: (name: string, args: Record<string, unknown>) => Promise<void>;
+  callTool: (
+    name: string,
+    args: Record<string, unknown>,
+  ) => Promise<AgentResultJson | null>;
   selectNode: (id: string | null) => void;
   undo: () => Promise<void>;
   redo: () => Promise<void>;
@@ -73,8 +82,67 @@ interface SessionState {
 
 let _nextChatId = 1;
 let _agentAbortController: AbortController | null = null;
+const STRUCTURAL_TOOLS = new Set([
+  "add_entity",
+  "add_composite",
+  "group_into_composite",
+  "auto_layout",
+  "connect",
+  "disconnect",
+  "set_parameter",
+  "delete",
+]);
+const TOOL_REFRESH_DEBOUNCE_MS = 140;
 
-export const useSessionStore = create<SessionState>((set, get) => ({
+export const useSessionStore = create<SessionState>((set, get) => {
+  let refreshInFlight = false;
+  let refreshPending = false;
+  let refreshWantsSignals = false;
+  let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+
+  const flushRefresh = () => {
+    const sid = get().sessionId;
+    if (!sid) return;
+    if (refreshInFlight) {
+      refreshPending = true;
+      return;
+    }
+    refreshInFlight = true;
+    void (async () => {
+      try {
+        await get().refreshMoml();
+        if (refreshWantsSignals) {
+          try {
+            const latest = await agentApi.getSignals(sid);
+            set({ signals: latest.signals ?? null });
+          } catch {
+            // Best effort only; next refresh will recover.
+          } finally {
+            refreshWantsSignals = false;
+          }
+        }
+      } finally {
+        refreshInFlight = false;
+        if (refreshPending) {
+          refreshPending = false;
+          flushRefresh();
+        }
+      }
+    })();
+  };
+
+  const scheduleToolRefresh = (alsoSignals: boolean) => {
+    refreshWantsSignals = refreshWantsSignals || alsoSignals;
+    if (refreshTimer) {
+      clearTimeout(refreshTimer);
+    }
+    refreshTimer = setTimeout(() => {
+      refreshTimer = null;
+      flushRefresh();
+    }, TOOL_REFRESH_DEBOUNCE_MS);
+  };
+
+  return ({
   sessionId: null,
   summary: null,
   moml: "",
@@ -85,6 +153,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   isLoading: false,
   isAgentBusy: false,
   agentProgress: null,
+  agentLiveThought: null,
   isRunningDemo: false,
   activeDemoId: null,
   lastError: null,
@@ -174,23 +243,29 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   callTool: async (name, args) => {
     await get().ensureSession();
     const id = get().sessionId;
-    if (!id) return;
+    if (!id) return null;
     set({ isLoading: true, lastError: null });
     try {
       const result = await agentApi.callTool(id, name, args);
       if (!result.ok) {
         set({ lastError: result.message });
         get().appendChat({ kind: "error", text: `${name}: ${result.message}`, source: "user" });
-        return;
+        return result;
       }
       get().appendChat({
         kind: "tool_call",
         text: `${name}(${prettyArgs(args)})`,
         source: "user",
       });
-      await get().refreshMoml();
+      if (STRUCTURAL_TOOLS.has(name)) {
+        scheduleToolRefresh(false);
+      } else {
+        await get().refreshMoml();
+      }
+      return result;
     } catch (e) {
       set({ lastError: (e as Error).message });
+      return null;
     } finally {
       set({ isLoading: false });
     }
@@ -274,24 +349,11 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       agentProgress: { label: "Connecting to agent…", startedAt },
     });
 
-    // Tool calls that mutate the model topology - any successful invocation
-    // should trigger an immediate canvas refresh so the user can watch the
-    // model materialize step-by-step.
-    const STRUCTURAL_TOOLS = new Set([
-      "add_entity",
-      "add_composite",
-      "group_into_composite",
-      "connect",
-      "disconnect",
-      "set_parameter",
-      "delete",
-    ]);
-
     // Coalesce bursty refreshes: while one is in flight, only schedule
     // ONE follow-up so we never queue up dozens of redundant fetches.
     let refreshing = false;
     let pendingRefresh = false;
-    const scheduleRefresh = (alsoSignals: boolean) => {
+    const scheduleAgentRefresh = (alsoSignals: boolean) => {
       const sid = get().sessionId;
       if (!sid) return;
       if (refreshing) {
@@ -315,7 +377,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
           refreshing = false;
           if (pendingRefresh) {
             pendingRefresh = false;
-            scheduleRefresh(alsoSignals);
+            scheduleAgentRefresh(alsoSignals);
           }
         }
       })();
@@ -323,8 +385,28 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
     const applyStep = (step: AgentTraceStep) => {
       if (step.kind === "thought" && step.text) {
-        get().appendChat({ kind: "agent", text: step.text, source: "agent" });
-        set({ agentProgress: { label: "Agent reasoning…", startedAt } });
+        // Streaming partial-thought updates from the planner (or any
+        // future phase that opts into `plan_stream`) replace a single
+        // live slot instead of piling up in the chat list.  When the
+        // step name is anything else (or empty), the thought is final
+        // and gets committed to the chat.
+        if (step.name === "plan_stream") {
+          set({
+            agentLiveThought: step.text,
+            agentProgress: { label: "Agent reasoning…", startedAt },
+          });
+          return;
+        }
+        get().appendChat({
+          kind: "agent",
+          text: step.text,
+          meta: { stepKind: "thought" },
+          source: "agent",
+        });
+        set({
+          agentLiveThought: null,
+          agentProgress: { label: "Agent reasoning…", startedAt },
+        });
       } else if (step.kind === "tool_call") {
         get().appendChat({
           kind: "tool_call",
@@ -332,7 +414,10 @@ export const useSessionStore = create<SessionState>((set, get) => ({
           meta: step.arguments,
           source: "agent",
         });
-        set({ agentProgress: { label: `Running ${step.name}…`, startedAt } });
+        set({
+          agentLiveThought: null,
+          agentProgress: { label: `Running ${step.name}…`, startedAt },
+        });
       } else if (step.kind === "tool_result") {
         const data = step.arguments as { ok?: boolean; message?: string };
         const ok = data.ok !== false;
@@ -351,16 +436,21 @@ export const useSessionStore = create<SessionState>((set, get) => ({
         // so the user can watch the model build itself.
         if (ok) {
           if (STRUCTURAL_TOOLS.has(step.name)) {
-            scheduleRefresh(false);
+            scheduleAgentRefresh(false);
           } else if (step.name === "run") {
-            scheduleRefresh(true);
+            scheduleAgentRefresh(true);
           }
         }
       } else if (step.kind === "error") {
         get().appendChat({ kind: "error", text: step.text, source: "agent" });
         set({ agentProgress: { label: "Agent error", startedAt } });
       } else if (step.kind === "final" && step.text) {
-        get().appendChat({ kind: "agent", text: step.text, source: "agent" });
+        get().appendChat({
+          kind: "agent",
+          text: step.text,
+          meta: { stepKind: "final" },
+          source: "agent",
+        });
         set({ agentProgress: { label: "Finalizing response…", startedAt } });
       }
     };
@@ -436,7 +526,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       if (_agentAbortController === controller) {
         _agentAbortController = null;
       }
-      set({ isAgentBusy: false, agentProgress: null });
+      set({ isAgentBusy: false, agentProgress: null, agentLiveThought: null });
     }
   },
 
@@ -501,8 +591,14 @@ export const useSessionStore = create<SessionState>((set, get) => ({
   },
 
   appendChat: (entry, source) =>
-    set((s) => ({
-      chat: [
+    set((s) => {
+      // Safety cap: very long iterative builds can otherwise grow
+      // the chat array into the thousands of entries, which causes
+      // O(n^2) array-copy churn here and freezes the React panel.
+      // 800 lines is generous for any reasonable conversation and
+      // still keeps the recent context visible.
+      const MAX_CHAT_ENTRIES = 800;
+      const next = [
         ...s.chat,
         {
           ...entry,
@@ -510,8 +606,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
           id: _nextChatId++,
           timestamp: Date.now(),
         },
-      ],
-    })),
+      ];
+      if (next.length > MAX_CHAT_ENTRIES) {
+        return { chat: next.slice(next.length - MAX_CHAT_ENTRIES) };
+      }
+      return { chat: next };
+    }),
 
   clearChat: () => set({ chat: [] }),
 
@@ -534,7 +634,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     set({ canvasPath: [...path], selectedNodeId: null });
     await get().refreshGraph();
   },
-}));
+  });
+});
 
 function prettyArgs(args: Record<string, unknown>): string {
   const keys = Object.keys(args);

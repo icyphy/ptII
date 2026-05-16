@@ -33,6 +33,8 @@ import org.json.JSONObject;
 import org.ptolemy.agent.session.PtolemySession;
 import org.ptolemy.agent.util.AgentResult;
 
+import ptolemy.kernel.CompositeEntity;
+
 ///////////////////////////////////////////////////////////////////
 //// AddCompositeTool
 
@@ -116,6 +118,19 @@ public class AddCompositeTool implements AgentTool {
         String parent = args.optString("parent", "").trim();
         int x = args.optInt("x", 120);
         int y = args.optInt("y", 120);
+        if (session.toplevel() == null) {
+            return AgentResult.fail("no model loaded");
+        }
+        try {
+            CompositeEntity top = (CompositeEntity) session.toplevel();
+            CompositeEntity scope = ToolScopeResolver.resolve(top, parent);
+            if (scope.getEntity(entityName) != null) {
+                return AgentResult.fail("name in use: '" + entityName
+                        + "' already exists in scope");
+            }
+        } catch (IllegalArgumentException ex) {
+            return AgentResult.fail(ex.getMessage());
+        }
 
         StringBuilder body = new StringBuilder();
         body.append("<entity name=\"").append(AddEntityTool.escape(entityName))
@@ -149,10 +164,7 @@ public class AddCompositeTool implements AgentTool {
         }
         body.append("</entity>");
 
-        String moml = parent.length() == 0
-                ? body.toString()
-                : "<entity name=\"" + AddEntityTool.escape(parent) + "\">"
-                        + body.toString() + "</entity>";
+        String moml = ToolScopeResolver.wrapInParent(parent, body.toString());
 
         AgentResult res = session.applyChange(moml);
         if (!res.ok()) {

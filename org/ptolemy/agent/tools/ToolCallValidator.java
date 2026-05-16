@@ -78,6 +78,8 @@ final class ToolCallValidator {
         JSONObject safeArgs = args == null ? new JSONObject() : args;
         if ("add_entity".equals(name)) {
             _validateAddEntity(session, safeArgs, issues);
+        } else if ("auto_layout".equals(name)) {
+            _validateAutoLayout(session, safeArgs, issues);
         } else if ("connect".equals(name)) {
             _validateConnect(session, safeArgs, issues);
         } else if ("set_parameter".equals(name)) {
@@ -246,6 +248,11 @@ final class ToolCallValidator {
         }
     }
 
+    private static void _validateAutoLayout(PtolemySession session,
+            JSONObject args, JSONArray issues) {
+        _scope(session, args.optString("parent", ""), issues);
+    }
+
     private static CompositeEntity _scope(PtolemySession session,
             String parent, JSONArray issues) {
         if (session == null || session.toplevel() == null) {
@@ -257,16 +264,25 @@ final class ToolCallValidator {
         if (p.length() == 0) {
             return scope;
         }
-        ComponentEntity child = scope.getEntity(p);
-        if (!(child instanceof CompositeEntity)) {
-            JSONObject row = _issue(issues, "PARENT_NOT_FOUND", "parent",
-                    "no composite named '" + p + "' at top level");
-            row.put("availableComposites",
-                    PortHints.compositeNames(scope));
-            row.put("didYouMean", PortHints.suggestComposites(scope, p));
-            return null;
+        String[] segments = p.split("/");
+        CompositeEntity current = scope;
+        for (String segment : segments) {
+            String name = segment == null ? "" : segment.trim();
+            if (name.isEmpty()) {
+                continue;
+            }
+            ComponentEntity child = current.getEntity(name);
+            if (!(child instanceof CompositeEntity)) {
+                JSONObject row = _issue(issues, "PARENT_NOT_FOUND", "parent",
+                        "no composite named '" + p + "' in scope");
+                row.put("availableComposites",
+                        PortHints.compositeNames(current));
+                row.put("didYouMean", PortHints.suggestComposites(current, name));
+                return null;
+            }
+            current = (CompositeEntity) child;
         }
-        return (CompositeEntity) child;
+        return current;
     }
 
     private static NamedObj _target(CompositeEntity scope, String name) {

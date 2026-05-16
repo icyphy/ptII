@@ -461,13 +461,22 @@ public final class RestRoutes {
     }
 
     /** Resolve the execution mode for a chat request. Precedence:
-     *  explicit {"mode":"..."} field, legacy {"singlePass":true}, then
-     *  the {@link org.ptolemy.agent.agent.AgentRouter} heuristic. */
+     *  global kill-switch (AGENT_DISABLE_PIPELINE), explicit
+     *  {"mode":"..."} field, legacy {"singlePass":true}, then the
+     *  {@link org.ptolemy.agent.agent.AgentRouter} heuristic.
+     *
+     *  <p>When the kill-switch is on, every PIPELINE classification is
+     *  silently downgraded to SINGLE so the user gets the known-good
+     *  single-loop baseline without redeploying.  Explicit
+     *  {"mode":"chat"} is still honored. */
     private static org.ptolemy.agent.agent.AgentRouter.Mode _resolveMode(
             JSONObject in, PtolemySession s, String message) {
+        boolean pipelineDisabled = AgentBackend.get().isPipelineDisabled();
         String explicit = in.optString("mode", "").trim().toLowerCase();
         if (explicit.equals("pipeline")) {
-            return org.ptolemy.agent.agent.AgentRouter.Mode.PIPELINE;
+            return pipelineDisabled
+                    ? org.ptolemy.agent.agent.AgentRouter.Mode.SINGLE
+                    : org.ptolemy.agent.agent.AgentRouter.Mode.PIPELINE;
         }
         if (explicit.equals("single")) {
             return org.ptolemy.agent.agent.AgentRouter.Mode.SINGLE;
@@ -478,7 +487,14 @@ public final class RestRoutes {
         if (in.optBoolean("singlePass", false)) {
             return org.ptolemy.agent.agent.AgentRouter.Mode.SINGLE;
         }
-        return org.ptolemy.agent.agent.AgentRouter.classify(s, message);
+        org.ptolemy.agent.agent.AgentRouter.Mode classified
+                = org.ptolemy.agent.agent.AgentRouter.classify(s, message);
+        if (pipelineDisabled
+                && classified
+                        == org.ptolemy.agent.agent.AgentRouter.Mode.PIPELINE) {
+            return org.ptolemy.agent.agent.AgentRouter.Mode.SINGLE;
+        }
+        return classified;
     }
 
     /** Dispatch a chat request to the right driver based on the

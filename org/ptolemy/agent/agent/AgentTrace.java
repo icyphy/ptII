@@ -146,6 +146,29 @@ public class AgentTrace {
         return _finalReply;
     }
 
+    /** Drop the oldest steps until at most {@code n} remain.  Used
+     *  by long-running pipelines (especially the iterative
+     *  mega-build) to keep the {@code trace.steps} array bounded
+     *  before the trace is serialised back to the client.  Indices
+     *  on retained steps are re-numbered so the array still reads
+     *  0..N-1 from the frontend's perspective.
+     *  @param n Cap on retained steps; values &lt;= 0 are ignored. */
+    public synchronized void truncateToLastN(int n) {
+        if (n <= 0 || _steps.size() <= n) {
+            return;
+        }
+        int drop = _steps.size() - n;
+        List<Step> kept = new ArrayList<Step>(n);
+        for (int i = drop; i < _steps.size(); i++) {
+            Step src = _steps.get(i);
+            kept.add(new Step(kept.size(), src.kind, src.name,
+                    src.arguments, src.text));
+        }
+        _steps.clear();
+        _steps.addAll(kept);
+        _diagnostics.put("truncatedSteps", drop);
+    }
+
     /** Append a clone of another trace's step into this trace WITHOUT
      *  firing the listener. The pipeline uses this when it has already
      *  forwarded the event live to the external client, but still

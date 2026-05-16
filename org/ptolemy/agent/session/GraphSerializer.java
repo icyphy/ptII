@@ -315,10 +315,16 @@ public final class GraphSerializer {
         if (loc instanceof Location) {
             double[] xy = ((Location) loc).getLocation();
             if (xy != null && xy.length >= 2) {
-                JSONObject out = new JSONObject();
-                out.put("x", xy[0]);
-                out.put("y", xy[1]);
-                return out;
+                double x = xy[0];
+                double y = xy[1];
+                // org.json rejects NaN/Infinity; bad MoML or layout glitches
+                // must not break /graph responses.
+                if (Double.isFinite(x) && Double.isFinite(y)) {
+                    JSONObject out = new JSONObject();
+                    out.put("x", x);
+                    out.put("y", y);
+                    return out;
+                }
             }
         }
         JSONObject fallback = new JSONObject();

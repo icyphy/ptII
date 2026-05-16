@@ -103,14 +103,17 @@ public class SimpleHttpServer {
 
     private static final Pattern PARAM_PATTERN = Pattern
             .compile("\\{([a-zA-Z_][a-zA-Z0-9_]*)\\}");
+    private static final int DEFAULT_HTTP_THREADS = 16;
 
     private final int _port;
+    private final int _httpThreads;
     private final List<Route> _routes = new ArrayList<>();
     private HttpServer _server;
 
     /** @param port TCP port to listen on. */
     public SimpleHttpServer(int port) {
         _port = port;
+        _httpThreads = _httpThreadsFromEnv();
     }
 
     /** Register a route.
@@ -142,7 +145,7 @@ public class SimpleHttpServer {
     public void start() throws IOException {
         _server = HttpServer.create(new InetSocketAddress(_port), 0);
         _server.createContext("/", new DispatchHandler());
-        Executor executor = Executors.newFixedThreadPool(8);
+        Executor executor = Executors.newFixedThreadPool(_httpThreads);
         _server.setExecutor(executor);
         _server.start();
     }
@@ -199,6 +202,26 @@ public class SimpleHttpServer {
             }
             JsonResponse.error(exchange, 404,
                     "no route for " + method + " " + path);
+        }
+    }
+
+    private static int _httpThreadsFromEnv() {
+        String raw = System.getenv("AGENT_HTTP_THREADS");
+        if (raw == null || raw.trim().isEmpty()) {
+            raw = System.getProperty("agent.httpThreads",
+                    String.valueOf(DEFAULT_HTTP_THREADS));
+        }
+        try {
+            int n = Integer.parseInt(raw.trim());
+            if (n < 4) {
+                return 4;
+            }
+            if (n > 128) {
+                return 128;
+            }
+            return n;
+        } catch (Exception e) {
+            return DEFAULT_HTTP_THREADS;
         }
     }
 }

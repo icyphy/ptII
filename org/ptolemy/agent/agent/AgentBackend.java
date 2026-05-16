@@ -40,9 +40,14 @@ import org.ptolemy.agent.tools.ToolRegistry;
 /**
  Singleton that lazily constructs the {@link ToolRegistry},
  {@link LLMClient} and {@link AgentLoop} used by the HTTP layer. Auto
- detects an OpenAI configuration from the environment; if none is
- present, it falls back to {@link NullLLMClient} so the rest of the
- system continues to work for manual canvas-driven testing.
+ detects an OpenAI / DeepSeek configuration from the environment; if
+ none is present, it falls back to {@link NullLLMClient} so the rest of
+ the system continues to work for manual canvas-driven testing.
+
+ <p>This build uses a SINGLE flash-tier model for every role
+ (chat, single, planner, builder, refactor, reviewer). The previous
+ dual-model (v4-pro + v4-flash) and iterative "MEGA" pipeline are
+ intentionally removed because they degraded build quality.
 
  @author Ptolemy II Agent contributors
  @version $Id$
@@ -56,17 +61,44 @@ public final class AgentBackend {
     private final LLMClient _llm;
     private final AgentLoop _loop;
     private final AgentPipeline _pipeline;
+    private final JSONObject _llmRouting;
+    private final boolean _pipelineDisabled;
 
     private AgentBackend() {
         _tools = ToolRegistry.defaultRegistry();
-        LLMClient client = buildClient();
-        if (!client.isAvailable()) {
+        _pipelineDisabled = _disablePipelineFromEnv();
+        ClientBundle bundle = buildClients();
+        LLMClient client = bundle.client;
+        if (client == null || !client.isAvailable()) {
             client = new NullLLMClient();
         }
         _llm = client;
+        _llmRouting = bundle.routing == null
+                ? new JSONObject() : bundle.routing;
+        _llmRouting.put("pipelineDisabled", _pipelineDisabled);
         int maxSteps = _maxStepsFromEnv();
-        _loop = new AgentLoop(_llm, _tools).setMaxSteps(maxSteps);
-        _pipeline = new AgentPipeline(_llm, _tools, maxSteps);
+        long maxTurnMs = _maxTurnMsFromEnv();
+        _loop = new AgentLoop(_llm, _tools)
+                .setMaxSteps(maxSteps)
+                .setMaxTurnMillis(maxTurnMs);
+        _pipeline = new AgentPipeline(_llm, _llm, _llm, _llm, _tools,
+                maxSteps).setMaxTurnMillis(maxTurnMs);
+    }
+
+    /** @return True iff the user has set AGENT_DISABLE_PIPELINE=true.
+     *  When true, RestRoutes will map every PIPELINE classification
+     *  to SINGLE so the conversation behaves like the simplest
+     *  single-loop baseline. */
+    public boolean isPipelineDisabled() {
+        return _pipelineDisabled;
+    }
+
+    private static boolean _disablePipelineFromEnv() {
+        String raw = env("AGENT_DISABLE_PIPELINE",
+                "agent.disablePipeline", "false");
+        String v = raw == null ? "" : raw.trim().toLowerCase();
+        return "1".equals(v) || "true".equals(v) || "yes".equals(v)
+                || "on".equals(v);
     }
 
     /** Read AGENT_MAX_STEPS env / -Dagent.maxSteps. Default 200.
@@ -83,6 +115,20 @@ public final class AgentBackend {
             return n;
         } catch (NumberFormatException e) {
             return 200;
+        }
+    }
+
+    /** Read AGENT_MAX_TURN_MS env / -Dagent.maxTurnMs. Default 300000. */
+    private static long _maxTurnMsFromEnv() {
+        String raw = env("AGENT_MAX_TURN_MS", "agent.maxTurnMs", "300000");
+        try {
+            long n = Long.parseLong(raw.trim());
+            if (n <= 0) {
+                return Long.MAX_VALUE;
+            }
+            return n;
+        } catch (NumberFormatException e) {
+            return 300_000L;
         }
     }
 
@@ -173,6 +219,7 @@ public final class AgentBackend {
         JSONObject json = new JSONObject();
         try {
             json.put("llm", _llm.status());
+            json.put("llmRouting", _llmRouting);
             json.put("tools", _tools.toolsForUi());
         } catch (org.json.JSONException e) {
             // Should never happen with valid string keys
@@ -180,25 +227,69 @@ public final class AgentBackend {
         return json;
     }
 
-    /** Build an OpenAI-compatible client.
+    /** Build the single LLM client and routing summary.
      *
-     *  Priority:
-     *  1) DeepSeek-specific env/sysprops when DEEPSEEK_API_KEY is set.
-     *  2) Generic OPENAI_* variables (existing behavior).
+     *  <p>Priority:
+     *  <ol>
+     *  <li>DeepSeek-specific env/sysprops with the flash model.</li>
+     *  <li>Generic {@code OPENAI_*} variables.</li>
+     *  </ol>
+     *
+     *  <p>The constructor probes the model once with a 1-token chat
+     *  call ({@link OpenAIClient#verifyReachable}) so a missing or
+     *  renamed model ID is reported in {@code /api/v1/agent/status}
+     *  immediately instead of paying a long read-timeout on every
+     *  pipeline round.
      */
-    private static LLMClient buildClient() {
-        String deepseekKey = env("DEEPSEEK_API_KEY", "agent.deepseek.apiKey", "");
+    private static ClientBundle buildClients() {
+        String deepseekKey = env("DEEPSEEK_API_KEY",
+                "agent.deepseek.apiKey", "");
         if (!deepseekKey.isEmpty()) {
-            String base = env("DEEPSEEK_BASE_URL", "agent.deepseek.baseUrl",
+            String base = env("DEEPSEEK_BASE_URL",
+                    "agent.deepseek.baseUrl",
                     "https://api.deepseek.com");
-            String model = env("DEEPSEEK_MODEL", "agent.deepseek.model",
-                    "deepseek-chat");
-            return new OpenAIClient(deepseekKey, base, model);
+            String flashModel = env("DEEPSEEK_MODEL_FLASH",
+                    "agent.deepseek.model.flash",
+                    env("DEEPSEEK_MODEL",
+                            "agent.deepseek.model",
+                            "deepseek-v4-flash"));
+            OpenAIClient flash = new OpenAIClient(deepseekKey, base,
+                    flashModel);
+            boolean ok = flash.verifyReachable();
+            JSONObject routing = new JSONObject();
+            routing.put("provider", "deepseek");
+            routing.put("strategy", "single-flash");
+            routing.put("chat", flashModel);
+            routing.put("single", flashModel);
+            routing.put("planner", flashModel);
+            routing.put("builder", flashModel);
+            routing.put("refactor", flashModel);
+            routing.put("reviewer", flashModel);
+            routing.put("baseUrl", base);
+            JSONObject probes = new JSONObject();
+            probes.put("flash", ok ? "ok" : ("fail: "
+                    + flash.reachableError()));
+            routing.put("smokeProbes", probes);
+            return new ClientBundle(flash, routing);
         }
-        return new OpenAIClient();
+        OpenAIClient openai = new OpenAIClient();
+        openai.verifyReachable();
+        JSONObject routing = new JSONObject();
+        routing.put("provider", openai.providerName());
+        routing.put("strategy", "single-model");
+        String model = openai.status().optString("model", "");
+        routing.put("chat", model);
+        routing.put("single", model);
+        routing.put("planner", model);
+        routing.put("builder", model);
+        routing.put("refactor", model);
+        routing.put("reviewer", model);
+        routing.put("baseUrl", openai.status().optString("baseUrl", ""));
+        return new ClientBundle(openai, routing);
     }
 
-    private static String env(String envName, String sysProp, String fallback) {
+    private static String env(String envName, String sysProp,
+            String fallback) {
         String fromEnv = System.getenv(envName);
         if (fromEnv != null && !fromEnv.isEmpty()) {
             return fromEnv;
@@ -208,5 +299,15 @@ public final class AgentBackend {
             return fromProp;
         }
         return fallback;
+    }
+
+    private static final class ClientBundle {
+        final LLMClient client;
+        final JSONObject routing;
+
+        ClientBundle(LLMClient client, JSONObject routing) {
+            this.client = client;
+            this.routing = routing;
+        }
     }
 }

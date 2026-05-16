@@ -84,14 +84,20 @@ public class DeleteTool implements AgentTool {
         if (!args.has("name")) {
             return AgentResult.fail("delete requires 'name'");
         }
+        if (session.toplevel() == null) {
+            return AgentResult.fail("no model loaded");
+        }
         String entity = args.getString("name").trim();
         String parent = args.optString("parent", "").trim();
+        try {
+            ToolScopeResolver.resolve((ptolemy.kernel.CompositeEntity)
+                    session.toplevel(), parent);
+        } catch (IllegalArgumentException ex) {
+            return AgentResult.fail(ex.getMessage());
+        }
         String inner = "<deleteEntity name=\""
                 + AddEntityTool.escape(entity) + "\"/>";
-        String moml = parent.length() == 0
-                ? inner
-                : "<entity name=\"" + AddEntityTool.escape(parent) + "\">"
-                        + inner + "</entity>";
+        String moml = ToolScopeResolver.wrapInParent(parent, inner);
         AgentResult res = session.applyChange(moml);
         if (!res.ok()) {
             return res;

@@ -83,6 +83,11 @@ public class AgentLoop {
      *  {@link Integer#MAX_VALUE} for "run until done". */
     private int _hardLimit = 200;
 
+    /** Wall-clock safety cap for one loop run. Even when the model keeps
+     *  making partial progress, a single turn should not monopolize an
+     *  HTTP worker indefinitely. */
+    private long _maxTurnMillis = 300_000L;
+
     /** How many consecutive all-fail rounds before we declare stall.
      *  Higher numbers tolerate transient connect/parse failures
      *  better; lower numbers fail-fast on truly stuck plans. */
@@ -93,6 +98,14 @@ public class AgentLoop {
      *  the agent on a single phase (build vs. refactor vs. polish). */
     private String _systemPrompt = PromptTemplates.SYSTEM_PROMPT;
 
+    /** Whether to inject the per-turn CapabilityProbe block.  True for
+     *  single-mode loops (the LLM has no other planner output to lean
+     *  on, so the probe is genuinely useful as a soft prior).  False
+     *  for pipeline phases where the planner already consumed the
+     *  probe and the builder's prompt would otherwise carry redundant
+     *  context that dilutes the actual repair task. */
+    private boolean _includeCapabilityProbe = true;
+
     public AgentLoop(LLMClient llm, ToolRegistry tools) {
         _llm = llm;
         _tools = tools;
@@ -101,6 +114,25 @@ public class AgentLoop {
     /** Override the hard safety limit (default 80). */
     public AgentLoop setMaxSteps(int maxSteps) {
         _hardLimit = Math.max(1, maxSteps);
+        return this;
+    }
+
+    /** Toggle whether this loop adds a per-turn capability scan
+     *  message before the model context block.  Pipelines flip this
+     *  off on the build / refactor phases to keep prompts compact;
+     *  single-mode keeps it on. */
+    public AgentLoop setIncludeCapabilityProbe(boolean include) {
+        _includeCapabilityProbe = include;
+        return this;
+    }
+
+    /** Override the wall-clock cap for one run.
+     *  @param maxTurnMillis Maximum runtime in milliseconds.
+     *      Non-positive values disable the wall-clock cap.
+     */
+    public AgentLoop setMaxTurnMillis(long maxTurnMillis) {
+        _maxTurnMillis = maxTurnMillis <= 0
+                ? Long.MAX_VALUE : maxTurnMillis;
         return this;
     }
 
@@ -159,19 +191,25 @@ public class AgentLoop {
             // Pre-planning capability scan: surface relevant library
             // actors and well-known pitfalls (e.g. Expression's
             // PortParameter trap) so the model has a soft prior
-            // before reaching for a generic fallback class.
-            String recipe = CapabilityProbe.promptBlock(
-                    CapabilityProbe.probe(userGoal,
-                            org.ptolemy.agent.library.LibraryIndex
-                                    .shared()));
-            if (recipe != null && !recipe.isEmpty()) {
-                messages.put(message("user", recipe));
+            // before reaching for a generic fallback class.  The
+            // pipeline disables this when a previous planner phase
+            // already consumed the same probe, to avoid bloating
+            // the builder/refactor context with redundant tokens.
+            if (_includeCapabilityProbe) {
+                String recipe = CapabilityProbe.promptBlock(
+                        CapabilityProbe.probe(userGoal,
+                                org.ptolemy.agent.library.LibraryIndex
+                                        .shared()));
+                if (recipe != null && !recipe.isEmpty()) {
+                    messages.put(message("user", recipe));
+                }
             }
             messages.put(message("user",
                     PromptTemplates.modelContextNote(
                             ModelContext.forSession(session))));
 
             JSONArray tools = _tools.toolsForOpenAI();
+            final long startedAtMs = System.currentTimeMillis();
 
             int consecutiveStallRounds = 0;
 
@@ -201,6 +239,16 @@ public class AgentLoop {
             final int MAX_REPEAT_CALL_SIG  = 3;
 
             for (int step = 0; step < _hardLimit; step++) {
+                if (System.currentTimeMillis() - startedAtMs
+                        > _maxTurnMillis) {
+                    trace.finish(false,
+                            "Turn timeout after " + _maxTurnMillis
+                                    + " ms. The request ran too long and"
+                                    + " was stopped to keep the backend"
+                                    + " responsive. Try a narrower goal,"
+                                    + " or increase AGENT_MAX_TURN_MS.");
+                    return trace;
+                }
                 LLMResponse reply;
                 try {
                     reply = _llm.chat(messages, tools);
@@ -217,12 +265,18 @@ public class AgentLoop {
                 }
 
                 // Intermediate thought (content alongside tool calls).
-                if (!reply.content().isEmpty()) {
-                    trace.addThought(reply.content());
+                // DeepSeek thinking mode may return empty `content` but
+                // non-empty `reasoning_content`; surface whichever exists.
+                String thought = reply.content();
+                if (thought == null || thought.isEmpty()) {
+                    thought = reply.reasoningContent();
+                }
+                if (thought != null && !thought.isEmpty()) {
+                    trace.addThought(thought);
                     // Detect "broken record" mode — same thought 3+
                     // times in a row. Hard-terminate; coaching alone
                     // does not break this LLM failure mode.
-                    String snippet = reply.content().trim();
+                    String snippet = thought.trim();
                     if (snippet.length() > 120) {
                         snippet = snippet.substring(0, 120);
                     }

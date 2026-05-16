@@ -102,12 +102,11 @@ public class ListEntitiesTool implements AgentTool {
         String parent = args == null
                 ? "" : args.optString("parent", "").trim();
         if (parent.length() > 0) {
-            ComponentEntity child = scope.getEntity(parent);
-            if (!(child instanceof CompositeEntity)) {
-                return AgentResult.fail(
-                        "no composite named '" + parent + "' in scope");
+            try {
+                scope = ToolScopeResolver.resolve(scope, parent);
+            } catch (IllegalArgumentException ex) {
+                return AgentResult.fail(ex.getMessage());
             }
-            scope = (CompositeEntity) child;
         }
 
         JSONArray entities = new JSONArray();

@@ -65,12 +65,20 @@ public final class LLMResponse {
     }
 
     private final String _content;
+    private final String _reasoningContent;
     private final List<ToolCall> _toolCalls;
     private final JSONObject _raw;
 
     public LLMResponse(String content, List<ToolCall> toolCalls,
             JSONObject raw) {
+        this(content, "", toolCalls, raw);
+    }
+
+    public LLMResponse(String content, String reasoningContent,
+            List<ToolCall> toolCalls, JSONObject raw) {
         _content = content == null ? "" : content;
+        _reasoningContent = reasoningContent == null
+                ? "" : reasoningContent;
         _toolCalls = toolCalls == null ? Collections.<ToolCall>emptyList()
                 : Collections.unmodifiableList(new ArrayList<>(toolCalls));
         _raw = raw == null ? new JSONObject() : raw;
@@ -79,6 +87,11 @@ public final class LLMResponse {
     /** @return The text content of the assistant message, if any. */
     public String content() {
         return _content;
+    }
+
+    /** @return Provider-specific reasoning trace content, if any. */
+    public String reasoningContent() {
+        return _reasoningContent;
     }
 
     /** @return The list of tool-call requests, possibly empty. */
@@ -102,6 +115,9 @@ public final class LLMResponse {
         JSONObject msg = new JSONObject();
         msg.put("role", "assistant");
         msg.put("content", _content);
+        if (!_reasoningContent.isEmpty()) {
+            msg.put("reasoning_content", _reasoningContent);
+        }
         if (hasToolCalls()) {
             JSONArray calls = new JSONArray();
             for (ToolCall call : _toolCalls) {

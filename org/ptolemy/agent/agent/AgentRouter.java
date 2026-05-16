@@ -124,6 +124,16 @@ public final class AgentRouter {
                 "refactor", "wrap into", "group ", "encapsulate",
                 "组成 composite", "封装", "分组", "重构", "组合",
                 "包成");
+        // Model diagnosis / optimization requests should run tools even
+        // when phrased as a question.
+        boolean optimizeIntent = _containsAny(m,
+                "optimiz", "diagnos", "health check", "what is wrong",
+                "validate model", "validate the model", "check model",
+                "unconnected", "disconnected", "orphan",
+                "optimize model", "cleanup model",
+                "优化", "诊断", "校验", "检查模型", "模型问题",
+                "还有什么问题", "未连接", "孤立", "断开", "分块",
+                "组件过多", "过多组件", "递归");
 
         // Conversational signals: questions about the model, greetings.
         boolean endsWithQuestion = m.endsWith("?") || m.endsWith("？");
@@ -164,6 +174,9 @@ public final class AgentRouter {
             return Mode.PIPELINE;
         }
         if (refactorIntent || tweakIntent) {
+            return Mode.SINGLE;
+        }
+        if (optimizeIntent) {
             return Mode.SINGLE;
         }
         // Conversational on an existing model — questions, status

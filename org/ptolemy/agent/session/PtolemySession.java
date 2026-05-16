@@ -50,6 +50,7 @@ import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.BasicModelErrorHandler;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
@@ -99,6 +100,7 @@ import ptolemy.moml.filter.RemoveGraphicalClasses;
  @since Ptolemy II 11.1
  */
 public class PtolemySession implements ChangeListener, ExecutionListener {
+    private static final long DEFAULT_APPLY_CHANGE_TIMEOUT_MS = 10000L;
 
     /** Globally unique session id, exposed in REST URLs. */
     private final String _id;
@@ -198,6 +200,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             _resetParser();
             _toplevel = (CompositeActor) _parser.parse(null, url);
             _afterParse();
+            _pruneDanglingRelationsQuietly();
             return AgentResult.ok("loaded " + path,
                     new JSONObject().put("name", _toplevel.getName())
                             .put("class", _toplevel.getClassName()));
@@ -215,6 +218,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             _resetParser();
             _toplevel = (CompositeActor) _parser.parse(moml);
             _afterParse();
+            _pruneDanglingRelationsQuietly();
             return AgentResult.ok("loaded from string",
                     new JSONObject().put("name", _toplevel.getName())
                             .put("class", _toplevel.getClassName()));
@@ -245,6 +249,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
                 new java.util.concurrent.CountDownLatch(1);
         final java.util.concurrent.atomic.AtomicReference<String> failure =
                 new java.util.concurrent.atomic.AtomicReference<>();
+        final long startedAtMs = System.currentTimeMillis();
         try {
             ptolemy.moml.MoMLChangeRequest req = new ptolemy.moml.MoMLChangeRequest(
                     this, _toplevel, moml);
@@ -267,16 +272,35 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             // If the Manager is idle it processes requests synchronously in
             // the same thread, so the latch is already at 0 here.  If it is
             // async the latch gives us a proper synchronisation barrier.
-            latch.await(10, java.util.concurrent.TimeUnit.SECONDS);
+            long timeoutMs = _applyChangeTimeoutMs();
+            boolean completed = latch.await(timeoutMs,
+                    java.util.concurrent.TimeUnit.MILLISECONDS);
+            long elapsedMs = System.currentTimeMillis() - startedAtMs;
+            if (!completed) {
+                _pruneDanglingRelationsQuietly();
+                _logMetric("applyChange timeout after " + elapsedMs + " ms"
+                        + " (limit=" + timeoutMs + " ms, bytes="
+                        + (moml == null ? 0 : moml.length()) + ")");
+                return AgentResult.fail("change timed out after " + timeoutMs
+                        + " ms");
+            }
             String err = failure.get();
             if (err != null) {
+                _pruneDanglingRelationsQuietly();
+                _logMetric("applyChange failed after " + elapsedMs + " ms: "
+                        + err);
                 return AgentResult.fail("change failed: " + err);
             }
+            _pruneDanglingRelationsQuietly();
+            _logMetric("applyChange ok in " + elapsedMs + " ms"
+                    + " (bytes=" + (moml == null ? 0 : moml.length()) + ")");
             return AgentResult.ok("change applied");
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            _pruneDanglingRelationsQuietly();
             return AgentResult.fail("change interrupted");
         } catch (Throwable t) {
+            _pruneDanglingRelationsQuietly();
             return AgentResult.fail("change failed: " + t.getMessage());
         }
     }
@@ -322,8 +346,10 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         try {
             ptolemy.kernel.undo.UndoStackAttribute.getUndoInfo(_toplevel)
                     .undo();
+            _pruneDanglingRelationsQuietly();
             return AgentResult.ok("undid one step");
         } catch (Throwable t) {
+            _pruneDanglingRelationsQuietly();
             return AgentResult.fail("undo failed: " + t.getMessage());
         }
     }
@@ -336,8 +362,10 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         try {
             ptolemy.kernel.undo.UndoStackAttribute.getUndoInfo(_toplevel)
                     .redo();
+            _pruneDanglingRelationsQuietly();
             return AgentResult.ok("redid one step");
         } catch (Throwable t) {
+            _pruneDanglingRelationsQuietly();
             return AgentResult.fail("redo failed: " + t.getMessage());
         }
     }
@@ -364,6 +392,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
             return "<!-- no model loaded -->";
         }
         _detachProbesQuietly();
+        _pruneDanglingRelationsQuietly();
         return _toplevel.exportMoML();
     }
 
@@ -379,6 +408,19 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
     public synchronized AgentResult dryRunTool(
             org.ptolemy.agent.tools.ToolRegistry tools, String name,
             JSONObject args) {
+        return dryRunTool(tools, name, args, false);
+    }
+
+    /** Execute a tool call against a temporary copy, optionally skipping
+     *  expensive execution paths for dry-run-only preflight.
+     *  @param tools Registry used to dispatch tools.
+     *  @param name Tool name.
+     *  @param args Tool arguments.
+     *  @param lightweightAutoLayout If true and name is {@code auto_layout},
+     *      skip running layout worker and perform scope preflight only. */
+    public synchronized AgentResult dryRunTool(
+            org.ptolemy.agent.tools.ToolRegistry tools, String name,
+            JSONObject args, boolean lightweightAutoLayout) {
         if (_toplevel == null) {
             return AgentResult.fail("no model loaded");
         }
@@ -391,14 +433,23 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
                 return AgentResult.fail("dry-run setup failed: "
                         + load.message());
             }
-            AgentResult toolResult = tools.dispatch(name, copy,
-                    args == null ? new JSONObject() : args);
+            JSONObject safeArgs = args == null ? new JSONObject() : args;
+            AgentResult toolResult;
+            if (lightweightAutoLayout && "auto_layout".equals(name)) {
+                toolResult = _dryRunAutoLayoutPreflight(copy, safeArgs);
+            } else {
+                toolResult = tools.dispatch(name, copy, safeArgs);
+            }
             AgentResult validation = tools.dispatch("validate", copy,
                     new JSONObject());
             JSONObject data = new JSONObject();
             data.put("dryRun", true);
             data.put("committed", false);
             data.put("tool", name);
+            if (lightweightAutoLayout && "auto_layout".equals(name)) {
+                data.put("lightweight", true);
+                data.put("skippedExecution", true);
+            }
             data.put("toolResult", toolResult.toJson());
             data.put("validation", validation.toJson());
             data.put("modelContext", ModelContext.forSession(copy));
@@ -434,6 +485,7 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
                 parent.mkdirs();
             }
             _detachProbesQuietly();
+            _pruneDanglingRelationsQuietly();
             try (Writer w = new OutputStreamWriter(
                     new FileOutputStream(f), StandardCharsets.UTF_8)) {
                 w.write(_toplevel.exportMoML());
@@ -598,6 +650,112 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         }
     }
 
+    /** Best-effort cleanup of relation shells that have no linked ports.
+     *  These often appear after partially failed structural rewrites and
+     *  show up in Vergil as isolated black-diamond relation nodes,
+     *  causing backend/frontend topology drift. */
+    private void _pruneDanglingRelationsQuietly() {
+        try {
+            if (_toplevel != null) {
+                _pruneDanglingRelations((CompositeEntity) _toplevel);
+            }
+        } catch (Throwable ignored) {
+            // Best effort only; never fail user operations on cleanup.
+        }
+    }
+
+    /** Recursively remove relations that cannot form a dataflow edge in
+     *  the same way {@link GraphSerializer} would expose one.
+     *  This deletes both fully orphaned relation shells and partially
+     *  dangling relations (e.g. only-source or only-destination). */
+    private static void _pruneDanglingRelations(CompositeEntity container)
+            throws Exception {
+        @SuppressWarnings("unchecked")
+        List<Relation> relations = new ArrayList<Relation>(
+                container.relationList());
+        for (Relation relation : relations) {
+            if (relation == null) {
+                continue;
+            }
+            @SuppressWarnings("unchecked")
+            List<?> linked = relation.linkedPortList();
+            boolean noLinks = linked == null || linked.isEmpty();
+            boolean notRenderable = !_relationHasRenderableDataflow(
+                    relation, container);
+            if (noLinks || notRenderable) {
+                if (relation instanceof ComponentRelation) {
+                    ((ComponentRelation) relation).setContainer(null);
+                }
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        List<ComponentEntity> entities = new ArrayList<ComponentEntity>(
+                container.entityList());
+        for (ComponentEntity entity : entities) {
+            if (entity instanceof CompositeEntity) {
+                _pruneDanglingRelations((CompositeEntity) entity);
+            }
+        }
+    }
+
+    /** True when this relation has at least one source and one destination
+     *  endpoint under the same semantics as GraphSerializer.edgesForRelation:
+     *  boundary input ports act as sources, boundary outputs as destinations,
+     *  internal outputs are sources, internal inputs are destinations. */
+    private static boolean _relationHasRenderableDataflow(Relation relation,
+            CompositeEntity scope) {
+        if (relation == null || scope == null) {
+            return false;
+        }
+        boolean hasSource = false;
+        boolean hasDestination = false;
+        @SuppressWarnings("unchecked")
+        List<?> linked = relation.linkedPortList();
+        if (linked == null || linked.isEmpty()) {
+            return false;
+        }
+        for (Object o : linked) {
+            if (!(o instanceof IOPort)) {
+                continue;
+            }
+            IOPort port = (IOPort) o;
+            if (_isHidden(port.getContainer())) {
+                continue;
+            }
+            boolean onBoundary = (port.getContainer() == scope);
+            if (onBoundary) {
+                if (port.isInput()) {
+                    hasSource = true;
+                }
+                if (port.isOutput()) {
+                    hasDestination = true;
+                }
+            } else {
+                if (port.isOutput()) {
+                    hasSource = true;
+                }
+                if (port.isInput()) {
+                    hasDestination = true;
+                }
+            }
+            if (hasSource && hasDestination) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Keep cleanup behavior consistent with GraphSerializer's hidden-node
+     *  filter so probe infrastructure never prevents relation pruning. */
+    private static boolean _isHidden(Object obj) {
+        if (!(obj instanceof ptolemy.kernel.util.NamedObj)) {
+            return false;
+        }
+        String name = ((ptolemy.kernel.util.NamedObj) obj).getName();
+        return name != null && name.startsWith("__recorder__");
+    }
+
     /** Recursively remove hidden recorder actors and their relations. */
     private static void _purgeHiddenProbes(CompositeEntity container)
             throws Exception {
@@ -643,5 +801,55 @@ public class PtolemySession implements ChangeListener, ExecutionListener {
         if (s == null) return "";
         return s.replace("&", "&amp;").replace("<", "&lt;")
                 .replace(">", "&gt;").replace("\"", "&quot;");
+    }
+
+    private static long _applyChangeTimeoutMs() {
+        String env = System.getenv("AGENT_APPLY_CHANGE_TIMEOUT_MS");
+        if (env == null || env.trim().isEmpty()) {
+            return DEFAULT_APPLY_CHANGE_TIMEOUT_MS;
+        }
+        try {
+            long parsed = Long.parseLong(env.trim());
+            return parsed > 0 ? parsed : DEFAULT_APPLY_CHANGE_TIMEOUT_MS;
+        } catch (Throwable ignored) {
+            return DEFAULT_APPLY_CHANGE_TIMEOUT_MS;
+        }
+    }
+
+    private static void _logMetric(String message) {
+        System.out.println("[ptolemy-session] " + message);
+    }
+
+    private static AgentResult _dryRunAutoLayoutPreflight(
+            PtolemySession copy, JSONObject args) {
+        if (copy == null || copy.toplevel() == null) {
+            return AgentResult.fail("no model loaded");
+        }
+        ptolemy.kernel.CompositeEntity top =
+                (ptolemy.kernel.CompositeEntity) copy.toplevel();
+        String parent = args == null ? ""
+                : args.optString("parent", "").trim();
+        ptolemy.kernel.CompositeEntity scope = top;
+        if (!parent.isEmpty()) {
+            String[] segments = parent.split("/");
+            for (String segment : segments) {
+                String name = segment == null ? "" : segment.trim();
+                if (name.isEmpty()) {
+                    continue;
+                }
+                ptolemy.kernel.ComponentEntity child = scope.getEntity(name);
+                if (!(child instanceof ptolemy.kernel.CompositeEntity)) {
+                    return AgentResult.fail(
+                            "no composite named '" + parent + "' in scope");
+                }
+                scope = (ptolemy.kernel.CompositeEntity) child;
+            }
+        }
+        JSONObject data = new JSONObject();
+        data.put("scope", parent.isEmpty() ? scope.getName() : parent);
+        data.put("entityCount", scope.entityList().size());
+        data.put("lightweight", true);
+        data.put("skippedExecution", true);
+        return AgentResult.ok("auto_layout dry-run preflight succeeded", data);
     }
 }
