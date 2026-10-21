@@ -623,7 +623,7 @@ See $PTII/doc/coding/maven.htm
       <!-- jsoup HTML parser library @ http://jsoup.org/ -->
       <groupId>org.jsoup</groupId>
       <artifactId>jsoup</artifactId>
-      <version>1.15.3</version>
+      <version>1.23.2</version>
     </dependency>
 
     <dependency> 
